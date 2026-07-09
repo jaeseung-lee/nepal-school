@@ -1,23 +1,20 @@
+import Image from "next/image";
+
 const CELLS = [
-  { cls: "c1", label: "현지 교육", img: "/kv/col-nepal.webp" },
-  { cls: "c2", label: "한국 산업현장", img: "/kv/col-korea.webp" },
-  { cls: "c3", label: "일본 개호·숙박", img: "/kv/col-japan.webp" },
-  { cls: "c4", label: "매칭·계약", img: "/kv/col-matching.webp" },
-  { cls: "c5", label: "정착 지원", img: "/kv/col-settle.webp" },
+  { cls: "c1", label: "현지 직업훈련", img: "/kv/redesign/training.webp" },
+  { cls: "c2", label: "한국 산업 현장", img: "/kv/redesign/korea.webp" },
+  { cls: "c3", label: "일본 개호와 숙박 준비", img: "/kv/redesign/japan.webp" },
+  { cls: "c4", label: "비자와 계약 문서", img: "/kv/redesign/process.webp" },
+  { cls: "c5", label: "상담 준비", img: "/kv/redesign/contact.webp" },
 ];
 
-/** 5칸 포토 콜라주 (홈·회사소개 공용) — 실사진 */
 export default function Collage() {
   return (
     <div className="collage" aria-hidden="true">
-      {CELLS.map((c) => (
-        <div
-          key={c.cls}
-          className={`${c.cls} bg-cover bg-center`}
-          style={{ backgroundImage: `url('${c.img}')` }}
-          role="img"
-          aria-label={c.label}
-        ></div>
+      {CELLS.map((cell) => (
+        <div key={cell.cls} className={`${cell.cls} relative bg-gray-100`}>
+          <Image src={cell.img} alt={cell.label} fill sizes="(min-width: 1024px) 46vw, 100vw" className="object-cover" />
+        </div>
       ))}
     </div>
   );

@@ -40,7 +40,7 @@ export default function OrganizationSchema() {
   return (
     <script
       type="application/ld+json"
-      // 구조화 데이터는 신뢰 소스(내부 상수)에서만 생성 — XSS 위험 없음
+      // 구조화 데이터는 신뢰 소스(내부 상수)에서만 생성 - XSS 위험 없음
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

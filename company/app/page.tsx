@@ -1,3 +1,4 @@
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import HeroSlideshow from "@/components/hero-slideshow";
 import MetricsStrip from "@/components/metrics-strip";
@@ -7,88 +8,78 @@ import PartnerCards from "@/components/partner-cards";
 import ProcessSteps from "@/components/process-steps";
 import FaqSection from "@/components/faq-section";
 import CtaBanner from "@/components/cta-banner";
+import Reveal from "@/components/reveal";
 
 export default function HomePage() {
   return (
     <main>
-      {/* 히어로 (풀블리드 슬라이드쇼) */}
       <HeroSlideshow />
-
-      {/* 숫자 / 신뢰 스트립 */}
       <MetricsStrip />
 
-      {/* 회사소개 teaser */}
-      <section className="max-w-content mx-auto px-5 lg:px-8 py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
-            <span className="text-xs font-display font-semibold tracking-[0.22em] text-primary-main uppercase">About Us</span>
-            <p className="mt-5 text-[26px] sm:text-[32px] font-bold leading-[1.35] tracking-tight text-balance">
-              <span className="text-gray-900">
-                네팔·베트남 인재를 현지 교육부터 양성해
-                <br className="hidden sm:block" /> 한국·일본 기업에 합법적으로 연결
-              </span>
-              <span className="text-gray-400">
-                하는
-                <br className="hidden sm:block" /> 글로벌 인적자원 개발 기업입니다.
-              </span>
+      <section className="bg-paper">
+        <div className="max-w-content mx-auto grid gap-12 px-5 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-28">
+          <Reveal>
+            <Collage />
+          </Reveal>
+          <Reveal delay={0.08} className="flex flex-col justify-center">
+            <h2 className="font-display text-3xl font-semibold text-ink text-balance lg:text-5xl">
+              단순 알선보다 먼저, 교육과 검증을 설계합니다
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
+              2026년 6월 출발한 신생 기업입니다. 그래서 과장된 실적 대신 현지 파트너, 제도 기준, 단계별 역할을 분명히 공개합니다.
             </p>
-            <p className="mt-6 text-base text-gray-600 leading-relaxed max-w-xl">2026년 6월 출발한 신생 기업이지만, Richhood Overseas와의 MOU를 포함한 현지 파트너 네트워크와 제도 전문성을 기반으로 선발–교육–시험–매칭–비자–정착까지 전 과정을 책임집니다.</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/about" className="inline-flex items-center gap-1.5 rounded-full bg-primary-main hover:bg-primary-light transition text-white text-sm font-semibold px-5 py-2.5">
-                회사소개 자세히 <span aria-hidden="true">→</span>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/about" className="inline-flex items-center justify-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-ink active:translate-y-px">
+                회사소개 <ArrowRight size={16} weight="bold" aria-hidden="true" />
               </Link>
-              <Link href="/why" className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 hover:border-primary-main hover:text-primary-main transition text-sm font-semibold px-5 py-2.5">
-                신뢰·전문성 <span aria-hidden="true">→</span>
+              <Link href="/why" className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:border-cobalt hover:text-cobalt active:translate-y-px">
+                신뢰 기준 <ArrowRight size={16} weight="bold" aria-hidden="true" />
               </Link>
             </div>
-          </div>
-          <Collage />
+          </Reveal>
         </div>
       </section>
 
-      {/* 사업영역 teaser */}
-      <section className="bg-gray-50 border-y border-gray-200">
-        <div className="max-w-content mx-auto px-5 lg:px-8 py-20 lg:py-28">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <div className="max-w-2xl">
-              <span className="text-xs font-display font-semibold tracking-[0.22em] text-primary-main uppercase">Our Business</span>
-              <h2 className="mt-3 font-display text-3xl lg:text-5xl font-bold text-gray-900 tracking-tight">Shaping Global Talent</h2>
-              <p className="mt-3 text-2xl font-bold text-gray-900">3대 사업영역</p>
-            </div>
-            <Link href="/services" className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 hover:border-primary-main hover:text-primary-main transition text-sm font-semibold px-5 py-2.5 shrink-0">
-              사업영역 자세히 <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-          <div className="mt-12">
+      <section className="bg-paper-soft">
+        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
+          <Reveal className="max-w-2xl">
+            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+              교육, 한국, 일본을 하나의 운영 체계로 묶습니다
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-muted">
+              각 사업영역은 따로 보이지만 실제 운영에서는 선발, 교육, 시험, 비자, 정착이 연결됩니다.
+            </p>
+          </Reveal>
+          <Reveal delay={0.08} className="mt-12">
             <ServiceCards />
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 원스톱 프로세스 7단계 */}
       <ProcessSteps />
 
-      {/* 파트너십 teaser */}
-      <section className="max-w-content mx-auto px-5 lg:px-8 py-20 lg:py-28">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div className="max-w-2xl">
-            <span className="text-xs font-display font-semibold tracking-[0.22em] text-primary-main uppercase">Trusted Network</span>
-            <h2 className="mt-3 font-display text-3xl lg:text-5xl font-bold text-gray-900 tracking-tight">Verified Partners</h2>
-            <p className="mt-3 text-2xl font-bold text-gray-900">국경을 넘는 신뢰는, 검증된 MOU 파트너에서</p>
+      <section className="bg-paper">
+        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
+          <Reveal className="mb-10 max-w-2xl">
+            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+              협력 기관은 이름보다 역할이 중요합니다
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-muted">
+              로고가 준비되지 않은 기관을 장식하지 않고, 각 파트너가 실제로 맡는 책임을 먼저 보여줍니다.
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <PartnerCards />
+          </Reveal>
+          <div className="mt-8">
+            <Link href="/partners" className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">
+              파트너십 자세히 보기 <ArrowRight size={16} weight="bold" aria-hidden="true" />
+            </Link>
           </div>
-          <Link href="/partners" className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 hover:border-primary-main hover:text-primary-main transition text-sm font-semibold px-5 py-2.5 shrink-0">
-            파트너십 자세히 <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-        <div className="mt-12">
-          <PartnerCards />
         </div>
       </section>
 
-      {/* 자주 묻는 질문 (AI 검색 인용 최적화) */}
       <FaqSection />
-
-      {/* 하단 CTA 배너 */}
       <CtaBanner />
     </main>
   );

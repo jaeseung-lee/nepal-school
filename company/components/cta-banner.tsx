@@ -1,22 +1,36 @@
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import Link from "next/link";
 
-/** 전 페이지 하단 공용 CTA 배너 */
 export default function CtaBanner() {
   return (
-    <section className="relative overflow-hidden bg-primary-main text-white">
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-deepest via-primary-main to-blue-accent/70" aria-hidden="true"></div>
-      <div className="relative max-w-content mx-auto px-5 lg:px-8 py-20 lg:py-24 text-center">
-        <span className="text-xs font-display font-semibold tracking-[0.22em] text-gold-light uppercase">Get Started</span>
-        <h2 className="mt-4 font-display text-3xl lg:text-[52px] font-bold tracking-tight text-balance">Let&apos;s Build Your Workforce</h2>
-        <p className="mt-3 text-2xl font-bold">지금 채용 상담을 시작하세요</p>
-        <p className="mt-4 text-base lg:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">외국인력 채용, 제도부터 정확하게. 기업 요건을 알려주시면 적합한 인재와 절차를 안내드립니다.</p>
-        <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/contact" className="inline-flex justify-center items-center gap-2 rounded-full bg-white text-primary-main hover:bg-gold-light hover:text-white transition text-base font-semibold px-8 py-4 shadow-lg">
-            제휴 문의하기 <span aria-hidden="true">→</span>
-          </Link>
-          <Link href="/partners" className="inline-flex justify-center items-center gap-2 rounded-full border border-white/40 hover:bg-white/10 transition text-white text-base font-semibold px-8 py-4">
-            파트너십 보기
-          </Link>
+    <section className="bg-paper pb-16 lg:pb-24">
+      <div className="max-w-content mx-auto px-5 lg:px-8">
+        <div className="relative overflow-hidden rounded-[32px] border border-line bg-ink text-white">
+          <Image
+            src="/kv/redesign/contact.webp"
+            alt="상담 준비가 된 회의실과 문서"
+            fill
+            sizes="(min-width: 1024px) 1180px, 100vw"
+            className="object-cover opacity-[0.58]"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(24,26,31,0.90),rgba(24,26,31,0.62),rgba(24,26,31,0.20))]" aria-hidden="true" />
+          <div className="relative max-w-2xl px-6 py-14 sm:px-10 lg:px-14 lg:py-20">
+            <h2 className="font-display text-3xl font-semibold text-balance lg:text-5xl">
+              기업 요건을 먼저 확인하겠습니다
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/78">
+              직무, 인원, 희망 일정, 비자 방향을 알려주시면 가능한 절차와 준비 순서를 정리해 안내합니다.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-base font-semibold text-cobalt transition hover:bg-cobalt-soft active:translate-y-px">
+                문의하기 <ArrowRight size={18} weight="bold" aria-hidden="true" />
+              </Link>
+              <Link href="/services" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/55 bg-white/8 px-6 py-3.5 text-base font-semibold text-white backdrop-blur transition hover:bg-white/14 active:translate-y-px">
+                절차 보기 <ArrowRight size={18} weight="bold" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

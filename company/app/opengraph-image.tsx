@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 
-// 동적 Open Graph 이미지 (1200×630) — 카톡·링크드인·X 공유 썸네일
+// 동적 Open Graph 이미지 (1200×630) - 카톡·링크드인·X 공유 썸네일
 // ImageResponse 기본 폰트에는 한글이 없으므로 영문·기호 위주로 구성한다.
-export const alt = "JOONG WOO HRD — Global Human Resource Development";
+export const alt = "JOONG WOO HRD - Global Human Resource Development";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -52,7 +52,7 @@ export default function OpengraphImage() {
             color: "#d4d4d4",
           }}
         >
-          Nepal · Vietnam  →  Korea · Japan
+          Nepal, Vietnam to Korea, Japan
         </div>
         <div
           style={{
@@ -61,7 +61,7 @@ export default function OpengraphImage() {
             color: "#8a8a8a",
           }}
         >
-          Train · Test · Match · Visa · Settle
+          Train, test, match, visa, settle
         </div>
       </div>
     ),

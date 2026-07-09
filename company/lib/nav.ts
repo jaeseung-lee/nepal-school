@@ -3,7 +3,7 @@ export interface NavItem {
   href: string;
 }
 
-/** 주요 메뉴 — 헤더(데스크톱·모바일)와 푸터가 공유하는 단일 출처 */
+/** 주요 메뉴 - 헤더(데스크톱·모바일)와 푸터가 공유하는 단일 출처 */
 export const NAV_ITEMS: NavItem[] = [
   { label: "회사소개", href: "/about" },
   { label: "사업영역", href: "/services" },
@@ -12,7 +12,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "문의", href: "/contact" },
 ];
 
-/** 언어 스위처 — 현재 KO만 활성, 나머지는 준비 중(비활성) */
+/** 언어 스위처 - 현재 KO만 활성, 나머지는 준비 중(비활성) */
 export const LANGUAGES: { code: string; active: boolean }[] = [
   { code: "KO", active: true },
   { code: "EN", active: false },

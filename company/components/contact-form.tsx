@@ -1,74 +1,44 @@
-"use client";
+import { ArrowRight, ClipboardText, EnvelopeSimple, WarningCircle } from "@phosphor-icons/react/dist/ssr";
 
-import { useState } from "react";
+const REQUEST_ITEMS = [
+  "채용 희망 직무와 인원",
+  "희망 입국 시기",
+  "검토 중인 비자나 제도",
+  "근무 지역과 숙소 지원 여부",
+];
 
-const inputCls =
-  "mt-1.5 w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm focus:border-primary-main focus:ring-0";
-
-/** 문의 양식 — 현재 백엔드 미연동. 제출 시 안내문만 표시(원본 동작 그대로). TODO: 전송 endpoint 연동 */
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
-
   return (
-    <div className="rounded-[20px] border border-gray-200 bg-gray-50 p-7 lg:p-9">
-      <h3 className="text-xl font-bold text-gray-900">문의 양식</h3>
-      <p className="mt-1.5 text-sm text-gray-500">* 표시는 필수 항목입니다.</p>
-      {/* TODO: 폼 전송 endpoint 연동 필요 (이메일/메신저 알림 + reCAPTCHA) */}
-      <form
-        className="mt-6 grid gap-4"
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSubmitted(true);
-        }}
-      >
-        <div className="grid sm:grid-cols-2 gap-4">
-          <label className="block">
-            <span className="text-sm font-medium text-gray-700">회사명 *</span>
-            <input type="text" required className={inputCls} placeholder="(주)○○" />
-          </label>
-          <label className="block">
-            <span className="text-sm font-medium text-gray-700">담당자명 *</span>
-            <input type="text" required className={inputCls} placeholder="홍길동" />
-          </label>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <label className="block">
-            <span className="text-sm font-medium text-gray-700">이메일 *</span>
-            <input type="email" required className={inputCls} placeholder="name@company.com" />
-          </label>
-          <label className="block">
-            <span className="text-sm font-medium text-gray-700">연락처</span>
-            <input type="tel" className={inputCls} placeholder="010-0000-0000" />
-          </label>
-        </div>
-        <label className="block">
-          <span className="text-sm font-medium text-gray-700">관심 분야</span>
-          <select className={inputCls}>
-            <option>한국 취업비자 (E-9 / E-7 / D-2 / D-4 / 계절근로)</option>
-            <option>일본 취업비자 (특정기능 · 개호/숙박)</option>
-            <option>네팔 직업훈련 · 현지 양성</option>
-            <option>제휴 · 파트너십</option>
-            <option>기타</option>
-          </select>
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-gray-700">문의 내용 *</span>
-          <textarea required rows={4} className={inputCls} placeholder="채용 희망 직무·인원, 일정 등을 적어 주세요."></textarea>
-        </label>
-        <label className="flex items-start gap-2 text-sm text-gray-600">
-          <input type="checkbox" required className="mt-1" />{" "}
-          <span>
-            개인정보 수집·이용에 동의합니다. <span className="text-gray-400">(개인정보처리방침 게시 예정)</span>
-          </span>
-        </label>
-        <button type="submit" className="mt-2 inline-flex justify-center items-center gap-2 rounded-full bg-primary-main hover:bg-primary-light transition text-white text-base font-semibold px-7 py-3.5">
-          문의 보내기 <span aria-hidden="true">→</span>
-        </button>
-        <p className={`${submitted ? "" : "hidden "}text-sm text-primary-main bg-primary-main/5 border border-primary-main/20 rounded-lg px-4 py-3`}>
-          감사합니다. 폼 전송 기능은 연동 예정입니다 — 현재는 위 연락처로 문의해 주세요.
-        </p>
-      </form>
+    <div className="rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
+        <ClipboardText size={26} weight="duotone" aria-hidden="true" />
+      </div>
+      <h3 className="mt-6 font-display text-2xl font-semibold text-ink">웹 문의 연동 준비 중</h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted">
+        현재 이 화면에서는 내용을 전송하지 않습니다. 실제 접수 채널이 확정되기 전까지는 기업이 준비해야 할 정보를 먼저 안내합니다.
+      </p>
+
+      <div className="mt-7 rounded-[22px] border border-line bg-paper p-5">
+        <h4 className="text-sm font-semibold text-ink">상담 전 정리하면 좋은 정보</h4>
+        <ul className="mt-4 grid gap-3 text-sm text-muted">
+          {REQUEST_ITEMS.map((item) => (
+            <li key={item} className="flex items-start gap-3">
+              <ArrowRight size={16} className="mt-0.5 shrink-0 text-cobalt" aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-6 flex items-start gap-3 rounded-[18px] border border-cobalt/20 bg-cobalt-soft p-4 text-sm text-cobalt-ink">
+        <WarningCircle size={20} className="mt-0.5 shrink-0" aria-hidden="true" />
+        <p>폼 제출 버튼을 임시로 만들지 않았습니다. 실제 이메일 또는 접수 endpoint가 정해지면 이 영역을 전송 폼으로 전환합니다.</p>
+      </div>
+
+      <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink">
+        <EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />
+        접수 채널 확정 후 활성화
+      </div>
     </div>
   );
 }

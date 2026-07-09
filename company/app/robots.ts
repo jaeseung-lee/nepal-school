@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: [
-          "GPTBot", // OpenAI — ChatGPT 웹 검색
+          "GPTBot", // OpenAI - ChatGPT 웹 검색
           "OAI-SearchBot", // OpenAI 검색
           "ChatGPT-User", // ChatGPT 브라우징
           "ClaudeBot", // Anthropic
