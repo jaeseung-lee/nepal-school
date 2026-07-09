@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js
+.next/
+**/.next/
+out/
+**/out/
+build/
+**/build/
+dist/
+**/dist/
+next-env.d.ts
+**/next-env.d.ts
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test and coverage output
+coverage/
+**/coverage/
+playwright-report/
+**/playwright-report/
+test-results/
+**/test-results/
+.playwright-mcp/
+
+# Deployment and framework caches
+.vercel/
+**/.vercel/
+.turbo/
+**/.turbo/
+.cache/
+**/.cache/
+
+# Local temporary files
+tmp/
+temp/
+.tmp/
+
+# OS and editor files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Local machine config
+.claude/
+.zshrc
+
+# Secrets and certificates
+*.pem
+*.key
+*.crt

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "company",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/twc_n_131/nepal-school/company", "run", "dev", "--", "-p", "3007"],
+      "port": 3007
+    }
+  ]
+}

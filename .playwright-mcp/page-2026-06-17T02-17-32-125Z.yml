@@ -1,0 +1,657 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "🇳🇵 → 🇯🇵 네팔→일본 특정기능 사업 위키 개호·숙박 실현가능성 대시보드" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: 🇳🇵 → 🇯🇵
+        - heading "네팔→일본 특정기능 사업 위키" [level=1] [ref=e6]
+        - paragraph [ref=e7]: 개호·숙박 실현가능성 대시보드
+      - textbox "문서·본문 검색…" [ref=e8]
+      - generic [ref=e9]: 대시보드
+      - link "🏠 홈 · 핵심 지표" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e11]: 🏠
+        - generic [ref=e12]: 홈 · 핵심 지표
+      - generic [ref=e13]: 문서
+      - link "📋 00사업 개요" [ref=e14] [cursor=pointer]:
+        - /url: /docs/overview
+        - generic [ref=e15]: 📋
+        - generic [ref=e17]: 00사업 개요
+      - link "🛂 01제도·비자 실현가능성" [ref=e18] [cursor=pointer]:
+        - /url: /docs/visa
+        - generic [ref=e19]: 🛂
+        - generic [ref=e21]: 01제도·비자 실현가능성
+      - link "📈 02시장·수요 규모" [ref=e22] [cursor=pointer]:
+        - /url: /docs/market
+        - generic [ref=e23]: 📈
+        - generic [ref=e25]: 02시장·수요 규모
+      - link "🇳🇵 03네팔 송출 실태" [ref=e26] [cursor=pointer]:
+        - /url: /docs/nepal
+        - generic [ref=e27]: 🇳🇵
+        - generic [ref=e29]: 03네팔 송출 실태
+      - link "💰 04수익모델·비용 검증" [ref=e30] [cursor=pointer]:
+        - /url: /docs/cost
+        - generic [ref=e31]: 💰
+        - generic [ref=e33]: 04수익모델·비용 검증
+      - link "🎯 05종합 결론·리스크" [ref=e34] [cursor=pointer]:
+        - /url: /docs/conclusion
+        - generic [ref=e35]: 🎯
+        - generic [ref=e37]: 05종합 결론·리스크
+      - link "🏁 06경쟁사·신규비자·시장 규모" [ref=e38] [cursor=pointer]:
+        - /url: /docs/competition
+        - generic [ref=e39]: 🏁
+        - generic [ref=e41]: 06경쟁사·신규비자·시장 규모
+      - link "🧭 07취업 타임라인·주체별 역할" [ref=e42] [cursor=pointer]:
+        - /url: /docs/timeline
+        - generic [ref=e43]: 🧭
+        - generic [ref=e45]: 07취업 타임라인·주체별 역할
+      - generic [ref=e46]:
+        - text: 1차 출처 기반 · 최종 업데이트 2026-06-17
+        - text: 수치는 분기별 재확인 권장
+    - main [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - link "← 홈 · 핵심 지표" [ref=e50] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e51]: 07 / 05
+        - article [ref=e52]:
+          - heading "07. 취업 타임라인·주체별 역할" [level=1] [ref=e53]
+          - paragraph [ref=e54]:
+            - link "← 위키 홈" [ref=e55] [cursor=pointer]:
+              - /url: /
+            - text: "· 관련:"
+            - link "01 제도" [ref=e56] [cursor=pointer]:
+              - /url: /docs/visa
+            - text: ·
+            - link "04 비용" [ref=e57] [cursor=pointer]:
+              - /url: /docs/cost
+            - text: ·
+            - link "06 경쟁사" [ref=e58] [cursor=pointer]:
+              - /url: /docs/competition
+          - blockquote [ref=e59]:
+            - paragraph [ref=e60]:
+              - strong [ref=e61]: "결론:"
+              - text: 학생은 학교를 졸업한다고 바로 일본에 가는 것이 아니다. 실제 취업은
+              - strong [ref=e62]: 선발 → 교육·시험 합격 → 일본 고용처 매칭·고용계약 → demand attestation → 네팔 해외노동허가 → 일본 COE → 비자 → 입국·취로
+              - text: 순서로 완성된다. 직업훈련학교는 교육과 후보자 관리를 맡고, 제휴 송출기관은 네팔 노동허가·송출 실무를 맡으며, 일본 수용기관은 고용계약·COE·지원계획의 실질 주체다.
+          - separator [ref=e63]
+          - heading "0. 일본 개호시설 제안용 쉬운 설명" [level=2] [ref=e64]
+          - paragraph [ref=e65]:
+            - text: 일본 개호시설에는 “네팔에서 사람을 모집해 보냅니다”보다
+            - strong [ref=e66]: 시설이 안심할 수 있는 채용 파이프라인
+            - text: 으로 설명하는 편이 좋다. 핵심 메시지는 아래 5가지다.
+          - table [ref=e67]:
+            - rowgroup [ref=e68]:
+              - row "시설이 궁금해할 질문 쉬운 답" [ref=e69]:
+                - columnheader "시설이 궁금해할 질문" [ref=e70]
+                - columnheader "쉬운 답" [ref=e71]
+            - rowgroup [ref=e72]:
+              - row "어떤 인재를 소개하나? 네팔에서 선발한 후보자에게 일본어와 개호 기초교육을 시키고, 특정기능1호(개호)에 필요한 일본어·기능시험 합격자를 중심으로 소개한다." [ref=e73]:
+                - cell "어떤 인재를 소개하나?" [ref=e74]
+                - cell "네팔에서 선발한 후보자에게 일본어와 개호 기초교육을 시키고, 특정기능1호(개호)에 필요한 일본어·기능시험 합격자를 중심으로 소개한다." [ref=e75]
+              - row "시설은 무엇을 하면 되나? 채용조건을 제시하고, 온라인 면접을 보고, 내정 후 고용계약·지원계획·COE 신청·입국 후 지원을 담당한다. 등록지원기관에 위탁할 수 있다." [ref=e76]:
+                - cell "시설은 무엇을 하면 되나?" [ref=e77]
+                - cell "채용조건을 제시하고, 온라인 면접을 보고, 내정 후 고용계약·지원계획·COE 신청·입국 후 지원을 담당한다. 등록지원기관에 위탁할 수 있다." [ref=e78]
+              - row "우리가 대신 해주는 일은 무엇인가? 네팔 현지 모집·교육·시험준비·후보자 관리, 제휴 송출기관과의 서류 조율, 출국 전 교육, 입국 후 초기 사후관리를 지원한다." [ref=e79]:
+                - cell "우리가 대신 해주는 일은 무엇인가?" [ref=e80]
+                - cell "네팔 현지 모집·교육·시험준비·후보자 관리, 제휴 송출기관과의 서류 조율, 출국 전 교육, 입국 후 초기 사후관리를 지원한다." [ref=e81]
+              - row "비용은 어떻게 보나? 후보자가 일본 개호시설·등록지원기관에 내는 돈은 0원이어야 한다. 시설은 일본 측 고용주로서 지원계획, COE, 입국 후 지원, 필요 시 demand attestation 관련 비용을 부담한다." [ref=e82]:
+                - cell "비용은 어떻게 보나?" [ref=e83]
+                - cell "후보자가 일본 개호시설·등록지원기관에 내는 돈은 0원이어야 한다. 시설은 일본 측 고용주로서 지원계획, COE, 입국 후 지원, 필요 시 demand attestation 관련 비용을 부담한다." [ref=e84]
+              - row "가장 큰 리스크는 무엇인가? 시험 불합격, 면접 탈락, demand attestation 지연, COE·비자 보완 가능성이 있다. 그래서 첫 계약은 소수 파일럿으로 시작하는 것이 안전하다." [ref=e85]:
+                - cell "가장 큰 리스크는 무엇인가?" [ref=e86]
+                - cell "시험 불합격, 면접 탈락, demand attestation 지연, COE·비자 보완 가능성이 있다. 그래서 첫 계약은 소수 파일럿으로 시작하는 것이 안전하다." [ref=e87]
+          - heading "시설에 보여줄 한 문장 제안" [level=3] [ref=e88]
+          - blockquote [ref=e89]:
+            - paragraph [ref=e90]: 弊社は、ネパールで日本語と介護基礎教育を受けた候補者を、特定技能1号（介護）の採用候補としてご紹介します。貴施設には、面接・雇用契約・支援計画・COE申請・入国後支援を担当いただき、ネパール側の募集、教育、送出機関との書類調整、出国前準備は弊社側で支援します。候補者が日本側の受入機関・登録支援機関へ支払う費用は0円とし、法令上必要な支援費用は受入機関側で適切に負担する設計です。
+          - heading "일본 개호시설 관점의 채용 다이어그램" [level=3] [ref=e91]
+          - document [ref=e93]:
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - paragraph [ref=e103]: 日本の介護施設側
+                - paragraph [ref=e110]: ネパール側
+              - generic [ref=e118]:
+                - paragraph [ref=e125]: 候補者募集・選抜
+                - paragraph [ref=e132]: 日本語教育・介護基礎教育
+                - paragraph [ref=e139]:
+                  - text: 試験合格
+                  - text: JFT/JLPT・介護技能・介護日本語
+                - paragraph [ref=e146]:
+                  - text: 送出機関と書類準備
+                  - text: DoFE海外労働許可
+                - paragraph [ref=e153]: 採用条件の提示
+                - paragraph [ref=e160]: オンライン面接・内定
+                - paragraph [ref=e167]: 雇用契約・支援計画
+                - paragraph [ref=e174]: demand letter / attestation協力
+                - paragraph [ref=e181]: COE申請
+                - paragraph [ref=e188]: 入国後の雇用・定着支援
+                - paragraph [ref=e195]: ビザ申請・発給
+          - heading "시설 측 비용·업무 부담 요약" [level=3] [ref=e196]
+          - table [ref=e197]:
+            - rowgroup [ref=e198]:
+              - row "구분 일본 개호시설 부담 비고" [ref=e199]:
+                - columnheader "구분" [ref=e200]
+                - columnheader "일본 개호시설 부담" [ref=e201]
+                - columnheader "비고" [ref=e202]
+            - rowgroup [ref=e203]:
+              - row "후보자 소개 전 채용조건, 급여, 근무지, 기숙사·주거지원 가능 여부 정리 조건이 명확할수록 면접 전환율이 높아진다." [ref=e204]:
+                - cell "후보자 소개 전" [ref=e205]
+                - cell "채용조건, 급여, 근무지, 기숙사·주거지원 가능 여부 정리" [ref=e206]
+                - cell "조건이 명확할수록 면접 전환율이 높아진다." [ref=e207]
+              - row "면접·내정 온라인 면접, 내정 여부 결정 내정 후 근로조건이 바뀌면 COE·비자 단계에서 리스크가 커진다." [ref=e208]:
+                - cell "면접·내정" [ref=e209]
+                - cell "온라인 면접, 내정 여부 결정" [ref=e210]
+                - cell "내정 후 근로조건이 바뀌면 COE·비자 단계에서 리스크가 커진다." [ref=e211]
+              - row "고용계약·지원계획 고용계약 작성, 특정기능 지원계획 작성 또는 등록지원기관 위탁 지원비용을 후보자에게 전가하면 안 된다." [ref=e212]:
+                - cell "고용계약·지원계획" [ref=e213]
+                - cell "고용계약 작성, 특정기능 지원계획 작성 또는 등록지원기관 위탁" [ref=e214]
+                - cell "지원비용을 후보자에게 전가하면 안 된다." [ref=e215]
+              - row "demand attestation 대사관 인증비 ¥46,000/up to 25 workers 발생 가능 SSW 적용 여부·결제방법은 제출 전 주일 네팔대사관 확인 필요." [ref=e216]:
+                - cell "demand attestation" [ref=e217]
+                - cell "대사관 인증비 ¥46,000/up to 25 workers 발생 가능" [ref=e218]:
+                  - text: 대사관 인증비
+                  - strong [ref=e219]: ¥46,000/up to 25 workers
+                  - text: 발생 가능
+                - cell "SSW 적용 여부·결제방법은 제출 전 주일 네팔대사관 확인 필요." [ref=e220]
+              - row "COE 신청 일본 출입국재류관리청 COE 신청·보완 대응 실질 고용주는 일본 개호시설이므로 시설 측 서류 품질이 중요하다." [ref=e221]:
+                - cell "COE 신청" [ref=e222]
+                - cell "일본 출입국재류관리청 COE 신청·보완 대응" [ref=e223]
+                - cell "실질 고용주는 일본 개호시설이므로 시설 측 서류 품질이 중요하다." [ref=e224]
+              - row "입국 후 생활 오리엔테이션, 주민등록, 은행, 보험, 상담 등 의무적 지원 직접 수행하거나 등록지원기관에 위탁 가능. 학생에게 비용 청구 금지." [ref=e225]:
+                - cell "입국 후" [ref=e226]
+                - cell "생활 오리엔테이션, 주민등록, 은행, 보험, 상담 등 의무적 지원" [ref=e227]
+                - cell "직접 수행하거나 등록지원기관에 위탁 가능. 학생에게 비용 청구 금지." [ref=e228]
+          - separator [ref=e229]
+          - heading "1. 전체 흐름 한 장 요약" [level=2] [ref=e230]
+          - code [ref=e232]: 학생 모집·선발 ↓ 입학계약·비용납부·기초 오리엔테이션 ↓ 일본어 + 직무교육 ↓ JFT-Basic/JLPT + 분야별 기능시험 합격 ↓ 일본 고용처 매칭·면접 ↓ 고용계약 + 지원계획 + demand letter ↓ 주일 네팔대사관 demand attestation ↓ 네팔 DoFE 해외노동허가·송출 승인 ↓ 일본 출입국재류관리청 COE 신청·교부 ↓ 재네팔 일본대사관 비자 신청·발급 ↓ 출국·입국·재류카드 교부·취로 개시 ↓ 입국 후 의무적 지원·정착 관리
+          - paragraph [ref=e233]:
+            - text: 순서는 실무상 일부 병행될 수 있다. 다만
+            - strong [ref=e234]: 시험 합격, 고용계약, demand attestation, DoFE clearance, COE, 비자
+            - text: 는 모두 통과해야 한다.
+          - heading "단계별 비용 부담 요약(학생 1인 기준, 운영안)" [level=3] [ref=e235]
+          - table [ref=e236]:
+            - rowgroup [ref=e237]:
+              - row "흐름 학생 부담 직업훈련학교 제휴 송출기관 우리 회사/영업파트 일본 수용기관/등록지원기관" [ref=e238]:
+                - columnheader "흐름" [ref=e239]
+                - columnheader "학생 부담" [ref=e240]
+                - columnheader "직업훈련학교" [ref=e241]
+                - columnheader "제휴 송출기관" [ref=e242]
+                - columnheader "우리 회사/영업파트" [ref=e243]
+                - columnheader "일본 수용기관/등록지원기관" [ref=e244]
+            - rowgroup [ref=e245]:
+              - row "모집·상담·선발 0원 가정 모집·상담비 부담(미산정) 참여 시 실무비 부담(미산정) 영업·운영 준비비 부담(미산정) 채용수요 제시 비용 부담(미산정)" [ref=e246]:
+                - cell "모집·상담·선발" [ref=e247]
+                - cell "0원 가정" [ref=e248]
+                - cell "모집·상담비 부담(미산정)" [ref=e249]
+                - cell "참여 시 실무비 부담(미산정)" [ref=e250]
+                - cell "영업·운영 준비비 부담(미산정)" [ref=e251]
+                - cell "채용수요 제시 비용 부담(미산정)" [ref=e252]
+              - row "입학계약·비용납부 700만원 납부 200만원 수취 200만원 수취 가정 300만원 수취 가정 0원" [ref=e253]:
+                - cell "입학계약·비용납부" [ref=e254]
+                - cell "700만원 납부" [ref=e255]:
+                  - strong [ref=e256]: 700만원 납부
+                - cell "200만원 수취" [ref=e257]:
+                  - strong [ref=e258]: 200만원 수취
+                - cell "200만원 수취 가정" [ref=e259]:
+                  - strong [ref=e260]: 200만원 수취 가정
+                - cell "300만원 수취 가정" [ref=e261]:
+                  - strong [ref=e262]: 300만원 수취 가정
+                - cell "0원" [ref=e263]
+              - row "일본어·직무교육 700만원 안에 포함 200만원 범위에서 교육 운영 0원 또는 송출 준비비는 200만원 범위 운영관리비는 300만원 범위 0원" [ref=e264]:
+                - cell "일본어·직무교육" [ref=e265]
+                - cell "700만원 안에 포함" [ref=e266]
+                - cell "200만원 범위에서 교육 운영" [ref=e267]
+                - cell "0원 또는 송출 준비비는 200만원 범위" [ref=e268]
+                - cell "운영관리비는 300만원 범위" [ref=e269]
+                - cell "0원" [ref=e270]
+              - row "시험 응시 추가 시험료·교재비는 별도 고지 필요 교육·모의시험 운영비 부담 0원 0원 0원" [ref=e271]:
+                - cell "시험 응시" [ref=e272]
+                - cell "추가 시험료·교재비는 별도 고지 필요" [ref=e273]
+                - cell "교육·모의시험 운영비 부담" [ref=e274]
+                - cell "0원" [ref=e275]
+                - cell "0원" [ref=e276]
+                - cell "0원" [ref=e277]
+              - row "고용처 매칭·면접 일본 수용기관·등록지원기관에 지급 0원 후보자 관리비 부담 서류 협조비는 200만원 범위 일본/한국 영업비는 300만원 범위 면접·채용 실무비 부담(미산정)" [ref=e278]:
+                - cell "고용처 매칭·면접" [ref=e279]
+                - cell "일본 수용기관·등록지원기관에 지급 0원" [ref=e280]:
+                  - text: 일본 수용기관·등록지원기관에 지급
+                  - strong [ref=e281]: 0원
+                - cell "후보자 관리비 부담" [ref=e282]
+                - cell "서류 협조비는 200만원 범위" [ref=e283]
+                - cell "일본/한국 영업비는 300만원 범위" [ref=e284]
+                - cell "면접·채용 실무비 부담(미산정)" [ref=e285]
+              - row "고용계약·지원계획 0원 0원 서류 협조비는 200만원 범위 0원 지원계획 작성·등록지원 위탁비 부담(금액 미산정, 학생 전가 금지)" [ref=e286]:
+                - cell "고용계약·지원계획" [ref=e287]
+                - cell "0원" [ref=e288]
+                - cell "0원" [ref=e289]
+                - cell "서류 협조비는 200만원 범위" [ref=e290]
+                - cell "0원" [ref=e291]
+                - cell "지원계획 작성·등록지원 위탁비 부담(금액 미산정, 학생 전가 금지)" [ref=e292]
+              - row "demand attestation 0원 0원 서류 처리비는 200만원 범위 0원 대사관 인증비 ¥46,000/up to 25 workers 발생 가능(100엔=900원 가정 시 약 41만원)" [ref=e293]:
+                - cell "demand attestation" [ref=e294]
+                - cell "0원" [ref=e295]
+                - cell "0원" [ref=e296]
+                - cell "서류 처리비는 200만원 범위" [ref=e297]
+                - cell "0원" [ref=e298]
+                - cell "대사관 인증비 ¥46,000/up to 25 workers 발생 가능(100엔=900원 가정 시 약 41만원)" [ref=e299]:
+                  - text: 대사관 인증비
+                  - strong [ref=e300]: ¥46,000/up to 25 workers
+                  - text: 발생 가능(100엔=900원 가정 시 약 41만원)
+              - row "네팔 DoFE 해외노동허가 700만원 중 송출기관 수수료에 포함시키는 구조가 안전 0원 200만원 범위에서 송출 실무 수행 0원 0원" [ref=e301]:
+                - cell "네팔 DoFE 해외노동허가" [ref=e302]
+                - cell "700만원 중 송출기관 수수료에 포함시키는 구조가 안전" [ref=e303]
+                - cell "0원" [ref=e304]
+                - cell "200만원 범위에서 송출 실무 수행" [ref=e305]
+                - cell "0원" [ref=e306]
+                - cell "0원" [ref=e307]
+              - row "COE·비자 일본 측 행정비 부담 0원. 비자 실비·사진·여권 등 개인 실비는 별도 확인 0원 비자서류 협조비는 200만원 범위 0원 COE 신청·보완·고용관리 행정비 부담(금액 미산정, 학생 전가 금지)" [ref=e308]:
+                - cell "COE·비자" [ref=e309]
+                - cell "일본 측 행정비 부담 0원. 비자 실비·사진·여권 등 개인 실비는 별도 확인" [ref=e310]
+                - cell "0원" [ref=e311]
+                - cell "비자서류 협조비는 200만원 범위" [ref=e312]
+                - cell "0원" [ref=e313]
+                - cell "COE 신청·보완·고용관리 행정비 부담(금액 미산정, 학생 전가 금지)" [ref=e314]
+              - row "출국·입국·정착 항공권·초기 생활비·주거비 부담 여부는 고용처별 확인 출국 전 교육비 부담 출국 행정 협조비는 200만원 범위 사후관리비는 300만원 범위 입국 후 의무적 지원비 부담(금액 미산정, 학생 전가 금지)" [ref=e315]:
+                - cell "출국·입국·정착" [ref=e316]
+                - cell "항공권·초기 생활비·주거비 부담 여부는 고용처별 확인" [ref=e317]
+                - cell "출국 전 교육비 부담" [ref=e318]
+                - cell "출국 행정 협조비는 200만원 범위" [ref=e319]
+                - cell "사후관리비는 300만원 범위" [ref=e320]
+                - cell "입국 후 의무적 지원비 부담(금액 미산정, 학생 전가 금지)" [ref=e321]
+          - blockquote [ref=e322]:
+            - paragraph [ref=e323]:
+              - text: 핵심은
+              - strong [ref=e324]: 학생이 네팔에서 납부하는 700만원
+              - text: 과
+              - strong [ref=e325]: 일본 수용기관·등록지원기관이 부담해야 하는 지원비·행정비
+              - text: 를 계약서·영수증·자금흐름에서 분리하는 것이다. 금액이 미산정인 항목은 파일럿 전에 실제 견적과 환불규정으로 확정해야 한다.
+          - separator [ref=e326]
+          - heading "2. 단계별 타임라인" [level=2] [ref=e327]
+          - table [ref=e328]:
+            - rowgroup [ref=e329]:
+              - row "단계 시점(파일럿 가정) 학생에게 일어나는 일 주관 주체 산출물/게이트" [ref=e330]:
+                - columnheader "단계" [ref=e331]
+                - columnheader "시점(파일럿 가정)" [ref=e332]
+                - columnheader "학생에게 일어나는 일" [ref=e333]
+                - columnheader "주관 주체" [ref=e334]
+                - columnheader "산출물/게이트" [ref=e335]
+            - rowgroup [ref=e336]:
+              - row "0. 사업 준비 모집 전 학생에게 직접 발생 없음 우리 회사, 직업훈련학교, 일본 영업파트, 제휴 송출기관 일본 고용처 후보, DoFE active 송출기관, 계약서·환불규정·광고문구 준비" [ref=e337]:
+                - cell "0. 사업 준비" [ref=e338]
+                - cell "모집 전" [ref=e339]
+                - cell "학생에게 직접 발생 없음" [ref=e340]
+                - cell "우리 회사, 직업훈련학교, 일본 영업파트, 제휴 송출기관" [ref=e341]
+                - cell "일본 고용처 후보, DoFE active 송출기관, 계약서·환불규정·광고문구 준비" [ref=e342]
+              - row "1. 모집·상담 T0 설명회·상담, 일본행 비용·리스크 안내, 개호/숙박 희망 확인 직업훈련학교, 모집팀 상담기록, 지원서, 과장광고 금지 확인" [ref=e343]:
+                - cell "1. 모집·상담" [ref=e344]
+                - cell "T0" [ref=e345]
+                - cell "설명회·상담, 일본행 비용·리스크 안내, 개호/숙박 희망 확인" [ref=e346]
+                - cell "직업훈련학교, 모집팀" [ref=e347]
+                - cell "상담기록, 지원서, 과장광고 금지 확인" [ref=e348]
+              - row "2. 선발 T0~T+2주 일본어 기초, 학력·연령, 건강, 직무적성, 비용조달 가능성 평가 직업훈련학교 선발/보류/불합격 결정. 숙박 희망자는 회화·서비스 적성 별도 확인" [ref=e349]:
+                - cell "2. 선발" [ref=e350]
+                - cell "T0~T+2주" [ref=e351]
+                - cell "일본어 기초, 학력·연령, 건강, 직무적성, 비용조달 가능성 평가" [ref=e352]
+                - cell "직업훈련학교" [ref=e353]
+                - cell "선발/보류/불합격 결정. 숙박 희망자는 회화·서비스 적성 별도 확인" [ref=e354]
+              - row "3. 입학계약·수납 T+2주 교육·송출수수료·환불규정이 분리된 계약 체결, 네팔 내 비용 납부 직업훈련학교, 제휴 송출기관 학생 계약서, 영수증, 환불규정. 일본 수용기관·등록지원기관에는 학생 지급 0원" [ref=e355]:
+                - cell "3. 입학계약·수납" [ref=e356]
+                - cell "T+2주" [ref=e357]
+                - cell "교육·송출수수료·환불규정이 분리된 계약 체결, 네팔 내 비용 납부" [ref=e358]
+                - cell "직업훈련학교, 제휴 송출기관" [ref=e359]
+                - cell "학생 계약서, 영수증, 환불규정. 일본 수용기관·등록지원기관에는 학생 지급 0원" [ref=e360]
+              - row "4. 교육 T+2주T+36개월 일본어, 직무교육, 모의시험, 면접 준비 직업훈련학교 출석률, 모의시험 점수, 중도탈락 관리" [ref=e361]:
+                - cell "4. 교육" [ref=e362]
+                - cell "T+2주T+36개월" [ref=e363]:
+                  - text: T+2주
+                  - deletion [ref=e364]: T+3
+                  - text: 6개월
+                - cell "일본어, 직무교육, 모의시험, 면접 준비" [ref=e365]
+                - cell "직업훈련학교" [ref=e366]
+                - cell "출석률, 모의시험 점수, 중도탈락 관리" [ref=e367]
+              - 'row "5. 시험 T+3~6개월 JFT-Basic 또는 JLPT N4, 분야별 기능시험 응시 학생, 시험기관 개호: 일본어 + 개호기능 + 개호일본어. 숙박: 일본어 + 숙박기능시험" [ref=e368]':
+                - cell "5. 시험" [ref=e369]
+                - cell "T+3~6개월" [ref=e370]
+                - cell "JFT-Basic 또는 JLPT N4, 분야별 기능시험 응시" [ref=e371]
+                - cell "학생, 시험기관" [ref=e372]
+                - 'cell "개호: 일본어 + 개호기능 + 개호일본어. 숙박: 일본어 + 숙박기능시험" [ref=e373]'
+              - row "6. 후보자 풀 편입 시험 합격 후 합격증·이력서·영상면접 자료 정리 직업훈련학교, 우리 회사 일본 고용처에 제시 가능한 후보자 프로필" [ref=e374]:
+                - cell "6. 후보자 풀 편입" [ref=e375]
+                - cell "시험 합격 후" [ref=e376]
+                - cell "합격증·이력서·영상면접 자료 정리" [ref=e377]
+                - cell "직업훈련학교, 우리 회사" [ref=e378]
+                - cell "일본 고용처에 제시 가능한 후보자 프로필" [ref=e379]
+              - row "7. 고용처 매칭·면접 시험 합격 후~ 일본 개호시설·호텔과 면접, 직무·임금·근무지 확인 일본 영업파트, 일본 수용기관, 직업훈련학교 채용내정 또는 탈락. 탈락자는 재매칭" [ref=e380]:
+                - cell "7. 고용처 매칭·면접" [ref=e381]
+                - cell "시험 합격 후~" [ref=e382]
+                - cell "일본 개호시설·호텔과 면접, 직무·임금·근무지 확인" [ref=e383]
+                - cell "일본 영업파트, 일본 수용기관, 직업훈련학교" [ref=e384]
+                - cell "채용내정 또는 탈락. 탈락자는 재매칭" [ref=e385]
+              - row "8. 고용계약·지원계획 내정 후 근로조건 설명을 받고 고용계약 체결 일본 수용기관, 등록지원기관(위탁 시) 고용계약서, 특정기능 지원계획, 사전 가이던스" [ref=e386]:
+                - cell "8. 고용계약·지원계획" [ref=e387]
+                - cell "내정 후" [ref=e388]
+                - cell "근로조건 설명을 받고 고용계약 체결" [ref=e389]
+                - cell "일본 수용기관, 등록지원기관(위탁 시)" [ref=e390]
+                - cell "고용계약서, 특정기능 지원계획, 사전 가이던스" [ref=e391]
+              - row "9. demand attestation 고용계약 후 학생은 필요 서류 제공 일본 수용기관, 제휴 송출기관, 주일 네팔대사관 demand letter, inter-party agreement, 송출기관 license, DoFE clearance 등 확인. 대사관 인증비 발생 가능" [ref=e392]:
+                - cell "9. demand attestation" [ref=e393]
+                - cell "고용계약 후" [ref=e394]
+                - cell "학생은 필요 서류 제공" [ref=e395]
+                - cell "일본 수용기관, 제휴 송출기관, 주일 네팔대사관" [ref=e396]
+                - cell "demand letter, inter-party agreement, 송출기관 license, DoFE clearance 등 확인. 대사관 인증비 발생 가능" [ref=e397]
+              - row "10. 네팔 해외노동허가 attestation 전후 네팔 국내 출국·노동허가 절차 진행 제휴 송출기관, DoFE/MoLESS overseas labour approval/clearance. 제휴 송출기관 실무력이 핵심" [ref=e398]:
+                - cell "10. 네팔 해외노동허가" [ref=e399]
+                - cell "attestation 전후" [ref=e400]
+                - cell "네팔 국내 출국·노동허가 절차 진행" [ref=e401]
+                - cell "제휴 송출기관, DoFE/MoLESS" [ref=e402]
+                - cell "overseas labour approval/clearance. 제휴 송출기관 실무력이 핵심" [ref=e403]
+              - row "11. COE 신청 계약·서류 준비 후 학생은 서류 보완 일본 수용기관, 일본 출입국재류관리청 재류자격인정증명서(COE) 교부 또는 보완/불허" [ref=e404]:
+                - cell "11. COE 신청" [ref=e405]
+                - cell "계약·서류 준비 후" [ref=e406]
+                - cell "학생은 서류 보완" [ref=e407]
+                - cell "일본 수용기관, 일본 출입국재류관리청" [ref=e408]
+                - cell "재류자격인정증명서(COE) 교부 또는 보완/불허" [ref=e409]
+              - row "12. 비자 신청 COE 교부 후 재네팔 일본대사관에 비자 신청 학생, 제휴 송출기관, 재네팔 일본대사관 비자 발급 또는 보완/불허" [ref=e410]:
+                - cell "12. 비자 신청" [ref=e411]
+                - cell "COE 교부 후" [ref=e412]
+                - cell "재네팔 일본대사관에 비자 신청" [ref=e413]
+                - cell "학생, 제휴 송출기관, 재네팔 일본대사관" [ref=e414]
+                - cell "비자 발급 또는 보완/불허" [ref=e415]
+              - row "13. 출국 전 교육 비자 발급 후 일본 생활·근로규칙·금전관리·이탈 리스크 교육 직업훈련학교, 송출기관, 일본 수용기관/등록지원기관 출국 오리엔테이션, 항공권, 입국일 확정" [ref=e416]:
+                - cell "13. 출국 전 교육" [ref=e417]
+                - cell "비자 발급 후" [ref=e418]
+                - cell "일본 생활·근로규칙·금전관리·이탈 리스크 교육" [ref=e419]
+                - cell "직업훈련학교, 송출기관, 일본 수용기관/등록지원기관" [ref=e420]
+                - cell "출국 오리엔테이션, 항공권, 입국일 확정" [ref=e421]
+              - row "14. 입국·취로 개시 입국일 공항 입국, 재류카드 교부, 주거 이동, 근무 시작 일본 수용기관, 등록지원기관 재류카드, 주민등록, 은행·보험 등 생활정착 지원" [ref=e422]:
+                - cell "14. 입국·취로 개시" [ref=e423]
+                - cell "입국일" [ref=e424]
+                - cell "공항 입국, 재류카드 교부, 주거 이동, 근무 시작" [ref=e425]
+                - cell "일본 수용기관, 등록지원기관" [ref=e426]
+                - cell "재류카드, 주민등록, 은행·보험 등 생활정착 지원" [ref=e427]
+              - row "15. 사후관리 입국 후 1~12개월 정착, 고충상담, 이직 방지, 시험·경력관리 일본 수용기관, 등록지원기관, 우리 회사 정기면담, 민원 처리, 이탈·분쟁 관리" [ref=e428]:
+                - cell "15. 사후관리" [ref=e429]
+                - cell "입국 후 1~12개월" [ref=e430]
+                - cell "정착, 고충상담, 이직 방지, 시험·경력관리" [ref=e431]
+                - cell "일본 수용기관, 등록지원기관, 우리 회사" [ref=e432]
+                - cell "정기면담, 민원 처리, 이탈·분쟁 관리" [ref=e433]
+          - separator [ref=e434]
+          - heading "3. 주체별로 실제 하는 일" [level=2] [ref=e435]
+          - table [ref=e436]:
+            - rowgroup [ref=e437]:
+              - row "주체 핵심 역할 하면 안 되는 일/주의" [ref=e438]:
+                - columnheader "주체" [ref=e439]
+                - columnheader "핵심 역할" [ref=e440]
+                - columnheader "하면 안 되는 일/주의" [ref=e441]
+            - rowgroup [ref=e442]:
+              - row "학생 수업 출석, 시험 응시, 면접, 서류 제출, 고용계약 확인, 비자 신청 일본 수용기관·등록지원기관에 별도 비용 지급 금지. 허위 경력·허위 서류 금지" [ref=e443]:
+                - cell "학생" [ref=e444]:
+                  - strong [ref=e445]: 학생
+                - cell "수업 출석, 시험 응시, 면접, 서류 제출, 고용계약 확인, 비자 신청" [ref=e446]
+                - cell "일본 수용기관·등록지원기관에 별도 비용 지급 금지. 허위 경력·허위 서류 금지" [ref=e447]
+              - row "직업훈련학교 모집 상담, 선발, 일본어·직무교육, 모의시험, 출석·탈락 관리, 출국 전 교육 취업·비자 합격을 보장하는 광고 금지. 송출기관 또는 일본 수용기관 권한을 대신 가진 것처럼 설명 금지" [ref=e448]:
+                - cell "직업훈련학교" [ref=e449]:
+                  - strong [ref=e450]: 직업훈련학교
+                - cell "모집 상담, 선발, 일본어·직무교육, 모의시험, 출석·탈락 관리, 출국 전 교육" [ref=e451]
+                - cell "취업·비자 합격을 보장하는 광고 금지. 송출기관 또는 일본 수용기관 권한을 대신 가진 것처럼 설명 금지" [ref=e452]
+              - row "우리 회사/한국 법인 일본·한국 기업풀 영업 지원, 운영관리, 계약·지표 관리, 외주용역 수익 처리 일본 수용기관이 부담해야 할 지원비용을 학생 700만원에 섞으면 안 됨" [ref=e453]:
+                - cell "우리 회사/한국 법인" [ref=e454]:
+                  - strong [ref=e455]: 우리 회사/한국 법인
+                - cell "일본·한국 기업풀 영업 지원, 운영관리, 계약·지표 관리, 외주용역 수익 처리" [ref=e456]
+                - cell "일본 수용기관이 부담해야 할 지원비용을 학생 700만원에 섞으면 안 됨" [ref=e457]
+              - row "일본 영업파트 개호시설·호텔 발굴, 면접 세팅, 채용조건 확인, demand letter 가능성 확인 단순 관심 기업을 확정 고용처처럼 홍보 금지" [ref=e458]:
+                - cell "일본 영업파트" [ref=e459]:
+                  - strong [ref=e460]: 일본 영업파트
+                - cell "개호시설·호텔 발굴, 면접 세팅, 채용조건 확인, demand letter 가능성 확인" [ref=e461]
+                - cell "단순 관심 기업을 확정 고용처처럼 홍보 금지" [ref=e462]
+              - row "한국 기업풀 영업파트 한국 네트워크를 통해 일본 고용처 또는 관련 기업 연결 실질 고용계약 주체가 누구인지 불명확한 구조 금지" [ref=e463]:
+                - cell "한국 기업풀 영업파트" [ref=e464]:
+                  - strong [ref=e465]: 한국 기업풀 영업파트
+                - cell "한국 네트워크를 통해 일본 고용처 또는 관련 기업 연결" [ref=e466]
+                - cell "실질 고용계약 주체가 누구인지 불명확한 구조 금지" [ref=e467]
+              - row "제휴 송출기관 DoFE 라이선스 기반 송출 실무, demand attestation 서류, 해외노동허가, 출국 행정 라이선스 정지·blocked 상태에서 모집 진행 금지. 수수료 명목 불명확 금지" [ref=e468]:
+                - cell "제휴 송출기관" [ref=e469]:
+                  - strong [ref=e470]: 제휴 송출기관
+                - cell "DoFE 라이선스 기반 송출 실무, demand attestation 서류, 해외노동허가, 출국 행정" [ref=e471]
+                - cell "라이선스 정지·blocked 상태에서 모집 진행 금지. 수수료 명목 불명확 금지" [ref=e472]
+              - row "일본 수용기관 직접고용, 임금·근로조건 확정, 고용계약, 지원계획, COE 신청, 입국 후 고용관리 지원비용·소개비·행정비를 학생에게 전가 금지" [ref=e473]:
+                - cell "일본 수용기관" [ref=e474]:
+                  - strong [ref=e475]: 일본 수용기관
+                - cell "직접고용, 임금·근로조건 확정, 고용계약, 지원계획, COE 신청, 입국 후 고용관리" [ref=e476]
+                - cell "지원비용·소개비·행정비를 학생에게 전가 금지" [ref=e477]
+              - row "등록지원기관 수용기관이 위탁할 경우 의무적 지원 10항목 수행 지원비를 학생에게 청구 금지" [ref=e478]:
+                - cell "등록지원기관" [ref=e479]:
+                  - strong [ref=e480]: 등록지원기관
+                - cell "수용기관이 위탁할 경우 의무적 지원 10항목 수행" [ref=e481]
+                - cell "지원비를 학생에게 청구 금지" [ref=e482]
+              - row "주일 네팔대사관 demand letter 및 관련 서류 attestation 사업자가 통제할 수 없는 행정 게이트" [ref=e483]:
+                - cell "주일 네팔대사관" [ref=e484]:
+                  - strong [ref=e485]: 주일 네팔대사관
+                - cell "demand letter 및 관련 서류 attestation" [ref=e486]
+                - cell "사업자가 통제할 수 없는 행정 게이트" [ref=e487]
+              - row "네팔 DoFE/MoLESS 해외노동허가, 송출기관 관리 사업자가 통제할 수 없는 행정 게이트" [ref=e488]:
+                - cell "네팔 DoFE/MoLESS" [ref=e489]:
+                  - strong [ref=e490]: 네팔 DoFE/MoLESS
+                - cell "해외노동허가, 송출기관 관리" [ref=e491]
+                - cell "사업자가 통제할 수 없는 행정 게이트" [ref=e492]
+              - row "일본 출입국재류관리청 COE 심사·교부 COE 불허 가능성 존재. 보완자료 관리 필요" [ref=e493]:
+                - cell "일본 출입국재류관리청" [ref=e494]:
+                  - strong [ref=e495]: 일본 출입국재류관리청
+                - cell "COE 심사·교부" [ref=e496]
+                - cell "COE 불허 가능성 존재. 보완자료 관리 필요" [ref=e497]
+              - row "재네팔 일본대사관 비자 심사·발급 COE가 있어도 비자 보완·불허 가능성 존재" [ref=e498]:
+                - cell "재네팔 일본대사관" [ref=e499]:
+                  - strong [ref=e500]: 재네팔 일본대사관
+                - cell "비자 심사·발급" [ref=e501]
+                - cell "COE가 있어도 비자 보완·불허 가능성 존재" [ref=e502]
+          - separator [ref=e503]
+          - heading "4. 학생 관점의 실제 체감 흐름" [level=2] [ref=e504]
+          - table [ref=e505]:
+            - rowgroup [ref=e506]:
+              - row "학생 질문 실제 답" [ref=e507]:
+                - columnheader "학생 질문" [ref=e508]
+                - columnheader "실제 답" [ref=e509]
+            - rowgroup [ref=e510]:
+              - row "“학교에 돈 내면 바로 일본에 가나?” 아니다. 시험, 고용처 매칭, 네팔 송출절차, COE, 비자를 모두 통과해야 한다." [ref=e511]:
+                - cell "“학교에 돈 내면 바로 일본에 가나?”" [ref=e512]
+                - cell "아니다. 시험, 고용처 매칭, 네팔 송출절차, COE, 비자를 모두 통과해야 한다." [ref=e513]
+              - row "“누가 나를 고용하나?” 직업훈련학교가 아니라 일본의 개호시설·호텔 등 수용기관이 직접 고용한다." [ref=e514]:
+                - cell "“누가 나를 고용하나?”" [ref=e515]
+                - cell "직업훈련학교가 아니라 일본의 개호시설·호텔 등 수용기관이 직접 고용한다." [ref=e516]:
+                  - text: 직업훈련학교가 아니라 일본의 개호시설·호텔 등
+                  - strong [ref=e517]: 수용기관
+                  - text: 이 직접 고용한다.
+              - row "“학교는 무엇을 해주나?” 일본어·직무교육, 시험준비, 면접준비, 후보자 관리, 출국 전 교육을 한다." [ref=e518]:
+                - cell "“학교는 무엇을 해주나?”" [ref=e519]
+                - cell "일본어·직무교육, 시험준비, 면접준비, 후보자 관리, 출국 전 교육을 한다." [ref=e520]
+              - row "“송출기관은 왜 필요한가?” 네팔 현지 해외노동허가·DoFE 절차와 demand attestation 서류를 처리하기 위해 필요하다." [ref=e521]:
+                - cell "“송출기관은 왜 필요한가?”" [ref=e522]
+                - cell "네팔 현지 해외노동허가·DoFE 절차와 demand attestation 서류를 처리하기 위해 필요하다." [ref=e523]
+              - row "“등록지원기관은 회사인가?” 일본에서 생활정착 지원을 수행하는 기관이다. 수용기관이 직접 하거나 외부 등록지원기관에 위탁할 수 있다." [ref=e524]:
+                - cell "“등록지원기관은 회사인가?”" [ref=e525]
+                - cell "일본에서 생활정착 지원을 수행하는 기관이다. 수용기관이 직접 하거나 외부 등록지원기관에 위탁할 수 있다." [ref=e526]
+              - row "“일본에서 추가 비용을 내나?” 원칙적으로 학생이 일본 수용기관·등록지원기관에 내는 돈은 0원이어야 한다." [ref=e527]:
+                - cell "“일본에서 추가 비용을 내나?”" [ref=e528]
+                - cell "원칙적으로 학생이 일본 수용기관·등록지원기관에 내는 돈은 0원이어야 한다." [ref=e529]
+              - row "“탈락하면 어떻게 되나?” 단계별 환불·재교육·재시험·재매칭 규정이 계약서에 있어야 한다. 이 부분이 사업 신뢰의 핵심이다." [ref=e530]:
+                - cell "“탈락하면 어떻게 되나?”" [ref=e531]
+                - cell "단계별 환불·재교육·재시험·재매칭 규정이 계약서에 있어야 한다. 이 부분이 사업 신뢰의 핵심이다." [ref=e532]
+          - separator [ref=e533]
+          - heading "5. 돈과 서류가 움직이는 타이밍" [level=2] [ref=e534]
+          - table [ref=e535]:
+            - rowgroup [ref=e536]:
+              - row "시점 돈의 흐름 서류의 흐름 리스크" [ref=e537]:
+                - columnheader "시점" [ref=e538]
+                - columnheader "돈의 흐름" [ref=e539]
+                - columnheader "서류의 흐름" [ref=e540]
+                - columnheader "리스크" [ref=e541]
+            - rowgroup [ref=e542]:
+              - row "입학계약 학생 → 네팔 직업훈련학교/송출기관/회사 몫 구조 학생 계약서, 영수증, 환불규정 명목 불명확, 환불분쟁" [ref=e543]:
+                - cell "입학계약" [ref=e544]
+                - cell "학생 → 네팔 직업훈련학교/송출기관/회사 몫 구조" [ref=e545]
+                - cell "학생 계약서, 영수증, 환불규정" [ref=e546]
+                - cell "명목 불명확, 환불분쟁" [ref=e547]
+              - row "시험 준비 추가 시험료·교재비가 있으면 별도 고지 필요 출석, 모의시험, 합격증 중도탈락" [ref=e548]:
+                - cell "시험 준비" [ref=e549]
+                - cell "추가 시험료·교재비가 있으면 별도 고지 필요" [ref=e550]
+                - cell "출석, 모의시험, 합격증" [ref=e551]
+                - cell "중도탈락" [ref=e552]
+              - row "고용내정 일본 수용기관이 지원비용 부담 이력서, 합격증, 고용조건 내정 취소, 임금조건 불일치" [ref=e553]:
+                - cell "고용내정" [ref=e554]
+                - cell "일본 수용기관이 지원비용 부담" [ref=e555]
+                - cell "이력서, 합격증, 고용조건" [ref=e556]
+                - cell "내정 취소, 임금조건 불일치" [ref=e557]
+              - row "demand attestation 일본 고용처/제출자가 대사관 인증비를 부담할 가능성. 학생에게 일본 측 비용 전가 금지 demand letter, employment contract, inter-party agreement, 송출기관 license 대사관 수수료, 서류 보완·지연" [ref=e558]:
+                - cell "demand attestation" [ref=e559]
+                - cell "일본 고용처/제출자가 대사관 인증비를 부담할 가능성. 학생에게 일본 측 비용 전가 금지" [ref=e560]
+                - cell "demand letter, employment contract, inter-party agreement, 송출기관 license" [ref=e561]
+                - cell "대사관 수수료, 서류 보완·지연" [ref=e562]
+              - row "COE/비자 행정비·대행비 명목 확인 필요 COE, 비자신청서, 여권, 계약서 COE 불허, 비자 보완" [ref=e563]:
+                - cell "COE/비자" [ref=e564]
+                - cell "행정비·대행비 명목 확인 필요" [ref=e565]
+                - cell "COE, 비자신청서, 여권, 계약서" [ref=e566]
+                - cell "COE 불허, 비자 보완" [ref=e567]
+              - row "입국 후 임금 지급 시작, 생활비 발생 재류카드, 주민등록, 은행·보험 주거·생활비 부담, 이탈 리스크" [ref=e568]:
+                - cell "입국 후" [ref=e569]
+                - cell "임금 지급 시작, 생활비 발생" [ref=e570]
+                - cell "재류카드, 주민등록, 은행·보험" [ref=e571]
+                - cell "주거·생활비 부담, 이탈 리스크" [ref=e572]
+          - separator [ref=e573]
+          - heading "6. 단계별 KPI" [level=2] [ref=e574]
+          - table [ref=e575]:
+            - rowgroup [ref=e576]:
+              - row "구간 봐야 할 숫자 이유" [ref=e577]:
+                - columnheader "구간" [ref=e578]
+                - columnheader "봐야 할 숫자" [ref=e579]
+                - columnheader "이유" [ref=e580]
+            - rowgroup [ref=e581]:
+              - row "모집 → 선발 상담자 수, 지원자 수, 합격자 수, 비용조달 가능자 수 허수 리드 제거" [ref=e582]:
+                - cell "모집 → 선발" [ref=e583]
+                - cell "상담자 수, 지원자 수, 합격자 수, 비용조달 가능자 수" [ref=e584]
+                - cell "허수 리드 제거" [ref=e585]
+              - row "교육 → 시험 출석률, 모의시험 통과율, JFT/JLPT 합격률, 기능시험 합격률 교육 품질 측정" [ref=e586]:
+                - cell "교육 → 시험" [ref=e587]
+                - cell "출석률, 모의시험 통과율, JFT/JLPT 합격률, 기능시험 합격률" [ref=e588]
+                - cell "교육 품질 측정" [ref=e589]
+              - row "시험 합격 → 면접 합격자 중 면접 배정률 일본 고용처 확보력 측정" [ref=e590]:
+                - cell "시험 합격 → 면접" [ref=e591]
+                - cell "합격자 중 면접 배정률" [ref=e592]
+                - cell "일본 고용처 확보력 측정" [ref=e593]
+              - row "면접 → 내정 내정률, 분야별 내정률(개호/숙박 분리) 직무·언어 적합도 확인" [ref=e594]:
+                - cell "면접 → 내정" [ref=e595]
+                - cell "내정률, 분야별 내정률(개호/숙박 분리)" [ref=e596]
+                - cell "직무·언어 적합도 확인" [ref=e597]
+              - row "내정 → demand attestation 서류 접수율, 보완률, 처리기간 송출기관·일본 고용처 실무력 확인" [ref=e598]:
+                - cell "내정 → demand attestation" [ref=e599]
+                - cell "서류 접수율, 보완률, 처리기간" [ref=e600]
+                - cell "송출기관·일본 고용처 실무력 확인" [ref=e601]
+              - row "attestation → COE COE 신청률, 보완률, 교부율, 처리기간 일본 수용기관 행정품질 확인" [ref=e602]:
+                - cell "attestation → COE" [ref=e603]
+                - cell "COE 신청률, 보완률, 교부율, 처리기간" [ref=e604]
+                - cell "일본 수용기관 행정품질 확인" [ref=e605]
+              - row "COE → 비자 비자 발급률, 보완률, 불허율 최종 입국 리스크 확인" [ref=e606]:
+                - cell "COE → 비자" [ref=e607]
+                - cell "비자 발급률, 보완률, 불허율" [ref=e608]
+                - cell "최종 입국 리스크 확인" [ref=e609]
+              - row "입국 후 3개월 정착률, 6개월 근속률, 민원·이탈 건수 장기 평판과 재모집 가능성 확인" [ref=e610]:
+                - cell "입국 후" [ref=e611]
+                - cell "3개월 정착률, 6개월 근속률, 민원·이탈 건수" [ref=e612]
+                - cell "장기 평판과 재모집 가능성 확인" [ref=e613]
+          - separator [ref=e614]
+          - heading "7. 병목과 통제 포인트" [level=2] [ref=e615]
+          - table [ref=e616]:
+            - rowgroup [ref=e617]:
+              - row "병목 왜 중요한가 통제 방법" [ref=e618]:
+                - columnheader "병목" [ref=e619]
+                - columnheader "왜 중요한가" [ref=e620]
+                - columnheader "통제 방법" [ref=e621]
+            - rowgroup [ref=e622]:
+              - row "일본어 전환율 JFT/JLPT가 첫 번째 대량 탈락 구간 입학 선발, 월별 모의시험, 기준 미달자 보충반" [ref=e623]:
+                - cell "일본어 전환율" [ref=e624]
+                - cell "JFT/JLPT가 첫 번째 대량 탈락 구간" [ref=e625]
+                - cell "입학 선발, 월별 모의시험, 기준 미달자 보충반" [ref=e626]
+              - row "숙박 회화력 숙박은 고객대면 비중이 높다 회화·영어·서비스 매너 별도 평가" [ref=e627]:
+                - cell "숙박 회화력" [ref=e628]
+                - cell "숙박은 고객대면 비중이 높다" [ref=e629]
+                - cell "회화·영어·서비스 매너 별도 평가" [ref=e630]
+              - row "일본 고용처 수 합격자가 있어도 고용처가 없으면 비자 전환 불가 개호시설·호텔 MOU, 면접 슬롯 사전 확보" [ref=e631]:
+                - cell "일본 고용처 수" [ref=e632]
+                - cell "합격자가 있어도 고용처가 없으면 비자 전환 불가" [ref=e633]
+                - cell "개호시설·호텔 MOU, 면접 슬롯 사전 확보" [ref=e634]
+              - row "demand attestation 신규비자 실무의 핵심 병목 일본 수용기관·송출기관 간 서류 템플릿 선제 확보" [ref=e635]:
+                - cell "demand attestation" [ref=e636]
+                - cell "신규비자 실무의 핵심 병목" [ref=e637]
+                - cell "일본 수용기관·송출기관 간 서류 템플릿 선제 확보" [ref=e638]
+              - row "DoFE 송출기관 학교 단독으로 네팔 해외노동허가를 처리할 수 없다 active 송출기관 2~3곳 백업 계약" [ref=e639]:
+                - cell "DoFE 송출기관" [ref=e640]
+                - cell "학교 단독으로 네팔 해외노동허가를 처리할 수 없다" [ref=e641]
+                - cell "active 송출기관 2~3곳 백업 계약" [ref=e642]
+              - row "COE/비자 최종 입국 가능성을 결정 서류 품질관리, 허위서류 금지, 보완 대응" [ref=e643]:
+                - cell "COE/비자" [ref=e644]
+                - cell "최종 입국 가능성을 결정" [ref=e645]
+                - cell "서류 품질관리, 허위서류 금지, 보완 대응" [ref=e646]
+              - row "비용·환불분쟁 700만원 모델의 신뢰를 좌우 계약서, 영수증, 환불규정, 단계별 비용명세" [ref=e647]:
+                - cell "비용·환불분쟁" [ref=e648]
+                - cell "700만원 모델의 신뢰를 좌우" [ref=e649]
+                - cell "계약서, 영수증, 환불규정, 단계별 비용명세" [ref=e650]
+          - separator [ref=e651]
+          - heading "8. 파일럿 운영 권장 순서" [level=2] [ref=e652]
+          - list [ref=e653]:
+            - listitem [ref=e654]:
+              - strong [ref=e655]: "고용처 먼저 확보:"
+              - text: 개호시설·호텔의 실제 채용의사, 임금, 주거지원, demand letter 가능성을 확인한다.
+            - listitem [ref=e656]:
+              - strong [ref=e657]: "송출기관 2곳 이상 확보:"
+              - text: DoFE active 상태, 과거 처리실적, demand attestation 경험을 확인한다.
+            - listitem [ref=e658]:
+              - strong [ref=e659]: "소수 선발:"
+              - text: 첫 기수는 많은 모집보다 합격 가능성이 높은 후보자만 뽑는다.
+            - listitem [ref=e660]:
+              - strong [ref=e661]: "개호·숙박 분리 KPI:"
+              - text: 모집은 같이 하되, 합격률·내정률·입국률은 분야별로 분리한다.
+            - listitem [ref=e662]:
+              - strong [ref=e663]: "단계별 환불규정 공개:"
+              - text: 시험 불합격, 내정 취소, COE 불허, 비자 불허 때의 처리방침을 입학 전에 설명한다.
+            - listitem [ref=e664]:
+              - strong [ref=e665]: "입국 후 6개월 추적:"
+              - text: 초기 평판은 다음 기수 모집과 일본 고용처 확장에 직접 영향을 준다.
+          - separator [ref=e666]
+          - heading "출처 목록" [level=2] [ref=e667]
+          - list [ref=e668]:
+            - listitem [ref=e669]:
+              - text: "出入国在留管理庁 특정기능 제도안내:"
+              - link "https://www.moj.go.jp/isa/applications/ssw/index.html" [ref=e670] [cursor=pointer]:
+                - /url: https://www.moj.go.jp/isa/applications/ssw/index.html
+            - listitem [ref=e671]:
+              - text: "出入国在留管理庁 네팔 MOC·송출수속:"
+              - link "https://www.moj.go.jp/isa/applications/ssw/nyuukokukanri05_00021.html" [ref=e672] [cursor=pointer]:
+                - /url: https://www.moj.go.jp/isa/applications/ssw/nyuukokukanri05_00021.html
+            - listitem [ref=e673]:
+              - text: "네팔 절차 플로차트 PDF:"
+              - link "https://www.moj.go.jp/isa/content/930004791.pdf" [ref=e674] [cursor=pointer]:
+                - /url: https://www.moj.go.jp/isa/content/930004791.pdf
+            - listitem [ref=e675]:
+              - text: "주일 네팔대사관 SSW Demand Attestation 필요서류:"
+              - link "https://jp.nepalembassy.gov.np/content/14/ssw-required-documents/" [ref=e676] [cursor=pointer]:
+                - /url: https://jp.nepalembassy.gov.np/content/14/ssw-required-documents/
+            - listitem [ref=e677]:
+              - text: "주일 네팔대사관 Demand Attestation online system:"
+              - link "https://jp.nepalembassy.gov.np/content/19/notice-regarding-verification-of-requisition-through-online/" [ref=e678] [cursor=pointer]:
+                - /url: https://jp.nepalembassy.gov.np/content/19/notice-regarding-verification-of-requisition-through-online/
+            - listitem [ref=e679]:
+              - text: "주일 네팔대사관 Demand Letter Attestation 서비스/수수료:"
+              - link "https://jp.nepalembassy.gov.np/pages/demand-attestation-9/" [ref=e680] [cursor=pointer]:
+                - /url: https://jp.nepalembassy.gov.np/pages/demand-attestation-9/
+            - listitem [ref=e681]:
+              - text: "DoFE recruitment agency 검색:"
+              - link "https://foreignjob.dofe.gov.np/Home/RecruitmentAgency" [ref=e682] [cursor=pointer]:
+                - /url: https://foreignjob.dofe.gov.np/Home/RecruitmentAgency
+            - listitem [ref=e683]:
+              - text: "JFT-Basic 공식 보고:"
+              - link "https://www.jpf.go.jp/jft-basic/report/2026.html" [ref=e684] [cursor=pointer]:
+                - /url: https://www.jpf.go.jp/jft-basic/report/2026.html
+        - link "← 이전 🏁 경쟁사·신규비자·시장 규모" [ref=e686] [cursor=pointer]:
+          - /url: /docs/competition
+          - generic [ref=e687]: ← 이전
+          - generic [ref=e688]: 🏁 경쟁사·신규비자·시장 규모
+  - alert [ref=e690]
