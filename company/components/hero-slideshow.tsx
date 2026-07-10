@@ -20,12 +20,12 @@ export default function HeroSlideshow() {
         <div className="max-w-content mx-auto w-full px-5 pb-16 pt-16 lg:px-8 lg:pb-20">
           <div className="max-w-3xl">
             <h1 className="font-display text-[clamp(2.75rem,6vw,5.8rem)] font-semibold leading-[0.98] text-balance">
-              현지에서 키우고,
+              모든 사람에게
               <br className="hidden sm:block" />
-              제도에 맞게 연결합니다
+              공평한 기회를
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-medium leading-relaxed text-white/82 sm:text-xl">
-              네팔과 베트남 인재를 교육, 시험, 비자, 정착까지 책임지는 기업 파트너.
+              외국인 인재를 교육, 시험, 비자, 정착까지 책임지는 기업 파트너.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-base font-semibold text-cobalt transition hover:bg-cobalt-soft active:translate-y-px">
