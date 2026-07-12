@@ -20,7 +20,7 @@ export default function HeroSlideshow() {
         <div className="max-w-content mx-auto w-full px-5 pb-16 pt-16 lg:px-8 lg:pb-20">
           <div className="max-w-3xl">
             <h1 className="font-display text-[clamp(2.75rem,6vw,5.8rem)] font-semibold leading-[0.98] text-balance">
-              모든 사람에게
+              모든 사람에게{" "}
               <br className="hidden sm:block" />
               공평한 기회를
             </h1>

@@ -37,6 +37,9 @@ html { scroll-behavior: smooth; }
 body {
   background: #F7F4EE;
   -webkit-font-smoothing: antialiased;
+  /* 한글은 어절(공백) 단위로 줄바꿈 — CJK 기본값처럼 글자 중간에서 끊기지 않도록 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .nav-link.nav-active { position: relative; }
