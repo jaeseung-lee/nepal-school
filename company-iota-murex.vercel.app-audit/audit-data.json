@@ -1,0 +1,216 @@
+{
+  "summary": {
+    "health_score": 63,
+    "business_type": "B2B 서비스 (글로벌 인적자원 개발 — 네팔 인재의 한국·일본 취업 연계)",
+    "audit_date": "2026-07-12",
+    "target": "https://company-iota-murex.vercel.app",
+    "pages_crawled": 6,
+    "top_findings": [
+      "라이브 /contact 페이지 내 사업자정보 자기모순(본문 '입력 예정' vs 푸터 실제값) — 배포본이 최신 커밋보다 뒤처진 것이 원인 (Critical)",
+      "전화·이메일·문의폼 중 실제로 작동하는 연락 수단이 하나도 없음 (Critical)",
+      "이미 완성된 /visa 섹션(8개 비자 상세 + FAQPage/BreadcrumbList 스키마)이 미커밋·미배포 — 감사에서 발견된 Critical/High 다수의 해결책이 로컬에 이미 존재 (Critical)",
+      "SERP 페이지타입 불일치: 타깃 키워드 SERP는 정보성 가이드를 보상하는데 라이브 사이트는 얕은 랜딩페이지뿐 (Critical)",
+      "전 하위 페이지의 OG/Twitter 태그가 홈페이지 값으로 고정 — 소셜 공유 카드가 항상 홈으로 표시 (High)"
+    ],
+    "quick_wins": [
+      "로컬 미배포 변경사항 커밋+배포 (visa 섹션, 파트너 검증 근거, 베트남 제거, hero.webp, contact 정합이 한 번에 해결)",
+      "임시 대표 이메일 1개 즉시 게재 (lib/site.ts email 필드만 채우면 자동 반영)",
+      "홈 FAQ에 FAQPage JSON-LD 추가 (visa-schema.tsx 패턴 재사용, 반나절 작업)",
+      "파비콘 추가 (app/icon.png) — 현재 favicon.ico 404",
+      "cdn.jsdelivr.net preconnect 추가 또는 Pretendard 셀프호스팅"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "weight": 0.22,
+      "score": 76,
+      "findings_file": "findings/technical.md",
+      "what_works": [
+        "완전한 SSR 프리렌더링 (JS 없이 전체 콘텐츠 크롤 가능)",
+        "HTTPS + HSTS(preload), 단일 홉 리다이렉트, 정확한 canonical",
+        "robots.txt AI 크롤러 명시 허용 + 사이트맵 선언 정상"
+      ],
+      "findings": [
+        {"title": "OG/Twitter 메타태그가 전 하위 페이지에서 홈페이지 값으로 고정", "severity": "High", "description": "각 page.tsx가 openGraph/twitter 객체를 오버라이드하지 않아 og:title/og:url이 전부 홈 값", "recommendation": "페이지별 metadata export에 openGraph/twitter 명시"},
+        {"title": "보안 헤더(CSP, X-Content-Type-Options 등) 전무", "severity": "Medium", "description": "HSTS 외 보안 헤더 없음, next.config.mjs에 headers() 미정의", "recommendation": "next.config.mjs async headers()로 nosniff/Referrer-Policy/frame-ancestors 추가"},
+        {"title": "Pretendard 렌더 차단 로드 + preconnect 없음", "severity": "Medium", "description": "jsDelivr CDN stylesheet가 렌더링 경로에 노출", "recommendation": "preconnect 추가 또는 next/font/local 셀프호스팅"},
+        {"title": "IndexNow 미구현", "severity": "Medium", "description": "Bing·Naver 실시간 색인 신호 부재", "recommendation": "IndexNow 키 배포 + 파이프라인 ping"},
+        {"title": "/partners, /why 헤딩 계층 H1→H3 건너뜀", "severity": "Medium", "description": "섹션 h2 부재", "recommendation": "카드 섹션 도입 h2 추가"},
+        {"title": "홈 title 46자 SERP 잘림 위험", "severity": "Medium", "description": "한글 폭 기준 600px 초과 가능", "recommendation": "25~30자로 단축"},
+        {"title": "커스텀 도메인 미사용(vercel.app)", "severity": "Low", "description": "신뢰도·CTR 불리, 추후 이전 비용", "recommendation": "정식 도메인 연결 + canonical 정책 확정"}
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "weight": 0.23,
+      "score": 45,
+      "findings_file": "findings/content.md",
+      "what_works": [
+        "'검증 불가 수치 미표기' 원칙과 '하지 않는 것' 목록 — QRG 관점의 모범적 신뢰 진술",
+        "AI 상투어·키워드 스터핑 없는 담백한 한국어 카피",
+        "사업자등록번호·주소·설립일의 일관 노출"
+      ],
+      "findings": [
+        {"title": "/contact 본문 vs 푸터 사업자정보 자기모순", "severity": "Critical", "description": "본문 '입력 예정' vs 푸터 실제값 — 구버전 배포가 원인", "recommendation": "최신 커밋 재배포 후 재크롤 검증"},
+        {"title": "작동하는 연락 수단 전무", "severity": "Critical", "description": "전화·이메일 placeholder, 폼은 백엔드 미연동", "recommendation": "임시 대표 이메일 즉시 게재"},
+        {"title": "내부 페이지 고유 본문 85~112어절로 매우 얇음", "severity": "High", "description": "/services는 사업영역당 문장 1개", "recommendation": "절차·기간·필요서류 등 의사결정 정보 추가"},
+        {"title": "대표·팀 전문성 신호 공백", "severity": "Medium", "description": "/why 약력란 '입력 예정'", "recommendation": "검증 가능한 경력 사실만 확인 후 기재"},
+        {"title": "제3자 검증 가능한 권위 신호 전무", "severity": "Medium", "description": "MOU PDF가 저장소에 있으나 미노출", "recommendation": "공개 가능 범위의 체결일·기관명 노출"},
+        {"title": "H1이 전 페이지 영문 태그라인", "severity": "Low", "description": "한국어 키워드가 H1에 없음", "recommendation": "한국어 주제어 중심으로 H1 재구성"}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "weight": 0.20,
+      "score": 74,
+      "findings_file": "findings/technical.md",
+      "what_works": [
+        "전 페이지 title/description 유일, H1 1개씩, canonical 자기참조 정확",
+        "사이트맵-실사이트 100% 일치"
+      ],
+      "findings": [
+        {"title": "OG 태그 페이지별 미분화", "severity": "High", "description": "기술 카테고리와 동일 이슈", "recommendation": "페이지별 openGraph 지정"},
+        {"title": "본문 컨텍스트 내부링크 부족", "severity": "Low", "description": "링크가 헤더/푸터에 편중", "recommendation": "/visa 배포 후 본문 교차링크 확대"}
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "weight": 0.10,
+      "score": 48,
+      "findings_file": "findings/schema.md",
+      "what_works": [
+        "JSON-LD 단일 형식, 절대 URL, ISO 8601 준수",
+        "lib/site.ts 단일 출처 + 조건부 스프레드의 유지보수 친화 구조",
+        "미배포 /visa 코드가 최신 가이드라인(FAQ 리치결과 종료)을 이미 정확히 반영"
+      ],
+      "findings": [
+        {"title": "완성된 /visa 스키마(BreadcrumbList+FAQPage+ItemList) 미배포", "severity": "Critical", "description": "구현 완료 상태로 git 미추적", "recommendation": "커밋+배포"},
+        {"title": "라이브에 Organization 외 스키마 전무", "severity": "High", "description": "WebSite/BreadcrumbList/Service 없음", "recommendation": "WebSite 스키마 + @id 상호참조 추가"},
+        {"title": "시각적 브레드크럼 5곳에 BreadcrumbList JSON-LD 없음", "severity": "High", "description": "visa 섹션 패턴 이식 가능", "recommendation": "공용 BreadcrumbSchema 컴포넌트 적용"},
+        {"title": "배포본 스키마에 '베트남' 잔존 (로컬은 수정됨)", "severity": "Medium", "description": "배포 지연으로 인한 정합성 문제", "recommendation": "다음 배포에 포함"},
+        {"title": "Organization.logo가 OG 이미지 재사용", "severity": "Medium", "description": "구글 로고 가이드(정사각형) 미부합", "recommendation": "정식 로고 확정 후 교체"}
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "weight": 0.10,
+      "score": 88,
+      "findings_file": "findings/performance.md",
+      "data_type": "LAB (Playwright/CDP, Lighthouse급 스로틀링; CrUX 필드 데이터 없음)",
+      "what_works": [
+        "LCP 0.22~0.79s, CLS 0.0, TTFB 57~173ms — 전 지표 Good (랩 기준)",
+        "페이지 169~195KB 경량, Vercel Edge 캐시 HIT",
+        "Outfit 폰트 next/font 모범 구성"
+      ],
+      "findings": [
+        {"title": "이미지 0개 상태의 성적 — 히어로 이미지 배포 시 LCP 미검증", "severity": "Medium", "description": "현재 LCP가 빠른 것은 텍스트뿐이기 때문", "recommendation": "이미지 배포 직후 재측정"},
+        {"title": "Pretendard preconnect 부재", "severity": "Medium", "description": "실사용 환경에서 DNS/TLS 왕복 비용", "recommendation": "preconnect 또는 셀프호스팅"},
+        {"title": "필드 데이터 부재", "severity": "Info", "description": "신생 도메인, CrUX 임계치 미달", "recommendation": "트래픽 확보 후 RUM 검증"}
+      ]
+    },
+    {
+      "name": "AI Search Readiness (GEO)",
+      "weight": 0.10,
+      "score": 44,
+      "findings_file": "findings/geo.md",
+      "what_works": [
+        "AI 크롤러 접근성 83점 — robots.txt 명시 허용 + 완전 SSR",
+        "노이즈 없는 정직한 사실 기반 카피 — AI 환각 리스크 원천 차단"
+      ],
+      "findings": [
+        {"title": "/visa 미배포 — 인용가능성 문제의 해결책이 잠자고 있음", "severity": "High", "description": "질문형 헤딩+출처 병기 콘텐츠 완성 상태", "recommendation": "사실관계 재검증 후 배포"},
+        {"title": "라이브 페이지 인용가능성 부족", "severity": "High", "description": "250~320단어 마케팅 카피, 질문형 구조 없음", "recommendation": "질문형 H2 + 자기완결 단락 재작성"},
+        {"title": "홈 FAQ에 FAQPage 스키마 없음", "severity": "High", "description": "5~7문항 라이브 노출 중", "recommendation": "visa-schema 패턴 적용"},
+        {"title": "llms.txt 부재", "severity": "Medium", "description": "geo.md에 한국어 초안 제공됨", "recommendation": "public/llms.txt 배치"},
+        {"title": "sameAs·외부 프로필 전무", "severity": "Medium", "description": "브랜드 개체 신뢰 신호 부족", "recommendation": "유튜브/LinkedIn 개설 후 연결"},
+        {"title": "mou/README.md의 정부기관 검증 데이터 미활용", "severity": "Medium", "description": "OCR/OTIT 등록번호 확인 완료 상태", "recommendation": "✅ 확인 항목만 /partners에 인용형 문장으로 반영"}
+      ]
+    },
+    {
+      "name": "Images",
+      "weight": 0.05,
+      "score": 70,
+      "findings_file": "findings/images.md",
+      "what_works": [
+        "og:image 1200×630 자동 생성 + alt 존재",
+        "이미지 유발 CLS 없음, 로컬 hero.webp 구현이 이미 모범적"
+      ],
+      "findings": [
+        {"title": "파비콘 전무 (favicon.ico 404)", "severity": "Medium", "description": "SERP·탭 브랜드 신호 부재", "recommendation": "app/icon.png 추가"},
+        {"title": "배포본 실사진 전무 + 내부 라벨(KV 01) 노출", "severity": "Medium", "description": "placeholder 박스만 존재", "recommendation": "hero.webp 배포 + 실사진 순차 교체"}
+      ]
+    }
+  ],
+  "supplementary": {
+    "sitemap": {"score": 92, "findings_file": "findings/sitemap.md", "note": "사이트맵-실사이트 100% 일치. /visa 배포 시 6→15 URL 자동 확장 구조 확인"},
+    "sxo": {"score": 27, "findings_file": "findings/sxo.md", "note": "5개 페르소나 스코어링: 네팔 파트너 기관(64) > 한국 SME(55) > 리스크 회피형(50) > 비교검토(48) > 일본 개호·숙박(33). SERP는 정보성 가이드를 보상하는데 사이트는 얕은 랜딩 — /visa 배포가 최우선"},
+    "visual": {"score": 70, "findings_file": "findings/visual.md", "screenshots": 36},
+    "skipped_agents": {
+      "seo-google": "Google API 자격증명 없음 (Tier -1)",
+      "seo-backlinks": "Moz/Bing 자격증명 없음 + 설립 1개월 vercel.app 서브도메인으로 Common Crawl 데이터 부재",
+      "seo-local": "B2B 서비스로 로컬 검색(맵팩) 비즈니스 아님",
+      "seo-ecommerce": "이커머스 아님",
+      "seo-cluster": "블로그/콘텐츠 허브 시그널 없음 (visa 배포 후 재검토 권장)",
+      "seo-drift": "드리프트 베이스라인 없음",
+      "seo-dataforseo": "DataForSEO MCP 미연결"
+    }
+  },
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes — 배포 동기화",
+        "timeframe": "Week 1",
+        "items": [
+          "로컬 미배포 변경사항 전체 커밋+배포 (app/visa/, components/visa/, components/json-ld.tsx, lib/visas.ts, hero.webp, 파트너 검증 근거, 베트남 제거, contact 정합)",
+          "임시 대표 이메일 1개 확정 후 lib/site.ts email 필드 기입",
+          "배포 후 검증: /contact 본문·푸터 일치, /visa 15개 URL 200 응답, 사이트맵 자동 확장 확인",
+          "app/icon.png 파비콘 추가",
+          "히어로 이미지 배포 직후 CWV 재측정 (LCP 회귀 확인)"
+        ]
+      },
+      {
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Weeks 2-3",
+        "items": [
+          "각 page.tsx에 페이지별 openGraph/twitter 메타 추가",
+          "홈 FAQ에 FAQPage JSON-LD 적용 (visa-schema.tsx 패턴)",
+          "라이브 5개 페이지에 BreadcrumbList JSON-LD + WebSite 스키마 + Organization @id 상호참조",
+          "cdn.jsdelivr.net preconnect 또는 Pretendard next/font/local 전환",
+          "next.config.mjs 보안 헤더 (nosniff, Referrer-Policy, frame-ancestors)",
+          "H1 한국어 주제어 반영 + /partners·/why 섹션 h2 추가",
+          "public/llms.txt 배치 (geo.md 초안 활용)"
+        ]
+      },
+      {
+        "name": "Phase 3: Content & Authority",
+        "timeframe": "Month 2",
+        "items": [
+          "/services 사업영역별 절차·기간·필요서류 콘텐츠 확장",
+          "대표·팀 약력 사실 확인 후 기재 (/why)",
+          "mou/README.md ✅ 확인 항목을 /partners에 '기관명+등록번호+등록기관+확인일' 형태로 반영",
+          "실사(훈련원·수업) 사진 확보 후 placeholder 순차 교체",
+          "외부 채널(유튜브 또는 LinkedIn) 개설 → lib/site.ts sameAs 연결",
+          "커스텀 도메인 확보·전환 검토 (301 이전 계획 포함)",
+          "/why에 경쟁 대행사 대비 차별화 프레이밍 추가"
+        ]
+      },
+      {
+        "name": "Phase 4: Monitoring & Iteration",
+        "timeframe": "Ongoing",
+        "items": [
+          "Google Search Console + 네이버 서치어드바이저 + Bing Webmaster 등록",
+          "IndexNow 구현 (Bing·Naver 실시간 색인)",
+          "web-vitals RUM 도입, 트래픽 확보 후 CrUX 필드 데이터 재검증",
+          "seo-drift 베이스라인 생성 → 배포마다 회귀 감지",
+          "브랜드 키워드 + /visa 롱테일 순위 추적 (단기 목표: 헤드 키워드가 아닌 롱테일)"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/",
+    "crawl_dir": "crawl/"
+  }
+}
