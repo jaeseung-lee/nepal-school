@@ -7,6 +7,8 @@ export default function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    // WebSite.publisher(layout.tsx)가 이 @id로 상호 참조한다
+    "@id": `${SITE_URL}/#organization`,
     name: SITE.nameKo,
     legalName: SITE.nameEn,
     alternateName: SITE.alternateName,
@@ -16,7 +18,7 @@ export default function OrganizationSchema() {
     description: SITE.description,
     foundingDate: SITE.foundingDate,
     founder: { "@type": "Person", name: SITE.founder },
-    knowsLanguage: ["ko", "en", "ja", "vi", "ne"],
+    knowsLanguage: ["ko", "en", "ja", "ne"],
     areaServed: SITE.areaServed.map((name) => ({
       "@type": "Country",
       name,

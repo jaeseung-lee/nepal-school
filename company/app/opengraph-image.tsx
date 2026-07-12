@@ -52,7 +52,7 @@ export default function OpengraphImage() {
             color: "#d4d4d4",
           }}
         >
-          Nepal, Vietnam to Korea, Japan
+          Nepal to Korea, Japan
         </div>
         <div
           style={{

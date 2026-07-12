@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
 import { CheckCircle, ShieldCheck, WarningCircle } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
+import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import BreadcrumbSchema from "@/components/breadcrumb-schema";
+import { buildPageMetadata } from "@/lib/seo";
 import CtaBanner from "@/components/cta-banner";
 import Reveal from "@/components/reveal";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "신뢰·전문성",
   description:
-    "신생 회사인데 왜 믿을 수 있는가. Richhood Overseas MOU를 포함한 검증된 파트너십, 제도·법규 전문성, 대표·팀 전문성, 투명한 프로세스.",
-  alternates: { canonical: "/why" },
-};
+    "신생 회사인데 왜 믿을 수 있는가. 네팔 5개 기관 MOU를 포함한 검증된 파트너십, 제도·법규 전문성, 대표·팀 전문성, 투명한 프로세스.",
+  path: "/why",
+});
 
-const principles = [
+const principles: { title: string; desc: string; href?: string; linkLabel?: string }[] = [
   {
     title: "검증된 파트너십",
-    desc: "2026년 7월 5일 Richhood Overseas Inc. (P) Ltd.와 MOU를 체결해 네팔 근로자 선발, 자격 검증, 출입국 행정 협력 체계를 마련했습니다.",
+    desc: "2026년 7월 5일 네팔 현지 5개 기관과 MOU를 체결해 근로자 선발, 자격 검증, 교육, 출입국 행정 협력 체계를 마련했습니다.",
   },
   {
     title: "제도와 법규 확인",
     desc: "한국의 E-9, E-7, D-2, D-4, E-8과 일본 특정기능 1호를 정부 공식 기준에 맞춰 검토합니다.",
+    href: "/visa",
+    linkLabel: "제도별 비자 정보 보기",
   },
   {
     title: "대표와 현지 네트워크",
@@ -40,6 +45,7 @@ const refusals = [
 export default function WhyPage() {
   return (
     <main>
+      <BreadcrumbSchema name="신뢰·전문성" path="/why" />
       <PageBanner
         eyebrow="운영 원칙"
         context="확인 가능한 사실과 제도 기준"
@@ -73,6 +79,11 @@ export default function WhyPage() {
                   <div>
                     <h3 className="font-display text-xl font-semibold text-ink">{item.title}</h3>
                     <p className="mt-2 text-[15px] leading-relaxed text-muted">{item.desc}</p>
+                    {item.href ? (
+                      <Link href={item.href} className="mt-2 inline-block text-sm font-medium text-cobalt underline underline-offset-2">
+                        {item.linkLabel}
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </article>

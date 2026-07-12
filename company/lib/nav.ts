@@ -7,6 +7,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: "회사소개", href: "/about" },
   { label: "사업영역", href: "/services" },
+  { label: "비자 정보", href: "/visa" },
   { label: "파트너십", href: "/partners" },
   { label: "신뢰·전문성", href: "/why" },
   { label: "문의", href: "/contact" },
@@ -17,6 +18,5 @@ export const LANGUAGES: { code: string; active: boolean }[] = [
   { code: "KO", active: true },
   { code: "EN", active: false },
   { code: "JA", active: false },
-  { code: "VI", active: false },
   { code: "NE", active: false },
 ];

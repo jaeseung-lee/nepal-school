@@ -35,7 +35,7 @@ export default function PageBanner({ eyebrow, context, titleKo, desc, crumb, bgI
           </nav>
           <div>
             <p className="text-sm font-semibold text-cobalt">{eyebrow}</p>
-            <h1 className="mt-4 font-display text-4xl font-semibold text-ink text-balance lg:text-6xl">
+            <h1 className="mt-4 font-display text-4xl font-semibold text-ink text-balance break-keep lg:text-6xl">
               {titleKo}
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">{desc}</p>

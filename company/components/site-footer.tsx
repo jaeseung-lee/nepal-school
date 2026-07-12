@@ -23,9 +23,9 @@ export default function SiteFooter() {
               </span>
             </div>
             <p className="mt-5 max-w-md text-sm leading-relaxed">
-              네팔과 베트남 인재를 현지 교육부터 양성해 한국과 일본 기업에 합법적으로 연결합니다.
+              네팔 인재를 현지 교육부터 양성해 한국과 일본 기업에 합법적으로 연결합니다.
             </p>
-            <p className="mt-4 text-xs text-gray-500">2026년 6월 설립, 해외 협력망은 네팔과 베트남을 중심으로 운영합니다.</p>
+            <p className="mt-4 text-xs text-gray-500">2026년 6월 설립, 해외 협력망은 네팔을 중심으로 운영합니다.</p>
           </div>
 
           <div>
@@ -80,7 +80,7 @@ export default function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
           <p>© 2026 {SITE.nameKo}. All rights reserved.</p>
-          <p>네팔, 베트남, 한국, 일본</p>
+          <p>네팔, 한국, 일본</p>
         </div>
       </div>
     </footer>

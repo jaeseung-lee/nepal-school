@@ -12,7 +12,7 @@ const SERVICES = [
     featured: true,
   },
   {
-    href: "/services",
+    href: "/visa",
     title: "한국 취업비자",
     desc: "E-9, E-7, D-2, D-4, 계절근로 제도에 맞춰 채용 절차를 설계합니다.",
     image: "/kv/redesign/korea.webp",
@@ -20,7 +20,7 @@ const SERVICES = [
     featured: false,
   },
   {
-    href: "/services",
+    href: "/visa/tokutei-ginou",
     title: "일본 특정기능",
     desc: "개호와 숙박 분야를 중심으로 일본어와 기능시험을 통과한 인재를 매칭합니다.",
     image: "/kv/redesign/japan.webp",

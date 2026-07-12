@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { Buildings, IdentificationCard, MapPin } from "@phosphor-icons/react/dist/ssr";
 import PageBanner from "@/components/page-banner";
+import BreadcrumbSchema from "@/components/breadcrumb-schema";
+import { buildPageMetadata } from "@/lib/seo";
 import ContactForm from "@/components/contact-form";
 import Reveal from "@/components/reveal";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "문의",
   description: "외국인력 채용·제휴 문의. 기업 요건을 알려주시면 적합한 인재와 절차를 안내드립니다.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 const companyItems = [
   { label: "대표이사", value: SITE.founder, icon: IdentificationCard },
@@ -22,6 +24,7 @@ const companyItems = [
 export default function ContactPage() {
   return (
     <main>
+      <BreadcrumbSchema name="문의" path="/contact" />
       <PageBanner
         eyebrow="상담 안내"
         context="직무, 인원, 일정 확인부터"

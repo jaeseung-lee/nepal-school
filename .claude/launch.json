@@ -4,8 +4,9 @@
     {
       "name": "company",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/twc_n_131/nepal-school/company", "run", "dev", "--", "-p", "3007"],
-      "port": 3007
+      "runtimeArgs": ["--prefix", "company", "run", "dev"],
+      "port": 3007,
+      "autoPort": true
     }
   ]
 }

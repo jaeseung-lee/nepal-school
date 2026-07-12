@@ -1,7 +1,9 @@
-const METRICS = [
-  { value: "6", unit: "종", label: "취급 비자와 제도", sub: "한국 5종, 일본 특정기능 1호" },
-  { value: "4", unit: "개국", label: "협력 국가", sub: "네팔, 베트남, 한국, 일본" },
-  { value: "6", unit: "곳", label: "협력 파트너", sub: "교육, 송출, 유학, 산업, 정부, 지자체" },
+import Link from "next/link";
+
+const METRICS: { value: string; unit: string; label: string; sub: string; href?: string }[] = [
+  { value: "6", unit: "종", label: "취급 비자와 제도", sub: "한국 5종, 일본 특정기능 1호", href: "/visa" },
+  { value: "3", unit: "개국", label: "협력 국가", sub: "네팔, 한국, 일본" },
+  { value: "9", unit: "곳", label: "협력 파트너", sub: "교육, 송출, 산업, 정부, 지자체" },
 ];
 
 export default function MetricsStrip() {
@@ -24,7 +26,15 @@ export default function MetricsStrip() {
                 {metric.value}
                 <span className="ml-1 align-top text-xl text-clay">{metric.unit}</span>
               </dd>
-              <dd className="mt-2 text-sm leading-relaxed text-muted">{metric.sub}</dd>
+              <dd className="mt-2 text-sm leading-relaxed text-muted">
+                {metric.href ? (
+                  <Link href={metric.href} className="underline underline-offset-2 transition hover:text-cobalt">
+                    {metric.sub}
+                  </Link>
+                ) : (
+                  metric.sub
+                )}
+              </dd>
             </div>
           ))}
         </dl>

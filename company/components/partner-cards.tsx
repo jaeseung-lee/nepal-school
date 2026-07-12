@@ -8,9 +8,12 @@ const PARTNERS = [
     desc: "근로자 선발, 자격 검증, 출입국 행정 MOU 파트너",
     icon: Handshake,
   },
+  { country: "NP", name: "Sunkoshi Manpower Service", role: "인력송출기관", desc: "네팔 노동부 인가 해외고용 송출 · MOU 파트너", icon: Handshake },
+  { country: "NP", name: "Satyawati Overseas Concern", role: "인력송출기관", desc: "한국·일본 방향 근로자 선발과 송출 · MOU 파트너", icon: Handshake },
+  { country: "NP", name: "Bhairav Industrial Skills Hub", role: "산업기술 훈련원", desc: "용접 특화 직업기술교육과 학생 모집 · MOU 파트너", icon: SealCheck },
+  { country: "NP", name: "Ocean Technical Institute", role: "교육·훈련 기관", desc: "직무·어학 교육과 출국 전 교육 · MOU 파트너", icon: SealCheck },
   { country: "NP", name: "Kathmandu Technical School", role: "직업훈련학교", desc: "현지 직무와 기능 교육", icon: SealCheck },
   { country: "NP", name: "청소년고용노동부", role: "정부 부처", desc: "계절근로자 파견 MOU 주무 기관", icon: BuildingOffice },
-  { country: "VN", name: "Vinako", role: "유학과 송출 협력", desc: "한국 방향 유학과 인재 송출 협력", icon: MapPin },
   { country: "KR", name: "대한주택건설협회", role: "산업 단체", desc: "주택건설 산업 현장 수요 연계", icon: BuildingOffice },
   { country: "KR", name: "용인시", role: "지자체", desc: "외국인 계절근로자 프로그램 운영 협력", icon: MapPin },
 ];
