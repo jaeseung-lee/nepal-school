@@ -1,0 +1,481 @@
+{
+  "site": {
+    "name": "Joong Woo HRD",
+    "nameEnglish": "Joong Woo Human Resource Development Institute",
+    "alternateName": "JOONG WOO HRD",
+    "slogan": "Đối tác nhân lực toàn cầu đào tạo nhân tài Nepal từ nền tảng giáo dục tại địa phương",
+    "seoTitle": "Đào tạo nhân tài Nepal và kết nối việc làm tại Hàn Quốc, Nhật Bản",
+    "description": "Chúng tôi đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ một cách hợp pháp, ổn định với các doanh nghiệp tại Hàn Quốc và Nhật Bản. Chúng tôi quản lý trọn quy trình từ đào tạo, thi cử, kết nối, thị thực đến hỗ trợ ổn định cuộc sống.",
+    "founder": "Oh Je-hwan",
+    "foundingDate": "Ngày 10 tháng 6 năm 2026",
+    "businessRegistrationNumber": "684-13-02918",
+    "streetAddress": "Phòng 6034, tầng 6, tòa nhà Geumbo, 21-6 Gugal-ro 28beon-gil, Giheung-gu, Yongin-si, Gyeonggi-do, Hàn Quốc",
+    "areaServed": {
+      "nepal": "Nepal",
+      "vietnam": "Việt Nam",
+      "laos": "Lào",
+      "korea": "Hàn Quốc",
+      "japan": "Nhật Bản"
+    }
+  },
+  "common": {
+    "home": "Trang chủ",
+    "contact": "Liên hệ",
+    "details": "Xem chi tiết",
+    "viewProcess": "Xem quy trình",
+    "visaInfo": "Thông tin thị thực",
+    "menu": "Menu",
+    "companyInfo": "Thông tin công ty",
+    "representative": "Người đại diện",
+    "businessNumber": "Mã số đăng ký kinh doanh",
+    "address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "email": "Email",
+    "language": "Ngôn ngữ",
+    "comingSoon": "Sắp ra mắt",
+    "allRightsReserved": "Bảo lưu mọi quyền.",
+    "currentLocation": "Vị trí hiện tại",
+    "bannerImageAlt": "Hình ảnh thực tế minh họa cho {title}"
+  },
+  "nav": {
+    "about": "Giới thiệu",
+    "services": "Lĩnh vực hoạt động",
+    "visa": "Thông tin thị thực",
+    "partners": "Đối tác",
+    "why": "Uy tín và chuyên môn",
+    "contact": "Liên hệ"
+  },
+  "header": {
+    "homeAria": "Trang chủ Joong Woo HRD",
+    "primaryNav": "Điều hướng chính",
+    "languageSelector": "Chọn ngôn ngữ",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "mobileNav": "Điều hướng trên thiết bị di động",
+    "mobileNotice": "Hỗ trợ sáu ngôn ngữ, bao gồm tiếng Hàn.",
+    "languages": {
+      "ko": "한국어",
+      "en": "English",
+      "ja": "日本語",
+      "ne": "नेपाली",
+      "vi": "Tiếng Việt",
+      "lo": "ລາວ"
+    }
+  },
+  "footer": {
+    "description": "Chúng tôi đào tạo nhân tài Nepal tại địa phương và kết nối họ một cách hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+    "network": "Thành lập tháng 6 năm 2026; mạng lưới hợp tác quốc tế của chúng tôi tập trung tại Nepal, Việt Nam và Lào.",
+    "contactNotice": "Kênh liên hệ trực tuyến chưa chính thức hoạt động. Khu vực này trước hết cung cấp hướng dẫn để doanh nghiệp sắp xếp các yêu cầu cần thiết.",
+    "countries": "Nepal, Việt Nam, Lào, Hàn Quốc, Nhật Bản"
+  },
+  "metrics": {
+    "ariaLabel": "Các chỉ số khách quan",
+    "title": "Chúng tôi chỉ đặt các sự thật có thể kiểm chứng lên hàng đầu",
+    "description": "Là doanh nghiệp mới thành lập, chúng tôi không công bố các số liệu thành tích không thể kiểm chứng như số người đã có việc làm hay thứ hạng.",
+    "items": {
+      "visa": {
+        "value": "5",
+        "unit": "loại",
+        "label": "Loại thị thực và chương trình hỗ trợ",
+        "sub": "Bốn loại của Hàn Quốc và Lao động kỹ năng đặc định số 1 của Nhật Bản"
+      },
+      "countries": {
+        "value": "5",
+        "unit": "quốc gia",
+        "label": "Quốc gia hợp tác",
+        "sub": "Nepal, Việt Nam, Lào, Hàn Quốc và Nhật Bản"
+      },
+      "partners": {
+        "value": "7",
+        "unit": "đối tác",
+        "label": "Tổ chức đối tác",
+        "sub": "Lĩnh vực đào tạo, phái cử và công nghiệp"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Cơ hội công bằng",
+      "lineBreak": "cho mọi người",
+      "description": "Đối tác doanh nghiệp chịu trách nhiệm về nhân tài nước ngoài từ đào tạo, thi cử đến thị thực và ổn định cuộc sống.",
+      "contactCta": "Liên hệ",
+      "servicesCta": "Xem lĩnh vực hoạt động",
+      "alt": "Khung cảnh đào tạo nghề tượng trưng cho giáo dục tại địa phương và chuẩn bị di chuyển quốc tế"
+    },
+    "intro": {
+      "title": "Trước khi giới thiệu nhân lực, chúng tôi thiết kế việc đào tạo và xác minh",
+      "description": "Chúng tôi là doanh nghiệp mới bắt đầu từ tháng 6 năm 2026. Thay vì đưa ra thành tích phóng đại, chúng tôi công khai rõ ràng đối tác địa phương, tiêu chuẩn chế độ và vai trò ở từng giai đoạn.",
+      "aboutCta": "Giới thiệu",
+      "whyCta": "Tiêu chuẩn uy tín"
+    },
+    "services": {
+      "title": "Chúng tôi kết nối giáo dục, Hàn Quốc và Nhật Bản trong một hệ thống vận hành",
+      "description": "Mỗi lĩnh vực hoạt động có thể trông riêng biệt, nhưng trên thực tế tuyển chọn, đào tạo, thi cử, thị thực và ổn định cuộc sống đều được liên kết."
+    },
+    "partners": {
+      "title": "Vai trò của tổ chức hợp tác quan trọng hơn tên gọi",
+      "description": "Thay vì trang trí bằng những tổ chức chưa sẵn sàng logo, chúng tôi ưu tiên cho thấy trách nhiệm thực tế mà từng đối tác đảm nhận.",
+      "detailsCta": "Xem chi tiết đối tác"
+    },
+    "faq": {
+      "title": "Những câu hỏi doanh nghiệp cần xác nhận trước",
+      "description": "Rủi ro khi tuyển dụng lao động nước ngoài có thể được giảm bằng cách xác nhận trước chế độ và vai trò của từng bên.",
+      "alt": "Khung cảnh tư vấn doanh nghiệp",
+      "items": {
+        "company": {
+          "q": "Joong Woo HRD là công ty như thế nào?",
+          "a": "Joong Woo HRD là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản."
+        },
+        "visa": {
+          "q": "Công ty hỗ trợ những loại thị thực và chương trình việc làm nào?",
+          "a": "Tại Hàn Quốc, chúng tôi hỗ trợ E-9, E-7, D-2 và D-4; tại Nhật Bản, chúng tôi hỗ trợ Lao động kỹ năng đặc định số 1. Chúng tôi xem xét chế độ phù hợp với yêu cầu doanh nghiệp và công việc. Các yêu cầu và thủ tục theo từng chế độ có tại trang Thông tin thị thực.",
+          "linkLabel": "Thông tin thị thực"
+        },
+        "process": {
+          "q": "Quy trình tuyển dụng diễn ra như thế nào?",
+          "a": "Quy trình gồm tuyển chọn, đào tạo, thi cử, kết nối, hợp đồng và thị thực, nhập cảnh và ổn định cuộc sống. Mỗi giai đoạn được quản lý cùng đối tác địa phương với vai trò được phân định rõ ràng."
+        },
+        "countries": {
+          "q": "Công ty kết nối nhân lực từ những quốc gia nào?",
+          "a": "Chúng tôi kết nối nhân tài được đào tạo tại Nepal với các doanh nghiệp tại Hàn Quốc và Nhật Bản. Mạng lưới hiện tại tập trung vào năm quốc gia: Nepal, Việt Nam, Lào, Hàn Quốc và Nhật Bản."
+        },
+        "trust": {
+          "q": "Một doanh nghiệp mới có đáng tin cậy không?",
+          "a": "Chúng tôi chỉ công khai các chỉ số khách quan có thể kiểm chứng, không nêu số người đã có việc làm hay thứ hạng không thể xác nhận. Hoạt động của chúng tôi dựa trên hệ thống hợp tác, bao gồm MOU với năm tổ chức tại Nepal."
+        }
+      }
+    },
+    "serviceCards": {
+      "training": {
+        "title": "Đào tạo nghề tại địa phương",
+        "desc": "Chúng tôi tiến hành trước tại địa phương việc đào tạo công việc, ngôn ngữ và văn hóa để nâng cao mức độ sẵn sàng của ứng viên trước khi doanh nghiệp gặp họ.",
+        "alt": "Khung cảnh đào tạo nghề tại địa phương"
+      },
+      "koreaVisa": {
+        "title": "Thị thực việc làm Hàn Quốc",
+        "desc": "Chúng tôi thiết kế quy trình tuyển dụng phù hợp với các chương trình E-9, E-7, D-2 và D-4.",
+        "alt": "Khung cảnh thị thực việc làm Hàn Quốc"
+      },
+      "japanSsw": {
+        "title": "Kỹ năng đặc định Nhật Bản",
+        "desc": "Tập trung vào lĩnh vực chăm sóc và lưu trú, chúng tôi kết nối ứng viên đã vượt qua kỳ thi tiếng Nhật và kỹ năng.",
+        "alt": "Khung cảnh Kỹ năng đặc định Nhật Bản"
+      }
+    },
+    "process": {
+      "title": "Chúng tôi quản lý một hành trình liên tục từ tuyển chọn đến ổn định cuộc sống",
+      "description": "Chúng tôi chia bảy giai đoạn thành ba nhóm để doanh nghiệp dễ hiểu ai xác nhận điều gì và vào thời điểm nào.",
+      "alt": "Hình ảnh tài liệu tượng trưng cho thủ tục thị thực và hợp đồng",
+      "phases": {
+        "localPreparation": {
+          "title": "Chuẩn bị tại địa phương",
+          "desc": "Thay vì phái cử ngay sau khi tuyển, chúng tôi xác nhận trước sự phù hợp về công việc, ngôn ngữ và văn hóa.",
+          "steps": {
+            "selection": "Tuyển chọn",
+            "training": "Đào tạo",
+            "exam": "Thi cử"
+          }
+        },
+        "matching": {
+          "title": "Kết nối doanh nghiệp",
+          "desc": "Chúng tôi cùng xem xét yêu cầu của doanh nghiệp và chế độ, sau đó chuyển sang thủ tục hợp đồng và thị thực.",
+          "steps": {
+            "matching": "Kết nối",
+            "contractVisa": "Hợp đồng và thị thực"
+          }
+        },
+        "afterArrival": {
+          "title": "Sau khi nhập cảnh",
+          "desc": "Sau khi bố trí công việc, chúng tôi tiếp tục hỗ trợ đời sống và xác nhận hành chính để giảm rủi ro ổn định cuộc sống.",
+          "steps": {
+            "arrival": "Nhập cảnh",
+            "settlement": "Ổn định cuộc sống"
+          }
+        }
+      }
+    },
+    "collage": {
+      "training": {
+        "label": "Đào tạo nghề tại địa phương"
+      },
+      "korea": {
+        "label": "Nơi làm việc công nghiệp tại Hàn Quốc"
+      },
+      "japan": {
+        "label": "Chuẩn bị cho công việc chăm sóc và lưu trú tại Nhật Bản"
+      },
+      "documents": {
+        "label": "Tài liệu thị thực và hợp đồng"
+      },
+      "consultation": {
+        "label": "Chuẩn bị tư vấn"
+      }
+    }
+  },
+  "partnerCards": {
+    "eyebrow": "Mạng lưới đối tác đã được xác minh",
+    "title": "Chúng tôi mô tả danh sách đối tác bằng vai trò và trách nhiệm",
+    "description": "Cho đến khi được phép sử dụng logo, chúng tôi không tạo logo tạm thời. Chúng tôi chỉ hiển thị vai trò thực tế của từng tổ chức.",
+    "partners": {
+      "richhood": {
+        "country": "NP",
+        "name": "Richhood Overseas",
+        "role": "Cơ quan cung ứng nhân lực Nepal",
+        "desc": "Đối tác MOU về tuyển chọn lao động, xác minh điều kiện và hành chính xuất nhập cảnh"
+      },
+      "sunkoshi": {
+        "country": "NP",
+        "name": "Sunkoshi Manpower Service",
+        "role": "Cơ quan phái cử lao động",
+        "desc": "Cơ quan phái cử việc làm ở nước ngoài được Bộ Lao động Nepal cấp phép và là đối tác MOU"
+      },
+      "satyawati": {
+        "country": "NP",
+        "name": "Satyawati Overseas Concern",
+        "role": "Cơ quan phái cử lao động",
+        "desc": "Đối tác MOU trong tuyển chọn và phái cử lao động sang Hàn Quốc và Nhật Bản"
+      },
+      "bhairav": {
+        "country": "NP",
+        "name": "Bhairav Industrial Skills Hub",
+        "role": "Học viện đào tạo kỹ năng công nghiệp",
+        "desc": "Đối tác MOU về giáo dục nghề chuyên hàn và tuyển sinh"
+      },
+      "ocean": {
+        "country": "NP",
+        "name": "Ocean Technical Institute",
+        "role": "Tổ chức giáo dục và đào tạo",
+        "desc": "Đối tác MOU về đào tạo nghề, ngôn ngữ và giáo dục trước khi xuất cảnh"
+      },
+      "kathmandu": {
+        "country": "NP",
+        "name": "Kathmandu Technical School",
+        "role": "Trường đào tạo nghề",
+        "desc": "Đào tạo kỹ năng và công việc tại địa phương"
+      },
+      "koreaHousing": {
+        "country": "KR",
+        "name": "Hiệp hội Xây dựng Nhà ở Hàn Quốc",
+        "role": "Hiệp hội ngành",
+        "desc": "Kết nối nhu cầu nhân lực tại các công trường xây dựng nhà ở"
+      }
+    }
+  },
+  "cta": {
+    "title": "Trước tiên, hãy xác nhận yêu cầu của doanh nghiệp",
+    "description": "Hãy cho chúng tôi biết công việc, số lượng nhân sự, lịch mong muốn và định hướng thị thực; chúng tôi sẽ sắp xếp và hướng dẫn quy trình khả thi cùng thứ tự chuẩn bị.",
+    "contactCta": "Liên hệ",
+    "processCta": "Xem quy trình",
+    "alt": "Phòng họp và tài liệu đã sẵn sàng cho tư vấn"
+  },
+  "pages": {
+    "about": {
+      "metadata": {
+        "title": "Giới thiệu",
+        "description": "Giới thiệu Joong Woo HRD, doanh nghiệp phát triển nguồn nhân lực toàn cầu đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp Hàn Quốc và Nhật Bản."
+      },
+      "banner": {
+        "eyebrow": "Tổng quan công ty",
+        "context": "Từ đào tạo tại địa phương đến hỗ trợ ổn định cuộc sống",
+        "title": "Giới thiệu",
+        "description": "Chúng tôi là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+        "crumb": "Giới thiệu",
+        "alt": "Hình ảnh thực tế minh họa cho Giới thiệu"
+      },
+      "main": {
+        "title": "Nhân tài không chỉ để phái cử mà cần được chuẩn bị",
+        "paragraphs": {
+          "first": "Joong Woo HRD bắt đầu từ đào tạo nghề tại Nepal. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+          "second": "Tháng 7 năm 2026, chúng tôi ký MOU với năm tổ chức tại Nepal để củng cố hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
+        },
+        "servicesCta": "Lĩnh vực hoạt động",
+        "partnersCta": "Đối tác",
+        "whyCta": "Tiêu chuẩn uy tín"
+      }
+    },
+    "services": {
+      "metadata": {
+        "title": "Lĩnh vực hoạt động",
+        "description": "Từ trường đào tạo nghề tại Nepal, thị thực việc làm Hàn Quốc (E-9, E-7, D-2, D-4) đến Kỹ năng đặc định Nhật Bản: ba lĩnh vực hoạt động cốt lõi và quy trình một cửa của Joong Woo HRD."
+      },
+      "banner": {
+        "eyebrow": "Cấu trúc hoạt động",
+        "context": "Vận hành tích hợp đào tạo, thị thực và kết nối",
+        "title": "Lĩnh vực hoạt động",
+        "description": "Đây không chỉ là giới thiệu nhân lực đơn thuần. Chúng tôi kết nối doanh nghiệp với nhân tài đã được xác minh thông qua cấu trúc tích hợp đào tạo tại địa phương, thị thực và kết nối.",
+        "crumb": "Lĩnh vực hoạt động",
+        "alt": "Hình ảnh thực tế minh họa cho Lĩnh vực hoạt động"
+      },
+      "main": {
+        "title": "Chúng tôi cùng thiết kế đào tạo dựa trên giáo dục và tuyển dụng dựa trên chế độ",
+        "descriptionBeforeVisa": "Ba lĩnh vực hoạt động không phải là các sản phẩm độc lập mà là một dòng vận hành tuyển dụng. Yêu cầu và thủ tục theo từng chế độ được sử dụng trong tuyển dụng có thể xem tại",
+        "visaLink": "Thông tin thị thực",
+        "descriptionAfterVisa": "."
+      }
+    },
+    "partners": {
+      "metadata": {
+        "title": "Đối tác",
+        "description": "Ký MOU kinh doanh quốc tế với năm tổ chức tại Nepal vào tháng 7 năm 2026. Ba công ty phái cử và hai tổ chức đào tạo kỹ năng, giáo dục phân chia tuyển chọn, xác minh, đào tạo và hành chính xuất nhập cảnh."
+      },
+      "banner": {
+        "eyebrow": "Mạng lưới hợp tác",
+        "context": "Hợp tác với các tổ chức có vai trò được xác minh",
+        "title": "Đối tác",
+        "description": "Chúng tôi xây dựng dòng tuyển chọn, đào tạo, phái cử và kết nối bằng cách phân chia vai trò với các tổ chức tại Nepal và Hàn Quốc.",
+        "crumb": "Đối tác",
+        "alt": "Hình ảnh thực tế minh họa cho Đối tác"
+      },
+      "feature": {
+        "alt": "Cảnh trao đổi về quan hệ đối tác quốc tế",
+        "title": "Ký thỏa thuận hợp tác kinh doanh quốc tế với năm tổ chức tại Nepal",
+        "description": "Ngày 5 tháng 7 năm 2026, Joong Woo HRD ký các MOU riêng với ba công ty phái cử lao động tại Nepal và hai tổ chức đào tạo kỹ năng, giáo dục. Hai bên xác định giáo dục kỹ năng nghề, liên kết việc làm Hàn Quốc và Nhật Bản, đào tạo công việc và ngôn ngữ, cùng thủ tục xuất nhập cảnh chi tiết là phạm vi hợp tác.",
+        "mouItems": {
+          "date": {
+            "title": "Ngày ký",
+            "description": "Ngày 5 tháng 7 năm 2026"
+          },
+          "structure": {
+            "title": "Cấu trúc thỏa thuận",
+            "description": "Ba công ty phái cử + hai tổ chức đào tạo kỹ năng, giáo dục; ký MOU riêng với từng đơn vị"
+          },
+          "partnerRole": {
+            "title": "Vai trò của đối tác",
+            "description": "Tuyển chọn lao động và xác minh điều kiện, đào tạo kỹ năng nghề, công việc và ngôn ngữ, hỗ trợ hành chính liên quan đến xuất nhập cảnh"
+          },
+          "joongwooRole": {
+            "title": "Vai trò của Joong Woo HRD",
+            "description": "Tìm kiếm và kết nối doanh nghiệp Hàn Quốc, Nhật Bản; hỗ trợ ổn định pháp lý, lao động, hành chính và kế toán cho người lao động sau khi nhập cảnh"
+          }
+        }
+      },
+      "mou": {
+        "eyebrow": "Thỏa thuận hợp tác kinh doanh quốc tế tháng 7 năm 2026",
+        "title": "Năm tổ chức ký MOU",
+        "description": "Gồm ba công ty phái cử lao động và hai tổ chức đào tạo kỹ năng, giáo dục phụ trách tuyển chọn và đào tạo. Mỗi tổ chức chỉ được trình bày bằng các thông tin đã được xác nhận qua đăng ký chính thức.",
+        "partners": {
+          "richhood": {
+            "name": "Richhood Overseas Inc. (P) Ltd.",
+            "type": "Cơ quan phái cử lao động",
+            "location": "Kathmandu, Nepal",
+            "description": "Hỗ trợ tuyển chọn lao động, xác minh điều kiện và hành chính liên quan đến xuất nhập cảnh.",
+            "basis": "Đăng ký tại Cơ quan Đăng ký Công ty Nepal (OCR); tổ chức phái cử được OTIT và JITCO của Nhật Bản công nhận"
+          },
+          "sunkoshi": {
+            "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+            "type": "Cơ quan phái cử lao động",
+            "location": "Kathmandu, Nepal",
+            "description": "Thành lập năm 1995. Phái cử nhân lực ra nước ngoài, bao gồm Hàn Quốc và Nhật Bản.",
+            "basis": "Đăng ký OCR; được Cục Việc làm Nước ngoài Nepal (DoFE) cấp phép; được OTIT và JITCO công nhận (văn phòng Nhật Bản)"
+          },
+          "satyawati": {
+            "name": "Satyawati Overseas Concern Pvt. Ltd.",
+            "type": "Cơ quan phái cử lao động",
+            "location": "Kathmandu, Nepal",
+            "description": "Hợp tác tuyển chọn và phái cử lao động theo hướng Hàn Quốc và Nhật Bản.",
+            "basis": "Đăng ký OCR; tổ chức phái cử được OTIT và JITCO của Nhật Bản công nhận"
+          },
+          "bhairav": {
+            "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+            "type": "Học viện đào tạo kỹ năng công nghiệp",
+            "location": "Tilottama, Rupandehi, Nepal",
+            "description": "Vận hành giáo dục kỹ năng nghề chuyên hàn và tìm kiếm ứng viên việc làm ở nước ngoài.",
+            "basis": "Đăng ký tại Cơ quan Đăng ký Công ty Nepal (OCR)"
+          },
+          "ocean": {
+            "name": "Ocean Technical Institute Pvt. Ltd.",
+            "type": "Tổ chức giáo dục và đào tạo",
+            "location": "Kathmandu, Nepal",
+            "description": "Phụ trách tuyển sinh, đào tạo công việc và ngôn ngữ, cùng giáo dục trước khi xuất cảnh.",
+            "basis": "Đăng ký tại Cơ quan Đăng ký Công ty Nepal (OCR)"
+          }
+        }
+      }
+    },
+    "why": {
+      "metadata": {
+        "title": "Uy tín và chuyên môn",
+        "description": "Vì sao một công ty mới có thể đáng tin cậy? Quan hệ đối tác đã được xác minh bao gồm MOU với năm tổ chức ở Nepal, chuyên môn về chế độ và pháp luật, chuyên môn của lãnh đạo và đội ngũ, cùng quy trình minh bạch."
+      },
+      "banner": {
+        "eyebrow": "Nguyên tắc vận hành",
+        "context": "Sự thật có thể kiểm chứng và tiêu chuẩn chế độ",
+        "title": "Tiêu chuẩn uy tín",
+        "description": "Trước những lời hứa hào nhoáng, chúng tôi công khai trước các sự thật có thể kiểm chứng, tiêu chuẩn chế độ và vai trò hợp tác.",
+        "crumb": "Uy tín và chuyên môn",
+        "alt": "Hình ảnh thực tế minh họa cho Uy tín và chuyên môn"
+      },
+      "main": {
+        "title": "Uy tín đến từ cách vận hành, không phải từ lời khẳng định",
+        "description": "Vì là doanh nghiệp mới, chúng tôi nói rõ ràng và trong phạm vi hẹp hơn. Chúng tôi chỉ công khai các quan hệ hợp tác có thể kiểm chứng và phạm vi chế độ mà chúng tôi xử lý.",
+        "alt": "Cảnh cuộc họp xem xét quy trình và nguyên tắc",
+        "principles": {
+          "partnership": {
+            "title": "Quan hệ đối tác đã được xác minh",
+            "description": "Ngày 5 tháng 7 năm 2026, chúng tôi ký MOU với năm tổ chức địa phương tại Nepal, thiết lập hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
+          },
+          "regulation": {
+            "title": "Xác nhận chế độ và pháp luật",
+            "description": "Chúng tôi xem xét E-9, E-7, D-2, D-4 của Hàn Quốc và Lao động kỹ năng đặc định số 1 của Nhật Bản theo tiêu chuẩn chính thức của chính phủ.",
+            "linkLabel": "Xem thông tin thị thực theo từng chế độ"
+          },
+          "network": {
+            "title": "Lãnh đạo và mạng lưới địa phương",
+            "description": "Đội ngũ do CEO Oh Je-hwan dẫn dắt, cùng mạng lưới hợp tác địa phương, phân chia quản lý tuyển chọn, đào tạo, thị thực và ổn định cuộc sống."
+          },
+          "process": {
+            "title": "Quy trình minh bạch",
+            "description": "Chúng tôi hướng dẫn trước vai trò, lịch trình, giấy tờ cần thiết, chi phí và thủ tục ở từng giai đoạn, đồng thời phân định rõ phạm vi trách nhiệm."
+          }
+        }
+      },
+      "refusals": {
+        "title": "Những điều chúng tôi không làm",
+        "description": "Chúng tôi vận hành theo luật lao động và xuất nhập cảnh của Hàn Quốc, Nhật Bản và Nepal.",
+        "items": {
+          "fees": "Thu phí quá mức trái với quy định của nước phái cử",
+          "abuse": "Buôn người, môi giới bất hợp pháp hoặc xâm phạm quyền lao động",
+          "misinformation": "Hướng dẫn thị thực chưa được xác minh hoặc những lời hứa phóng đại"
+        }
+      }
+    },
+    "contact": {
+      "metadata": {
+        "title": "Liên hệ",
+        "description": "Liên hệ về tuyển dụng lao động nước ngoài hoặc hợp tác. Hãy cho chúng tôi biết yêu cầu doanh nghiệp để được hướng dẫn về nhân lực và thủ tục phù hợp."
+      },
+      "banner": {
+        "eyebrow": "Hướng dẫn tư vấn",
+        "context": "Bắt đầu từ xác nhận công việc, số lượng và lịch trình",
+        "title": "Liên hệ",
+        "description": "Tuyển dụng lao động nước ngoài cần xác nhận trước công việc, số lượng, lịch trình và định hướng thị thực.",
+        "crumb": "Liên hệ",
+        "alt": "Hình ảnh thực tế minh họa cho Liên hệ"
+      },
+      "main": {
+        "title": "Hãy sắp xếp các thông tin cần thiết trước khi tư vấn",
+        "description": "Chức năng gửi biểu mẫu web chưa hoạt động. Trước hết chúng tôi cung cấp thông tin cơ bản của công ty và các hạng mục cần chuẩn bị cho tư vấn.",
+        "companyItems": {
+          "founder": "Giám đốc điều hành",
+          "businessNumber": "Mã số đăng ký kinh doanh",
+          "address": "Địa chỉ",
+          "phone": "Điện thoại",
+          "email": "Email"
+        }
+      },
+      "form": {
+        "title": "Đang chuẩn bị tích hợp liên hệ trực tuyến",
+        "description": "Màn hình này hiện chưa gửi nội dung. Cho đến khi kênh tiếp nhận chính thức được xác định, chúng tôi hướng dẫn trước các thông tin doanh nghiệp cần chuẩn bị.",
+        "preparationTitle": "Thông tin nên chuẩn bị trước khi tư vấn",
+        "preparationItems": {
+          "roleAndCount": "Vị trí công việc và số lượng nhân sự mong muốn",
+          "arrivalDate": "Thời điểm nhập cảnh mong muốn",
+          "visa": "Loại thị thực hoặc chương trình đang xem xét",
+          "locationAndHousing": "Khu vực làm việc và việc hỗ trợ chỗ ở"
+        },
+        "notice": "Chúng tôi không tạo nút gửi biểu mẫu tạm thời. Khi địa chỉ email hoặc endpoint tiếp nhận thực tế được xác định, khu vực này sẽ được chuyển thành biểu mẫu gửi.",
+        "status": "Sẽ được kích hoạt sau khi kênh tiếp nhận được xác nhận"
+      }
+    }
+  }
+}

@@ -1,11 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/nav";
 import { SITE } from "@/lib/site";
+import { getLocaleFromPathname, getMessages, localizedHref } from "@/lib/i18n";
 
 export default function SiteFooter() {
+  const pathname = usePathname() || "/";
+  const locale = getLocaleFromPathname(pathname);
+  const messages = getMessages(locale);
   const contacts = [
-    SITE.telephone ? { label: "전화", value: SITE.telephone } : null,
-    SITE.email ? { label: "이메일", value: SITE.email } : null,
+    SITE.telephone ? { label: messages.common.phone, value: SITE.telephone } : null,
+    SITE.email ? { label: messages.common.email, value: SITE.email } : null,
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
@@ -18,23 +25,21 @@ export default function SiteFooter() {
                 JW
               </span>
               <span className="leading-tight">
-                <span className="block text-[15px] font-bold text-ink">{SITE.nameKo}</span>
-                <span className="block text-[10px] font-display font-medium text-muted">{SITE.alternateName}</span>
+                <span className="block text-[15px] font-bold text-ink">{messages.site.name}</span>
+                <span className="block text-[10px] font-display font-medium text-muted">{messages.site.alternateName}</span>
               </span>
             </div>
-            <p className="mt-5 max-w-md text-sm leading-relaxed">
-              네팔 인재를 현지 교육부터 양성해 한국과 일본 기업에 합법적으로 연결합니다.
-            </p>
-            <p className="mt-4 text-xs text-gray-500">2026년 6월 설립, 해외 협력망은 네팔을 중심으로 운영합니다.</p>
+            <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
+            <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">메뉴</h3>
+            <h3 className="text-sm font-semibold text-ink">{messages.common.menu}</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="transition hover:text-cobalt">
-                    {item.label}
+                  <Link href={localizedHref(locale, item.href)} className="transition hover:text-cobalt">
+                    {messages.nav[item.key]}
                   </Link>
                 </li>
               ))}
@@ -42,25 +47,25 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">회사 정보</h3>
+            <h3 className="text-sm font-semibold text-ink">{messages.common.companyInfo}</h3>
             <dl className="mt-4 space-y-2.5 text-sm">
               <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">대표</dt>
-                <dd className="text-ink">{SITE.founder}</dd>
+                <dt className="text-gray-500">{messages.common.representative}</dt>
+                <dd className="text-ink">{messages.site.founder}</dd>
               </div>
               <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">사업자번호</dt>
-                <dd className="text-ink">{SITE.bizRegNo}</dd>
+                <dt className="text-gray-500">{messages.common.businessNumber}</dt>
+                <dd className="text-ink">{messages.site.businessRegistrationNumber}</dd>
               </div>
               <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">주소</dt>
-                <dd className="text-ink">{SITE.streetAddress}</dd>
+                <dt className="text-gray-500">{messages.common.address}</dt>
+                <dd className="text-ink">{messages.site.streetAddress}</dd>
               </div>
             </dl>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">문의</h3>
+            <h3 className="text-sm font-semibold text-ink">{messages.common.contact}</h3>
             {contacts.length ? (
               <dl className="mt-4 space-y-2.5 text-sm">
                 {contacts.map((item) => (
@@ -71,16 +76,14 @@ export default function SiteFooter() {
                 ))}
               </dl>
             ) : (
-              <p className="mt-4 text-sm leading-relaxed">
-                웹 문의 채널은 정식 운영 전입니다. 기업 요건 정리를 위한 안내 영역을 먼저 제공합니다.
-              </p>
+              <p className="mt-4 text-sm leading-relaxed">{messages.footer.contactNotice}</p>
             )}
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
-          <p>© 2026 {SITE.nameKo}. All rights reserved.</p>
-          <p>네팔, 한국, 일본</p>
+          <p>© 2026 {messages.site.name}. {messages.common.allRightsReserved}</p>
+          <p>{messages.footer.countries}</p>
         </div>
       </div>
     </footer>

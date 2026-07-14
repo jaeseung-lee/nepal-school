@@ -18,7 +18,7 @@ export default function OrganizationSchema() {
     description: SITE.description,
     foundingDate: SITE.foundingDate,
     founder: { "@type": "Person", name: SITE.founder },
-    knowsLanguage: ["ko", "en", "ja", "ne"],
+    knowsLanguage: ["ko", "en", "ja", "ne", "vi", "lo"],
     areaServed: SITE.areaServed.map((name) => ({
       "@type": "Country",
       name,

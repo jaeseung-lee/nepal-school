@@ -1,0 +1,481 @@
+{
+  "site": {
+    "name": "Joong Woo HRD",
+    "nameEnglish": "Joong Woo Human Resource Development Institute",
+    "alternateName": "JOONG WOO HRD",
+    "slogan": "A global human-resources partner developing Nepali talent through local training",
+    "seoTitle": "Nepali Talent Development and Employment Pathways to Korea and Japan",
+    "description": "We develop Nepali talent through local vocational training and connect them lawfully and reliably with companies in Korea and Japan. We manage the full journey—from training and examinations to matching, visas, and settlement support.",
+    "founder": "Oh Je-hwan",
+    "foundingDate": "June 10, 2026",
+    "businessRegistrationNumber": "684-13-02918",
+    "streetAddress": "6034, 6F, Geumbo Building, 21-6 Gugal-ro 28beon-gil, Giheung-gu, Yongin-si, Gyeonggi-do, Republic of Korea",
+    "areaServed": {
+      "nepal": "Nepal",
+      "vietnam": "Vietnam",
+      "laos": "Laos",
+      "korea": "Republic of Korea",
+      "japan": "Japan"
+    }
+  },
+  "common": {
+    "home": "Home",
+    "contact": "Contact us",
+    "details": "Learn more",
+    "viewProcess": "View process",
+    "visaInfo": "Visa information",
+    "menu": "Menu",
+    "companyInfo": "Company information",
+    "representative": "Representative",
+    "businessNumber": "Business registration number",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "language": "Language",
+    "comingSoon": "Coming soon",
+    "allRightsReserved": "All rights reserved.",
+    "currentLocation": "Current location",
+    "bannerImageAlt": "Field image illustrating {title}"
+  },
+  "nav": {
+    "about": "About us",
+    "services": "Services",
+    "visa": "Visa information",
+    "partners": "Partnerships",
+    "why": "Trust and expertise",
+    "contact": "Contact"
+  },
+  "header": {
+    "homeAria": "Joong Woo HRD home",
+    "primaryNav": "Primary navigation",
+    "languageSelector": "Select language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mobileNav": "Mobile navigation",
+    "mobileNotice": "Available in six languages, including Korean.",
+    "languages": {
+      "ko": "한국어",
+      "en": "English",
+      "ja": "日本語",
+      "ne": "नेपाली",
+      "vi": "Tiếng Việt",
+      "lo": "ລາວ"
+    }
+  },
+  "footer": {
+    "description": "We develop Nepali talent through local training and connect them lawfully with companies in Korea and Japan.",
+    "network": "Established in June 2026; our international partner network is centered on Nepal, Vietnam, and Laos.",
+    "contactNotice": "Our web inquiry channel is not yet formally open. This area first provides guidance for organizing company requirements.",
+    "countries": "Nepal, Vietnam, Laos, Republic of Korea, Japan"
+  },
+  "metrics": {
+    "ariaLabel": "Key facts",
+    "title": "We put only verifiable facts first",
+    "description": "As a newly established company, we do not publish unverified performance figures such as placement counts or rankings.",
+    "items": {
+      "visa": {
+        "value": "5",
+        "unit": "types",
+        "label": "Visa categories and systems supported",
+        "sub": "Four Korean categories and Japan’s Specified Skilled Worker No. 1"
+      },
+      "countries": {
+        "value": "5",
+        "unit": "countries",
+        "label": "Partner countries",
+        "sub": "Nepal, Vietnam, Laos, Republic of Korea, and Japan"
+      },
+      "partners": {
+        "value": "7",
+        "unit": "partners",
+        "label": "Partner organizations",
+        "sub": "Training, sending, and industry sectors"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Fair opportunities",
+      "lineBreak": "for everyone",
+      "description": "A corporate partner responsible for foreign talent from training and examinations through visas and settlement.",
+      "contactCta": "Contact us",
+      "servicesCta": "Explore services",
+      "alt": "A vocational training setting representing local education and preparation for international mobility"
+    },
+    "intro": {
+      "title": "Before placement, we design training and verification",
+      "description": "We are a company founded in June 2026. Rather than making exaggerated claims, we clearly disclose local partners, regulatory standards, and roles at every stage.",
+      "aboutCta": "About us",
+      "whyCta": "Our trust standards"
+    },
+    "services": {
+      "title": "We unite education, Korea, and Japan in one operating system",
+      "description": "Each service area may appear separate, but in practice selection, training, examinations, visas, and settlement are connected."
+    },
+    "partners": {
+      "title": "A partner’s role matters more than its name",
+      "description": "Rather than decorating the site with organizations whose logos are not ready, we first show the responsibilities each partner actually carries.",
+      "detailsCta": "Explore our partnerships"
+    },
+    "faq": {
+      "title": "Questions companies should answer first",
+      "description": "Foreign-worker hiring risks can be reduced by confirming the system and each party’s role first.",
+      "alt": "A company consultation scene",
+      "items": {
+        "company": {
+          "q": "What kind of company is Joong Woo HRD?",
+          "a": "Joong Woo HRD is a global human-resources development company that develops Nepali talent through local vocational training and lawfully connects it with companies in Korea and Japan."
+        },
+        "visa": {
+          "q": "Which work visas and systems do you support?",
+          "a": "For Korea, we support E-9, E-7, D-2, and D-4. For Japan, we support Specified Skilled Worker No. 1. We review the system that fits the company’s requirements and the role. Visa Information provides each system’s requirements and procedures.",
+          "linkLabel": "Visa information"
+        },
+        "process": {
+          "q": "What does the hiring process look like?",
+          "a": "The process proceeds through selection, training, examination, matching, contract and visa, arrival, and settlement. Each stage is managed with clearly assigned roles alongside local partners."
+        },
+        "countries": {
+          "q": "Which countries do your candidates come from?",
+          "a": "We connect talent developed in Nepal with companies in Korea and Japan. Our current network focuses on five countries: Nepal, Vietnam, Laos, Republic of Korea, and Japan."
+        },
+        "trust": {
+          "q": "Can a new company be trusted?",
+          "a": "We disclose only verifiable facts rather than unconfirmed placement counts or rankings. Our work is based on a cooperative system that includes MOUs with five organizations in Nepal."
+        }
+      }
+    },
+    "serviceCards": {
+      "training": {
+        "title": "Local vocational training",
+        "desc": "We provide job, language, and cultural education locally first, improving candidates’ readiness before companies meet them.",
+        "alt": "Local vocational training setting"
+      },
+      "koreaVisa": {
+        "title": "Korean work visas",
+        "desc": "We design hiring procedures for the E-9, E-7, D-2, and D-4 systems.",
+        "alt": "Korean work visa setting"
+      },
+      "japanSsw": {
+        "title": "Japan’s Specified Skilled Worker program",
+        "desc": "With a focus on caregiving and accommodation, we match candidates who have passed Japanese-language and skills examinations.",
+        "alt": "Japan Specified Skilled Worker setting"
+      }
+    },
+    "process": {
+      "title": "We manage one continuous journey from selection to settlement",
+      "description": "We group seven stages into three phases so companies can easily understand who checks what and when.",
+      "alt": "Document image representing visa and contract procedures",
+      "phases": {
+        "localPreparation": {
+          "title": "Local preparation",
+          "desc": "Rather than sending candidates immediately after recruitment, we first confirm job readiness, language ability, and cultural adaptation.",
+          "steps": {
+            "selection": "Selection",
+            "training": "Training",
+            "exam": "Examination"
+          }
+        },
+        "matching": {
+          "title": "Company matching",
+          "desc": "We review company and regulatory requirements together, then move on to contract and visa procedures.",
+          "steps": {
+            "matching": "Matching",
+            "contractVisa": "Contract and visa"
+          }
+        },
+        "afterArrival": {
+          "title": "After arrival",
+          "desc": "We continue living support and administrative checks after placement to reduce settlement risk.",
+          "steps": {
+            "arrival": "Arrival",
+            "settlement": "Settlement"
+          }
+        }
+      }
+    },
+    "collage": {
+      "training": {
+        "label": "Local vocational training"
+      },
+      "korea": {
+        "label": "Korean industrial workplace"
+      },
+      "japan": {
+        "label": "Preparation for caregiving and accommodation work in Japan"
+      },
+      "documents": {
+        "label": "Visa and contract documents"
+      },
+      "consultation": {
+        "label": "Preparing for consultation"
+      }
+    }
+  },
+  "partnerCards": {
+    "eyebrow": "Verified partner network",
+    "title": "We describe partner organizations through their roles and responsibilities",
+    "description": "Until permission to use a logo is granted, we do not create a temporary one. We display only the actual roles each organization performs.",
+    "partners": {
+      "richhood": {
+        "country": "NP",
+        "name": "Richhood Overseas",
+        "role": "Nepal manpower supply agency",
+        "desc": "MOU partner for worker selection, qualification verification, and immigration administration"
+      },
+      "sunkoshi": {
+        "country": "NP",
+        "name": "Sunkoshi Manpower Service",
+        "role": "Overseas employment agency",
+        "desc": "Nepal Ministry of Labour-authorized overseas employment agency and MOU partner"
+      },
+      "satyawati": {
+        "country": "NP",
+        "name": "Satyawati Overseas Concern",
+        "role": "Overseas employment agency",
+        "desc": "MOU partner for selecting and sending workers to Korea and Japan"
+      },
+      "bhairav": {
+        "country": "NP",
+        "name": "Bhairav Industrial Skills Hub",
+        "role": "Industrial skills training institute",
+        "desc": "MOU partner for welding-focused vocational education and student recruitment"
+      },
+      "ocean": {
+        "country": "NP",
+        "name": "Ocean Technical Institute",
+        "role": "Education and training institution",
+        "desc": "MOU partner for vocational and language training and pre-departure education"
+      },
+      "kathmandu": {
+        "country": "NP",
+        "name": "Kathmandu Technical School",
+        "role": "Vocational training school",
+        "desc": "Local job and skills training"
+      },
+      "koreaHousing": {
+        "country": "KR",
+        "name": "Korea Housing Construction Association",
+        "role": "Industry association",
+        "desc": "Connecting workforce demand in the housing-construction industry"
+      }
+    }
+  },
+  "cta": {
+    "title": "Let us first confirm your company’s requirements",
+    "description": "Tell us the role, headcount, preferred timeline, and visa direction, and we will outline the available process and preparation order.",
+    "contactCta": "Contact us",
+    "processCta": "View process",
+    "alt": "A meeting room and documents prepared for consultation"
+  },
+  "pages": {
+    "about": {
+      "metadata": {
+        "title": "About us",
+        "description": "Learn about Joong Woo HRD, a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan."
+      },
+      "banner": {
+        "eyebrow": "Company overview",
+        "context": "From local training to settlement support",
+        "title": "About us",
+        "description": "We are a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan.",
+        "crumb": "About us",
+        "alt": "Field image illustrating About us"
+      },
+      "main": {
+        "title": "Talent should not simply be sent; it should be prepared",
+        "paragraphs": {
+          "first": "Joong Woo HRD begins with vocational training in Nepal. We lawfully connect talent equipped with job, language, and cultural skills to the requirements of companies in Korea and Japan.",
+          "second": "In July 2026, we signed MOUs with five organizations in Nepal to strengthen cooperation for worker selection, qualification verification, education, and immigration administration."
+        },
+        "servicesCta": "Services",
+        "partnersCta": "Partnerships",
+        "whyCta": "Our trust standards"
+      }
+    },
+    "services": {
+      "metadata": {
+        "title": "Services",
+        "description": "From vocational schools in Nepal and Korean work visas (E-9, E-7, D-2, D-4) to Japan’s Specified Skilled Worker program: Joong Woo HRD’s three core service areas and one-stop process."
+      },
+      "banner": {
+        "eyebrow": "Service structure",
+        "context": "Integrated operation of training, visas, and matching",
+        "title": "Services",
+        "description": "This is more than simple placement. We connect companies with verified talent through an integrated structure of local training, visas, and matching.",
+        "crumb": "Services",
+        "alt": "Field image illustrating Services"
+      },
+      "main": {
+        "title": "We design training-led development and system-led hiring together",
+        "descriptionBeforeVisa": "The three service areas are not standalone products but one hiring-operation flow. Requirements and procedures for each system used in hiring are available in",
+        "visaLink": "Visa information",
+        "descriptionAfterVisa": "."
+      }
+    },
+    "partners": {
+      "metadata": {
+        "title": "Partnerships",
+        "description": "International business MOUs were signed with five organizations in Nepal in July 2026. Three sending agencies and two vocational skills and education organizations share selection, verification, training, and immigration administration."
+      },
+      "banner": {
+        "eyebrow": "Cooperation network",
+        "context": "Partnerships with verified roles",
+        "title": "Partnerships",
+        "description": "We build a flow of selection, training, sending, and matching by dividing roles with organizations in Nepal and Korea.",
+        "crumb": "Partnerships",
+        "alt": "Field image illustrating Partnerships"
+      },
+      "feature": {
+        "alt": "An international partnership discussion",
+        "title": "International business MOUs signed with five organizations in Nepal",
+        "description": "On July 5, 2026, Joong Woo HRD signed separate MOUs with three local Nepali worker-sending agencies and two vocational skills and education organizations. The parties defined vocational education, employment links to Korea and Japan, job and language education, and detailed immigration procedures as areas of cooperation.",
+        "mouItems": {
+          "date": {
+            "title": "Date signed",
+            "description": "July 5, 2026"
+          },
+          "structure": {
+            "title": "MOU structure",
+            "description": "Three sending agencies plus two vocational skills and education organizations; separate MOUs with each"
+          },
+          "partnerRole": {
+            "title": "Partner roles",
+            "description": "Worker selection and qualification verification, vocational skills, job, and language education, and immigration-related administrative support"
+          },
+          "joongwooRole": {
+            "title": "Joong Woo HRD’s role",
+            "description": "Developing and matching companies in Korea and Japan, and providing legal, labor, administrative, and accounting settlement support for arriving workers"
+          }
+        }
+      },
+      "mou": {
+        "eyebrow": "International business MOUs, July 2026",
+        "title": "Five MOU partner organizations",
+        "description": "The group consists of three worker-sending agencies and two vocational skills and education organizations responsible for selection and training. Only facts verified through official registration are shown for each organization.",
+        "partners": {
+          "richhood": {
+            "name": "Richhood Overseas Inc. (P) Ltd.",
+            "type": "Worker-sending agency",
+            "location": "Kathmandu, Nepal",
+            "description": "Supports worker selection, qualification verification, and immigration-related administration.",
+            "basis": "Registered with Nepal’s Office of Company Registrar (OCR); recognized sending organization by Japan’s OTIT and JITCO"
+          },
+          "sunkoshi": {
+            "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+            "type": "Worker-sending agency",
+            "location": "Kathmandu, Nepal",
+            "description": "Founded in 1995. Sends workers overseas, including to Korea and Japan.",
+            "basis": "OCR registration; licensed by Nepal’s Department of Foreign Employment (DoFE); recognized by OTIT and JITCO (Japan office)"
+          },
+          "satyawati": {
+            "name": "Satyawati Overseas Concern Pvt. Ltd.",
+            "type": "Worker-sending agency",
+            "location": "Kathmandu, Nepal",
+            "description": "Cooperates on worker selection and sending for Korea and Japan.",
+            "basis": "OCR registration; recognized sending organization by Japan’s OTIT and JITCO"
+          },
+          "bhairav": {
+            "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+            "type": "Industrial skills training institute",
+            "location": "Tilottama, Rupandehi, Nepal",
+            "description": "Operates welding-focused vocational skills education and identifies candidates for overseas employment.",
+            "basis": "Registered with Nepal’s Office of Company Registrar (OCR)"
+          },
+          "ocean": {
+            "name": "Ocean Technical Institute Pvt. Ltd.",
+            "type": "Education and training institution",
+            "location": "Kathmandu, Nepal",
+            "description": "Handles student recruitment, job and language education, and pre-departure education.",
+            "basis": "Registered with Nepal’s Office of Company Registrar (OCR)"
+          }
+        }
+      }
+    },
+    "why": {
+      "metadata": {
+        "title": "Trust and expertise",
+        "description": "Why can a new company be trusted? Verified partnerships including MOUs with five organizations in Nepal, system and regulatory expertise, leadership and team expertise, and a transparent process."
+      },
+      "banner": {
+        "eyebrow": "Operating principles",
+        "context": "Verifiable facts and regulatory standards",
+        "title": "Trust standards",
+        "description": "Before making grand promises, we disclose verifiable facts, regulatory standards, and cooperative roles.",
+        "crumb": "Trust and expertise",
+        "alt": "Field image illustrating Trust and expertise"
+      },
+      "main": {
+        "title": "Trust comes from how we operate, not what we claim",
+        "description": "Because we are a new company, we speak more narrowly and clearly. We disclose only verifiable partnerships and the systems within our scope.",
+        "alt": "A meeting scene reviewing processes and principles",
+        "principles": {
+          "partnership": {
+            "title": "Verified partnerships",
+            "description": "On July 5, 2026, we signed MOUs with five local organizations in Nepal and established a cooperative system for worker selection, qualification verification, education, and immigration administration."
+          },
+          "regulation": {
+            "title": "Checking systems and regulations",
+            "description": "We review Korea’s E-9, E-7, D-2, and D-4 and Japan’s Specified Skilled Worker No. 1 against official government standards.",
+            "linkLabel": "View visa information by system"
+          },
+          "network": {
+            "title": "Leadership and local network",
+            "description": "A team led by CEO Oh Je-hwan and supported by a local cooperation network shares responsibility for selection, training, visas, and settlement."
+          },
+          "process": {
+            "title": "Transparent process",
+            "description": "We explain each stage’s roles, schedule, required documents, costs, and procedures in advance and clearly divide responsibilities."
+          }
+        }
+      },
+      "refusals": {
+        "title": "What we do not do",
+        "description": "We operate in accordance with labor and immigration laws in Korea, Japan, and Nepal.",
+        "items": {
+          "fees": "Collect excessive fees that violate sending-country regulations",
+          "abuse": "Human trafficking, illegal brokerage, or violations of labor rights",
+          "misinformation": "Unverified visa guidance or exaggerated promises"
+        }
+      }
+    },
+    "contact": {
+      "metadata": {
+        "title": "Contact",
+        "description": "Ask about foreign-worker recruitment or partnerships. Tell us your company’s requirements and we will guide you to suitable talent and procedures."
+      },
+      "banner": {
+        "eyebrow": "Consultation guidance",
+        "context": "Starting with the role, headcount, and timeline",
+        "title": "Contact",
+        "description": "Foreign-worker recruitment requires confirming the role, headcount, schedule, and visa direction first.",
+        "crumb": "Contact",
+        "alt": "Field image illustrating Contact"
+      },
+      "main": {
+        "title": "Let us organize the necessary facts before the consultation",
+        "description": "Web-form submission is not yet in operation. We first provide company information and items to prepare for a consultation.",
+        "companyItems": {
+          "founder": "CEO",
+          "businessNumber": "Business registration number",
+          "address": "Address",
+          "phone": "Phone",
+          "email": "Email"
+        }
+      },
+      "form": {
+        "title": "Web inquiry integration in preparation",
+        "description": "This screen does not send your information yet. Until a formal intake channel is confirmed, it first explains the information companies should prepare.",
+        "preparationTitle": "Useful information to organize before consultation",
+        "preparationItems": {
+          "roleAndCount": "Desired roles and headcount",
+          "arrivalDate": "Preferred arrival date",
+          "visa": "Visa or system under consideration",
+          "locationAndHousing": "Work location and whether housing support is available"
+        },
+        "notice": "We have not added a temporary form-submit button. Once an actual email address or submission endpoint is set, this area will become a submission form.",
+        "status": "Will be enabled after the intake channel is confirmed"
+      }
+    }
+  }
+}

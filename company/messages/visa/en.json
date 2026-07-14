@@ -1,0 +1,232 @@
+{
+  "ui": {
+    "visaInformation": "Visa information",
+    "viewDetails": "View details",
+    "atAGlance": "At a glance",
+    "frequentlyAskedQuestions": "Frequently asked questions",
+    "relatedVisasAndSystems": "Related visas and systems",
+    "countryKorea": "South Korea",
+    "countryJapan": "Japan",
+    "disclaimer": "Visa schemes and figures may change in line with government notices and Cabinet decisions. This page provides general information as of the date of writing; please contact us to confirm the requirements that apply to your company and the latest criteria."
+  },
+  "hub": {
+    "metadata": {
+      "title": "Foreign-worker visa information — Korea E-9, E-7, D-2/D-4 and Japan Specified Skilled Worker",
+      "description": "A single guide to visas and systems used to hire foreign workers. It covers Korea's Employment Permit System E-9, professional-worker E-7, study D-2/D-4, and Japan's Specified Skilled Worker No. 1, nursing-care and accommodation fields, and Employment for Skill Development.",
+      "keywords": "foreign worker hiring visas, foreign worker visas, work visa types, Employment Permit System, Specified Skilled Worker"
+    },
+    "banner": {
+      "eyebrow": "Visa information",
+      "context": "System-by-system guidance based on official government criteria",
+      "title": "Foreign-worker visa information",
+      "description": "Hiring foreign workers starts with choosing the right visa or system. We explain Korean and Japanese work visas by system from an HR manager's perspective.",
+      "crumb": "Visa information",
+      "alt": "Foreign-worker visa information for South Korea and Japan"
+    },
+    "koreaSection": {
+      "title": "Korean work visas",
+      "description": "The appropriate system differs according to the workers needed, including the Employment Permit System (E-9), professional personnel (E-7), and the international-student pipeline (D-2/D-4)."
+    },
+    "japanSection": {
+      "title": "Japanese work systems",
+      "description": "Japan centers on Specified Skilled Worker No. 1. Requirements vary by field, including nursing care and accommodation, and Technical Intern Training transitions to Employment for Skill Development from April 2027."
+    },
+    "comparison": {
+      "title": "Comparing E-9, Specified Skilled Worker No. 1, and Employment for Skill Development",
+      "description": "All three support the hiring of foreign workers in labor-shortage industries, but their legal nature and structure differ. They are the three systems most often compared when considering hiring in Korea and Japan together.",
+      "table": {
+        "header": "Category",
+        "koreaE9": "Korea E-9",
+        "japanSpecifiedSkilledWorker": "Japan Specified Skilled Worker No. 1",
+        "japanEmploymentForSkillDevelopment": "Japan Employment for Skill Development (from Apr. 2027)",
+        "rows": {
+          "legalNature": {
+            "label": "Legal nature",
+            "koreaE9": "Work visa for non-professional foreign workers",
+            "japanSpecifiedSkilledWorker": "Employment status for immediately productive workers in labor-shortage fields",
+            "japanEmploymentForSkillDevelopment": "A development system premised on transition to Specified Skilled Worker status"
+          },
+          "stayDuration": {
+            "label": "Length of stay",
+            "koreaE9": "Three years initially, plus a re-employment extension",
+            "japanSpecifiedSkilledWorker": "Five years in total",
+            "japanEmploymentForSkillDevelopment": "Transition to Specified Skilled Worker No. 1 after the development period"
+          },
+          "preEntryExamination": {
+            "label": "Pre-entry examination",
+            "koreaE9": "Employment Permit System procedures such as EPS-TOPIK",
+            "japanSpecifiedSkilledWorker": "Japanese-language test plus field-specific skills test",
+            "japanEmploymentForSkillDevelopment": "Development is integral to the system's purpose (requirements are set by field)"
+          },
+          "intermediary": {
+            "label": "Intermediary",
+            "koreaE9": "Government-to-government G2G referral",
+            "japanSpecifiedSkilledWorker": "None (direct company employment; support may be outsourced)",
+            "japanEmploymentForSkillDevelopment": "Supervising and support organization structure remains"
+          },
+          "jobChange": {
+            "label": "Workplace/job change",
+            "koreaE9": "Workplace changes are restricted",
+            "japanSpecifiedSkilledWorker": "Job changes are possible within the same field",
+            "japanEmploymentForSkillDevelopment": "Restricted"
+          }
+        }
+      },
+      "itemListName": "Foreign-worker visa and system guide"
+    }
+  },
+  "visas": {
+    "e-9": {
+      "code": "E-9",
+      "name": "Non-professional Employment E-9 (Employment Permit System)",
+      "countryLabel": "South Korea",
+      "seoTitle": "E-9 visa (Employment Permit System): process and requirements — foreign worker hiring guide",
+      "summary": "This guide covers the employer requirements for hiring foreign workers under the Employment Permit System (E-9), the six application steps, length of stay and re-employment, and limits on workplace changes.",
+      "keywords": "E-9 visa, Employment Permit System, foreign worker hiring, non-professional employment visa, E-9 process, EPS",
+      "glance": {
+        "target": {"label": "Eligible workers", "value": "Production and on-site workers in notified industries such as manufacturing, agriculture and livestock, fisheries, and construction"},
+        "stayDuration": {"label": "Length of stay", "value": "Three years initially, plus an extension of up to one year and 10 months upon re-employment"},
+        "coreRequirements": {"label": "Key requirement", "value": "Completion of the sending-country selection process, including EPS-TOPIK (Employment Permit System Test of Proficiency in Korean)"},
+        "employmentType": {"label": "Employment model", "value": "Direct employment by the workplace (government-to-government G2G referral)"},
+        "operator": {"label": "Administered by", "value": "Ministry of Employment and Labor Employment Permit System (EPS); 16 sending countries, including Nepal"}
+      },
+      "faqs": {
+        "employerFirstStep": {"question": "What must an employer do first to hire an E-9 worker?", "answer": "First make efforts to recruit Korean nationals, such as posting a vacancy on Worknet, then apply for an employment permit at the competent employment center. The center can confirm whether hiring is permitted and the allowable number of workers for the industry and workplace size."},
+        "hiringTimeline": {"question": "How long does hiring take?", "answer": "The process runs through efforts to recruit Korean nationals, an employment permit, an employment contract, confirmation of visa issuance, entry, and employment training, so it should generally be planned in months. Timing varies with quotas and conditions in the sending country."},
+        "workplaceChange": {"question": "Can E-9 workers freely change companies?", "answer": "In principle, workplace changes are restricted. They are possible only a limited number of times for legally prescribed reasons such as business suspension or closure, or unfair treatment. For employers, this can support relatively stable employment."},
+        "nepalHiring": {"question": "Can we hire workers from Nepal under E-9?", "answer": "Nepal is one of the Employment Permit System's sending countries. Workers are referred from a pool that has passed prescribed procedures such as EPS-TOPIK; detailed operations follow notices issued for each period."},
+        "rehiringAfterThreeYears": {"question": "What happens with re-employment after three years of work?", "answer": "After the initial three years, workers who meet the requirements can receive a re-employment extension of up to one year and 10 months. A scheme also operates under which diligent workers who meet certain conditions may leave Korea, re-enter, and work again."}
+      }
+    },
+    "e-7": {
+      "code": "E-7",
+      "name": "Specific Activities E-7 (professional and skilled personnel)",
+      "countryLabel": "South Korea",
+      "seoTitle": "E-7 visa requirements and process — hiring guide for foreign professional and skilled personnel",
+      "summary": "This guide explains the E-7 Specific Activities visa categories (E-7-1 to E-7-4), education and experience requirements by occupation, employer checkpoints, and the application process from the perspective of hiring foreign professionals and skilled personnel.",
+      "keywords": "E-7 visa, hiring foreign professionals, E-7-4, skilled workers, Specific Activities visa",
+      "glance": {
+        "target": {"label": "Eligible workers", "value": "Professional, semi-professional, skilled, and skilled-functional personnel in occupations notified by the Ministry of Justice"},
+        "types": {"label": "Categories", "value": "E-7-1 professional personnel · E-7-2 semi-professional personnel · E-7-3 general skilled personnel · E-7-4 skilled-functional personnel"},
+        "coreRequirements": {"label": "Key requirements", "value": "Education and experience requirements by occupation plus salary requirements (under annual guidelines)"},
+        "employmentType": {"label": "Employment model", "value": "Direct employment by the company"},
+        "startingPoint": {"label": "Starting point", "value": "Confirm that the role to be filled is an occupation permitted under E-7"}
+      },
+      "faqs": {
+        "differenceFromE9": {"question": "What is the difference between E-7 and E-9?", "answer": "E-9 assigns non-professional workers through government-to-government referrals, while E-7 lets a company designate and hire professional or skilled personnel in a specific occupation. For E-7, occupational eligibility and an individual review of education and experience are central."},
+        "educationAndExperience": {"question": "What education or experience requirements apply?", "answer": "Each occupation has a prescribed combination of degree and work-experience requirements. In general, a bachelor's degree or higher in a relevant field, an associate degree plus experience, or substantial experience is required; the detailed criteria must be checked in the Ministry of Justice's annual guidelines."},
+        "e74": {"question": "What is E-7-4 (skilled-functional personnel)?", "answer": "It is a category that assesses foreign workers with a long domestic residence history through a points system and converts them to skilled-functional personnel. It is a major route for extending into long-term employment workers who have worked under E-9 or similar status."},
+        "studentHiring": {"question": "Can international students be hired under E-7?", "answer": "For international students who graduate from a Korean university (D-2), conversion to E-7 upon meeting the requirements is a typical route. The connection between the major and the role, as well as company requirements, must be reviewed together."},
+        "employerRequirements": {"question": "Are there employer-side requirements as well?", "answer": "Depending on the industry, limits apply to the ratio of foreign employees to Korean employees, as do workplace requirements. Before hiring, confirm how many foreign workers your company may employ in the relevant occupation."}
+      }
+    },
+    "d-2-d-4": {
+      "code": "D-2·D-4",
+      "name": "Study D-2 · General Training D-4",
+      "countryLabel": "South Korea",
+      "seoTitle": "D-2 and D-4 visa guide — international-student hiring pipeline guide",
+      "summary": "This guide explains the difference between the Study (D-2) and General Training (D-4) visas, limits on part-time work while enrolled, and the path to D-10 and E-7 after graduation from the perspective of an international-student hiring pipeline.",
+      "keywords": "D-2 visa, D-4 visa, hiring international students, permission for part-time work, international student part-time job, D-10",
+      "glance": {
+        "d2Target": {"label": "D-2 eligibility", "value": "International students in degree programs at junior college level or above, including bachelor's, master's, and doctoral programs"},
+        "d4Target": {"label": "D-4 eligibility", "value": "Students in language training or general training, including university-affiliated language institutes"},
+        "employmentWhileEnrolled": {"label": "Work while enrolled", "value": "Permission for activities outside status of stay (part-time work) is required; weekly-hour limits vary by program and stage"},
+        "pathAfterGraduation": {"label": "Post-graduation path", "value": "D-10 (job seeking) → conversion to an employment status such as E-7"},
+        "employerPerspective": {"label": "Employer perspective", "value": "A pipeline that verifies workers through part-time work while enrolled, then hires them full-time upon graduation"}
+      },
+      "faqs": {
+        "differenceBetweenD2AndD4": {"question": "What is the difference between D-2 and D-4?", "answer": "D-2 is a status for international students in degree programs at junior college level or above, while D-4 is a status for non-degree trainees, including language trainees. A common path is to enter under D-4 for language study and later change to D-2."},
+        "employmentWhileEnrolled": {"question": "Can international students be employed while they are enrolled?", "answer": "Only international students who have received permission for activities outside status of stay (permission for part-time work) may be employed. Weekly working-hour limits differ according to degree program, year of study, and Korean-language ability, and there are limits on permitted industries."},
+        "fullTimeHiringAfterGraduation": {"question": "How can we hire a graduated international student as a full-time employee?", "answer": "The usual path is to change to D-10, the job-seeking status, after graduation and conduct job seeking; once hiring is confirmed, the person converts to an employment status such as E-7. The relationship between the major and the job is a key review point."},
+        "pipelineValue": {"question": "Why does hiring international students form a pipeline?", "answer": "Part-time work while enrolled makes it possible to verify practical fit and Korean-language ability before leading to full-time employment at graduation, so it carries less risk than hiring someone overseas from the outset."}
+      }
+    },
+    "tokutei-ginou": {
+      "code": "特定技能 1号",
+      "name": "Japan Specified Skilled Worker No. 1",
+      "countryLabel": "Japan",
+      "seoTitle": "Specified Skilled Worker visa (SSW No. 1): requirements, hiring process, and comparison with technical intern training",
+      "summary": "This guide covers the 16 fields under Japan's Specified Skilled Worker No. 1 visa, a total stay of five years, Japanese-language and skills-test requirements, the hiring process from COE to entry, and differences from technical intern training and Korea's E-9.",
+      "keywords": "Specified Skilled Worker visa, Specified Skilled Worker No. 1, 特定技能, hiring foreign workers in Japan, Japan work visa, SSW",
+      "glance": {
+        "targetFields": {"label": "Eligible fields", "value": "16 fields, including nursing care, accommodation, food service, construction, and agriculture; four fields were added in 2024"},
+        "stayDuration": {"label": "Length of stay", "value": "Five years in total, renewable in one-year, six-month, or four-month increments"},
+        "coreRequirements": {"label": "Key requirements", "value": "Japanese-language test (JFT-Basic 200/250 or JLPT N4) plus a skills test for the relevant field"},
+        "employmentType": {"label": "Employment model", "value": "Direct employment by the accepting organization; dispatch is not allowed for nursing care or accommodation"},
+        "familyAccompaniment": {"label": "Family accompaniment", "value": "Not permitted in principle for No. 1; permitted for No. 2"}
+      },
+      "faqs": {
+        "differenceFromTechnicalInternTraining": {"question": "How is Specified Skilled Worker status different from Technical Intern Training?", "answer": "Technical Intern Training is a training scheme, nominally for technology transfer, that goes through a supervising organization. Specified Skilled Worker No. 1 is an employment status for immediately productive workers in labor-shortage fields, hired directly by companies. Technical Intern Training will transition to the Employment for Skill Development system from April 2027."},
+        "hiringTimeline": {"question": "How long does hiring take?", "answer": "The standard processing time for a Certificate of Eligibility (COE) is one to three months. Before that come passing the tests, the employment contract, and preparation of a support plan; afterward come local sending procedures and visa issuance. Planning for at least six months overall is safer."},
+        "acceptingOrganizationObligations": {"question": "What are the obligations of the accepting organization (company)?", "answer": "The organization must perform the 10 mandatory support items itself or outsource them to a registered support organization. These include pre-arrival guidance, airport pickup and drop-off, housing support, and a daily-life orientation. The company bears support costs and cannot pass them on to the worker."},
+        "remuneration": {"question": "What level of remuneration is required?", "answer": "Pay equal to or higher than that of Japanese workers performing the same work is a legal requirement. If there is no comparable worker, the assessment is based on wage rules or examples of similar work."},
+        "jobChange": {"question": "Can a Specified Skilled Worker change jobs?", "answer": "A job change is possible within the same field (work category). If the field changes, permission to change status of residence must be obtained again, so in practice this is not an unrestricted job-change arrangement."},
+        "afterFiveYears": {"question": "What happens after five years?", "answer": "In some fields, workers who are recognized as skilled can move to Specified Skilled Worker No. 2, which permits unlimited renewals and family accompaniment. In nursing care, instead of No. 2, there is a long-term path to the residence status \"Care\" by passing the national Certified Care Worker examination."}
+      }
+    },
+    "tokutei-ginou-kaigo": {
+      "code": "特定技能 介護",
+      "name": "Specified Skilled Worker: Nursing Care (介護)",
+      "countryLabel": "Japan",
+      "seoTitle": "Specified Skilled Worker nursing-care visa — test requirements and care-worker hiring process",
+      "summary": "This guide covers the three tests for Japan's Specified Skilled Worker nursing-care field (Japanese, nursing-care skills, and nursing-care Japanese), direct-employment requirements, hiring capacity against the acceptance cap, and the long-term Certified Care Worker path from a care-facility hiring perspective.",
+      "keywords": "Specified Skilled Worker nursing care, nursing-care visa, Japan care workers, 介護, nursing-care skills evaluation test, nursing-care Japanese evaluation test",
+      "glance": {
+        "field": {"label": "Field", "value": "Nursing care (long-term care and care services)"},
+        "examinations": {"label": "Examinations", "value": "Japanese-language test + 介護技能評価試験 + 介護日本語評価試験; all three must be passed"},
+        "employmentType": {"label": "Employment model", "value": "Direct employment only; dispatch is not permitted"},
+        "acceptanceCap": {"label": "Acceptance cap", "value": "126,900 people (under the operational policy in the January 2026 Cabinet decision)"},
+        "longTermPath": {"label": "Long-term path", "value": "Pass the national Certified Care Worker examination → residence status \"Care\" (long-term stay and family accompaniment)"}
+      },
+      "faqs": {
+        "threeExaminations": {"question": "Why are there three examinations in the nursing-care field?", "answer": "Other fields have two tests, a Japanese-language test and a skills test. Nursing care adds the 介護日本語評価試験 (nursing-care Japanese) because communication in care settings is important. All three—the Japanese-language, nursing-care skills, and nursing-care Japanese tests—must be passed."},
+        "afterFiveYears": {"question": "There is no Specified Skilled Worker No. 2 for nursing care. What happens after five years?", "answer": "Nursing care has a separate \"Care\" residence status instead of No. 2. A worker who works under Specified Skilled Worker No. 1 and passes the national Certified Care Worker examination can move to \"Care,\" enabling long-term residence and family accompaniment. For facilities, this is a settlement path looking beyond five years."},
+        "dispatchEmployment": {"question": "Can we receive workers through a dispatch arrangement?", "answer": "Only direct employment is permitted in nursing care; dispatch is not recognized. The facility must conclude a direct employment contract as the accepting organization and put a mandatory support system in place."},
+        "nepalExaminationParticipation": {"question": "Are workers from Nepal actively taking the nursing-care examinations?", "answer": "Nepal has a sufficient number of examinees to be reported as a separate category in the Ministry of Health, Labour and Welfare's monthly test results. The nursing-care skills-test pass rate is generally in the 70% range, while nursing-care Japanese varies by test session (based on MHLW publications for 2025–2026)."}
+      }
+    },
+    "tokutei-ginou-shukuhaku": {
+      "code": "特定技能 宿泊",
+      "name": "Specified Skilled Worker: Accommodation (宿泊)",
+      "countryLabel": "Japan",
+      "seoTitle": "Specified Skilled Worker accommodation visa — guide to hiring foreign workers for hotels and ryokan",
+      "summary": "This guide covers the 宿泊業技能測定試験 in Japan's Specified Skilled Worker accommodation field, the scope of work (front desk, planning and promotion, guest service, and restaurant service), direct-employment requirements, and hiring capacity against the acceptance cap from the perspective of hotels and ryokan.",
+      "keywords": "Specified Skilled Worker accommodation, hiring foreign workers for hotels, 宿泊, accommodation industry skills measurement test, ryokan workers",
+      "glance": {
+        "field": {"label": "Field", "value": "Accommodation, including hotels and ryokan"},
+        "examinations": {"label": "Examinations", "value": "Japanese-language test + 宿泊業技能測定試験"},
+        "scopeOfWork": {"label": "Scope of work", "value": "The full range of accommodation services, including front desk, planning and promotion, guest service, and restaurant service"},
+        "employmentType": {"label": "Employment model", "value": "Direct employment only; dispatch is not permitted"},
+        "acceptanceCap": {"label": "Acceptance cap", "value": "14,800 people (under the operational policy in the January 2026 Cabinet decision)"}
+      },
+      "faqs": {
+        "scopeOfWork": {"question": "What work can be assigned in the accommodation field?", "answer": "It covers the full range of accommodation-service work, including front desk, planning and promotion, guest service, and restaurant service. Incidental duties such as cleaning are allowed when attached to the main work, but assigning only incidental work is not permitted."},
+        "hiringCapacity": {"question": "How much hiring capacity is available?", "answer": "The acceptance cap for the accommodation field is 14,800 people (under the January 2026 Cabinet decision), while actual residents stood at 1,968 at the end of December 2025, leaving substantial room below the cap. Institutionally, this is a field with broad hiring potential."},
+        "examinationLocation": {"question": "Where can the examination be taken?", "answer": "The 宿泊業技能測定試験 is administered in Japan and overseas. Overseas venues and schedules must be checked at the time of recruitment through notices from the Accommodation Industry Skills Test Center (CAIPT) and the test operator."},
+        "dispatchOrContracting": {"question": "Are dispatch or contracting arrangements possible?", "answer": "Only direct employment is allowed in the accommodation field. The hotel or ryokan concludes a direct employment contract as the accepting organization and performs mandatory support itself or outsources it to a registered support organization."}
+      }
+    },
+    "ikusei-shuro": {
+      "code": "育成就労",
+      "name": "Employment for Skill Development (former Technical Intern Training)",
+      "countryLabel": "Japan",
+      "seoTitle": "Employment for Skill Development system — hiring workers in Japan after the abolition of Technical Intern Training",
+      "summary": "This guide covers the purpose of the Employment for Skill Development (育成就労) system, which takes effect in April 2027, how it differs from Technical Intern Training, the path to Specified Skilled Worker No. 1, and the supervising-organization structure from the perspective of a Japan staffing strategy.",
+      "keywords": "Employment for Skill Development, abolition of Technical Intern Training, difference between Technical Intern Training and Specified Skilled Worker, supervising organization, 育成就労, 技能実習",
+      "glance": {
+        "systemTransition": {"label": "System transition", "value": "Technical Intern Training (技能実習) abolished → Employment for Skill Development (育成就労) established"},
+        "effectiveDate": {"label": "Effective date", "value": "April 1, 2027"},
+        "purpose": {"label": "Purpose", "value": "Developing and securing human resources on the premise of transition to Specified Skilled Worker No. 1"},
+        "newTechnicalInternApplications": {"label": "New Technical Intern Training applications", "value": "Applications for approval of No. 1 Technical Intern Training plans are accepted through February 2027"},
+        "structure": {"label": "Structure", "value": "Unlike Specified Skilled Worker status, the supervising and support organization structure remains"}
+      },
+      "faqs": {
+        "technicalInternAbolition": {"question": "Is Technical Intern Training really being abolished?", "answer": "Yes. Under the amended law promulgated in June 2024, the Technical Intern Training system will transition to the Employment for Skill Development system on April 1, 2027. New applications for approval of No. 1 Technical Intern Training plans will be accepted only through February 2027."},
+        "differenceFromTechnicalInternTraining": {"question": "How does Employment for Skill Development differ from Technical Intern Training?", "answer": "Unlike Technical Intern Training, which was nominally for technology transfer and international cooperation, Employment for Skill Development is designed from the outset to develop people in labor-shortage fields and move them to Specified Skilled Worker No. 1. Its nature as an employment system has been made clear."},
+        "supervisingOrganization": {"question": "What role do supervising organizations play?", "answer": "In the group-supervision structure, a supervising organization is a Japanese intermediary and management body that connects and supervises overseas sending organizations and Japanese companies (training implementing organizations). A key difference is that Specified Skilled Worker No. 1 has no supervising organization and companies employ directly."},
+        "hiringTechnicalInternGraduates": {"question": "Can we hire people who completed Technical Intern Training as Specified Skilled Workers?", "answer": "Workers who satisfactorily complete Technical Intern Training No. 2 may be exempt from the skills and Japanese-language tests when converting to Specified Skilled Worker No. 1 in a related field. There is a pool of workers in Japan on this conversion path."},
+        "systemChoice": {"question": "Which system should we choose if we are planning to bring in workers now?", "answer": "If immediate deployment is needed, direct hiring of people who have passed the Specified Skilled Worker No. 1 tests is an option. If planning long-term supply on the premise of development, Employment for Skill Development, which begins in 2027, is a candidate. The choice depends on the field, timing, and cost structure, so an individual review is needed."}
+      }
+    }
+  }
+}

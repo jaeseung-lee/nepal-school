@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+npm --prefix company run test:i18n

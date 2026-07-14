@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { LOCALES, localizedHref } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { VISAS } from "@/lib/visas";
 
@@ -21,10 +22,12 @@ const routes: { path: string; priority: number }[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  return routes.map(({ path, priority }) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority,
-  }));
+  return LOCALES.flatMap((locale) =>
+    routes.map(({ path, priority }) => ({
+      url: `${SITE_URL}${localizedHref(locale, path)}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority,
+    })),
+  );
 }

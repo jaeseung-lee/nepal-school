@@ -1,0 +1,11 @@
+{
+  "name": "nepal-school",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "test:i18n": "npm --prefix company run test:i18n"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

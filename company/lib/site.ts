@@ -16,7 +16,7 @@ export const SITE = {
   bizRegNo: "684-13-02918",
   streetAddress: "경기도 용인시 기흥구 구갈로28번길 21-6, 금보빌딩 6층 6034호",
   locale: "ko_KR",
-  areaServed: ["네팔", "한국", "일본"],
+  areaServed: ["네팔", "베트남", "라오스", "한국", "일본"],
 
   telephone: "",
   email: "",

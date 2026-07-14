@@ -17,10 +17,18 @@ npm run dev      # 개발 서버 (기본 http://localhost:3000)
 npm run build    # 프로덕션 빌드
 npm run start    # 빌드 결과 실행
 npm run typecheck # tsc --noEmit
+npm run test:i18n # 번역 키 일관성 검사
 ```
 
 > 이 저장소에는 별도의 `dashboard/`(Next 14) 앱이 있습니다. `company/`는 그와 독립된 앱입니다.
 > 로컬 프리뷰용 `.claude/launch.json`에 `company`(포트 3007) 설정이 등록돼 있습니다.
+
+## 다국어(i18n) 및 번역 검사
+
+- 기준 카탈로그는 한국어 `messages/ko.json`과 `messages/visa/ko.json`이며, 지원 로케일은 `ko`, `en`, `ja`, `ne`, `vi`, `lo`입니다.
+- 한국어 URL은 접두사 없이 `/about`처럼 유지하고, 다른 언어는 `/{locale}/...` 형식(예: `/en/about`, `/ja/about`)을 사용합니다.
+- `company/`에서 `npm run test:i18n`을 실행하면 한국어 기준의 모든 번역 키가 각 로케일 카탈로그에 있는지 검사합니다.
+- 저장소 루트에서 `npm install`을 실행하면 Husky가 활성화되며, 커밋 전(pre-commit)에 같은 번역 키 검사가 자동으로 실행됩니다.
 
 ## 구조
 
@@ -72,7 +80,6 @@ Tailwind 유틸(`bg-primary-main`, `text-gold-deep`, `font-display`, `max-w-cont
 **기능·데이터**
 - [ ] 문의 양식 전송 백엔드 연동 — `components/contact-form.tsx`의 `onSubmit`(현재 안내문만 표시). 이메일/메신저 알림 + reCAPTCHA 권장
 - [ ] 개인정보처리방침 페이지
-- [ ] 다국어(EN→JA→NE) 실제 구현 + `hreflang` — 헤더 언어 스위처는 현재 KO만 활성(디자인만)
 
 **미구현 페이지(기획엔 있으나 현재 없음)**
 - [ ] 사업영역 하위 상세 3페이지 · 회사소개 상세(인사말/미션·비전/연혁/오시는 길) · 자료실(News)/FAQ
@@ -80,5 +87,5 @@ Tailwind 유틸(`bg-primary-main`, `text-gold-deep`, `font-display`, `max-w-cont
 ## 회사 기본 정보(확정)
 
 - 국문: 주식회사 정우인력개발 / 영문: Joong Woo Human Resource Development Co., Ltd. / 브랜드: JOONG WOO(JW)
-- 대표이사: 오제환 · 설립: 2026년 6월 · 해외 거점: 네팔 · 협력국: 네팔·한국·일본
-- 사업: 해외 직업훈련학교 운영 · 한국 취업비자(E-9/E-7/D-2/D-4/E-8) · 일본 특정기능1호(개호·숙박)
+- 대표이사: 오제환 · 설립: 2026년 6월 · 해외 거점: 네팔 · 협력국: 네팔·베트남·라오스·한국·일본
+- 사업: 해외 직업훈련학교 운영 · 한국 취업비자(E-9/E-7/D-2/D-4) · 일본 특정기능1호(개호·숙박)

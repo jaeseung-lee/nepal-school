@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import LocaleDocumentAttributes from "@/components/locale-document-attributes";
 import OrganizationSchema from "@/components/organization-schema";
 import JsonLd from "@/components/json-ld";
 import { SITE, SITE_URL } from "@/lib/site";
@@ -54,6 +55,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-paper font-sans text-ink antialiased">
+        <LocaleDocumentAttributes />
         <OrganizationSchema />
         <JsonLd
           data={{

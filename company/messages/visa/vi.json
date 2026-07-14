@@ -1,0 +1,207 @@
+{
+  "ui": {
+    "visaInformation": "Thông tin thị thực",
+    "viewDetails": "Xem chi tiết",
+    "atAGlance": "Tổng quan nhanh",
+    "frequentlyAskedQuestions": "Câu hỏi thường gặp",
+    "relatedVisasAndSystems": "Thị thực và chương trình liên quan",
+    "countryKorea": "Hàn Quốc",
+    "countryJapan": "Nhật Bản",
+    "disclaimer": "Chế độ thị thực và các số liệu có thể thay đổi theo thông báo của chính phủ và quyết định của Nội các. Nội dung này là thông tin chung tại thời điểm biên soạn; vui lòng liên hệ tư vấn để xác nhận điều kiện áp dụng cho từng doanh nghiệp và tiêu chí mới nhất."
+  },
+  "hub": {
+    "metadata": {
+      "title": "Thông tin thị thực tuyển dụng lao động nước ngoài — E-9, E-7, D-2/D-4 của Hàn Quốc và Kỹ năng đặc định của Nhật Bản",
+      "description": "Tổng hợp thị thực và chương trình dùng để tuyển dụng lao động nước ngoài tại một nơi. Nội dung gồm Hệ thống cấp phép lao động E-9, nhân lực chuyên môn E-7, du học D-2/D-4 của Hàn Quốc, cùng Kỹ năng đặc định số 1, lĩnh vực chăm sóc điều dưỡng/lưu trú và chương trình Đào tạo và làm việc của Nhật Bản.",
+      "keywords": "thị thực tuyển dụng lao động nước ngoài, thị thực lao động nước ngoài, các loại thị thực làm việc, Hệ thống cấp phép lao động, Kỹ năng đặc định"
+    },
+    "banner": {
+      "eyebrow": "Thông tin thị thực",
+      "context": "Hướng dẫn theo từng chương trình dựa trên tiêu chuẩn chính thức của chính phủ",
+      "title": "Thông tin thị thực tuyển dụng lao động nước ngoài",
+      "description": "Tuyển dụng lao động nước ngoài bắt đầu từ việc chọn đúng loại thị thực và chương trình. Chúng tôi hệ thống hóa thị thực làm việc của Hàn Quốc và Nhật Bản theo từng chương trình, dưới góc nhìn của người phụ trách nhân sự.",
+      "crumb": "Thông tin thị thực",
+      "alt": "Thông tin thị thực tuyển dụng lao động nước ngoài tại Hàn Quốc và Nhật Bản"
+    },
+    "koreaSection": {
+      "title": "Thị thực làm việc tại Hàn Quốc",
+      "description": "Tùy theo đặc điểm nhân lực cần tuyển mà áp dụng chương trình khác nhau, như Hệ thống cấp phép lao động (E-9), nhân lực chuyên môn (E-7) hoặc lộ trình sinh viên quốc tế (D-2/D-4)."
+    },
+    "japanSection": {
+      "title": "Chương trình làm việc tại Nhật Bản",
+      "description": "Nhật Bản lấy Kỹ năng đặc định số 1 làm trọng tâm. Yêu cầu khác nhau theo từng lĩnh vực như chăm sóc điều dưỡng và lưu trú; chương trình Thực tập kỹ năng sẽ chuyển sang Đào tạo và làm việc từ tháng 4 năm 2027."
+    },
+    "comparison": {
+      "title": "So sánh E-9, Kỹ năng đặc định số 1 và Đào tạo và làm việc",
+      "description": "Cả ba đều phục vụ việc tuyển dụng người nước ngoài trong các ngành thiếu lao động, nhưng bản chất pháp lý và cơ cấu khác nhau. Đây là ba chương trình thường được so sánh nhất khi xem xét tuyển dụng đồng thời tại Hàn Quốc và Nhật Bản.",
+      "table": {
+        "header": "Hạng mục",
+        "koreaE9": "E-9 Hàn Quốc",
+        "japanSpecifiedSkilledWorker": "Kỹ năng đặc định số 1 của Nhật Bản",
+        "japanEmploymentForSkillDevelopment": "Đào tạo và làm việc của Nhật Bản (từ 4/2027)",
+        "rows": {
+          "legalNature": {"label": "Bản chất pháp lý", "koreaE9": "Thị thực làm việc dành cho lao động nước ngoài không chuyên môn", "japanSpecifiedSkilledWorker": "Tư cách làm việc cho nhân lực có thể làm việc ngay trong các lĩnh vực thiếu lao động", "japanEmploymentForSkillDevelopment": "Chương trình đào tạo với tiền đề chuyển sang Kỹ năng đặc định"},
+          "stayDuration": {"label": "Thời hạn lưu trú", "koreaE9": "Cơ bản 3 năm, cộng gia hạn khi tái tuyển dụng", "japanSpecifiedSkilledWorker": "Tổng cộng 5 năm", "japanEmploymentForSkillDevelopment": "Chuyển sang Kỹ năng đặc định số 1 sau thời gian đào tạo"},
+          "preEntryExamination": {"label": "Thi trước khi nhập cảnh", "koreaE9": "Thủ tục Hệ thống cấp phép lao động như EPS-TOPIK", "japanSpecifiedSkilledWorker": "Thi tiếng Nhật và thi kỹ năng theo từng lĩnh vực", "japanEmploymentForSkillDevelopment": "Đào tạo là tiền đề của chương trình (yêu cầu được xác định theo từng lĩnh vực)"},
+          "intermediary": {"label": "Tổ chức trung gian", "koreaE9": "Giới thiệu G2G giữa các chính phủ", "japanSpecifiedSkilledWorker": "Không có (doanh nghiệp trực tiếp tuyển dụng, có thể thuê ngoài hỗ trợ)", "japanEmploymentForSkillDevelopment": "Duy trì cơ cấu tổ chức giám sát và hỗ trợ"},
+          "jobChange": {"label": "Đổi nơi làm việc/chuyển việc", "koreaE9": "Hạn chế thay đổi nơi làm việc", "japanSpecifiedSkilledWorker": "Có thể chuyển việc trong cùng lĩnh vực", "japanEmploymentForSkillDevelopment": "Hạn chế"}
+        }
+      },
+      "itemListName": "Hướng dẫn thị thực và chương trình tuyển dụng lao động nước ngoài"
+    }
+  },
+  "visas": {
+    "e-9": {
+      "code": "E-9",
+      "name": "Lao động không chuyên môn E-9 (Hệ thống cấp phép lao động)",
+      "countryLabel": "Hàn Quốc",
+      "seoTitle": "Điều kiện và thủ tục thị thực E-9 (Hệ thống cấp phép lao động) — hướng dẫn tuyển dụng lao động nước ngoài",
+      "summary": "Tổng hợp các điểm cốt lõi mà người phụ trách nhân sự cần kiểm tra khi tuyển lao động nước ngoài theo Hệ thống cấp phép lao động (E-9): điều kiện doanh nghiệp, 6 bước nộp hồ sơ, thời hạn lưu trú và tái tuyển dụng, cũng như hạn chế thay đổi nơi làm việc.",
+      "keywords": "thị thực E-9, Hệ thống cấp phép lao động, tuyển dụng lao động nước ngoài, thị thực lao động không chuyên môn, thủ tục E-9, EPS",
+      "glance": {
+        "target": {"label": "Đối tượng", "value": "Nhân lực sản xuất và hiện trường trong các ngành được công bố như sản xuất, nông/chăn nuôi, thủy sản và xây dựng"},
+        "stayDuration": {"label": "Thời hạn lưu trú", "value": "Cơ bản 3 năm; khi tái tuyển dụng có thể gia hạn tối đa 1 năm 10 tháng"},
+        "coreRequirements": {"label": "Yêu cầu chính", "value": "Vượt qua quy trình tuyển chọn tại nước phái cử, gồm EPS-TOPIK (kỳ thi năng lực tiếng Hàn của Hệ thống cấp phép lao động)"},
+        "employmentType": {"label": "Hình thức tuyển dụng", "value": "Do nơi làm việc tuyển dụng trực tiếp (giới thiệu G2G giữa các chính phủ)"},
+        "operator": {"label": "Cơ quan vận hành", "value": "Hệ thống cấp phép lao động (EPS) của Bộ Việc làm và Lao động; 16 nước phái cử, bao gồm Nepal"}
+      },
+      "faqs": {
+        "employerFirstStep": {"question": "Doanh nghiệp cần làm gì trước tiên để tuyển lao động E-9?", "answer": "Trước hết phải nỗ lực tuyển dụng người Hàn Quốc, chẳng hạn đăng tin tuyển dụng trên Worknet, rồi nộp đơn xin giấy phép tuyển dụng tại trung tâm việc làm có thẩm quyền. Trung tâm việc làm có thể xác nhận khả năng tuyển dụng và số lượng được phép theo ngành và quy mô cơ sở."},
+        "hiringTimeline": {"question": "Mất bao lâu để tuyển dụng?", "answer": "Quy trình gồm nỗ lực tuyển người Hàn Quốc, giấy phép tuyển dụng, hợp đồng lao động, xác nhận cấp thị thực, nhập cảnh và đào tạo việc làm, nên thông thường cần lập kế hoạch theo đơn vị vài tháng. Thời gian thay đổi theo hạn ngạch từng thời kỳ và tình hình nước phái cử."},
+        "workplaceChange": {"question": "Lao động E-9 có thể tự do đổi công ty không?", "answer": "Về nguyên tắc, việc thay đổi nơi làm việc bị hạn chế. Chỉ có thể thay đổi trong số lần giới hạn vì các lý do luật định như ngừng/đóng cửa doanh nghiệp hoặc đối xử bất công. Do đó, từ phía doanh nghiệp có thể kỳ vọng quan hệ lao động tương đối ổn định."},
+        "nepalHiring": {"question": "Có thể tuyển nhân lực Nepal theo E-9 không?", "answer": "Nepal là một trong các nước phái cử của Hệ thống cấp phép lao động. Nhân lực được giới thiệu từ nhóm đã vượt qua các thủ tục quy định như EPS-TOPIK; cách vận hành chi tiết tuân theo thông báo theo từng thời kỳ."},
+        "rehiringAfterThreeYears": {"question": "Tái tuyển dụng sau 3 năm làm việc diễn ra như thế nào?", "answer": "Sau 3 năm làm việc cơ bản, người lao động đáp ứng điều kiện có thể được gia hạn tái tuyển dụng tối đa 1 năm 10 tháng. Cũng có chương trình cho phép lao động mẫn cán đáp ứng một số điều kiện xuất cảnh, nhập cảnh lại và làm việc tiếp."}
+      }
+    },
+    "e-7": {
+      "code": "E-7",
+      "name": "Hoạt động đặc định E-7 (nhân lực chuyên môn và kỹ năng)",
+      "countryLabel": "Hàn Quốc",
+      "seoTitle": "Điều kiện và thủ tục thị thực E-7 — hướng dẫn tuyển dụng nhân lực chuyên môn và kỹ năng nước ngoài",
+      "summary": "Tổng hợp phân loại thị thực Hoạt động đặc định (E-7) từ E-7-1 đến E-7-4, yêu cầu học vấn/kinh nghiệm theo nghề, điểm cần kiểm tra của doanh nghiệp và thủ tục nộp hồ sơ dưới góc nhìn tuyển dụng nhân lực chuyên môn, kỹ năng nước ngoài.",
+      "keywords": "thị thực E-7, tuyển dụng chuyên gia nước ngoài, E-7-4, nhân lực kỹ năng lành nghề, thị thực Hoạt động đặc định",
+      "glance": {
+        "target": {"label": "Đối tượng", "value": "Nhân lực chuyên môn, bán chuyên môn, kỹ năng và kỹ năng lành nghề trong các nghề do Bộ Tư pháp công bố"},
+        "types": {"label": "Loại", "value": "E-7-1 nhân lực chuyên môn · E-7-2 nhân lực bán chuyên môn · E-7-3 nhân lực kỹ năng phổ thông · E-7-4 nhân lực kỹ năng lành nghề"},
+        "coreRequirements": {"label": "Yêu cầu chính", "value": "Điều kiện học vấn/kinh nghiệm theo nghề + điều kiện tiền lương (theo hướng dẫn hằng năm)"},
+        "employmentType": {"label": "Hình thức tuyển dụng", "value": "Doanh nghiệp tuyển dụng trực tiếp"},
+        "startingPoint": {"label": "Điểm khởi đầu", "value": "Xác nhận công việc cần tuyển thuộc nghề được phép theo E-7"}
+      },
+      "faqs": {
+        "differenceFromE9": {"question": "E-7 khác E-9 ở điểm nào?", "answer": "E-9 là chương trình phân bổ lao động không chuyên môn qua giới thiệu giữa chính phủ, còn E-7 là thị thực để doanh nghiệp chỉ định và tuyển nhân lực chuyên môn/kỹ năng cho một nghề cụ thể. Với E-7, việc nghề có thuộc diện cho phép và thẩm định học vấn, kinh nghiệm của từng cá nhân là cốt lõi."},
+        "educationAndExperience": {"question": "Yêu cầu về học vấn hoặc kinh nghiệm là gì?", "answer": "Mỗi nghề có yêu cầu về tổ hợp bằng cấp và kinh nghiệm. Thông thường cần bằng cử nhân trở lên trong lĩnh vực liên quan, hoặc bằng cao đẳng kết hợp kinh nghiệm, hoặc kinh nghiệm đáng kể; tiêu chí cụ thể phải kiểm tra trong hướng dẫn hằng năm của Bộ Tư pháp."},
+        "e74": {"question": "E-7-4 (nhân lực kỹ năng lành nghề) là gì?", "answer": "Đây là loại hình đánh giá theo thang điểm và chuyển đổi những lao động nước ngoài có lịch sử lưu trú dài hạn tại Hàn Quốc thành nhân lực kỹ năng lành nghề. Đây là con đường tiêu biểu để tiếp tục tuyển dụng dài hạn lao động đã làm việc theo E-9 hoặc diện tương tự."},
+        "studentHiring": {"question": "Có thể tuyển sinh viên quốc tế theo E-7 không?", "answer": "Với sinh viên quốc tế tốt nghiệp đại học tại Hàn Quốc (D-2), chuyển sang E-7 khi đáp ứng điều kiện là một lộ trình phổ biến. Cần xem xét đồng thời sự liên quan giữa chuyên ngành và công việc, cùng điều kiện của doanh nghiệp."},
+        "employerRequirements": {"question": "Có điều kiện nào đối với doanh nghiệp không?", "answer": "Theo từng ngành có giới hạn tỷ lệ lao động nước ngoài so với lao động Hàn Quốc và điều kiện đối với cơ sở. Trước khi tuyển, cần xác nhận doanh nghiệp mình được tuyển bao nhiêu lao động nước ngoài cho nghề đó."}
+      }
+    },
+    "d-2-d-4": {
+      "code": "D-2·D-4",
+      "name": "Du học D-2 · Đào tạo phổ thông D-4",
+      "countryLabel": "Hàn Quốc",
+      "seoTitle": "Hướng dẫn thị thực D-2/D-4 — hướng dẫn xây dựng lộ trình tuyển dụng sinh viên quốc tế",
+      "summary": "Tổng hợp sự khác biệt giữa thị thực Du học (D-2) và Đào tạo phổ thông (D-4), giới hạn làm thêm khi đang học và lộ trình chuyển sang D-10/E-7 sau tốt nghiệp dưới góc nhìn xây dựng nguồn tuyển dụng sinh viên quốc tế cho doanh nghiệp.",
+      "keywords": "thị thực D-2, thị thực D-4, tuyển dụng sinh viên quốc tế, giấy phép làm thêm, việc làm thêm của sinh viên quốc tế, D-10",
+      "glance": {
+        "d2Target": {"label": "Đối tượng D-2", "value": "Sinh viên quốc tế học chương trình cấp bằng từ cao đẳng trở lên, như cử nhân, thạc sĩ hoặc tiến sĩ"},
+        "d4Target": {"label": "Đối tượng D-4", "value": "Học viên học tiếng hoặc đào tạo phổ thông, như tại viện ngôn ngữ trực thuộc trường đại học"},
+        "employmentWhileEnrolled": {"label": "Làm việc khi đang học", "value": "Cần có giấy phép hoạt động ngoài tư cách lưu trú (làm thêm); có giới hạn giờ mỗi tuần theo chương trình và giai đoạn"},
+        "pathAfterGraduation": {"label": "Lộ trình sau tốt nghiệp", "value": "D-10 (tìm việc) → chuyển sang tư cách làm việc như E-7"},
+        "employerPerspective": {"label": "Góc nhìn doanh nghiệp", "value": "Lộ trình kiểm chứng qua công việc bán thời gian khi đang học rồi tuyển chính thức khi tốt nghiệp"}
+      },
+      "faqs": {
+        "differenceBetweenD2AndD4": {"question": "D-2 và D-4 khác nhau như thế nào?", "answer": "D-2 là tư cách lưu trú cho sinh viên quốc tế của chương trình cấp bằng từ cao đẳng trở lên, còn D-4 dành cho học viên đào tạo không cấp bằng như học tiếng. Thông thường nhiều người nhập cảnh theo D-4, học tiếng rồi chuyển sang D-2."},
+        "employmentWhileEnrolled": {"question": "Có thể tuyển sinh viên quốc tế khi họ đang học không?", "answer": "Chỉ có thể tuyển sinh viên đã được cấp giấy phép hoạt động ngoài tư cách lưu trú (giấy phép làm thêm). Giới hạn giờ làm mỗi tuần khác nhau theo chương trình, năm học và năng lực tiếng Hàn; cũng có hạn chế về ngành nghề được phép."},
+        "fullTimeHiringAfterGraduation": {"question": "Làm sao để tuyển sinh viên quốc tế đã tốt nghiệp làm nhân viên chính thức?", "answer": "Lộ trình phổ biến là sau tốt nghiệp chuyển sang D-10 để tìm việc, rồi khi tuyển dụng được xác nhận thì chuyển sang tư cách làm việc như E-7. Mối liên hệ giữa chuyên ngành và công việc là điểm thẩm định quan trọng."},
+        "pipelineValue": {"question": "Vì sao tuyển sinh viên quốc tế tạo thành một lộ trình nhân lực?", "answer": "Có thể kiểm chứng mức độ phù hợp thực tế và năng lực tiếng Hàn qua công việc bán thời gian khi đang học, sau đó tuyển chính thức khi tốt nghiệp, nên rủi ro thấp hơn tuyển trực tiếp từ nước ngoài ngay từ đầu."}
+      }
+    },
+    "tokutei-ginou": {
+      "code": "特定技能 1号",
+      "name": "Kỹ năng đặc định số 1 của Nhật Bản",
+      "countryLabel": "Nhật Bản",
+      "seoTitle": "Tổng quan thị thực Kỹ năng đặc định (số 1) — điều kiện, thủ tục tuyển dụng và so sánh với Thực tập kỹ năng",
+      "summary": "Tổng hợp 16 lĩnh vực của thị thực Kỹ năng đặc định số 1 của Nhật Bản, thời hạn lưu trú tổng cộng 5 năm, yêu cầu về tiếng Nhật/kỳ thi kỹ năng, thủ tục tuyển dụng từ COE đến nhập cảnh và khác biệt với Thực tập kỹ năng, E-9 của Hàn Quốc.",
+      "keywords": "thị thực Kỹ năng đặc định, Kỹ năng đặc định số 1, 特定技能, tuyển dụng người nước ngoài tại Nhật Bản, thị thực làm việc Nhật Bản, SSW",
+      "glance": {
+        "targetFields": {"label": "Lĩnh vực áp dụng", "value": "16 lĩnh vực, gồm chăm sóc điều dưỡng, lưu trú, ăn uống, xây dựng, nông nghiệp...; bổ sung 4 lĩnh vực vào năm 2024"},
+        "stayDuration": {"label": "Thời hạn lưu trú", "value": "Tổng cộng 5 năm, gia hạn theo đơn vị 1 năm, 6 tháng hoặc 4 tháng"},
+        "coreRequirements": {"label": "Yêu cầu chính", "value": "Thi tiếng Nhật (JFT-Basic 200/250 hoặc JLPT N4) + kỳ thi kỹ năng theo lĩnh vực"},
+        "employmentType": {"label": "Hình thức tuyển dụng", "value": "Tổ chức tiếp nhận trực tiếp tuyển dụng (chăm sóc điều dưỡng và lưu trú không được phái cử)"},
+        "familyAccompaniment": {"label": "Đi cùng gia đình", "value": "Số 1 về nguyên tắc không được; số 2 được phép"}
+      },
+      "faqs": {
+        "differenceFromTechnicalInternTraining": {"question": "Kỹ năng đặc định khác Thực tập kỹ năng như thế nào?", "answer": "Thực tập kỹ năng là chương trình thực tập qua tổ chức giám sát với danh nghĩa chuyển giao kỹ thuật, còn Kỹ năng đặc định số 1 là tư cách làm việc cho nhân lực có thể làm ngay trong các lĩnh vực thiếu lao động và được doanh nghiệp tuyển trực tiếp. Thực tập kỹ năng sẽ chuyển sang chương trình Đào tạo và làm việc từ tháng 4 năm 2027."},
+        "hiringTimeline": {"question": "Mất bao lâu để tuyển dụng?", "answer": "Thời gian xử lý tiêu chuẩn của Giấy chứng nhận tư cách lưu trú (COE) là 1–3 tháng. Trước đó là đỗ kỳ thi, hợp đồng lao động và lập kế hoạch hỗ trợ; sau đó là thủ tục phái cử tại địa phương và cấp thị thực. An toàn nhất là dự kiến tổng thể ít nhất 6 tháng."},
+        "acceptingOrganizationObligations": {"question": "Nghĩa vụ của tổ chức tiếp nhận (doanh nghiệp) là gì?", "answer": "Doanh nghiệp phải trực tiếp thực hiện hoặc ủy thác cho tổ chức hỗ trợ đã đăng ký 10 hạng mục hỗ trợ bắt buộc như hướng dẫn trước khi nhập cảnh, đưa đón sân bay, hỗ trợ nhà ở và định hướng sinh hoạt. Chi phí hỗ trợ do doanh nghiệp chịu, không được chuyển cho người lao động."},
+        "remuneration": {"question": "Mức lương phải như thế nào?", "answer": "Mức lương ngang bằng hoặc cao hơn người Nhật làm cùng công việc là yêu cầu pháp lý. Nếu không có đối tượng so sánh, sẽ đánh giá dựa vào quy định lương hoặc trường hợp công việc tương tự."},
+        "jobChange": {"question": "Người lao động Kỹ năng đặc định có thể chuyển việc không?", "answer": "Có thể chuyển việc trong cùng lĩnh vực (phân loại công việc). Nếu thay đổi lĩnh vực phải xin lại giấy phép thay đổi tư cách lưu trú, nên trên thực tế đây không phải cơ chế chuyển việc không hạn chế."},
+        "afterFiveYears": {"question": "Điều gì xảy ra sau 5 năm?", "answer": "Ở một số lĩnh vực, người được công nhận trình độ lành nghề có thể chuyển sang Kỹ năng đặc định số 2 (gia hạn không giới hạn, được đi cùng gia đình). Riêng lĩnh vực chăm sóc điều dưỡng có lộ trình dài hạn chuyển sang tư cách lưu trú 介護 bằng cách đỗ kỳ thi quốc gia Nhân viên phúc lợi chăm sóc điều dưỡng, thay vì số 2."}
+      }
+    },
+    "tokutei-ginou-kaigo": {
+      "code": "特定技能 介護",
+      "name": "Kỹ năng đặc định: Chăm sóc điều dưỡng (介護)",
+      "countryLabel": "Nhật Bản",
+      "seoTitle": "Thị thực Kỹ năng đặc định chăm sóc điều dưỡng — yêu cầu thi và thủ tục tuyển dụng nhân lực chăm sóc",
+      "summary": "Tổng hợp ba kỳ thi trong lĩnh vực chăm sóc điều dưỡng của Kỹ năng đặc định Nhật Bản (tiếng Nhật, kỹ năng chăm sóc, tiếng Nhật chuyên ngành chăm sóc), điều kiện tuyển trực tiếp, dư địa tuyển dụng so với hạn ngạch tiếp nhận và lộ trình dài hạn Nhân viên phúc lợi chăm sóc điều dưỡng dưới góc nhìn tuyển dụng của cơ sở chăm sóc.",
+      "keywords": "Kỹ năng đặc định chăm sóc điều dưỡng, thị thực chăm sóc, nhân lực chăm sóc tại Nhật Bản, 介護, kỳ thi đánh giá kỹ năng chăm sóc, kỳ thi đánh giá tiếng Nhật chăm sóc",
+      "glance": {
+        "field": {"label": "Lĩnh vực", "value": "Chăm sóc điều dưỡng (dịch vụ điều dưỡng và chăm sóc)"},
+        "examinations": {"label": "Kỳ thi", "value": "Thi tiếng Nhật + 介護技能評価試験 + 介護日本語評価試験; phải đỗ cả ba"},
+        "employmentType": {"label": "Hình thức tuyển dụng", "value": "Chỉ được tuyển dụng trực tiếp (không được phái cử)"},
+        "acceptanceCap": {"label": "Hạn ngạch tiếp nhận", "value": "126.900 người (theo chính sách vận hành trong quyết định Nội các tháng 1 năm 2026)"},
+        "longTermPath": {"label": "Lộ trình dài hạn", "value": "Đỗ kỳ thi quốc gia Nhân viên phúc lợi chăm sóc điều dưỡng → tư cách lưu trú 介護 (lưu trú dài hạn và đi cùng gia đình)"}
+      },
+      "faqs": {
+        "threeExaminations": {"question": "Vì sao lĩnh vực chăm sóc điều dưỡng có ba kỳ thi?", "answer": "Các lĩnh vực khác có hai kỳ thi là tiếng Nhật và kỹ năng, nhưng chăm sóc điều dưỡng bổ sung 介護日本語評価試験 (tiếng Nhật chăm sóc) vì giao tiếp tại hiện trường chăm sóc rất quan trọng. Phải đỗ cả ba kỳ thi tiếng Nhật, kỹ năng chăm sóc và tiếng Nhật chăm sóc."},
+        "afterFiveYears": {"question": "Chăm sóc điều dưỡng không có Kỹ năng đặc định số 2; vậy sau 5 năm sẽ thế nào?", "answer": "Chăm sóc điều dưỡng có tư cách lưu trú 介護 riêng thay cho số 2. Người làm theo Kỹ năng đặc định số 1 và đỗ kỳ thi quốc gia Nhân viên phúc lợi chăm sóc điều dưỡng có thể chuyển sang 介護, từ đó được lưu trú dài hạn và đi cùng gia đình. Với cơ sở, đây là lộ trình ổn định nhân lực sau 5 năm."},
+        "dispatchEmployment": {"question": "Có thể tiếp nhận nhân lực theo hình thức phái cử không?", "answer": "Lĩnh vực chăm sóc điều dưỡng chỉ cho phép tuyển dụng trực tiếp, không công nhận phái cử. Cơ sở phải ký hợp đồng trực tiếp với tư cách tổ chức tiếp nhận và xây dựng hệ thống hỗ trợ bắt buộc."},
+        "nepalExaminationParticipation": {"question": "Nhân lực Nepal có tích cực dự thi chăm sóc điều dưỡng không?", "answer": "Nepal là nước có quy mô thí sinh đủ lớn để được thống kê thành mục riêng trong kết quả thi hằng tháng của Bộ Y tế, Lao động và Phúc lợi. Tỷ lệ đỗ kỳ thi kỹ năng chăm sóc nhìn chung ở mức 70%, còn tiếng Nhật chăm sóc có dao động theo từng đợt thi (theo công bố MHLW giai đoạn 2025–2026)."}
+      }
+    },
+    "tokutei-ginou-shukuhaku": {
+      "code": "特定技能 宿泊",
+      "name": "Kỹ năng đặc định: Lưu trú (宿泊)",
+      "countryLabel": "Nhật Bản",
+      "seoTitle": "Thị thực Kỹ năng đặc định lưu trú — hướng dẫn tuyển người nước ngoài cho khách sạn và ryokan",
+      "summary": "Tổng hợp kỳ thi 宿泊業技能測定試験 trong lĩnh vực lưu trú của Kỹ năng đặc định Nhật Bản, phạm vi công việc (lễ tân, kế hoạch/quảng bá, phục vụ khách, nhà hàng), điều kiện tuyển trực tiếp và dư địa tuyển dụng so với hạn ngạch tiếp nhận dưới góc nhìn khách sạn và ryokan.",
+      "keywords": "Kỹ năng đặc định lưu trú, tuyển người nước ngoài cho khách sạn, 宿泊, kỳ thi kỹ năng ngành lưu trú, nhân lực ryokan",
+      "glance": {
+        "field": {"label": "Lĩnh vực", "value": "Lưu trú (khách sạn, ryokan...)"},
+        "examinations": {"label": "Kỳ thi", "value": "Thi tiếng Nhật + 宿泊業技能測定試験"},
+        "scopeOfWork": {"label": "Phạm vi công việc", "value": "Toàn bộ dịch vụ lưu trú, gồm lễ tân, kế hoạch/quảng bá, phục vụ khách và dịch vụ nhà hàng"},
+        "employmentType": {"label": "Hình thức tuyển dụng", "value": "Chỉ được tuyển dụng trực tiếp (không được phái cử)"},
+        "acceptanceCap": {"label": "Hạn ngạch tiếp nhận", "value": "14.800 người (theo chính sách vận hành trong quyết định Nội các tháng 1 năm 2026)"}
+      },
+      "faqs": {
+        "scopeOfWork": {"question": "Có thể giao công việc nào trong lĩnh vực lưu trú?", "answer": "Có thể giao toàn bộ công việc cung cấp dịch vụ lưu trú như lễ tân, kế hoạch/quảng bá, phục vụ khách và dịch vụ nhà hàng. Công việc phụ như dọn dẹp được phép nếu đi kèm công việc chính, nhưng không được chỉ giao công việc phụ."},
+        "hiringCapacity": {"question": "Dư địa tuyển dụng ở mức nào?", "answer": "Hạn ngạch tiếp nhận của lĩnh vực lưu trú là 14.800 người (theo quyết định Nội các tháng 1 năm 2026), trong khi số người thực tế lưu trú vào cuối tháng 12 năm 2025 là 1.968, nên còn nhiều dư địa so với hạn ngạch. Về mặt chế độ, đây là lĩnh vực có khả năng tuyển dụng rộng."},
+        "examinationLocation": {"question": "Có thể thi ở đâu?", "answer": "宿泊業技能測定試験 được tổ chức tại Nhật Bản và ở nước ngoài. Cần kiểm tra địa điểm, lịch thi ở nước ngoài vào thời điểm tuyển sinh qua thông báo của Trung tâm thi kỹ năng ngành lưu trú (CAIPT) và đơn vị vận hành kỳ thi."},
+        "dispatchOrContracting": {"question": "Có thể áp dụng hình thức phái cử hoặc ủy thác không?", "answer": "Lĩnh vực lưu trú chỉ cho phép tuyển dụng trực tiếp. Khách sạn hoặc ryokan phải ký hợp đồng trực tiếp với tư cách tổ chức tiếp nhận, đồng thời tự thực hiện hỗ trợ bắt buộc hoặc ủy thác cho tổ chức hỗ trợ đã đăng ký."}
+      }
+    },
+    "ikusei-shuro": {
+      "code": "育成就労",
+      "name": "Đào tạo và làm việc (trước đây là Thực tập kỹ năng)",
+      "countryLabel": "Nhật Bản",
+      "seoTitle": "Giới thiệu chương trình Đào tạo và làm việc — tuyển dụng nhân lực tại Nhật Bản sau khi bãi bỏ Thực tập kỹ năng",
+      "summary": "Tổng hợp mục đích của chương trình Đào tạo và làm việc (育成就労) có hiệu lực từ tháng 4 năm 2027, khác biệt với Thực tập kỹ năng, lộ trình chuyển sang Kỹ năng đặc định số 1 và cơ cấu tổ chức giám sát dưới góc nhìn chiến lược tuyển dụng nhân lực tại Nhật Bản.",
+      "keywords": "Đào tạo và làm việc, bãi bỏ Thực tập kỹ năng, khác biệt Thực tập kỹ năng và Kỹ năng đặc định, tổ chức giám sát, 育成就労, 技能実習",
+      "glance": {
+        "systemTransition": {"label": "Chuyển đổi chương trình", "value": "Bãi bỏ Thực tập kỹ năng (技能実習) → thành lập Đào tạo và làm việc (育成就労)"},
+        "effectiveDate": {"label": "Ngày có hiệu lực", "value": "Ngày 1 tháng 4 năm 2027"},
+        "purpose": {"label": "Mục đích", "value": "Đào tạo và bảo đảm nhân lực với tiền đề chuyển sang Kỹ năng đặc định số 1"},
+        "newTechnicalInternApplications": {"label": "Đơn mới Thực tập kỹ năng", "value": "Chỉ nhận đơn xin công nhận kế hoạch Thực tập kỹ năng số 1 đến tháng 2 năm 2027"},
+        "structure": {"label": "Cơ cấu", "value": "Khác với Kỹ năng đặc định, vẫn duy trì cơ cấu tổ chức giám sát và hỗ trợ"}
+      },
+      "faqs": {
+        "technicalInternAbolition": {"question": "Thực tập kỹ năng có thực sự bị bãi bỏ không?", "answer": "Có. Theo luật sửa đổi được ban hành tháng 6 năm 2024, chương trình Thực tập kỹ năng sẽ chuyển sang Đào tạo và làm việc từ ngày 1 tháng 4 năm 2027. Đơn mới xin công nhận kế hoạch Thực tập kỹ năng số 1 chỉ được nhận đến tháng 2 năm 2027."},
+        "differenceFromTechnicalInternTraining": {"question": "Đào tạo và làm việc khác Thực tập kỹ năng như thế nào?", "answer": "Khác với Thực tập kỹ năng vốn mang danh nghĩa chuyển giao kỹ thuật và hợp tác quốc tế, Đào tạo và làm việc ngay từ đầu nhằm đào tạo nhân lực trong lĩnh vực thiếu lao động rồi chuyển họ sang Kỹ năng đặc định số 1. Tính chất của nó như một chương trình việc làm đã rõ ràng hơn."},
+        "supervisingOrganization": {"question": "Tổ chức giám sát có vai trò gì?", "answer": "Trong cơ cấu giám sát theo đoàn thể, tổ chức giám sát là cơ quan trung gian và quản lý phía Nhật Bản kết nối, giám sát tổ chức phái cử ở nước ngoài với doanh nghiệp Nhật Bản (đơn vị thực hiện thực tập). Khác biệt lớn là Kỹ năng đặc định số 1 không có tổ chức giám sát và doanh nghiệp tuyển trực tiếp."},
+        "hiringTechnicalInternGraduates": {"question": "Có thể tuyển người đã hoàn thành Thực tập kỹ năng theo diện Kỹ năng đặc định không?", "answer": "Người hoàn thành tốt Thực tập kỹ năng số 2 có thể được miễn thi kỹ năng và tiếng Nhật khi chuyển sang Kỹ năng đặc định số 1 trong lĩnh vực liên quan. Tại Nhật Bản có một nguồn nhân lực theo lộ trình chuyển đổi này."},
+        "systemChoice": {"question": "Nếu đang lập kế hoạch đưa nhân lực vào làm việc, nên chọn chương trình nào?", "answer": "Nếu cần triển khai ngay tại hiện trường, có thể tuyển trực tiếp người đã đỗ Kỹ năng đặc định số 1. Nếu là kế hoạch cung ứng dài hạn với tiền đề đào tạo, Đào tạo và làm việc bắt đầu năm 2027 là một lựa chọn. Cần xem xét riêng theo lĩnh vực, thời điểm và cơ cấu chi phí."}
+      }
+    }
+  }
+}
