@@ -31,6 +31,11 @@ export default function SiteFooter() {
             </div>
             <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
             <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
+            {locale === "ko" ? (
+              <Link href="/blog" className="mt-5 inline-flex text-sm font-semibold text-cobalt underline underline-offset-4 transition hover:text-cobalt-ink">
+                외국인력 채용 인사이트 보기
+              </Link>
+            ) : null}
           </div>
 
           <div>

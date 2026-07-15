@@ -19,6 +19,7 @@ export default function SiteHeader() {
   const messages = getMessages(locale);
   const [mobileOpen, setMobileOpen] = useState(false);
   const isActive = (href: string) => pathname === localizedHref(locale, href);
+  const isKoreanOnlyContent = pathname === "/blog" || pathname.startsWith("/blog/");
 
   return (
     <header id="siteHeader" className="sticky top-0 z-50 border-b border-line/80 bg-paper-soft/92 backdrop-blur-xl">
@@ -48,19 +49,25 @@ export default function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <div className="hidden items-center overflow-hidden rounded-full border border-line bg-white/65 md:flex" role="group" aria-label={messages.header.languageSelector}>
-              {LOCALES.map((language) => (
-                <Link
-                  key={language}
-                  href={changeLocalePathname(pathname, language)}
-                  aria-current={language === locale ? "true" : undefined}
-                  title={messages.header.languages[language]}
-                  className={`px-2.5 py-1 text-xs font-display ${language === locale ? "bg-cobalt font-semibold text-white" : "font-medium text-muted transition hover:bg-cobalt-soft hover:text-cobalt"}`}
-                >
-                  {language.toUpperCase()}
-                </Link>
-              ))}
-            </div>
+            {isKoreanOnlyContent ? (
+              <span className="hidden rounded-full border border-line bg-white/65 px-3 py-1 text-xs font-medium text-muted md:inline-flex">
+                한국어 콘텐츠
+              </span>
+            ) : (
+              <div className="hidden items-center overflow-hidden rounded-full border border-line bg-white/65 md:flex" role="group" aria-label={messages.header.languageSelector}>
+                {LOCALES.map((language) => (
+                  <Link
+                    key={language}
+                    href={changeLocalePathname(pathname, language)}
+                    aria-current={language === locale ? "true" : undefined}
+                    title={messages.header.languages[language]}
+                    className={`px-2.5 py-1 text-xs font-display ${language === locale ? "bg-cobalt font-semibold text-white" : "font-medium text-muted transition hover:bg-cobalt-soft hover:text-cobalt"}`}
+                  >
+                    {language.toUpperCase()}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <Link href={localizedHref(locale, "/contact")} className="hidden items-center gap-2 rounded-full bg-cobalt px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
               {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
@@ -95,19 +102,23 @@ export default function SiteHeader() {
           ))}
           <div className="flex flex-col gap-3 pb-1 pt-4">
             <span className="text-xs text-muted">{messages.header.mobileNotice}</span>
-            <div className="flex flex-wrap gap-2" role="group" aria-label={messages.header.languageSelector}>
-              {LOCALES.map((language) => (
-                <Link
-                  key={language}
-                  href={changeLocalePathname(pathname, language)}
-                  onClick={() => setMobileOpen(false)}
-                  aria-current={language === locale ? "true" : undefined}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted"}`}
-                >
-                  {messages.header.languages[language]}
-                </Link>
-              ))}
-            </div>
+            {isKoreanOnlyContent ? (
+              <p className="text-xs leading-5 text-muted">이 인사이트는 현재 한국어로만 제공합니다.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2" role="group" aria-label={messages.header.languageSelector}>
+                {LOCALES.map((language) => (
+                  <Link
+                    key={language}
+                    href={changeLocalePathname(pathname, language)}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={language === locale ? "true" : undefined}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted"}`}
+                  >
+                    {messages.header.languages[language]}
+                  </Link>
+                ))}
+              </div>
+            )}
             <Link href={localizedHref(locale, "/contact")} onClick={() => setMobileOpen(false)} className="inline-flex w-fit items-center gap-1 rounded-full bg-cobalt px-4 py-2 text-sm font-semibold text-white">
               {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />
             </Link>
