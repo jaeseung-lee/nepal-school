@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowRight, List, X } from "@phosphor-icons/react";
+import { ArrowRight, CaretDown, Globe, List, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NAV_ITEMS } from "@/lib/nav";
 import {
   changeLocalePathname,
@@ -17,114 +17,183 @@ export default function SiteHeader() {
   const pathname = usePathname() || "/";
   const locale = getLocaleFromPathname(pathname);
   const messages = getMessages(locale);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const isActive = (href: string) => pathname === localizedHref(locale, href);
   const isKoreanOnlyContent = pathname === "/blog" || pathname.startsWith("/blog/");
+
+  useEffect(() => {
+    setMenuOpen(false);
+    setLanguageOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen && !languageOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      setMenuOpen(false);
+      setLanguageOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [languageOpen, menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
 
   return (
     <header id="siteHeader" className="sticky top-0 z-50 border-b border-line/80 bg-paper-soft/92 backdrop-blur-xl">
       <div className="max-w-content mx-auto px-5 lg:px-8">
-        <div className="flex h-[72px] items-center justify-between gap-4">
-          <Link href={localizedHref(locale, "/")} className="flex shrink-0 items-center gap-2.5" aria-label={messages.header.homeAria}>
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cobalt text-[12px] font-bold text-white shadow-sm" aria-hidden="true">
+        <div className="flex h-[72px] items-center justify-between gap-3">
+          <Link href={localizedHref(locale, "/")} className="flex min-w-0 shrink items-center gap-2.5" aria-label={messages.header.homeAria}>
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cobalt text-[12px] font-bold text-white shadow-sm" aria-hidden="true">
               JW
             </span>
-            <span className="leading-tight">
-              <span className="block text-[16px] font-bold text-ink">{messages.site.name}</span>
-              <span className="block text-[10px] font-display font-medium text-muted">{messages.site.alternateName}</span>
+            <span className="min-w-0 leading-tight">
+              <span className="block truncate text-[16px] font-bold text-ink">{messages.site.name}</span>
+              <span className="block truncate text-[10px] font-display font-medium text-muted">{messages.site.alternateName}</span>
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-9 text-[15px] font-medium lg:flex" aria-label={messages.header.primaryNav}>
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={localizedHref(locale, item.href)}
-                className={`nav-link text-ink transition hover:text-cobalt ${isActive(item.href) ? "nav-active" : ""}`}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
-                {messages.nav[item.key]}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {isKoreanOnlyContent ? (
-              <span className="hidden rounded-full border border-line bg-white/65 px-3 py-1 text-xs font-medium text-muted md:inline-flex">
+              <span className="hidden rounded-full border border-line bg-white/65 px-3 py-1 text-xs font-medium text-muted sm:inline-flex">
                 한국어 콘텐츠
               </span>
             ) : (
-              <div className="hidden items-center overflow-hidden rounded-full border border-line bg-white/65 md:flex" role="group" aria-label={messages.header.languageSelector}>
-                {LOCALES.map((language) => (
-                  <Link
-                    key={language}
-                    href={changeLocalePathname(pathname, language)}
-                    aria-current={language === locale ? "true" : undefined}
-                    title={messages.header.languages[language]}
-                    className={`px-2.5 py-1 text-xs font-display ${language === locale ? "bg-cobalt font-semibold text-white" : "font-medium text-muted transition hover:bg-cobalt-soft hover:text-cobalt"}`}
-                  >
-                    {language.toUpperCase()}
-                  </Link>
-                ))}
+              <div className="relative hidden sm:block">
+                <button
+                  id="languageToggle"
+                  type="button"
+                  onClick={() => setLanguageOpen((open) => !open)}
+                  className="inline-flex h-10 items-center gap-1.5 rounded-full border border-line bg-white/65 px-3 text-xs font-semibold text-ink transition hover:border-cobalt hover:text-cobalt"
+                  aria-label={`${messages.header.languageSelector}: ${messages.header.languages[locale]}`}
+                  aria-expanded={languageOpen}
+                  aria-controls="languageMenu"
+                  aria-haspopup="menu"
+                >
+                  <Globe size={15} weight="bold" aria-hidden="true" />
+                  <span className="font-display">{locale.toUpperCase()}</span>
+                  <CaretDown size={12} weight="bold" aria-hidden="true" />
+                </button>
+
+                {languageOpen ? (
+                  <div id="languageMenu" role="menu" aria-label={messages.header.languageSelector} className="absolute right-0 top-[calc(100%+0.5rem)] z-10 w-40 rounded-2xl border border-line bg-paper-soft p-1.5 shadow-xl shadow-ink/10">
+                    {LOCALES.map((language) => (
+                      <Link
+                        key={language}
+                        href={changeLocalePathname(pathname, language)}
+                        onClick={() => setLanguageOpen(false)}
+                        role="menuitem"
+                        aria-current={language === locale ? "true" : undefined}
+                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm transition ${language === locale ? "bg-cobalt text-white" : "text-ink hover:bg-cobalt-soft hover:text-cobalt"}`}
+                      >
+                        <span>{messages.header.languages[language]}</span>
+                        <span className={`text-[10px] font-display ${language === locale ? "text-white/80" : "text-muted"}`}>{language.toUpperCase()}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             )}
 
-            <Link href={localizedHref(locale, "/contact")} className="hidden items-center gap-2 rounded-full bg-cobalt px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
+            <Link href={localizedHref(locale, "/contact")} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
               {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
             </Link>
 
             <button
               id="navToggle"
               type="button"
-              onClick={() => setMobileOpen((open) => !open)}
-              className="rounded-full p-2 text-ink transition hover:bg-gray-100 lg:hidden"
-              aria-label={mobileOpen ? messages.header.closeMenu : messages.header.openMenu}
-              aria-expanded={mobileOpen}
-              aria-controls="mobileNav"
+              onClick={() => {
+                setMenuOpen((open) => !open);
+                setLanguageOpen(false);
+              }}
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white/65 px-3 text-ink transition hover:border-cobalt hover:text-cobalt"
+              aria-label={menuOpen ? messages.header.closeMenu : messages.header.openMenu}
+              aria-expanded={menuOpen}
+              aria-controls="siteMenu"
             >
-              {mobileOpen ? <X size={24} aria-hidden="true" /> : <List size={24} aria-hidden="true" />}
+              {menuOpen ? <X size={20} aria-hidden="true" /> : <List size={20} aria-hidden="true" />}
+              <span className="hidden text-sm font-semibold lg:inline">{messages.common.menu}</span>
             </button>
           </div>
         </div>
       </div>
 
-      <nav id="mobileNav" className={`border-t border-line bg-paper-soft lg:hidden ${mobileOpen ? "" : "hidden"}`} aria-label={messages.header.mobileNav}>
-        <div className="max-w-content mx-auto flex flex-col px-5 py-3">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={localizedHref(locale, item.href)}
-              onClick={() => setMobileOpen(false)}
-              className={`border-b border-line/70 py-3 text-[15px] ${isActive(item.href) ? "font-bold text-cobalt" : "font-medium text-ink"}`}
-            >
-              {messages.nav[item.key]}
-            </Link>
-          ))}
-          <div className="flex flex-col gap-3 pb-1 pt-4">
-            <span className="text-xs text-muted">{messages.header.mobileNotice}</span>
-            {isKoreanOnlyContent ? (
-              <p className="text-xs leading-5 text-muted">이 인사이트는 현재 한국어로만 제공합니다.</p>
-            ) : (
-              <div className="flex flex-wrap gap-2" role="group" aria-label={messages.header.languageSelector}>
-                {LOCALES.map((language) => (
-                  <Link
-                    key={language}
-                    href={changeLocalePathname(pathname, language)}
-                    onClick={() => setMobileOpen(false)}
-                    aria-current={language === locale ? "true" : undefined}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted"}`}
-                  >
-                    {messages.header.languages[language]}
-                  </Link>
-                ))}
-              </div>
-            )}
-            <Link href={localizedHref(locale, "/contact")} onClick={() => setMobileOpen(false)} className="inline-flex w-fit items-center gap-1 rounded-full bg-cobalt px-4 py-2 text-sm font-semibold text-white">
-              {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />
-            </Link>
-          </div>
+      {menuOpen ? (
+        <div className="absolute inset-x-0 top-0 z-[60] flex h-[100dvh] justify-end">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="absolute inset-0 cursor-default bg-ink/30 backdrop-blur-[2px]"
+            aria-label={messages.header.closeMenu}
+          />
+          <aside id="siteMenu" role="dialog" aria-modal="true" aria-label={messages.header.primaryNav} className="relative flex h-[100dvh] w-full max-w-md flex-col overflow-y-auto bg-paper-soft shadow-2xl shadow-ink/25">
+            <div className="flex items-center justify-between border-b border-line px-6 py-5 sm:px-8">
+              <p className="text-sm font-semibold text-ink">{messages.common.menu}</p>
+              <button type="button" onClick={() => setMenuOpen(false)} className="rounded-full p-2 text-ink transition hover:bg-gray-100" aria-label={messages.header.closeMenu}>
+                <X size={24} aria-hidden="true" />
+              </button>
+            </div>
+
+            <nav className="px-6 py-4 sm:px-8" aria-label={messages.header.primaryNav}>
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={localizedHref(locale, item.href)}
+                  onClick={() => setMenuOpen(false)}
+                  className={`flex items-center justify-between border-b border-line/70 py-4 text-lg transition ${isActive(item.href) ? "font-bold text-cobalt" : "font-medium text-ink hover:text-cobalt"}`}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {messages.nav[item.key]}
+                  <ArrowRight size={17} weight="bold" aria-hidden="true" />
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-auto border-t border-line px-6 py-6 sm:px-8">
+              {isKoreanOnlyContent ? (
+                <p className="text-sm leading-6 text-muted">이 인사이트는 현재 한국어로만 제공합니다.</p>
+              ) : (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{messages.header.languageSelector}</p>
+                  <div className="mt-3 grid grid-cols-2 gap-2" role="group" aria-label={messages.header.languageSelector}>
+                    {LOCALES.map((language) => (
+                      <Link
+                        key={language}
+                        href={changeLocalePathname(pathname, language)}
+                        onClick={() => setMenuOpen(false)}
+                        aria-current={language === locale ? "true" : undefined}
+                        className={`rounded-xl border px-3 py-2.5 text-center text-sm font-semibold transition ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted hover:border-cobalt hover:text-cobalt"}`}
+                      >
+                        {messages.header.languages[language]}
+                      </Link>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p>
+                </>
+              )}
+
+              <Link href={localizedHref(locale, "/contact")} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">
+                {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />
+              </Link>
+            </div>
+          </aside>
         </div>
-      </nav>
+      ) : null}
     </header>
   );
 }
