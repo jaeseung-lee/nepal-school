@@ -4,7 +4,14 @@ import { ArrowRight, CaretDown, Globe, List, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { NAV_ITEMS } from "@/lib/nav";
+import { getNavItems } from "@/lib/nav";
+import {
+  BLOG_LOCALES,
+  getBlogIndexPath,
+  getBlogLocaleSwitchPath,
+  isBlogLocale,
+  isBlogPath,
+} from "@/lib/blog-routing";
 import {
   changeLocalePathname,
   getLocaleFromPathname,
@@ -12,6 +19,7 @@ import {
   LOCALES,
   localizedHref,
 } from "@/lib/i18n";
+import { isInternalPath } from "@/lib/internal-routes";
 
 export default function SiteHeader() {
   const pathname = usePathname() || "/";
@@ -19,8 +27,16 @@ export default function SiteHeader() {
   const messages = getMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const isActive = (href: string) => pathname === localizedHref(locale, href);
-  const isKoreanOnlyContent = pathname === "/blog" || pathname.startsWith("/blog/");
+  const navItems = getNavItems(locale);
+  const onBlog = isBlogPath(pathname);
+  const languageOptions = onBlog ? BLOG_LOCALES : LOCALES;
+  const resolveHref = (href: string) => href === "/blog" && isBlogLocale(locale) ? getBlogIndexPath(locale) : localizedHref(locale, href);
+  const isActive = (href: string) => {
+    const resolved = resolveHref(href);
+    return pathname === resolved || (resolved !== "/" && pathname.startsWith(`${resolved}/`));
+  };
+  const localeHref = (language: (typeof LOCALES)[number]) =>
+    onBlog && isBlogLocale(language) ? getBlogLocaleSwitchPath(language) : changeLocalePathname(pathname, language);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -54,6 +70,8 @@ export default function SiteHeader() {
     };
   }, [menuOpen]);
 
+  if (isInternalPath(pathname)) return null;
+
   return (
     <header id="siteHeader" className="sticky top-0 z-50 border-b border-line/80 bg-paper-soft/92 backdrop-blur-xl">
       <div className="max-w-content mx-auto px-5 lg:px-8">
@@ -69,12 +87,7 @@ export default function SiteHeader() {
           </Link>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            {isKoreanOnlyContent ? (
-              <span className="hidden rounded-full border border-line bg-white/65 px-3 py-1 text-xs font-medium text-muted sm:inline-flex">
-                한국어 콘텐츠
-              </span>
-            ) : (
-              <div className="relative hidden sm:block">
+            <div className="relative hidden sm:block">
                 <button
                   id="languageToggle"
                   type="button"
@@ -92,10 +105,10 @@ export default function SiteHeader() {
 
                 {languageOpen ? (
                   <div id="languageMenu" role="menu" aria-label={messages.header.languageSelector} className="absolute right-0 top-[calc(100%+0.5rem)] z-10 w-40 rounded-2xl border border-line bg-paper-soft p-1.5 shadow-xl shadow-ink/10">
-                    {LOCALES.map((language) => (
+                    {languageOptions.map((language) => (
                       <Link
                         key={language}
-                        href={changeLocalePathname(pathname, language)}
+                        href={localeHref(language)}
                         onClick={() => setLanguageOpen(false)}
                         role="menuitem"
                         aria-current={language === locale ? "true" : undefined}
@@ -108,7 +121,16 @@ export default function SiteHeader() {
                   </div>
                 ) : null}
               </div>
-            )}
+
+            {isBlogLocale(locale) ? (
+              <Link
+                href={getBlogIndexPath(locale)}
+                aria-current={onBlog ? "page" : undefined}
+                className={`hidden rounded-full px-3 py-2 text-sm font-semibold transition lg:inline-flex ${onBlog ? "bg-cobalt-soft text-cobalt" : "text-ink hover:bg-white hover:text-cobalt"}`}
+              >
+                {messages.nav.blog}
+              </Link>
+            ) : null}
 
             <Link href={localizedHref(locale, "/contact")} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
               {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
@@ -150,10 +172,10 @@ export default function SiteHeader() {
             </div>
 
             <nav className="px-6 py-4 sm:px-8" aria-label={messages.header.primaryNav}>
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={localizedHref(locale, item.href)}
+                  href={resolveHref(item.href)}
                   onClick={() => setMenuOpen(false)}
                   className={`flex items-center justify-between border-b border-line/70 py-4 text-lg transition ${isActive(item.href) ? "font-bold text-cobalt" : "font-medium text-ink hover:text-cobalt"}`}
                   aria-current={isActive(item.href) ? "page" : undefined}
@@ -165,16 +187,13 @@ export default function SiteHeader() {
             </nav>
 
             <div className="mt-auto border-t border-line px-6 py-6 sm:px-8">
-              {isKoreanOnlyContent ? (
-                <p className="text-sm leading-6 text-muted">이 인사이트는 현재 한국어로만 제공합니다.</p>
-              ) : (
-                <>
+              <>
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{messages.header.languageSelector}</p>
                   <div className="mt-3 grid grid-cols-2 gap-2" role="group" aria-label={messages.header.languageSelector}>
-                    {LOCALES.map((language) => (
+                    {languageOptions.map((language) => (
                       <Link
                         key={language}
-                        href={changeLocalePathname(pathname, language)}
+                        href={localeHref(language)}
                         onClick={() => setMenuOpen(false)}
                         aria-current={language === locale ? "true" : undefined}
                         className={`rounded-xl border px-3 py-2.5 text-center text-sm font-semibold transition ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted hover:border-cobalt hover:text-cobalt"}`}
@@ -183,9 +202,8 @@ export default function SiteHeader() {
                       </Link>
                     ))}
                   </div>
-                  <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p>
+                  {!onBlog ? <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p> : null}
                 </>
-              )}
 
               <Link href={localizedHref(locale, "/contact")} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">
                 {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />

@@ -2,18 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/lib/nav";
+import { getNavItems } from "@/lib/nav";
+import { getBlogIndexPath, isBlogLocale } from "@/lib/blog-routing";
 import { SITE } from "@/lib/site";
 import { getLocaleFromPathname, getMessages, localizedHref } from "@/lib/i18n";
+import { isInternalPath } from "@/lib/internal-routes";
 
 export default function SiteFooter() {
   const pathname = usePathname() || "/";
   const locale = getLocaleFromPathname(pathname);
   const messages = getMessages(locale);
+  const navItems = getNavItems(locale);
+  const resolveHref = (href: string) => href === "/blog" && isBlogLocale(locale) ? getBlogIndexPath(locale) : localizedHref(locale, href);
   const contacts = [
     SITE.telephone ? { label: messages.common.phone, value: SITE.telephone } : null,
     SITE.email ? { label: messages.common.email, value: SITE.email } : null,
   ].filter(Boolean) as { label: string; value: string }[];
+
+  if (isInternalPath(pathname)) return null;
 
   return (
     <footer className="border-t border-line bg-paper-soft text-muted">
@@ -31,19 +37,14 @@ export default function SiteFooter() {
             </div>
             <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
             <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
-            {locale === "ko" ? (
-              <Link href="/blog" className="mt-5 inline-flex text-sm font-semibold text-cobalt underline underline-offset-4 transition hover:text-cobalt-ink">
-                외국인력 채용 인사이트 보기
-              </Link>
-            ) : null}
           </div>
 
           <div>
             <h3 className="text-sm font-semibold text-ink">{messages.common.menu}</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.href}>
-                  <Link href={localizedHref(locale, item.href)} className="transition hover:text-cobalt">
+                  <Link href={resolveHref(item.href)} className="transition hover:text-cobalt">
                     {messages.nav[item.key]}
                   </Link>
                 </li>

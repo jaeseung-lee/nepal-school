@@ -1,0 +1,67 @@
+[
+  {
+    "id": "international-partnership",
+    "path": "/kv/redesign/partner.webp",
+    "topics": ["상담", "국제 채용", "파트너십"],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
+    "allowedUses": ["hero", "inline"],
+    "defaultAlt": {
+      "ko": "국제 채용 협업을 논의하는 기업 담당자들의 상담 장면",
+      "ja": "国際採用の連携について話し合う企業担当者の相談風景",
+      "ne": "अन्तर्राष्ट्रिय भर्ती सहकार्यबारे छलफल गरिरहेका कम्पनी प्रतिनिधिहरू"
+    }
+  },
+  {
+    "id": "korea-workplace",
+    "path": "/kv/redesign/korea.webp",
+    "topics": ["한국", "기업", "현장 배치"],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
+    "allowedUses": ["hero", "inline"],
+    "defaultAlt": {
+      "ko": "한국 기업의 외국인 인재 채용과 현장 배치를 상징하는 장면",
+      "ja": "韓国企業による外国人材の採用と職場配置を表す場面",
+      "ne": "कोरियाली कम्पनीमा विदेशी प्रतिभाको भर्ती र कार्यस्थल नियुक्ति"
+    }
+  },
+  {
+    "id": "japan-support",
+    "path": "/kv/redesign/japan.webp",
+    "topics": ["일본", "특정기능", "정착 지원"],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
+    "allowedUses": ["hero", "inline"],
+    "defaultAlt": {
+      "ko": "일본 취업 준비와 현지 정착 지원을 상징하는 상담 장면",
+      "ja": "日本での就職準備と定着支援を表す相談風景",
+      "ne": "जापानमा रोजगारी तयारी र बसोबास सहयोगसम्बन्धी परामर्श"
+    }
+  },
+  {
+    "id": "vocational-training",
+    "path": "/kv/redesign/training.webp",
+    "topics": ["직업 교육", "안전 교육", "기능 훈련"],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
+    "allowedUses": ["hero", "inline"],
+    "defaultAlt": {
+      "ko": "작업 장비를 활용해 직업 기능을 익히는 교육 현장",
+      "ja": "作業機器を使って職業技能を学ぶ研修現場",
+      "ne": "कार्य उपकरण प्रयोग गरेर व्यावसायिक सीप सिकाइँदै गरेको तालिम"
+    }
+  },
+  {
+    "id": "recruitment-process",
+    "path": "/kv/redesign/process.webp",
+    "topics": ["채용 절차", "서류 검토", "일정 관리"],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
+    "allowedUses": ["hero", "inline"],
+    "defaultAlt": {
+      "ko": "채용 일정과 제출 서류를 함께 검토하는 업무 장면",
+      "ja": "採用日程と提出書類を確認する業務風景",
+      "ne": "भर्ती समयतालिका र पेश गर्नुपर्ने कागजात समीक्षा गरिँदै गरेको दृश्य"
+    }
+  }
+]

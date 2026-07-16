@@ -9,6 +9,7 @@ import ProcessSteps from "@/components/process-steps";
 import FaqSection from "@/components/faq-section";
 import CtaBanner from "@/components/cta-banner";
 import Reveal from "@/components/reveal";
+import LatestInsights from "@/components/blog/latest-insights";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
 
 export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
@@ -82,6 +83,7 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
         </div>
       </section>
 
+      <LatestInsights locale={locale} />
       <FaqSection locale={locale} />
       <CtaBanner locale={locale} />
     </main>

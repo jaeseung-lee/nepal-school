@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "timezone": "Asia/Tokyo",
+  "startTime": "09:00",
+  "maxOpenAutomationPrs": 3,
+  "branchPrefix": "codex/blog-",
+  "excludedReadPaths": ["resume/", "mou/"],
+  "schedule": {
+    "1": {
+      "locale": "ko",
+      "languageName": "한국어",
+      "jurisdiction": "KR",
+      "audience": "한국에서 외국인력을 채용하거나 관리하는 기업 담당자",
+      "officialHosts": ["moj.go.kr", "mojhome.moj.go.kr", "hikorea.go.kr", "law.go.kr", "eps.hrdkorea.or.kr", "moel.go.kr"],
+      "evergreenTopics": ["외국인력 채용 전 직무 정의", "E-9 고용허가 절차 체크리스트", "E-7 직종과 증빙 검토", "입국 후 정착 지원 책임표"]
+    },
+    "3": {
+      "locale": "ja",
+      "languageName": "日本語",
+      "jurisdiction": "JP",
+      "audience": "外国人材やネパール人材の採用を検討する日本企業の担当者",
+      "officialHosts": ["moj.go.jp", "mofa.go.jp", "mhlw.go.jp"],
+      "evergreenTopics": ["特定技能1号の受入れ準備", "登録支援機関と受入れ機関の役割", "介護分野の採用確認事項", "在留資格認定証明書の書類管理"]
+    },
+    "5": {
+      "locale": "ne",
+      "languageName": "नेपाली",
+      "jurisdiction": "NP",
+      "audience": "कोरिया वा जापानमा वैदेशिक रोजगारी खोज्ने नेपाली आवेदक र तिनका परिवार",
+      "officialHosts": ["dofe.gov.np", "nepal.gov.np", "mofa.gov.np", "kr.nepalembassy.gov.np", "jp.nepalembassy.gov.np"],
+      "evergreenTopics": ["वैदेशिक रोजगारीअघि कागजात जाँच", "DoFE बाट इजाजतप्राप्त संस्था जाँच्ने तरिका", "रोजगारी सम्झौता बुझ्ने सूची", "कोरिया वा जापान प्रस्थानअघि तयारी"]
+    }
+  }
+}

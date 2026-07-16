@@ -8,6 +8,10 @@
 # production
 /build
 
+# local secrets
+.env*
+!.env.example
+
 # misc
 .DS_Store
 *.pem

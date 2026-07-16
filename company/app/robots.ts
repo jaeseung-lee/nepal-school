@@ -10,6 +10,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/sales", "/login", "/auth", "/unauthorized"],
       },
       {
         userAgent: [
@@ -21,6 +22,7 @@ export default function robots(): MetadataRoute.Robots {
           "Google-Extended", // Google Gemini / AI Overviews
         ],
         allow: "/",
+        disallow: ["/sales", "/login", "/auth", "/unauthorized"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
