@@ -8,8 +8,11 @@
     "allowedUses": ["hero", "inline"],
     "defaultAlt": {
       "ko": "국제 채용 협업을 논의하는 기업 담당자들의 상담 장면",
+      "en": "Company representatives discussing cooperation for international recruitment",
       "ja": "国際採用の連携について話し合う企業担当者の相談風景",
-      "ne": "अन्तर्राष्ट्रिय भर्ती सहकार्यबारे छलफल गरिरहेका कम्पनी प्रतिनिधिहरू"
+      "ne": "अन्तर्राष्ट्रिय भर्ती सहकार्यबारे छलफल गरिरहेका कम्पनी प्रतिनिधिहरू",
+      "vi": "Đại diện doanh nghiệp thảo luận hợp tác tuyển dụng quốc tế",
+      "lo": "ຕົວແທນບໍລິສັດປຶກສາການຮ່ວມມືຮັບສະໝັກສາກົນ"
     }
   },
   {
@@ -21,8 +24,11 @@
     "allowedUses": ["hero", "inline"],
     "defaultAlt": {
       "ko": "한국 기업의 외국인 인재 채용과 현장 배치를 상징하는 장면",
+      "en": "A scene representing foreign talent recruitment and placement in Korea",
       "ja": "韓国企業による外国人材の採用と職場配置を表す場面",
-      "ne": "कोरियाली कम्पनीमा विदेशी प्रतिभाको भर्ती र कार्यस्थल नियुक्ति"
+      "ne": "कोरियाली कम्पनीमा विदेशी प्रतिभाको भर्ती र कार्यस्थल नियुक्ति",
+      "vi": "Hình ảnh tuyển dụng và bố trí nhân lực nước ngoài tại doanh nghiệp Hàn Quốc",
+      "lo": "ພາບແທນການຮັບສະໝັກແລະຈັດວາງພະນັກງານຕ່າງຊາດໃນເກົາຫຼີ"
     }
   },
   {
@@ -34,8 +40,11 @@
     "allowedUses": ["hero", "inline"],
     "defaultAlt": {
       "ko": "일본 취업 준비와 현지 정착 지원을 상징하는 상담 장면",
+      "en": "A consultation representing work preparation and settlement support in Japan",
       "ja": "日本での就職準備と定着支援を表す相談風景",
-      "ne": "जापानमा रोजगारी तयारी र बसोबास सहयोगसम्बन्धी परामर्श"
+      "ne": "जापानमा रोजगारी तयारी र बसोबास सहयोगसम्बन्धी परामर्श",
+      "vi": "Buổi tư vấn về chuẩn bị việc làm và hỗ trợ ổn định tại Nhật Bản",
+      "lo": "ການປຶກສາການກຽມເຮັດວຽກແລະການຕັ້ງຖິ່ນຖານໃນຍີ່ປຸ່ນ"
     }
   },
   {
@@ -47,8 +56,11 @@
     "allowedUses": ["hero", "inline"],
     "defaultAlt": {
       "ko": "작업 장비를 활용해 직업 기능을 익히는 교육 현장",
+      "en": "A vocational training site where workers learn skills with equipment",
       "ja": "作業機器を使って職業技能を学ぶ研修現場",
-      "ne": "कार्य उपकरण प्रयोग गरेर व्यावसायिक सीप सिकाइँदै गरेको तालिम"
+      "ne": "कार्य उपकरण प्रयोग गरेर व्यावसायिक सीप सिकाइँदै गरेको तालिम",
+      "vi": "Cơ sở đào tạo nghề nơi học viên thực hành kỹ năng với thiết bị",
+      "lo": "ສະຖານທີ່ຝຶກອາຊີບທີ່ຮຽນທັກສະດ້ວຍອຸປະກອນ"
     }
   },
   {
@@ -60,8 +72,11 @@
     "allowedUses": ["hero", "inline"],
     "defaultAlt": {
       "ko": "채용 일정과 제출 서류를 함께 검토하는 업무 장면",
+      "en": "A work session reviewing recruitment schedules and required documents",
       "ja": "採用日程と提出書類を確認する業務風景",
-      "ne": "भर्ती समयतालिका र पेश गर्नुपर्ने कागजात समीक्षा गरिँदै गरेको दृश्य"
+      "ne": "भर्ती समयतालिका र पेश गर्नुपर्ने कागजात समीक्षा गरिँदै गरेको दृश्य",
+      "vi": "Buổi làm việc rà soát lịch tuyển dụng và hồ sơ cần nộp",
+      "lo": "ການກວດທົບຕາຕະລາງຮັບສະໝັກແລະເອກະສານທີ່ຕ້ອງຍື່ນ"
     }
   }
 ]

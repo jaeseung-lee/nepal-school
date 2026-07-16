@@ -26,7 +26,7 @@ export default function CtaBanner({ locale }: { locale?: Locale }) {
               {cta.description}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={localizedHref(locale ?? "ko", "/contact")} className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-base font-semibold text-cobalt transition hover:bg-cobalt-soft active:translate-y-px">
+              <Link href={localizedHref(locale ?? "ko", "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale ?? "ko"} className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-base font-semibold text-cobalt transition hover:bg-cobalt-soft active:translate-y-px">
                 {cta.contactCta} <ArrowRight size={18} weight="bold" aria-hidden="true" />
               </Link>
               <Link href={localizedHref(locale ?? "ko", "/services")} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/55 bg-white/8 px-6 py-3.5 text-base font-semibold text-white backdrop-blur transition hover:bg-white/14 active:translate-y-px">

@@ -1,11 +1,13 @@
 {
   "site": {
     "name": "Joong Woo HRD",
-    "nameEnglish": "Joong Woo Human Resource Development Institute",
+    "nameEnglish": "JOONG WOO HRD",
+    "legalName": "Jungwoo Human Development Co., Ltd.",
+    "legalNameEnglish": "Jungwoo Human Development Co., Ltd.",
     "alternateName": "JOONG WOO HRD",
     "slogan": "A global human-resources partner developing Nepali talent through local training",
     "seoTitle": "Nepali Talent Development and Employment Pathways to Korea and Japan",
-    "description": "We develop Nepali talent through local vocational training and connect them lawfully and reliably with companies in Korea and Japan. We manage the full journey—from training and examinations to matching, visas, and settlement support.",
+    "description": "We directly train and source talent in Nepal, work with sourcing partners in Vietnam and Laos, and prepare recruitment for employers in Korea and Japan.",
     "founder": "Oh Je-hwan",
     "foundingDate": "June 10, 2026",
     "businessRegistrationNumber": "684-13-02918",
@@ -20,7 +22,7 @@
   },
   "common": {
     "home": "Home",
-    "contact": "Contact us",
+    "contact": "Hiring preparation",
     "details": "Learn more",
     "viewProcess": "View process",
     "visaInfo": "Visa information",
@@ -44,7 +46,7 @@
     "blog": "Insights",
     "partners": "Partnerships",
     "why": "Trust and expertise",
-    "contact": "Contact"
+    "contact": "Hiring preparation"
   },
   "header": {
     "homeAria": "Joong Woo HRD home",
@@ -65,9 +67,9 @@
   },
   "footer": {
     "description": "We develop Nepali talent through local training and connect them lawfully with companies in Korea and Japan.",
-    "network": "Established in June 2026; our international partner network is centered on Nepal, Vietnam, and Laos.",
+    "network": "Direct training and sourcing in Nepal; partner sourcing in Vietnam and Laos; destination markets in Korea and Japan.",
     "contactNotice": "Our web inquiry channel is not yet formally open. This area first provides guidance for organizing company requirements.",
-    "countries": "Nepal, Vietnam, Laos, Republic of Korea, Japan"
+    "countries": "Train/source: Nepal · Partner source: Vietnam, Laos · Recruit: Korea, Japan"
   },
   "metrics": {
     "ariaLabel": "Key facts",
@@ -99,7 +101,7 @@
       "title": "Fair opportunities",
       "lineBreak": "for everyone",
       "description": "A corporate partner responsible for foreign talent from training and examinations through visas and settlement.",
-      "contactCta": "Contact us",
+      "contactCta": "Hiring preparation",
       "servicesCta": "Explore services",
       "alt": "A vocational training setting representing local education and preparation for international mobility"
     },
@@ -265,7 +267,7 @@
   "cta": {
     "title": "Let us first confirm your company’s requirements",
     "description": "Tell us the role, headcount, preferred timeline, and visa direction, and we will outline the available process and preparation order.",
-    "contactCta": "Contact us",
+    "contactCta": "Hiring preparation",
     "processCta": "View process",
     "alt": "A meeting room and documents prepared for consultation"
   },
@@ -465,8 +467,8 @@
         }
       },
       "form": {
-        "title": "Web inquiry integration in preparation",
-        "description": "This screen does not send your information yet. Until a formal intake channel is confirmed, it first explains the information companies should prepare.",
+        "title": "Send us an email",
+        "description": "We receive all inquiries, including recruitment and partnership inquiries, at the email address below.",
         "preparationTitle": "Useful information to organize before consultation",
         "preparationItems": {
           "roleAndCount": "Desired roles and headcount",
@@ -474,8 +476,8 @@
           "visa": "Visa or system under consideration",
           "locationAndHousing": "Work location and whether housing support is available"
         },
-        "notice": "We have not added a temporary form-submit button. Once an actual email address or submission endpoint is set, this area will become a submission form.",
-        "status": "Will be enabled after the intake channel is confirmed"
+        "notice": "To help us respond faster, please include the role and headcount, preferred arrival date, visa under consideration and work location in your email.",
+        "status": "Send an email inquiry"
       }
     }
   }

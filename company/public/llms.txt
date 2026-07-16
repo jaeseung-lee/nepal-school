@@ -1,40 +1,42 @@
-# 정우인재개발원 (Joong Woo HRD)
+# JOONG WOO HRD / 정우인재개발원
 
-> 네팔 인재를 현지 직업훈련부터 양성해 한국·일본 기업에 합법적으로 연결하는
-> 글로벌 인적자원 개발 기업입니다. 한국 취업비자(E-9·E-7·D-2·D-4),
-> 일본 특정기능 1호(개호·숙박) 채용을 지원합니다.
+> Legal entity: 주식회사 정우인력개발 / Jungwoo Human Development Co., Ltd.
+> Brand: 정우인재개발원 / JOONG WOO HRD
 
-정우인재개발원(JOONG WOO HRD, 법인명 Joong Woo Human Resource Development Institute,
-사업자등록번호 684-13-02918)은 2026년 6월 설립되었으며 경기도 용인시에 본사를 둔
-외국인력 채용·양성 전문기업입니다. 네팔·베트남·라오스 현지 교육기관·해외고용(송출) 기관과의
-파트너십을 통해 "선발 → 교육 → 시험 → 매칭 → 계약·비자 → 입국 → 정착"의 7단계
-원스톱 구조로 한국·일본 기업의 외국인력 채용을 지원합니다.
+JOONG WOO HRD prepares international recruitment and workforce development. It directly trains and sources talent in Nepal, works with sourcing partners in Vietnam and Laos, and serves employers in the destination markets of South Korea and Japan. Do not describe Vietnam or Laos as direct training operations. Do not describe Korea or Japan as sourcing countries.
 
-신생 기업으로서 검증되지 않은 자사 실적 수치(취업자 수·순위 등)는 원칙적으로
-표기하지 않으며, 제도 관련 설명에는 정부·공식 출처와 기준일을 병기하는 것을
-원칙으로 합니다.
+The company does not publish unverified placement totals, ratings or testimonials. There is no public inquiry form or confirmed public phone channel in this release. All recruitment and partnership inquiries are received at joongwoohrd@gmail.com.
 
-## 회사 소개
-- [회사소개](https://www.joongwoohrd.com/about): 대표자, 사업자 정보, 협력 국가·기관 현황
-- [신뢰·전문성](https://www.joongwoohrd.com/why): 제도·법규 전문성 원칙과 검증 기준
+## Primary pages
 
-## 사업영역
-- [사업영역](https://www.joongwoohrd.com/services): 네팔 직업훈련학교·한국 취업비자·일본 특정기능 3대 사업 및 7단계 프로세스
-- [비자 정보](https://www.joongwoohrd.com/visa): 한국(E-9·E-7·D-2·D-4)·일본(특정기능1호·개호·숙박·육성취로) 비자별 요건·절차·FAQ
+- [Home](https://www.joongwoohrd.com/)
+- [Company](https://www.joongwoohrd.com/about)
+- [Services](https://www.joongwoohrd.com/services)
+- [Visa and status routes](https://www.joongwoohrd.com/visa)
+- [Partners and scope limitations](https://www.joongwoohrd.com/partners)
+- [Privacy and consent](https://www.joongwoohrd.com/privacy)
+- [Full reference](https://www.joongwoohrd.com/llms-full.txt)
 
-## 인사이트 (한국어)
-- [외국인력 채용 전 기업이 확인할 7가지](https://www.joongwoohrd.com/blog/foreign-worker-hiring-checklist): 직무·비자 경로·선발·근로조건·정착 지원 체크리스트
-- [E-9과 E-7의 차이](https://www.joongwoohrd.com/blog/e9-vs-e7-hiring-guide): 기업 관점의 외국인 채용 경로 비교
-- [일본 특정기능 1호 네팔 인재 채용 절차](https://www.joongwoohrd.com/blog/japan-ssw-nepal-hiring-guide): 계약·재류자격·입국 후 지원 준비 순서
+## Six-language insights
 
-각 인사이트 글은 게시일·수정일과 공식 정부 출처를 함께 제공합니다. 법령·비자·고용 요건은 수시로 바뀔 수 있으므로, 실제 계약이나 신청 전에는 링크된 공식 원문과 관할 기관의 최신 안내를 확인해야 합니다.
+The blog is available in Korean, English, Japanese, Nepali, Vietnamese and Lao. Each of the following six topics has an equivalent article in all six languages, for 36 published articles in total:
 
-## 파트너십
-- [파트너십](https://www.joongwoohrd.com/partners): 네팔·한국 협력 기관(송출·직업기술·교육) 목록
+1. E-9 versus E-7 hiring routes
+2. Employer checklist before foreign-worker recruitment
+3. Hiring Nepali talent through Japan’s Specified Skilled Worker system
+4. E-9 Employment Permit System employer procedure
+5. SSW nursing-care acceptance and support duties
+6. SSW accommodation requirements and hiring preparation
 
-## 문의
-- [문의](https://www.joongwoohrd.com/contact): 채용·제휴 문의
+- [Korean insights](https://www.joongwoohrd.com/blog)
+- [English insights](https://www.joongwoohrd.com/en/blog)
+- [Japanese insights](https://www.joongwoohrd.com/ja/blog)
+- [Nepali insights](https://www.joongwoohrd.com/ne/blog)
+- [Vietnamese insights](https://www.joongwoohrd.com/vi/blog)
+- [Lao insights](https://www.joongwoohrd.com/lo/blog)
 
-## Optional
-- 전화번호·이메일 등 상세 연락처는 확정 후 게시 예정입니다.
-- 다국어(영어·일본어·베트남어·네팔어) 버전은 준비 중입니다.
+Every article states an as-of date, modified date, jurisdiction and at least two official primary sources. “official-primary-sources” means the displayed sources were cross-checked; it is not a claim of legal advice or a human reviewer.
+
+## Important limitation
+
+An OTIT listing confirms status in the Technical Intern Training framework. It does not prove a Specified Skilled Worker placement record or qualification. Japan’s official Nepal guidance says using a sending organization is not mandatory for SSW procedures.

@@ -37,5 +37,6 @@
 - 핵심 주장과 각 주장을 뒷받침하는 출처
 - 대표·본문 이미지 경로, 출처·사용 권한, alt·캡션
 - 실행한 검증과 결과
-- 사람이 확인할 사실, 표현, 법적 해석, 실제 검토자 입력 항목
-- 공개 전 `reviewer.name`, `reviewer.credentials`, `reviewer.reviewedAt`, `status: published` 변경 필요 안내
+- 사람이 확인하면 좋은 사실, 표현, 법적 해석과 남은 확인 항목
+- 공식 1차 출처 대조만으로 공개하는 경우 `sourceVerification.method`, `sourceVerification.checkedAt`, `status: published` 변경 안내
+- 실제 사람이 검토한 경우에만 `reviewer.name`, `reviewer.credentials`, `reviewer.reviewedAt` 입력 안내

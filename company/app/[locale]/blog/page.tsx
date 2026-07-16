@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogIndex from "@/components/blog/blog-index";
 import { getBlogIndexMetadata } from "@/lib/blog-metadata";
-import { isBlogLocale } from "@/lib/blog-routing";
+import { BLOG_LOCALES, isBlogLocale } from "@/lib/blog-routing";
 
 type LocalizedBlogPageProps = { params: Promise<{ locale: string }> };
 
 export function generateStaticParams() {
-  return [{ locale: "ja" }, { locale: "ne" }];
+  return BLOG_LOCALES.filter((locale) => locale !== "ko").map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: LocalizedBlogPageProps): Promise<Metadata> {

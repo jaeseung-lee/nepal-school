@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Pretendard", "Pretendard Variable", -apple-system, system-ui, sans-serif;
-  --font-display: var(--font-outfit, "Outfit"), "Pretendard", -apple-system, system-ui, sans-serif;
+  --font-sans: var(--font-pretendard), -apple-system, system-ui, sans-serif;
+  --font-display: var(--font-pretendard), -apple-system, system-ui, sans-serif;
   --color-paper: #F7F4EE;
   --color-paper-soft: #FCFAF5;
   --color-surface: #FFFFFF;

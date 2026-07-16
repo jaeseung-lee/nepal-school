@@ -63,7 +63,7 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
               [copy.asOf, formatBlogDate(locale, post.asOf)],
               [copy.jurisdiction, JURISDICTIONS[post.jurisdiction]],
               [copy.author, post.author.name],
-              [copy.reviewer, post.reviewer?.name ?? copy.reviewBadge],
+              [copy.sourcesTitle, formatBlogDate(locale, post.sourceVerification.checkedAt)],
             ].map(([label, value]) => (
               <div key={label} className="border-b border-line px-5 py-4 last:border-b-0 sm:border-r sm:even:border-r-0 lg:border-b-0 lg:even:border-r lg:last:border-r-0">
                 <dt className="text-xs font-semibold text-muted">{label}</dt>
@@ -96,7 +96,8 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
             <p className="mt-2 text-sm leading-7 text-muted">{copy.legalNotice}</p>
             <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
               <div><dt className="font-semibold text-ink">{copy.author}</dt><dd className="mt-1 text-muted">{post.author.name} · {post.author.role}</dd></div>
-              <div><dt className="font-semibold text-ink">{copy.reviewer}</dt><dd className="mt-1 text-muted">{post.reviewer ? `${post.reviewer.name} · ${post.reviewer.credentials} · ${copy.reviewedAt} ${formatBlogDate(locale, post.reviewer.reviewedAt)}` : copy.reviewBadge}</dd></div>
+              <div><dt className="font-semibold text-ink">{copy.sourcesTitle}</dt><dd className="mt-1 text-muted">official-primary-sources · {copy.accessedAt} {formatBlogDate(locale, post.sourceVerification.checkedAt)}</dd></div>
+              {post.reviewer ? <div className="sm:col-span-2"><dt className="font-semibold text-ink">{copy.reviewer}</dt><dd className="mt-1 text-muted">{post.reviewer.name} · {post.reviewer.credentials} · {copy.reviewedAt} {formatBlogDate(locale, post.reviewer.reviewedAt)}</dd></div> : null}
               <div className="sm:col-span-2"><dt className="font-semibold text-ink">{copy.revisions}</dt><dd className="mt-1 text-muted">{copy.published} {formatBlogDate(locale, post.publishedAt)} · {copy.updated} {formatBlogDate(locale, post.modifiedAt)}</dd></div>
             </dl>
           </section>
@@ -107,7 +108,7 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
             <ol className="mt-5 space-y-4">
               {post.sources.map((source) => (
                 <li key={source.url} className="rounded-2xl border border-line bg-white p-5">
-                  <a href={source.url} target="_blank" rel="noreferrer" className="inline-flex items-start gap-2 font-semibold text-cobalt underline underline-offset-4 transition hover:text-cobalt-ink"><LinkSimple size={17} className="mt-1 shrink-0" aria-hidden="true" /> {source.label}</a>
+                  <a href={source.url} target="_blank" rel="noreferrer" data-seo-event="official_source_clicked" data-content-id={post.translationKey} data-jurisdiction={post.jurisdiction} data-locale={locale} className="inline-flex items-start gap-2 font-semibold text-cobalt underline underline-offset-4 transition hover:text-cobalt-ink"><LinkSimple size={17} className="mt-1 shrink-0" aria-hidden="true" /> {source.label}</a>
                   <p className="mt-2 text-sm leading-6 text-muted">{source.description}</p>
                   <p className="mt-2 text-xs text-gray-500">{copy.accessedAt} {formatBlogDate(locale, source.accessedAt)}{source.effectiveAt ? ` · ${copy.effectiveAt} ${formatBlogDate(locale, source.effectiveAt)}` : ""}</p>
                 </li>
@@ -136,7 +137,7 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
       <section className="border-t border-line bg-paper-soft">
         <div className="max-w-[860px] mx-auto flex flex-col gap-5 px-5 py-12 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <div><p className="font-display text-xl font-semibold text-ink">{copy.contactTitle}</p><p className="mt-1 text-sm leading-6 text-muted">{copy.contactDescription}</p></div>
-          <Link href={localizedHref(locale, "/contact")} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-ink">{copy.contactCta} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+          <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-ink">{copy.contactCta} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
         </div>
       </section>
     </main>

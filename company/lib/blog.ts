@@ -90,6 +90,6 @@ export function getPublishedTranslations(translationKey: string): Partial<Record
 
 export const BLOG_AUTHOR = {
   "@type": "Organization",
-  name: SITE.nameKo,
+  name: SITE.brandName.ko,
   url: SITE_URL,
 } as const;

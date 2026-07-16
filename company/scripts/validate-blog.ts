@@ -10,8 +10,8 @@ const contentRoot = path.join(root, "content", "blog");
 const publicRoot = path.join(root, "public");
 
 const OFFICIAL_SOURCE_HOSTS: Record<BlogFrontmatter["jurisdiction"], string[]> = {
-  KR: ["moj.go.kr", "mojhome.moj.go.kr", "hikorea.go.kr", "law.go.kr", "eps.hrdkorea.or.kr", "moel.go.kr"],
-  JP: ["moj.go.jp", "mofa.go.jp", "mhlw.go.jp"],
+  KR: ["moj.go.kr", "mojhome.moj.go.kr", "hikorea.go.kr", "law.go.kr", "eps.hrdkorea.or.kr", "hrdkorea.or.kr", "moel.go.kr"],
+  JP: ["moj.go.jp", "mofa.go.jp", "mhlw.go.jp", "ssw.go.jp"],
   NP: ["dofe.gov.np", "nepal.gov.np", "mofa.gov.np", "kr.nepalembassy.gov.np", "jp.nepalembassy.gov.np"],
 };
 
@@ -66,6 +66,9 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
   const manifest = new Map(manifestResult.data.map((image) => [image.path, image]));
   const identifiers = new Set<string>();
   const translationIdentifiers = new Set<string>();
+  const translationLocales = new Map<string, Set<BlogLocale>>();
+  const seoTitles = new Set<string>();
+  const summaries = new Set<string>();
 
   for (const image of manifestResult.data) {
     if (!fs.existsSync(path.join(publicRoot, image.path.slice(1)))) {
@@ -103,9 +106,20 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
       if (translationIdentifiers.has(translationIdentifier)) errors.push(`${relativePath}: 같은 언어의 translationKey가 중복됩니다.`);
       identifiers.add(identifier);
       translationIdentifiers.add(translationIdentifier);
+      const locales = translationLocales.get(post.translationKey) ?? new Set<BlogLocale>();
+      locales.add(locale);
+      translationLocales.set(post.translationKey, locales);
+
+      if (seoTitles.has(post.seoTitle)) errors.push(`${relativePath}: seoTitle이 다른 글과 중복됩니다.`);
+      if (summaries.has(post.summary)) errors.push(`${relativePath}: summary가 다른 글과 중복됩니다.`);
+      seoTitles.add(post.seoTitle);
+      summaries.add(post.summary);
 
       if (post.language !== locale) errors.push(`${relativePath}: 폴더 언어와 language가 다릅니다.`);
       if (parsed.content.trim().length < 500) errors.push(`${relativePath}: 본문이 너무 짧습니다.`);
+      if ((parsed.content.match(/^##\s+/gm) ?? []).length < 3) errors.push(`${relativePath}: 직접 답변·절차·FAQ를 위한 H2가 최소 3개 필요합니다.`);
+      if (!/(^\d+\.\s+)|(^\|.+\|$)/m.test(parsed.content)) errors.push(`${relativePath}: 비교표 또는 단계 목록이 필요합니다.`);
+      if (!/\]\(\/(?:[a-z]{2}\/)?visa(?:\/|\))/.test(parsed.content)) errors.push(`${relativePath}: 관련 비자 페이지 내부 링크가 필요합니다.`);
       for (const temporalError of validateTemporalState(post, today)) {
         errors.push(`${relativePath}: ${temporalError}`);
       }
@@ -135,6 +149,13 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
       }
     }
   }
+
+  for (const [translationKey, locales] of translationLocales) {
+    const missing = BLOG_LOCALES.filter((locale) => !locales.has(locale));
+    if (missing.length) errors.push(`${translationKey}: 번역 묶음에 누락된 언어가 있습니다: ${missing.join(", ")}`);
+  }
+  if (translationLocales.size !== 6) errors.push(`핵심 주제는 6개여야 합니다: 현재 ${translationLocales.size}개`);
+  if (identifiers.size !== 36) errors.push(`공개 준비 글은 36개여야 합니다: 현재 ${identifiers.size}개`);
 
   return errors;
 }

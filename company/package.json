@@ -11,6 +11,8 @@
     "test:i18n": "node --test test/i18n.test.mjs",
     "validate:blog": "node --import tsx scripts/validate-blog.ts",
     "test:blog": "node --import tsx --test test/blog-content.test.ts test/blog-schedule.test.mjs",
+    "test:seo": "node --import tsx --test test/seo.test.ts",
+    "test:seo:live": "node --import tsx scripts/seo-crawl.ts",
     "blog:schedule": "node scripts/blog-schedule.mjs",
     "sales:sync": "tsx scripts/sync-yolo-care-jobs.ts",
     "sales:sync:dry": "tsx scripts/sync-yolo-care-jobs.ts --dry-run",

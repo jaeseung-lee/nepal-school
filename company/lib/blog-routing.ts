@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 
-export const BLOG_LOCALES = ["ko", "ja", "ne"] as const;
+export const BLOG_LOCALES = ["ko", "en", "ja", "ne", "vi", "lo"] as const;
 export type BlogLocale = (typeof BLOG_LOCALES)[number];
 
 export function isBlogLocale(locale: Locale | string): locale is BlogLocale {
@@ -16,7 +16,7 @@ export function getBlogPostPath(locale: BlogLocale, slug: string): string {
 }
 
 export function isBlogPath(pathname: string): boolean {
-  return /^\/(?:ja\/|ne\/)?blog(?:\/|$)/.test(pathname);
+  return /^\/(?:(?:en|ja|ne|vi|lo)\/)?blog(?:\/|$)/.test(pathname);
 }
 
 /**

@@ -7,6 +7,7 @@ import { getBlogIndexPath, isBlogLocale } from "@/lib/blog-routing";
 import { SITE } from "@/lib/site";
 import { getLocaleFromPathname, getMessages, localizedHref } from "@/lib/i18n";
 import { isInternalPath } from "@/lib/internal-routes";
+import { PRIVACY_COPY } from "@/lib/privacy-copy";
 
 export default function SiteFooter() {
   const pathname = usePathname() || "/";
@@ -16,8 +17,8 @@ export default function SiteFooter() {
   const resolveHref = (href: string) => href === "/blog" && isBlogLocale(locale) ? getBlogIndexPath(locale) : localizedHref(locale, href);
   const contacts = [
     SITE.telephone ? { label: messages.common.phone, value: SITE.telephone } : null,
-    SITE.email ? { label: messages.common.email, value: SITE.email } : null,
-  ].filter(Boolean) as { label: string; value: string }[];
+    SITE.email ? { label: messages.common.email, value: SITE.email, href: `mailto:${SITE.email}` } : null,
+  ].filter(Boolean) as { label: string; value: string; href?: string }[];
 
   if (isInternalPath(pathname)) return null;
 
@@ -77,7 +78,9 @@ export default function SiteFooter() {
                 {contacts.map((item) => (
                   <div key={item.label} className="grid grid-cols-[64px_1fr] gap-2">
                     <dt className="text-gray-500">{item.label}</dt>
-                    <dd className="text-ink">{item.value}</dd>
+                    <dd className="text-ink">
+                      {item.href ? <a href={item.href} className="hover:text-cobalt">{item.value}</a> : item.value}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -88,8 +91,8 @@ export default function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
-          <p>© 2026 {messages.site.name}. {messages.common.allRightsReserved}</p>
-          <p>{messages.footer.countries}</p>
+          <p>© 2026 {SITE.legalName.ko}. {messages.common.allRightsReserved}</p>
+          <div className="flex flex-wrap gap-4"><Link href={localizedHref(locale, "/privacy")} className="hover:text-cobalt">{PRIVACY_COPY[locale].title}</Link><span>{messages.footer.countries}</span></div>
         </div>
       </div>
     </footer>

@@ -109,6 +109,9 @@ export default function SiteHeader() {
                       <Link
                         key={language}
                         href={localeHref(language)}
+                        data-seo-event="language_changed"
+                        data-content-id={language}
+                        data-locale={language}
                         onClick={() => setLanguageOpen(false)}
                         role="menuitem"
                         aria-current={language === locale ? "true" : undefined}
@@ -132,7 +135,7 @@ export default function SiteHeader() {
               </Link>
             ) : null}
 
-            <Link href={localizedHref(locale, "/contact")} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
+            <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
               {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
             </Link>
 
@@ -194,6 +197,9 @@ export default function SiteHeader() {
                       <Link
                         key={language}
                         href={localeHref(language)}
+                        data-seo-event="language_changed"
+                        data-content-id={language}
+                        data-locale={language}
                         onClick={() => setMenuOpen(false)}
                         aria-current={language === locale ? "true" : undefined}
                         className={`rounded-xl border px-3 py-2.5 text-center text-sm font-semibold transition ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted hover:border-cobalt hover:text-cobalt"}`}
@@ -205,7 +211,7 @@ export default function SiteHeader() {
                   {!onBlog ? <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p> : null}
                 </>
 
-              <Link href={localizedHref(locale, "/contact")} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">
+              <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">
                 {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />
               </Link>
             </div>

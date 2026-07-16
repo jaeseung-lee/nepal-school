@@ -17,8 +17,8 @@ export default function HeroSlideshow({ locale }: { locale?: Locale }) {
         sizes="100vw"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(24,26,31,0.84)_0%,rgba(24,26,31,0.50)_43%,rgba(24,26,31,0.08)_100%)]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(24,26,31,0.55),rgba(24,26,31,0.05)_48%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(24,26,31,0.58)_0%,rgba(24,26,31,0.30)_43%,rgba(24,26,31,0.02)_100%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(24,26,31,0.42),rgba(24,26,31,0.02)_48%)]" aria-hidden="true" />
 
       <div className="relative flex min-h-[calc(100dvh-72px)] items-end">
         <div className="max-w-content mx-auto w-full px-5 pb-16 pt-16 lg:px-8 lg:pb-20">

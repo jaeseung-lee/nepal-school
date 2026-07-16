@@ -5,7 +5,7 @@
 ## 1. Supabase を作成する
 
 1. 新しい Supabase プロジェクトを作成します。
-2. SQL Editor で `supabase/migrations/202607160001_sales_dashboard.sql` を実行します。
+2. [Supabase マイグレーション運用ガイド（韓国語）](./docs/supabase-migrations.md)に従い、`supabase/migrations/` の SQL をバージョン順に適用します。SQL Editor で基本スキーマをすでに適用した既存 DB は、ガイドの migration history 修復手順を先に確認してください。
 3. `.env.example` を参考に、デプロイ環境とローカルの `.env.local` に次を設定します。
 
 ```text

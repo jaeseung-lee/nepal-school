@@ -1,11 +1,13 @@
 {
   "site": {
     "name": "Joong Woo HRD",
-    "nameEnglish": "Joong Woo Human Resource Development Institute",
+    "nameEnglish": "JOONG WOO HRD",
+    "legalName": "주식회사 정우인력개발",
+    "legalNameEnglish": "Jungwoo Human Development Co., Ltd.",
     "alternateName": "JOONG WOO HRD",
     "slogan": "Đối tác nhân lực toàn cầu đào tạo nhân tài Nepal từ nền tảng giáo dục tại địa phương",
     "seoTitle": "Đào tạo nhân tài Nepal và kết nối việc làm tại Hàn Quốc, Nhật Bản",
-    "description": "Chúng tôi đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ một cách hợp pháp, ổn định với các doanh nghiệp tại Hàn Quốc và Nhật Bản. Chúng tôi quản lý trọn quy trình từ đào tạo, thi cử, kết nối, thị thực đến hỗ trợ ổn định cuộc sống.",
+    "description": "Chúng tôi trực tiếp đào tạo và cung ứng tại Nepal, hợp tác cung ứng tại Việt Nam và Lào, đồng thời chuẩn bị tuyển dụng cho thị trường Hàn Quốc và Nhật Bản.",
     "founder": "Oh Je-hwan",
     "foundingDate": "Ngày 10 tháng 6 năm 2026",
     "businessRegistrationNumber": "684-13-02918",
@@ -20,7 +22,7 @@
   },
   "common": {
     "home": "Trang chủ",
-    "contact": "Liên hệ",
+    "contact": "Hướng dẫn chuẩn bị tuyển dụng",
     "details": "Xem chi tiết",
     "viewProcess": "Xem quy trình",
     "visaInfo": "Thông tin thị thực",
@@ -44,7 +46,7 @@
     "blog": "Kiến thức",
     "partners": "Đối tác",
     "why": "Uy tín và chuyên môn",
-    "contact": "Liên hệ"
+    "contact": "Chuẩn bị tuyển dụng"
   },
   "header": {
     "homeAria": "Trang chủ Joong Woo HRD",
@@ -65,9 +67,9 @@
   },
   "footer": {
     "description": "Chúng tôi đào tạo nhân tài Nepal tại địa phương và kết nối họ một cách hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
-    "network": "Thành lập tháng 6 năm 2026; mạng lưới hợp tác quốc tế của chúng tôi tập trung tại Nepal, Việt Nam và Lào.",
+    "network": "Đào tạo/cung ứng trực tiếp tại Nepal; cung ứng đối tác tại Việt Nam, Lào; thị trường tuyển dụng Hàn Quốc, Nhật Bản.",
     "contactNotice": "Kênh liên hệ trực tuyến chưa chính thức hoạt động. Khu vực này trước hết cung cấp hướng dẫn để doanh nghiệp sắp xếp các yêu cầu cần thiết.",
-    "countries": "Nepal, Việt Nam, Lào, Hàn Quốc, Nhật Bản"
+    "countries": "Đào tạo/cung ứng: Nepal · Đối tác: Việt Nam, Lào · Tuyển dụng: Hàn Quốc, Nhật Bản"
   },
   "metrics": {
     "ariaLabel": "Các chỉ số khách quan",
@@ -99,7 +101,7 @@
       "title": "Cơ hội công bằng",
       "lineBreak": "cho mọi người",
       "description": "Đối tác doanh nghiệp chịu trách nhiệm về nhân tài nước ngoài từ đào tạo, thi cử đến thị thực và ổn định cuộc sống.",
-      "contactCta": "Liên hệ",
+      "contactCta": "Hướng dẫn chuẩn bị tuyển dụng",
       "servicesCta": "Xem lĩnh vực hoạt động",
       "alt": "Khung cảnh đào tạo nghề tượng trưng cho giáo dục tại địa phương và chuẩn bị di chuyển quốc tế"
     },
@@ -265,7 +267,7 @@
   "cta": {
     "title": "Trước tiên, hãy xác nhận yêu cầu của doanh nghiệp",
     "description": "Hãy cho chúng tôi biết công việc, số lượng nhân sự, lịch mong muốn và định hướng thị thực; chúng tôi sẽ sắp xếp và hướng dẫn quy trình khả thi cùng thứ tự chuẩn bị.",
-    "contactCta": "Liên hệ",
+    "contactCta": "Hướng dẫn chuẩn bị tuyển dụng",
     "processCta": "Xem quy trình",
     "alt": "Phòng họp và tài liệu đã sẵn sàng cho tư vấn"
   },
@@ -465,8 +467,8 @@
         }
       },
       "form": {
-        "title": "Đang chuẩn bị tích hợp liên hệ trực tuyến",
-        "description": "Màn hình này hiện chưa gửi nội dung. Cho đến khi kênh tiếp nhận chính thức được xác định, chúng tôi hướng dẫn trước các thông tin doanh nghiệp cần chuẩn bị.",
+        "title": "Liên hệ qua email",
+        "description": "Chúng tôi tiếp nhận mọi yêu cầu, bao gồm tuyển dụng và hợp tác, tại địa chỉ email bên dưới.",
         "preparationTitle": "Thông tin nên chuẩn bị trước khi tư vấn",
         "preparationItems": {
           "roleAndCount": "Vị trí công việc và số lượng nhân sự mong muốn",
@@ -474,8 +476,8 @@
           "visa": "Loại thị thực hoặc chương trình đang xem xét",
           "locationAndHousing": "Khu vực làm việc và việc hỗ trợ chỗ ở"
         },
-        "notice": "Chúng tôi không tạo nút gửi biểu mẫu tạm thời. Khi địa chỉ email hoặc endpoint tiếp nhận thực tế được xác định, khu vực này sẽ được chuyển thành biểu mẫu gửi.",
-        "status": "Sẽ được kích hoạt sau khi kênh tiếp nhận được xác nhận"
+        "notice": "Để được phản hồi nhanh hơn, vui lòng nêu vị trí và số lượng cần tuyển, thời điểm nhập cảnh mong muốn, loại thị thực đang xem xét và khu vực làm việc trong email.",
+        "status": "Gửi yêu cầu qua email"
       }
     }
   }

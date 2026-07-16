@@ -67,6 +67,16 @@ export const salesMessages = {
     demand: "需要シグナル",
     fit: "適合度",
     scoreReasons: "スコア根拠",
+    appliedScoreReasons: "この企業に適用された根拠",
+    noScoreReasons: "現在適用されている加点項目はありません。",
+    scoreCriteria: "スコア算定基準",
+    scoreCriteriaSummary: "100点満点（適合度70・需要シグナル30）",
+    scoreGradeThresholds: "A: 70点以上 · B: 45〜69点 · C: 44点以下",
+    companyScoreNote: "企業スコアは、有効求人のうち最も高いスコアを使用します。求人一覧のスコアも企業スコアです。",
+    scoreDisclaimer: "営業優先度のシグナルです。必ず公式の原文を確認してください。",
+    localeSwitching: "言語を切り替えています",
+    localeSwitchError: "言語を切り替えられませんでした。",
+    viewPreferenceError: "表示設定を保存できませんでした。",
     map: "地図で確認",
     sourceInventory: "求人データ",
     accountView: "企業リスト",
@@ -175,6 +185,16 @@ export const salesMessages = {
     demand: "수요 신호",
     fit: "적합도",
     scoreReasons: "점수 근거",
+    appliedScoreReasons: "이 기업에 적용된 근거",
+    noScoreReasons: "현재 적용된 가점 항목이 없습니다.",
+    scoreCriteria: "점수 산정 기준",
+    scoreCriteriaSummary: "100점 만점(적합도 70·수요 신호 30)",
+    scoreGradeThresholds: "A: 70점 이상 · B: 45–69점 · C: 44점 이하",
+    companyScoreNote: "기업 점수는 활성 공고 중 가장 높은 점수를 사용합니다. 공고 목록의 점수도 기업 점수입니다.",
+    scoreDisclaimer: "영업 우선순위 신호이므로 반드시 공식 원문을 확인하세요.",
+    localeSwitching: "언어를 전환하고 있습니다",
+    localeSwitchError: "언어를 전환하지 못했습니다.",
+    viewPreferenceError: "보기 설정을 저장하지 못했습니다.",
     map: "지도에서 확인",
     sourceInventory: "공고 데이터",
     accountView: "기업 목록",
@@ -274,8 +294,8 @@ export const signalLabels: LocalizedLabels = {
 };
 
 export const scoreReasonLabels: LocalizedLabels = {
-  ja: { direct_employer: "直接雇用", stable_employment: "正規・契約雇用", visa_support: "ビザ・特定技能支援", foreigner_experience: "外国人採用シグナル", n3_n4: "N3/N4", qualification_support: "資格・研修支援", housing_support: "住居支援", recent_post: "30日以内の求人", three_active_jobs: "有効求人3件以上", long_validity: "有効期間30日以上", weekly_change: "今週の変更・再掲載" },
-  ko: { direct_employer: "직접고용", stable_employment: "정규·계약직", visa_support: "비자·특정기능 지원", foreigner_experience: "외국인 채용 신호", n3_n4: "N3/N4", qualification_support: "자격·교육 지원", housing_support: "주거 지원", recent_post: "최근 30일 공고", three_active_jobs: "활성 공고 3건 이상", long_validity: "유효기간 30일 이상", weekly_change: "이번 주 변경·재등장" },
+  ja: { direct_employer: "直接雇用", stable_employment: "正規・契約雇用", visa_support: "ビザ・特定技能支援", foreigner_experience: "外国人採用シグナル", n3_n4: "N3/N4", qualification_support: "資格・研修支援", housing_support: "住居支援", recent_post: "掲載から30日以内", three_active_jobs: "有効求人3件以上", long_validity: "有効期間30日以上", weekly_change: "収集時に検知した変更・再掲載" },
+  ko: { direct_employer: "직접고용", stable_employment: "정규·계약직", visa_support: "비자·특정기능 지원", foreigner_experience: "외국인 채용 신호", n3_n4: "N3/N4", qualification_support: "자격·교육 지원", housing_support: "주거 지원", recent_post: "공고일이 최근 30일 이내", three_active_jobs: "활성 공고 3건 이상", long_validity: "유효기간 30일 이상", weekly_change: "수집 시 감지된 변경·재게시" },
 };
 
 export const visitChecklistItems: Record<SalesLocale, string[]> = {

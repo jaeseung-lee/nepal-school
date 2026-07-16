@@ -38,6 +38,10 @@ export const blogFrontmatterSchema = z
     publishedAt: isoDate,
     modifiedAt: isoDate,
     generationMethod: z.enum(["human", "ai-assisted"]),
+    sourceVerification: z.object({
+      method: z.literal("official-primary-sources"),
+      checkedAt: isoDate,
+    }),
     author: z.object({
       name: z.string().trim().min(2),
       role: z.string().trim().min(2),
@@ -48,7 +52,8 @@ export const blogFrontmatterSchema = z
         credentials: z.string().trim().min(4),
         reviewedAt: isoDate,
       })
-      .nullable(),
+      .nullable()
+      .optional(),
     status: z.enum(["review", "published"]),
     heroImage: blogImageSchema,
     sources: z.array(blogSourceSchema).min(2),
@@ -63,19 +68,19 @@ export const blogFrontmatterSchema = z
       .max(5),
   })
   .superRefine((post, context) => {
-    if (post.status === "published" && !post.reviewer) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["reviewer"],
-        message: "published 글에는 검토자 이름, 자격, 검토일이 필요합니다.",
-      });
-    }
-
     if (post.reviewer && post.reviewer.reviewedAt > post.modifiedAt) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["reviewer", "reviewedAt"],
         message: "검토일은 수정일보다 늦을 수 없습니다.",
+      });
+    }
+
+    if (post.sourceVerification.checkedAt > post.modifiedAt) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sourceVerification", "checkedAt"],
+        message: "공식 출처 대조일은 수정일보다 늦을 수 없습니다.",
       });
     }
 
@@ -107,8 +112,11 @@ export const imageManifestSchema = z.array(
     allowedUses: z.array(z.enum(["hero", "inline"])).min(1),
     defaultAlt: z.object({
       ko: z.string().min(8),
+      en: z.string().min(8),
       ja: z.string().min(8),
       ne: z.string().min(8),
+      vi: z.string().min(8),
+      lo: z.string().min(8),
     }),
   }),
 );

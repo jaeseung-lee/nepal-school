@@ -1,6 +1,27 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { calculateLeadScore } from "@/lib/sales/scoring";
+import { scoreReasonLabels } from "@/lib/sales/i18n";
+import {
+  calculateLeadScore,
+  SCORE_CATEGORY_MAXIMUMS,
+  SCORE_GRADE_THRESHOLDS,
+  SCORE_RUBRIC,
+} from "@/lib/sales/scoring";
+
+test("score rubric is the single complete 70 fit / 30 demand source with localized reason labels", () => {
+  const totalFor = (category: "fit" | "demand") => SCORE_RUBRIC
+    .filter((criterion) => criterion.category === category)
+    .reduce((total, criterion) => total + criterion.points, 0);
+  const rubricKeys = SCORE_RUBRIC.map((criterion) => criterion.key).sort();
+
+  assert.equal(totalFor("fit"), SCORE_CATEGORY_MAXIMUMS.fit);
+  assert.equal(totalFor("demand"), SCORE_CATEGORY_MAXIMUMS.demand);
+  assert.equal(SCORE_CATEGORY_MAXIMUMS.fit + SCORE_CATEGORY_MAXIMUMS.demand, 100);
+  assert.equal(SCORE_GRADE_THRESHOLDS.A, 70);
+  assert.equal(SCORE_GRADE_THRESHOLDS.B, 45);
+  assert.deepEqual(Object.keys(scoreReasonLabels.ja).sort(), rubricKeys);
+  assert.deepEqual(Object.keys(scoreReasonLabels.ko).sort(), rubricKeys);
+});
 
 test("lead scoring follows the fixed 70 fit / 30 demand rubric", () => {
   const score = calculateLeadScore(
@@ -23,6 +44,10 @@ test("lead scoring follows the fixed 70 fit / 30 demand rubric", () => {
   assert.equal(score.demandScore, 30);
   assert.equal(score.totalScore, 100);
   assert.equal(score.grade, "A");
+  assert.deepEqual(
+    score.reasons,
+    SCORE_RUBRIC.map((criterion) => ({ key: criterion.key, points: criterion.points })),
+  );
 });
 
 test("grade thresholds are A 70+, B 45-69, C 44 or less", () => {

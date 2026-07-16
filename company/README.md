@@ -30,6 +30,11 @@ npm run test:i18n # 번역 키 일관성 검사
 - `company/`에서 `npm run test:i18n`을 실행하면 한국어 기준의 모든 번역 키가 각 로케일 카탈로그에 있는지 검사합니다.
 - 저장소 루트에서 `npm install`을 실행하면 Husky가 활성화되며, 커밋 전(pre-commit)에 같은 번역 키 검사가 자동으로 실행됩니다.
 
+## 영업 대시보드 운영
+
+- 비공개 영업 대시보드의 기능, 권한, 수집·연락처 운영 방법은 [SALES_DASHBOARD.md](./SALES_DASHBOARD.md)를 참고합니다.
+- Supabase CLI 연결, dry-run, 마이그레이션 적용, 기존 DB 이력 보정, 적용 결과 검증은 [Supabase 마이그레이션 운영 가이드](./docs/supabase-migrations.md)를 따릅니다.
+
 ## 구조
 
 ```

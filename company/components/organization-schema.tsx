@@ -9,24 +9,24 @@ export default function OrganizationSchema() {
     "@type": "Organization",
     // WebSite.publisher(layout.tsx)가 이 @id로 상호 참조한다
     "@id": `${SITE_URL}/#organization`,
-    name: SITE.nameKo,
-    legalName: SITE.nameEn,
-    alternateName: SITE.alternateName,
+    name: SITE.brandName.ko,
+    legalName: SITE.legalName.ko,
+    alternateName: [SITE.brandName.en, SITE.legalName.en],
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
     image: `${SITE_URL}/opengraph-image`,
     description: SITE.description,
-    foundingDate: SITE.foundingDate,
-    founder: { "@type": "Person", name: SITE.founder },
-    knowsLanguage: ["ko", "en", "ja", "ne", "vi", "lo"],
-    areaServed: SITE.areaServed.map((name) => ({
-      "@type": "Country",
-      name,
-    })),
-    // 값이 채워지면 자동 포함 (미확정 필드는 스키마에서 제외해 오류 방지)
+    ...(SITE.email
+      ? {
+          email: SITE.email,
+          contactPoint: {
+            "@type": "ContactPoint",
+            email: SITE.email,
+            contactType: "customer service",
+          },
+        }
+      : {}),
     ...(SITE.bizRegNo ? { taxID: SITE.bizRegNo } : {}),
-    ...(SITE.email ? { email: SITE.email } : {}),
-    ...(SITE.telephone ? { telephone: SITE.telephone } : {}),
     ...(SITE.streetAddress
       ? {
           address: {
@@ -36,7 +36,6 @@ export default function OrganizationSchema() {
           },
         }
       : {}),
-    ...(SITE.sameAs.length ? { sameAs: SITE.sameAs } : {}),
   };
 
   return (

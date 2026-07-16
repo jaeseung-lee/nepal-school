@@ -6,6 +6,7 @@ import PartnerCards from "@/components/partner-cards";
 import CtaBanner from "@/components/cta-banner";
 import Reveal from "@/components/reveal";
 import { DEFAULT_LOCALE, getMessages, type Locale } from "@/lib/i18n";
+import { PARTNER_NOTICE } from "@/lib/partner-notice";
 
 const MOU_ITEM_KEYS = ["date", "structure", "partnerRole", "joongwooRole"] as const;
 
@@ -132,6 +133,12 @@ export function PartnersContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }
 
           <Reveal delay={0.08} className="mt-12">
             <PartnerCards locale={locale} />
+          </Reveal>
+
+          <Reveal delay={0.1} className="mt-10 rounded-[22px] border border-line bg-paper-soft p-6">
+            <h2 className="font-display text-xl font-semibold text-ink">{PARTNER_NOTICE[locale].title}</h2>
+            <p className="mt-3 text-sm leading-7 text-muted">{PARTNER_NOTICE[locale].body}</p>
+            <a href="https://www.moj.go.jp/isa/policies/ssw/nyuukokukanri06_00104.html" target="_blank" rel="noreferrer" data-seo-event="official_source_clicked" data-content-id="partner-listing-limit" data-jurisdiction="JP" data-locale={locale} className="mt-3 inline-flex text-sm font-semibold text-cobalt underline underline-offset-4">{PARTNER_NOTICE[locale].link}</a>
           </Reveal>
         </div>
       </section>

@@ -1,10 +1,12 @@
 import { ArrowRight, ClipboardText, EnvelopeSimple, WarningCircle } from "@phosphor-icons/react/dist/ssr";
 import { getMessages, type Locale } from "@/lib/i18n";
+import { SITE } from "@/lib/site";
 
 const REQUEST_ITEM_KEYS = ["roleAndCount", "arrivalDate", "visa", "locationAndHousing"] as const;
 
 export default function ContactForm({ locale }: { locale?: Locale }) {
   const form = getMessages(locale).pages.contact.form;
+  const emailHref = `mailto:${SITE.email}`;
 
   return (
     <div className="rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
@@ -33,10 +35,17 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
         <p>{form.notice}</p>
       </div>
 
-      <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink">
+      <a
+        href={emailHref}
+        className="mt-7 inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
+      >
         <EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />
         {form.status}
-      </div>
+        <ArrowRight size={16} aria-hidden="true" />
+      </a>
+      <a href={emailHref} className="mt-4 block text-sm font-semibold text-cobalt underline decoration-cobalt/30 underline-offset-4 hover:decoration-cobalt">
+        {SITE.email}
+      </a>
     </div>
   );
 }

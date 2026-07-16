@@ -12,6 +12,7 @@ export function getBlogIndexMetadata(locale: BlogLocale): Metadata {
   const firstPost = getBlogPosts(locale)[0];
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: copy.indexSeoTitle,
     description: copy.indexSeoDescription,
     alternates: { canonical: path, languages: { ...languages, "x-default": SITE_URL + "/blog" } },
@@ -40,6 +41,7 @@ export function getBlogPostMetadata(post: BlogPost): Metadata {
   );
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: post.seoTitle,
     description: post.summary,
     keywords: post.keywords,

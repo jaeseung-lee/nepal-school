@@ -6,6 +6,22 @@ const nextConfig = {
   // The repository root has a small package only for Husky. Keep Next's file
   // tracing rooted at this application so the two lockfiles are unambiguous.
   outputFileTracingRoot: fileURLToPath(new URL("./", import.meta.url)),
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "company-iota-murex.vercel.app" }],
+        destination: "https://www.joongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "joongwoohrd.com" }],
+        destination: "https://www.joongwoohrd.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

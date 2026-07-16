@@ -14,8 +14,8 @@ export default function ContactContent({ locale = DEFAULT_LOCALE }: { locale?: L
     { label: copy.main.companyItems.businessNumber, value: messages.site.businessRegistrationNumber, icon: Buildings },
     { label: copy.main.companyItems.address, value: messages.site.streetAddress, icon: MapPin },
     SITE.telephone ? { label: copy.main.companyItems.phone, value: SITE.telephone, icon: IdentificationCard } : null,
-    SITE.email ? { label: copy.main.companyItems.email, value: SITE.email, icon: IdentificationCard } : null,
-  ].filter(Boolean) as { label: string; value: string; icon: typeof IdentificationCard }[];
+    SITE.email ? { label: copy.main.companyItems.email, value: SITE.email, href: `mailto:${SITE.email}`, icon: IdentificationCard } : null,
+  ].filter(Boolean) as { label: string; value: string; href?: string; icon: typeof IdentificationCard }[];
 
   return (
     <main>
@@ -47,7 +47,13 @@ export default function ContactContent({ locale = DEFAULT_LOCALE }: { locale?: L
                     </span>
                     <div>
                       <dt className="text-sm font-semibold text-ink">{item.label}</dt>
-                      <dd className="mt-1 text-sm leading-relaxed text-muted">{item.value}</dd>
+                      <dd className="mt-1 text-sm leading-relaxed text-muted">
+                        {item.href ? (
+                          <a href={item.href} className="font-semibold text-cobalt underline decoration-cobalt/30 underline-offset-4 hover:decoration-cobalt">
+                            {item.value}
+                          </a>
+                        ) : item.value}
+                      </dd>
                     </div>
                   </div>
                 );

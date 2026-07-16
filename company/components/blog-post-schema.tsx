@@ -4,7 +4,7 @@ import { BLOG_COPY } from "@/lib/blog-copy";
 import { getBlogIndexPath } from "@/lib/blog-routing";
 import { SITE_URL } from "@/lib/site";
 
-const LANGUAGE_TAGS = { ko: "ko-KR", ja: "ja-JP", ne: "ne-NP" } as const;
+const LANGUAGE_TAGS = { ko: "ko-KR", en: "en", ja: "ja-JP", ne: "ne-NP", vi: "vi-VN", lo: "lo-LA" } as const;
 
 export default function BlogPostSchema({ post }: { post: BlogPost }) {
   const postUrl = getBlogPostUrl(post.language, post.slug);
@@ -32,6 +32,9 @@ export default function BlogPostSchema({ post }: { post: BlogPost }) {
             articleSection: post.category,
             keywords: post.keywords.join(", "),
             citation: post.sources.map((source) => source.url),
+            sdPublisher: { "@id": SITE_URL + "/#organization" },
+            sdDatePublished: post.sourceVerification.checkedAt,
+            usageInfo: "Official primary sources cross-checked; general information only, not legal advice.",
             isAccessibleForFree: true,
           },
           {

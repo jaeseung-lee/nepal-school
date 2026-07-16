@@ -61,11 +61,25 @@ export default function VisaHubContent({ locale = DEFAULT_LOCALE }: { locale?: L
       url: `${SITE_URL}${localizedHref(locale, `/visa/${visa.slug}`)}`,
     })),
   };
+  const service = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE_URL}${localizedHref(locale, "/visa")}#service`,
+    name: hub.metadata.title,
+    description: hub.metadata.description,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: [
+      { "@type": "Country", name: "South Korea" },
+      { "@type": "Country", name: "Japan" },
+    ],
+    serviceType: "employment visa process information",
+  };
 
   return (
     <main>
       <JsonLd data={breadcrumb} />
       <JsonLd data={itemList} />
+      <JsonLd data={service} />
 
       <PageBanner
         locale={locale}
