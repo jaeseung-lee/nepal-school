@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 
 type NavItem = { href: string; label: string };
 
-export default function SalesNav({ items }: { items: NavItem[] }) {
+export default function SalesNav({ items, ariaLabel }: { items: NavItem[]; ariaLabel: string }) {
   const pathname = usePathname();
   return (
-    <nav className="space-y-1" aria-label="Sales navigation">
+    <nav className="space-y-1" aria-label={ariaLabel}>
       {items.map((item) => {
         const active = item.href === "/sales" ? pathname === item.href : pathname.startsWith(item.href);
         return (

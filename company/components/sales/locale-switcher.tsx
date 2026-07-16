@@ -1,12 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SalesLocale } from "@/lib/sales/i18n";
 
 export default function SalesLocaleSwitcher({ locale }: { locale: SalesLocale }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   async function change(nextLocale: SalesLocale) {
     setPending(true);

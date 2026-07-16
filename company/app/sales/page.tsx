@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GradeBadge, StatusBadge } from "@/components/sales/badges";
-import { getSalesLocale, formatSalesDate, salesMessages, stageLabels } from "@/lib/sales/i18n";
+import { formatSalesDate, salesMessages, stageLabels } from "@/lib/sales/i18n";
+import { getSalesLocale } from "@/lib/sales/locale";
 import { relationOne } from "@/lib/sales/relations";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -56,7 +57,7 @@ export default async function SalesDashboardPage() {
         </div>
         {run ? (
           <div className="text-right text-xs text-[#6f7b8c]">
-            <StatusBadge status={String(run.status)} />
+            <StatusBadge status={String(run.status)} locale={locale} />
             <p className="mt-2">{t.latestRun}: {formatSalesDate(String(run.started_at), locale)}</p>
           </div>
         ) : null}
@@ -64,7 +65,7 @@ export default async function SalesDashboardPage() {
 
       {run?.status === "failed" ? (
         <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-900">
-          <strong>収集失敗 / 수집 실패:</strong> {String(run.error_message ?? "unknown")}
+          <strong>{t.collectionFailed}:</strong> {String(run.error_message ?? "—")}
         </div>
       ) : null}
 
@@ -90,11 +91,9 @@ export default async function SalesDashboardPage() {
         <LeadList title={t.todayFollowUps} rows={followUps} locale={locale} />
         <LeadList title={t.unreviewedCompanies} rows={unreviewed} locale={locale} />
         <section className="rounded-2xl border border-[#dce3eb] bg-[#17233a] p-6 text-white">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#89a9ff]">Operating rule</p>
+          <p className="text-xs font-bold tracking-[0.08em] text-[#89a9ff]">{t.operatingRule}</p>
           <h2 className="mt-3 text-xl font-bold">{t.sourceNotice}</h2>
-          <p className="mt-3 text-sm leading-6 text-white/65">
-            海外在住者の直接応募可否を保証しません。公式連絡先は出典を確認してから使用し、個人メールや推測した採用企業は登録しません。
-          </p>
+          <p className="mt-3 text-sm leading-6 text-white/65">{t.operatingRuleBody}</p>
           <Link href="/sales/jobs" className="mt-5 inline-flex rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-[#17233a]">{t.jobs} →</Link>
         </section>
       </div>
@@ -115,7 +114,7 @@ function LeadList({ title, rows, locale }: { title: string; rows: Array<Record<s
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold">{organization?.display_name ?? "—"}</p>
                 <p className="mt-1 text-xs text-[#7b8798]">
-                  {row.stage ? stageLabels[locale][String(row.stage)] : t.nextAction}
+                  {row.stage ? stageLabels[locale][String(row.stage)] ?? String(row.stage) : t.nextAction}
                   {row.next_action_at ? ` · ${formatSalesDate(String(row.next_action_at), locale)}` : ""}
                 </p>
               </div>

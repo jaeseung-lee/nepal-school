@@ -31,7 +31,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1d5cff] text-xs font-bold text-white">JW</span>
           <div>
             <p className="font-semibold">介護営業リード</p>
-            <p className="text-xs text-[#6f7b8c]">개호 영업 리드 · Internal only</p>
+            <p className="text-xs text-[#6f7b8c]">社内専用 · 사내 전용</p>
           </div>
         </div>
         <h1 className="text-2xl font-bold tracking-[-0.02em]">社内ダッシュボード</h1>
