@@ -4,7 +4,7 @@
 
 ## 배포 순서
 
-1. 기술 기반 배포: 서버 `lang`, 정적 다국어 URL, canonical/hreflang, sitemap, robots, 스키마, 구 도메인 리디렉션, 로컬 폰트, 동의형 GA4.
+1. 기술 기반 배포: 서버 `lang`, 정적 다국어 URL, canonical/hreflang, sitemap, robots, 스키마, 구 도메인 리디렉션, 로컬 폰트, 동의형 GA4·PostHog.
 2. 콘텐츠 배포: 6개 주제 × 6개 언어의 36개 글과 `llms.txt`, `llms-full.txt`.
 3. 각 배포에서 `test:i18n`, `validate:blog`, `test:blog`, `test:seo`, `typecheck`, `build`를 실행한다.
 4. 빌드 후 로컬 또는 프리뷰 URL에 `SEO_BASE_URL=https://preview.example.com npm run test:seo:live`를 실행한다.
@@ -12,6 +12,8 @@
 ## 환경변수
 
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`: 새 GA4 웹 데이터 스트림의 `G-` 측정 ID. 방문자가 허용한 뒤에만 로드된다.
+- `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`: PostHog 프로젝트의 공개 `phc_` 토큰. 개인 API 키(`phx_`)를 넣지 않는다. 방문자가 허용한 뒤에만 로드된다.
+- `NEXT_PUBLIC_POSTHOG_HOST`: PostHog 수집 호스트. US Cloud는 `https://us.i.posthog.com`, EU Cloud는 `https://eu.i.posthog.com`을 사용한다.
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: Google Search Console HTML 태그의 `content` 값.
 - `NEXT_PUBLIC_NAVER_SITE_VERIFICATION`: 네이버 서치어드바이저 HTML 태그의 `content` 값.
 - `NEXT_PUBLIC_BING_SITE_VERIFICATION`: Bing Webmaster Tools `msvalidate.01`의 `content` 값.
@@ -41,8 +43,9 @@
 - apex가 `www`로 영구 이동하는지 확인한다.
 - 홈의 Organization/WebSite/FAQPage, 서비스·비자 허브의 Service, 글의 BlogPosting을 Rich Results Test와 Schema Markup Validator로 확인한다.
 - 모바일 360px, 390px, 768px에서 헤더, 표 가로 스크롤, 동의 배너와 글 본문을 확인한다.
-- 동의 전 `googletagmanager.com` 요청이 0인지, 허용 후 한 번 로드되고 각 이벤트가 중복되지 않는지 브라우저 네트워크/GA4 DebugView에서 확인한다.
-- GA4 이벤트: `cta_clicked`, `language_changed`, `visa_content_viewed`, `article_read`, `official_source_clicked`; 웹 바이탈: LCP, INP, CLS.
+- 동의 전 `googletagmanager.com` 및 PostHog 수집 호스트 요청이 0인지, 허용 후 각 도구가 한 번만 초기화되는지 브라우저 네트워크/GA4 DebugView/PostHog Live Events에서 확인한다.
+- GA4와 PostHog는 `cta_clicked`, `language_changed`, `visa_content_viewed`, `article_read`, `official_source_clicked`, 페이지뷰와 웹 바이탈(LCP, INP, CLS)을 함께 받는다. PostHog의 자동 클릭 수집·히트맵은 비활성화한다. 세션 리플레이는 동의 후에만 시작하며, 화면 텍스트·입력값을 가리고 네트워크 요청의 본문·헤더는 기록하지 않는다.
+- 페이지뷰는 앱이 직접 전송한다. GA4 웹 데이터 스트림에서 브라우저 히스토리 기반 페이지 변경 자동 측정을 함께 켜면 중복될 수 있으므로, 출시 전 경로 이동마다 도구별 페이지뷰가 한 번인지 확인한다.
 
 ## 4주·8주·12주 기록
 

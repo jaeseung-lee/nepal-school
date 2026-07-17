@@ -2,12 +2,30 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { trackSeoEvent, type SeoEventName } from "@/lib/analytics";
+import { ANALYTICS_READY_EVENT, trackPageView, trackSeoEvent, type SeoEventName } from "@/lib/analytics";
 import type { Locale } from "@/lib/i18n";
 
 export default function SeoTracker({ locale }: { locale: Locale }) {
   const pathname = usePathname() || "/";
   const recorded = useRef(new Set<string>());
+
+  useEffect(() => {
+    let pageViewRecorded = false;
+    const recordPageView = () => {
+      if (pageViewRecorded) return;
+      const sent = trackPageView({
+        locale,
+        page_path: pathname,
+        page_location: `${window.location.origin}${pathname}`,
+        page_title: document.title,
+      });
+      if (sent) pageViewRecorded = true;
+    };
+
+    recordPageView();
+    window.addEventListener(ANALYTICS_READY_EVENT, recordPageView);
+    return () => window.removeEventListener(ANALYTICS_READY_EVENT, recordPageView);
+  }, [locale, pathname]);
 
   useEffect(() => {
     const recordVisaView = () => {
@@ -22,9 +40,9 @@ export default function SeoTracker({ locale }: { locale: Locale }) {
       if (sent) recorded.current.add(eventKey);
     };
     recordVisaView();
-    window.addEventListener("joongwoo:analytics-ready", recordVisaView);
+    window.addEventListener(ANALYTICS_READY_EVENT, recordVisaView);
 
-    if (!pathname.includes("/blog/")) return () => window.removeEventListener("joongwoo:analytics-ready", recordVisaView);
+    if (!pathname.includes("/blog/")) return () => window.removeEventListener(ANALYTICS_READY_EVENT, recordVisaView);
     const articleKey = `article:${pathname}`;
     const onScroll = () => {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -38,7 +56,7 @@ export default function SeoTracker({ locale }: { locale: Locale }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("joongwoo:analytics-ready", recordVisaView);
+      window.removeEventListener(ANALYTICS_READY_EVENT, recordVisaView);
     };
   }, [locale, pathname]);
 

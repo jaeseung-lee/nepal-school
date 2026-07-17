@@ -30,6 +30,7 @@
     "gray-matter": "^4.0.3",
     "motion": "^12.42.2",
     "next": "^15.0.0",
+    "posthog-js": "^1.402.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
