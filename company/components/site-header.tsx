@@ -135,6 +135,14 @@ export default function SiteHeader() {
               </Link>
             ) : null}
 
+            <Link
+              href={localizedHref(locale, "/gallery")}
+              aria-current={isActive("/gallery") ? "page" : undefined}
+              className={`hidden rounded-full px-3 py-2 text-sm font-semibold transition lg:inline-flex ${isActive("/gallery") ? "bg-cobalt-soft text-cobalt" : "text-ink hover:bg-white hover:text-cobalt"}`}
+            >
+              {messages.nav.gallery}
+            </Link>
+
             <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
               {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
             </Link>

@@ -2,11 +2,11 @@ import Image from "next/image";
 import { getMessages, type Locale } from "@/lib/i18n";
 
 const CELLS = [
-  { cls: "c1", key: "training", img: "/kv/redesign/training.webp" },
-  { cls: "c2", key: "korea", img: "/kv/redesign/korea.webp" },
-  { cls: "c3", key: "japan", img: "/kv/redesign/japan.webp" },
-  { cls: "c4", key: "documents", img: "/kv/redesign/process.webp" },
-  { cls: "c5", key: "consultation", img: "/kv/redesign/contact.webp" },
+  { cls: "c1", key: "training", img: "/gallery/healthcare-training-simulation-ward.webp" },
+  { cls: "c2", key: "korea", img: "/gallery/hospitality-training-restaurant-lab.webp" },
+  { cls: "c3", key: "japan", img: "/gallery/skill-lab-v-tour.webp" },
+  { cls: "c4", key: "documents", img: "/gallery/healthcare-training-classroom.webp" },
+  { cls: "c5", key: "consultation", img: "/gallery/campus-visit-outdoor-group.webp" },
 ] as const;
 
 export default function Collage({ locale }: { locale?: Locale }) {

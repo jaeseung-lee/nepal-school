@@ -44,6 +44,7 @@
     "services": "Services",
     "visa": "Visa information",
     "blog": "Insights",
+    "gallery": "Gallery",
     "partners": "Partnerships",
     "why": "Trust and expertise",
     "contact": "Hiring preparation"
@@ -103,7 +104,13 @@
       "description": "A corporate partner responsible for foreign talent from training and examinations through visas and settlement.",
       "contactCta": "Hiring preparation",
       "servicesCta": "Explore services",
-      "alt": "A vocational training setting representing local education and preparation for international mobility"
+      "alt": "A vocational training setting representing local education and preparation for international mobility",
+      "previousSlide": "Previous photo",
+      "nextSlide": "Next photo",
+      "slideNavigation": "Choose a field photo",
+      "pauseSlides": "Pause photo slideshow",
+      "playSlides": "Play photo slideshow",
+      "slideStatus": "Field photo"
     },
     "intro": {
       "title": "Before placement, we design training and verification",
@@ -314,6 +321,30 @@
         "descriptionBeforeVisa": "The three service areas are not standalone products but one hiring-operation flow. Requirements and procedures for each system used in hiring are available in",
         "visaLink": "Visa information",
         "descriptionAfterVisa": "."
+      }
+    },
+    "gallery": {
+      "metadata": {
+        "title": "Field gallery",
+        "description": "Explore photos from Joong Woo HRD's training, facilities, visits, and collaboration activities in Nepal."
+      },
+      "eyebrow": "Training and collaboration in the field",
+      "title": "Field gallery",
+      "description": "Browse photos from training, facilities, visits, and collaboration meetings in Nepal.",
+      "filterLabel": "Filter photos",
+      "allCategories": "All photos",
+      "imageCount": "{count} photos",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "close": "Close",
+      "viewImage": "View larger image",
+      "empty": "There are no photos to display.",
+      "dialogLabel": "Gallery photo viewer",
+      "categories": {
+        "training": "Training",
+        "facilities": "Facilities",
+        "visits": "Visits",
+        "meetings": "Collaboration meetings"
       }
     },
     "partners": {

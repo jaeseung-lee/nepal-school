@@ -44,6 +44,7 @@
     "services": "Lĩnh vực hoạt động",
     "visa": "Thông tin thị thực",
     "blog": "Kiến thức",
+    "gallery": "Thư viện ảnh",
     "partners": "Đối tác",
     "why": "Uy tín và chuyên môn",
     "contact": "Chuẩn bị tuyển dụng"
@@ -103,7 +104,13 @@
       "description": "Đối tác doanh nghiệp chịu trách nhiệm về nhân tài nước ngoài từ đào tạo, thi cử đến thị thực và ổn định cuộc sống.",
       "contactCta": "Hướng dẫn chuẩn bị tuyển dụng",
       "servicesCta": "Xem lĩnh vực hoạt động",
-      "alt": "Khung cảnh đào tạo nghề tượng trưng cho giáo dục tại địa phương và chuẩn bị di chuyển quốc tế"
+      "alt": "Khung cảnh đào tạo nghề tượng trưng cho giáo dục tại địa phương và chuẩn bị di chuyển quốc tế",
+      "previousSlide": "Ảnh trước",
+      "nextSlide": "Ảnh tiếp theo",
+      "slideNavigation": "Chọn ảnh thực tế",
+      "pauseSlides": "Tạm dừng trình chiếu ảnh",
+      "playSlides": "Phát trình chiếu ảnh",
+      "slideStatus": "Ảnh thực tế"
     },
     "intro": {
       "title": "Trước khi giới thiệu nhân lực, chúng tôi thiết kế việc đào tạo và xác minh",
@@ -314,6 +321,30 @@
         "descriptionBeforeVisa": "Ba lĩnh vực hoạt động không phải là các sản phẩm độc lập mà là một dòng vận hành tuyển dụng. Yêu cầu và thủ tục theo từng chế độ được sử dụng trong tuyển dụng có thể xem tại",
         "visaLink": "Thông tin thị thực",
         "descriptionAfterVisa": "."
+      }
+    },
+    "gallery": {
+      "metadata": {
+        "title": "Thư viện ảnh thực tế",
+        "description": "Khám phá hình ảnh đào tạo, cơ sở vật chất, các chuyến thăm và hoạt động hợp tác tại Nepal."
+      },
+      "eyebrow": "Đào tạo và hợp tác tại thực địa",
+      "title": "Thư viện ảnh thực tế",
+      "description": "Xem hình ảnh đào tạo, cơ sở vật chất, các chuyến thăm và các cuộc họp hợp tác tại Nepal.",
+      "filterLabel": "Lọc hình ảnh",
+      "allCategories": "Tất cả hình ảnh",
+      "imageCount": "{count} hình ảnh",
+      "previous": "Hình trước",
+      "next": "Hình tiếp theo",
+      "close": "Đóng",
+      "viewImage": "Xem ảnh lớn hơn",
+      "empty": "Không có hình ảnh để hiển thị.",
+      "dialogLabel": "Trình xem ảnh thư viện",
+      "categories": {
+        "training": "Đào tạo",
+        "facilities": "Cơ sở vật chất",
+        "visits": "Thăm quan",
+        "meetings": "Họp hợp tác"
       }
     },
     "partners": {

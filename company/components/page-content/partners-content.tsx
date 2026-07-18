@@ -56,7 +56,7 @@ export function PartnersContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }
           <Reveal>
             <div className="grid overflow-hidden rounded-[32px] border border-line bg-surface shadow-sm shadow-ink/5 lg:grid-cols-[0.95fr_1.1fr]">
               <div className="relative min-h-[320px] bg-gray-100">
-                <Image src="/kv/redesign/partner.webp" alt={copy.feature.alt} fill sizes="(min-width: 1024px) 560px, 100vw" className="object-cover" />
+                <Image src="/gallery/campus-partnership-meeting.webp" alt={copy.feature.alt} fill sizes="(min-width: 1024px) 560px, 100vw" className="object-cover" />
               </div>
               <div className="p-7 lg:p-9">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">

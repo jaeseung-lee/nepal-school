@@ -24,6 +24,9 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
         <div className="max-w-content mx-auto grid gap-12 px-5 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-28">
           <Reveal>
             <Collage locale={locale} />
+            <Link href={localizedHref(locale, "/gallery")} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">
+              {messages.nav.gallery} <ArrowRight size={16} weight="bold" aria-hidden="true" />
+            </Link>
           </Reveal>
           <Reveal delay={0.08} className="flex flex-col justify-center">
             <h2 className="font-display text-3xl font-semibold text-ink text-balance lg:text-5xl">

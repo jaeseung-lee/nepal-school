@@ -10,6 +10,7 @@ const routes: { path: string; priority: number; changeFrequency?: "weekly" | "mo
   { path: "/", priority: 1 },
   { path: "/services", priority: 0.9 },
   { path: "/visa", priority: 0.9 },
+  { path: "/gallery", priority: 0.8 },
   { path: "/about", priority: 0.8 },
   { path: "/partners", priority: 0.7 },
   { path: "/why", priority: 0.7 },

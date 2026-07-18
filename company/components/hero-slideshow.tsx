@@ -1,7 +1,13 @@
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
 import Link from "next/link";
+import HeroImageCarousel from "@/components/hero-image-carousel";
 import { getMessages, localizedHref, type Locale } from "@/lib/i18n";
+
+const HERO_FIELD_SLIDES = [
+  { src: "/gallery/nursing-classroom-visit.webp" },
+  { src: "/gallery/healthcare-training-simulation-ward.webp" },
+  { src: "/gallery/campus-visit-outdoor-group.webp" },
+] as const;
 
 export default function HeroSlideshow({ locale }: { locale?: Locale }) {
   const messages = getMessages(locale);
@@ -9,19 +15,20 @@ export default function HeroSlideshow({ locale }: { locale?: Locale }) {
 
   return (
     <section className="relative min-h-[calc(100dvh-72px)] overflow-hidden bg-ink text-white">
-      <Image
-        src="/kv/redesign/hero.webp"
-        alt={hero.alt}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
+      <HeroImageCarousel
+        slides={HERO_FIELD_SLIDES}
+        labels={{
+          previousSlide: hero.previousSlide,
+          nextSlide: hero.nextSlide,
+          slideNavigation: hero.slideNavigation,
+          pauseSlides: hero.pauseSlides,
+          playSlides: hero.playSlides,
+          slideStatus: hero.slideStatus,
+        }}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(24,26,31,0.58)_0%,rgba(24,26,31,0.30)_43%,rgba(24,26,31,0.02)_100%)]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(24,26,31,0.42),rgba(24,26,31,0.02)_48%)]" aria-hidden="true" />
 
-      <div className="relative flex min-h-[calc(100dvh-72px)] items-end">
-        <div className="max-w-content mx-auto w-full px-5 pb-16 pt-16 lg:px-8 lg:pb-20">
+      <div className="relative z-10 flex min-h-[calc(100dvh-72px)] items-end">
+        <div className="max-w-content mx-auto w-full px-5 pb-28 pt-16 sm:pb-24 lg:px-8 lg:pb-28">
           <div className="max-w-3xl">
             <h1 className="font-display text-[clamp(2.75rem,6vw,5.8rem)] font-semibold leading-[0.98] text-balance">
               {hero.title}{" "}

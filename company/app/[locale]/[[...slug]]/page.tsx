@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AboutContent } from "@/components/page-content/about-content";
 import ContactContent from "@/components/page-content/contact-content";
+import { GalleryContent } from "@/components/page-content/gallery-content";
 import { HomeContent } from "@/components/page-content/home-content";
 import LocalizedVisaDetail from "@/components/page-content/localized-visa-detail";
 import { PartnersContent } from "@/components/page-content/partners-content";
@@ -17,7 +18,7 @@ import { getLocalizedVisa, getVisaMessages } from "@/lib/visa-i18n";
 
 type LocalizedPageProps = { params: Promise<{ locale: string; slug?: string[] }> };
 
-const STATIC_ROUTES = ["", "about", "services", "partners", "why", "contact", "privacy", "visa"] as const;
+const STATIC_ROUTES = ["", "about", "services", "gallery", "partners", "why", "contact", "privacy", "visa"] as const;
 
 export const dynamicParams = false;
 
@@ -33,6 +34,7 @@ function routeMetadata(locale: Locale, route: string) {
   if (route === "") return { title: messages.site.seoTitle, description: messages.site.description };
   if (route === "about") return messages.pages.about.metadata;
   if (route === "services") return messages.pages.services.metadata;
+  if (route === "gallery") return messages.pages.gallery.metadata;
   if (route === "partners") return messages.pages.partners.metadata;
   if (route === "why") return messages.pages.why.metadata;
   if (route === "contact") return messages.pages.contact.metadata;
@@ -69,6 +71,7 @@ export default async function LocalizedPage({ params }: LocalizedPageProps) {
   if (route === "") return <HomeContent locale={locale} />;
   if (route === "about") return <AboutContent locale={locale} />;
   if (route === "services") return <ServicesContent locale={locale} />;
+  if (route === "gallery") return <GalleryContent locale={locale} />;
   if (route === "partners") return <PartnersContent locale={locale} />;
   if (route === "why") return <WhyContent locale={locale} />;
   if (route === "contact") return <ContactContent locale={locale} />;

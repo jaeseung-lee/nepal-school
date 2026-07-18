@@ -44,6 +44,7 @@
     "services": "事業領域",
     "visa": "ビザ情報",
     "blog": "インサイト",
+    "gallery": "ギャラリー",
     "partners": "パートナーシップ",
     "why": "信頼・専門性",
     "contact": "採用準備"
@@ -103,7 +104,13 @@
       "description": "外国人材の教育、試験、ビザ、定着までを担う企業パートナー。",
       "contactCta": "採用準備案内",
       "servicesCta": "事業領域を見る",
-      "alt": "現地教育と国際移動の準備を象徴する職業訓練の現場"
+      "alt": "現地教育と国際移動の準備を象徴する職業訓練の現場",
+      "previousSlide": "前の写真",
+      "nextSlide": "次の写真",
+      "slideNavigation": "現地写真を選択",
+      "pauseSlides": "写真スライドを一時停止",
+      "playSlides": "写真スライドを再生",
+      "slideStatus": "現地写真"
     },
     "intro": {
       "title": "単なる紹介に先立ち、教育と検証を設計します",
@@ -314,6 +321,30 @@
         "descriptionBeforeVisa": "3つの事業領域は独立した商品ではなく、一つの採用運営の流れです。採用に使われる制度ごとの要件と手順は、",
         "visaLink": "ビザ情報",
         "descriptionAfterVisa": "で確認できます。"
+      }
+    },
+    "gallery": {
+      "metadata": {
+        "title": "現場ギャラリー",
+        "description": "ネパールでの教育、施設、訪問、協力活動の様子を写真で紹介します。"
+      },
+      "eyebrow": "教育と協力の現場",
+      "title": "現場ギャラリー",
+      "description": "ネパールでの教育、施設、訪問、協力会議の様子を写真でご覧いただけます。",
+      "filterLabel": "写真を絞り込む",
+      "allCategories": "すべての写真",
+      "imageCount": "{count}枚の写真",
+      "previous": "前の写真",
+      "next": "次の写真",
+      "close": "閉じる",
+      "viewImage": "写真を拡大する",
+      "empty": "表示できる写真はありません。",
+      "dialogLabel": "ギャラリー写真ビューア",
+      "categories": {
+        "training": "教育",
+        "facilities": "施設",
+        "visits": "訪問",
+        "meetings": "協力会議"
       }
     },
     "partners": {
