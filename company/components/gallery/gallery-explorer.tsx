@@ -1,17 +1,9 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, ArrowsOutSimple, X } from "@phosphor-icons/react";
+import { ArrowsOutSimple } from "@phosphor-icons/react";
 import Image from "next/image";
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type PointerEvent,
-} from "react";
+import { useMemo, useRef, useState } from "react";
+import GalleryLightbox from "@/components/gallery/gallery-lightbox";
 import type { GalleryCategory } from "@/lib/gallery";
 
 export interface GalleryDisplayItem {
@@ -90,15 +82,7 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
   );
   const [activeCategory, setActiveCategory] = useState<GalleryCategory | "all">("all");
   const [activeId, setActiveId] = useState<string | null>(null);
-  const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const restoreFocusRef = useRef(false);
-  const wasOpenRef = useRef(false);
-  const swipeStartRef = useRef<{ pointerId: number; x: number; y: number } | null>(null);
-  const dialogTitleId = useId();
-  const dialogLabelId = useId();
-  const dialogMetaId = useId();
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
 
   const filteredItems = useMemo(
     () => activeCategory === "all"
@@ -106,137 +90,17 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
       : orderedItems.filter((item) => item.category === activeCategory),
     [activeCategory, orderedItems],
   );
-  const activeIndex = activeId ? filteredItems.findIndex((item) => item.id === activeId) : -1;
-  const activeItem = activeIndex >= 0 ? filteredItems[activeIndex] : null;
-  const isLightboxOpen = activeItem !== null;
-
-  const closeLightbox = useCallback(() => {
-    if (!activeId) return;
-    restoreFocusRef.current = true;
-    setActiveId(null);
-  }, [activeId]);
-
-  const moveLightbox = useCallback((direction: -1 | 1) => {
-    const nextIndex = activeIndex + direction;
-
-    if (activeIndex < 0 || nextIndex < 0 || nextIndex >= filteredItems.length) return;
-    setActiveId(filteredItems[nextIndex].id);
-  }, [activeIndex, filteredItems]);
-
-  useEffect(() => {
-    if (!isLightboxOpen) return;
-
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeLightbox();
-      }
-
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        moveLightbox(-1);
-      }
-
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        moveLightbox(1);
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeItem, closeLightbox, moveLightbox]);
-
-  useEffect(() => {
-    if (!activeItem) {
-      wasOpenRef.current = false;
-
-      if (restoreFocusRef.current) {
-        const trigger = lastTriggerRef.current;
-        restoreFocusRef.current = false;
-        window.requestAnimationFrame(() => trigger?.focus());
-      }
-
-      return;
-    }
-
-    if (!wasOpenRef.current) {
-      wasOpenRef.current = true;
-      window.requestAnimationFrame(() => closeButtonRef.current?.focus());
-    }
-  }, [isLightboxOpen]);
-
-  useEffect(() => {
-    if (!isLightboxOpen) return;
-
-    const { body, documentElement } = document;
-    const previousOverflow = body.style.overflow;
-    const previousPaddingRight = body.style.paddingRight;
-    const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
-
-    body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
-
-    return () => {
-      body.style.overflow = previousOverflow;
-      body.style.paddingRight = previousPaddingRight;
-    };
-  }, [isLightboxOpen]);
+  const lightboxItems = useMemo(
+    () => filteredItems.map((item) => ({
+      ...item,
+      meta: labels.categories[item.category],
+    })),
+    [filteredItems, labels.categories],
+  );
 
   const openLightbox = (item: GalleryDisplayItem, trigger: HTMLButtonElement) => {
     lastTriggerRef.current = trigger;
     setActiveId(item.id);
-  };
-
-  const handleDialogKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== "Tab") return;
-
-    const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
-    if (!focusable?.length) {
-      event.preventDefault();
-      return;
-    }
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    const current = document.activeElement;
-
-    if (event.shiftKey && current === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && current === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
-
-  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    // Keep controls clickable: pointer capture retargets the following click to
-    // this swipe surface, which would otherwise prevent the arrow buttons from
-    // receiving their onClick event.
-    if (event.target instanceof Element && event.target.closest("button")) return;
-
-    swipeStartRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const finishSwipe = (event: PointerEvent<HTMLDivElement>) => {
-    const start = swipeStartRef.current;
-    swipeStartRef.current = null;
-    if (!start || start.pointerId !== event.pointerId) return;
-
-    const horizontalDistance = event.clientX - start.x;
-    const verticalDistance = event.clientY - start.y;
-    const threshold = 44;
-
-    if (
-      Math.abs(horizontalDistance) < threshold
-      || Math.abs(horizontalDistance) < Math.abs(verticalDistance) * 1.25
-    ) return;
-
-    moveLightbox(horizontalDistance < 0 ? 1 : -1);
   };
 
   return (
@@ -300,7 +164,6 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
                           src={item.src}
                           alt={item.alt}
                           fill
-                          priority={index < 2}
                           sizes={layout.sizes}
                           className="object-cover transition duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transition-none"
                         />
@@ -329,82 +192,18 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
         </div>
       </section>
 
-      {activeItem && (
-        <div
-          className="fixed inset-0 z-[80] bg-primary-deepest/95 p-3 text-white backdrop-blur-sm sm:p-6"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) closeLightbox();
-          }}
-        >
-          <div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label={labels.dialogLabel}
-            aria-labelledby={`${dialogLabelId} ${dialogMetaId} ${dialogTitleId}`}
-            tabIndex={-1}
-            onKeyDown={handleDialogKeyDown}
-            className="mx-auto flex h-full max-w-[1480px] flex-col"
-          >
-            <span id={dialogLabelId} className="sr-only">{labels.dialogLabel}</span>
-            <div className="flex shrink-0 items-center justify-between gap-4 pb-3 sm:pb-4">
-              <p id={dialogMetaId} className="text-xs font-semibold uppercase tracking-[0.16em] text-white/72">
-                {labels.categories[activeItem.category]} <span className="mx-2 text-white/35">/</span> {imagePosition(activeIndex, filteredItems.length)}
-              </p>
-              <button
-                ref={closeButtonRef}
-                type="button"
-                onClick={closeLightbox}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/35 bg-white/8 px-4 text-sm font-semibold text-white transition hover:bg-white/16 motion-reduce:transition-none"
-              >
-                <X size={18} weight="bold" aria-hidden="true" />
-                {labels.close}
-              </button>
-            </div>
-
-            <div
-              className="relative flex min-h-0 flex-1 touch-pan-y items-center justify-center overflow-hidden"
-              style={{ touchAction: "pan-y" }}
-              onPointerDown={handlePointerDown}
-              onPointerUp={finishSwipe}
-              onPointerCancel={() => { swipeStartRef.current = null; }}
-            >
-              <Image
-                src={activeItem.src}
-                alt={activeItem.alt}
-                fill
-                priority
-                sizes="100vw"
-                className="object-contain select-none"
-              />
-              <button
-                type="button"
-                onClick={() => moveLightbox(-1)}
-                disabled={activeIndex <= 0}
-                aria-label={labels.previous}
-                className="absolute left-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/35 bg-primary-deepest/55 text-white transition hover:bg-white/16 disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:left-3 sm:h-14 sm:w-14"
-              >
-                <ArrowLeft size={23} weight="bold" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => moveLightbox(1)}
-                disabled={activeIndex >= filteredItems.length - 1}
-                aria-label={labels.next}
-                className="absolute right-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/35 bg-primary-deepest/55 text-white transition hover:bg-white/16 disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:right-3 sm:h-14 sm:w-14"
-              >
-                <ArrowRight size={23} weight="bold" aria-hidden="true" />
-              </button>
-            </div>
-
-            <div className="shrink-0 pt-4 sm:pt-5">
-              <h2 id={dialogTitleId} className="max-w-4xl text-base font-medium leading-relaxed text-white sm:text-lg">
-                {activeItem.caption}
-              </h2>
-            </div>
-          </div>
-        </div>
-      )}
+      <GalleryLightbox
+        items={lightboxItems}
+        activeId={activeId}
+        onActiveIdChange={setActiveId}
+        returnFocusRef={lastTriggerRef}
+        labels={{
+          dialogLabel: labels.dialogLabel,
+          previous: labels.previous,
+          next: labels.next,
+          close: labels.close,
+        }}
+      />
     </>
   );
 }

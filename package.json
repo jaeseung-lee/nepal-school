@@ -3,7 +3,13 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "test:i18n": "npm --prefix company run test:i18n"
+    "test:i18n": "npm --prefix company run test:i18n",
+    "test:lp-v1": "npm --prefix company run test:lp-v1",
+    "catalog:kts": "uv run --script scripts/generate-kts-caregiver-catalog.py --locale all",
+    "catalog:kts:ko": "uv run --script scripts/generate-kts-caregiver-catalog.py --locale ko",
+    "catalog:kts:ja": "uv run --script scripts/generate-kts-caregiver-catalog.py --locale ja",
+    "catalog:kts:verify": "uv run --script scripts/verify-kts-caregiver-catalog.py --locale all",
+    "catalog:kts:check": "npm run catalog:kts && npm run catalog:kts:verify && npm run test:lp-v1"
   },
   "devDependencies": {
     "husky": "^9.1.7"

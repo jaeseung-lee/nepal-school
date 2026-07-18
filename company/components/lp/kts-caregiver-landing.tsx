@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AnalyticsConsent from "@/components/analytics-consent";
+import KtsCaregiverGallery from "@/components/lp/kts-caregiver-gallery";
 import SeoTracker from "@/components/seo-tracker";
 import {
   LP_V1_COPY,
@@ -41,9 +42,6 @@ const DOMAIN_ICONS: Record<LpV1DomainIcon, Icon> = {
 
 const PHOTO_PATHS = {
   lab: "/lp/v1/caregiver-lab.webp",
-  practice: "/lp/v1/caregiver-practice.webp",
-  mobility: "/lp/v1/caregiver-mobility.webp",
-  classroom: "/lp/v1/caregiver-classroom.webp",
 } as const;
 
 function localeFromHash(): LpV1Locale {
@@ -311,36 +309,7 @@ export default function KtsCaregiverLanding() {
           </div>
         </section>
 
-        <section aria-labelledby="gallery-title" className="bg-paper-soft py-20 sm:py-24 lg:py-32">
-          <div className="mx-auto max-w-content px-5 lg:px-8">
-            <div className="max-w-3xl">
-              <p className="text-xs font-bold tracking-[0.2em] text-cobalt">{copy.gallery.eyebrow}</p>
-              <h2 id="gallery-title" className="mt-4 font-display text-3xl font-semibold leading-[1.12] tracking-[-0.035em] text-ink sm:text-4xl lg:text-5xl">{copy.gallery.title}</h2>
-              <p className="mt-5 max-w-2xl text-[15px] leading-7 text-muted sm:text-base sm:leading-8">{copy.gallery.description}</p>
-            </div>
-
-            <div className="mt-12 grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
-              <figure className="group relative min-h-[430px] overflow-hidden rounded-[28px] border border-line bg-gray-100 sm:min-h-[560px]">
-                <Image src={PHOTO_PATHS.practice} alt={copy.gallery.images.practice.alt} fill sizes="(min-width: 1180px) 760px, (min-width: 1024px) 65vw, 100vw" className="object-cover" />
-                <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink/70 to-transparent" aria-hidden="true" />
-                <figcaption className="absolute bottom-5 left-5 right-5 text-sm font-semibold text-white sm:bottom-7 sm:left-7">{copy.gallery.images.practice.caption}</figcaption>
-              </figure>
-
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                <figure className="group relative min-h-[280px] overflow-hidden rounded-[28px] border border-line bg-gray-100">
-                  <Image src={PHOTO_PATHS.mobility} alt={copy.gallery.images.mobility.alt} fill sizes="(min-width: 1180px) 390px, (min-width: 1024px) 35vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/65 to-transparent" aria-hidden="true" />
-                  <figcaption className="absolute bottom-5 left-5 right-5 text-sm font-semibold text-white">{copy.gallery.images.mobility.caption}</figcaption>
-                </figure>
-                <figure className="group relative min-h-[280px] overflow-hidden rounded-[28px] border border-line bg-gray-100">
-                  <Image src={PHOTO_PATHS.classroom} alt={copy.gallery.images.classroom.alt} fill sizes="(min-width: 1180px) 390px, (min-width: 1024px) 35vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/65 to-transparent" aria-hidden="true" />
-                  <figcaption className="absolute bottom-5 left-5 right-5 text-sm font-semibold text-white">{copy.gallery.images.classroom.caption}</figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-        </section>
+        <KtsCaregiverGallery locale={locale} copy={copy.gallery} />
 
         <section aria-labelledby="completion-title" className="bg-paper py-20 sm:py-24 lg:py-28">
           <div className="mx-auto grid max-w-content gap-8 px-5 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8">

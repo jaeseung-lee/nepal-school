@@ -125,24 +125,22 @@ export const LP_V1_COPY = {
       ],
     },
     gallery: {
-      eyebrow: "TRAINING IN VIEW",
-      title: "사진으로 확인하는 실습 환경",
+      eyebrow: "FIELD EVIDENCE",
+      title: "16장의 기록으로 확인하는 교육과 교류 현장",
       description:
-        "교육장과 수행 장면을 그대로 보여드립니다. 사진은 자격 취득이나 취업 사례가 아닌 교육환경과 실습 방식에 대한 기록입니다.",
-      images: {
-        practice: {
-          alt: "KTS 교육생이 침상 옆에서 돌봄 실습을 수행하는 모습",
-          caption: "침상 돌봄 수행",
-        },
-        mobility: {
-          alt: "KTS 교육생이 휠체어 이동 보조를 실습하는 모습",
-          caption: "이동·활동 지원",
-        },
-        classroom: {
-          alt: "KTS 강의실에서 돌봄 교육을 받는 교육생들",
-          caption: "이론과 실습의 연결",
-        },
-      },
+        "교육과 실습 6장, 기관 방문과 대화 10장을 한 기록으로 정리했습니다. 사진은 자격 취득이나 취업 사례가 아닌 당시의 교육환경과 방문 장면을 보여줍니다.",
+      trainingLabel: "TRAINING RECORD",
+      trainingTitle: "교육과 실습",
+      trainingDescription: "병상 주변 실습, 이동 보조, 강의실과 과정 안내 전시를 촬영한 기록입니다.",
+      partnershipLabel: "VISIT & DIALOGUE RECORD",
+      partnershipTitle: "기관 방문과 대화",
+      partnershipDescription: "캠퍼스와 현지 기관을 방문하고 관계자들과 대화한 장면을 촬영 순서로 정리했습니다.",
+      viewImage: "사진 크게 보기",
+      previous: "이전 사진",
+      next: "다음 사진",
+      close: "닫기",
+      dialogLabel: "교육 및 기관 방문 사진 크게 보기",
+      fullGallery: "전체 갤러리 보기",
     },
     completion: {
       eyebrow: "ASSESSMENT & COMPLETION",
@@ -274,24 +272,22 @@ export const LP_V1_COPY = {
       ],
     },
     gallery: {
-      eyebrow: "TRAINING IN VIEW",
-      title: "写真で見る実習環境",
+      eyebrow: "FIELD EVIDENCE",
+      title: "16枚の記録で見る研修と交流の現場",
       description:
-        "訓練施設と実習の様子をそのままご紹介します。写真は資格取得や就職の実績ではなく、教育環境と実習方法を記録したものです。",
-      images: {
-        practice: {
-          alt: "KTSの受講生がベッドサイドで介護実習を行う様子",
-          caption: "ベッドサイドでの介護実習",
-        },
-        mobility: {
-          alt: "KTSの受講生が車いすでの移動介助を練習する様子",
-          caption: "移動・活動支援",
-        },
-        classroom: {
-          alt: "KTSの教室で介護を学ぶ受講生",
-          caption: "講義と実習の連携",
-        },
-      },
+        "研修・実習の6枚と、機関訪問・対話の10枚を一つの記録にまとめました。資格取得や就職の実績ではなく、撮影時の研修環境と訪問場面を示す写真です。",
+      trainingLabel: "TRAINING RECORD",
+      trainingTitle: "研修と実習",
+      trainingDescription: "ベッド周辺での実習、移動介助、教室、コース案内展示を撮影した記録です。",
+      partnershipLabel: "VISIT & DIALOGUE RECORD",
+      partnershipTitle: "機関訪問と対話",
+      partnershipDescription: "キャンパスや現地機関を訪れ、関係者と対話した場面を撮影順に整理しました。",
+      viewImage: "写真を拡大表示",
+      previous: "前の写真",
+      next: "次の写真",
+      close: "閉じる",
+      dialogLabel: "研修および機関訪問写真の拡大表示",
+      fullGallery: "ギャラリーをすべて見る",
     },
     completion: {
       eyebrow: "ASSESSMENT & COMPLETION",
