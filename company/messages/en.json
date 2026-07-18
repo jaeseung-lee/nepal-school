@@ -151,7 +151,7 @@
         },
         "trust": {
           "q": "Can a new company be trusted?",
-          "a": "We disclose only verifiable facts rather than unconfirmed placement counts or rankings. Our work is based on a cooperative system that includes MOUs with five organizations in Nepal."
+          "a": "We disclose only verifiable facts rather than unconfirmed placement counts or rankings. Our work is based on a cooperative system that includes MOUs with six organizations in Nepal."
         }
       }
     },
@@ -259,9 +259,9 @@
       },
       "kathmandu": {
         "country": "NP",
-        "name": "Kathmandu Technical School",
-        "role": "Vocational training school",
-        "desc": "Local job and skills training"
+        "name": "Kathmandu Technical School (KTS)",
+        "role": "Caregiving and hospitality training school",
+        "desc": "Three-month, 390-hour Caregiver/Aged Care course and hands-on training · MOU partner"
       },
       "koreaHousing": {
         "country": "KR",
@@ -296,7 +296,7 @@
         "title": "Talent should not simply be sent; it should be prepared",
         "paragraphs": {
           "first": "Joong Woo HRD begins with vocational training in Nepal. We lawfully connect talent equipped with job, language, and cultural skills to the requirements of companies in Korea and Japan.",
-          "second": "In July 2026, we signed MOUs with five organizations in Nepal to strengthen cooperation for worker selection, qualification verification, education, and immigration administration."
+          "second": "In July 2026, we signed MOUs with six organizations in Nepal to strengthen cooperation for worker selection, qualification verification, education, and immigration administration."
         },
         "servicesCta": "Services",
         "partnersCta": "Partnerships",
@@ -350,7 +350,7 @@
     "partners": {
       "metadata": {
         "title": "Partnerships",
-        "description": "International business MOUs were signed with five organizations in Nepal in July 2026. Three sending agencies and two vocational skills and education organizations share selection, verification, training, and immigration administration."
+        "description": "International business MOUs were signed with six organizations in Nepal in July 2026. Three sending agencies and three vocational skills and education organizations share selection, verification, training, and immigration administration."
       },
       "banner": {
         "eyebrow": "Cooperation network",
@@ -362,8 +362,8 @@
       },
       "feature": {
         "alt": "An international partnership discussion",
-        "title": "International business MOUs signed with five organizations in Nepal",
-        "description": "On July 5, 2026, Joong Woo HRD signed separate MOUs with three local Nepali worker-sending agencies and two vocational skills and education organizations. The parties defined vocational education, employment links to Korea and Japan, job and language education, and detailed immigration procedures as areas of cooperation.",
+        "title": "International business MOUs signed with six organizations in Nepal",
+        "description": "On July 5, 2026, Joong Woo HRD signed separate MOUs with three local Nepali worker-sending agencies and three vocational skills and education organizations. The parties defined vocational education, employment links to Korea and Japan, job and language education, and detailed immigration procedures as areas of cooperation.",
         "mouItems": {
           "date": {
             "title": "Date signed",
@@ -371,7 +371,7 @@
           },
           "structure": {
             "title": "MOU structure",
-            "description": "Three sending agencies plus two vocational skills and education organizations; separate MOUs with each"
+            "description": "Three sending agencies plus three vocational skills and education organizations; separate MOUs with each"
           },
           "partnerRole": {
             "title": "Partner roles",
@@ -385,8 +385,8 @@
       },
       "mou": {
         "eyebrow": "International business MOUs, July 2026",
-        "title": "Five MOU partner organizations",
-        "description": "The group consists of three worker-sending agencies and two vocational skills and education organizations responsible for selection and training. Only facts verified through official registration are shown for each organization.",
+        "title": "Six MOU partner organizations",
+        "description": "The group consists of three worker-sending agencies and three vocational skills and education organizations responsible for selection and training. Only facts verified through official or first-party sources are shown for each organization.",
         "partners": {
           "richhood": {
             "name": "Richhood Overseas Inc. (P) Ltd.",
@@ -422,6 +422,13 @@
             "location": "Kathmandu, Nepal",
             "description": "Handles student recruitment, job and language education, and pre-departure education.",
             "basis": "Registered with Nepal’s Office of Company Registrar (OCR)"
+          },
+          "kathmandu": {
+            "name": "Kathmandu Technical School (KTS)",
+            "type": "Caregiving and hospitality training school",
+            "location": "Sukedhara, Kathmandu, Nepal",
+            "description": "Offers hands-on hospitality programs and a three-month, 390-hour Caregiver/Aged Care course.",
+            "basis": "KTS official course pages · CTEVT Care Giver 2079 curriculum · July 2026 MOU"
           }
         }
       }
@@ -429,7 +436,7 @@
     "why": {
       "metadata": {
         "title": "Trust and expertise",
-        "description": "Why can a new company be trusted? Verified partnerships including MOUs with five organizations in Nepal, system and regulatory expertise, leadership and team expertise, and a transparent process."
+        "description": "Why can a new company be trusted? Verified partnerships including MOUs with six organizations in Nepal, system and regulatory expertise, leadership and team expertise, and a transparent process."
       },
       "banner": {
         "eyebrow": "Operating principles",
@@ -446,7 +453,7 @@
         "principles": {
           "partnership": {
             "title": "Verified partnerships",
-            "description": "On July 5, 2026, we signed MOUs with five local organizations in Nepal and established a cooperative system for worker selection, qualification verification, education, and immigration administration."
+            "description": "On July 5, 2026, we signed MOUs with six local organizations in Nepal and established a cooperative system for worker selection, qualification verification, education, and immigration administration."
           },
           "regulation": {
             "title": "Checking systems and regulations",

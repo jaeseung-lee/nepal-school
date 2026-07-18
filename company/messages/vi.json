@@ -151,7 +151,7 @@
         },
         "trust": {
           "q": "Một doanh nghiệp mới có đáng tin cậy không?",
-          "a": "Chúng tôi chỉ công khai các chỉ số khách quan có thể kiểm chứng, không nêu số người đã có việc làm hay thứ hạng không thể xác nhận. Hoạt động của chúng tôi dựa trên hệ thống hợp tác, bao gồm MOU với năm tổ chức tại Nepal."
+          "a": "Chúng tôi chỉ công khai các chỉ số khách quan có thể kiểm chứng, không nêu số người đã có việc làm hay thứ hạng không thể xác nhận. Hoạt động của chúng tôi dựa trên hệ thống hợp tác, bao gồm MOU với sáu tổ chức tại Nepal."
         }
       }
     },
@@ -259,9 +259,9 @@
       },
       "kathmandu": {
         "country": "NP",
-        "name": "Kathmandu Technical School",
-        "role": "Trường đào tạo nghề",
-        "desc": "Đào tạo kỹ năng và công việc tại địa phương"
+        "name": "Kathmandu Technical School (KTS)",
+        "role": "Trường đào tạo chăm sóc và dịch vụ lưu trú",
+        "desc": "Khóa Caregiver/Aged Care 3 tháng·390 giờ và đào tạo thực hành · Đối tác MOU"
       },
       "koreaHousing": {
         "country": "KR",
@@ -296,7 +296,7 @@
         "title": "Nhân tài không chỉ để phái cử mà cần được chuẩn bị",
         "paragraphs": {
           "first": "Joong Woo HRD bắt đầu từ đào tạo nghề tại Nepal. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp tại Hàn Quốc và Nhật Bản.",
-          "second": "Tháng 7 năm 2026, chúng tôi ký MOU với năm tổ chức tại Nepal để củng cố hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
+          "second": "Tháng 7 năm 2026, chúng tôi ký MOU với sáu tổ chức tại Nepal để củng cố hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
         },
         "servicesCta": "Lĩnh vực hoạt động",
         "partnersCta": "Đối tác",
@@ -350,7 +350,7 @@
     "partners": {
       "metadata": {
         "title": "Đối tác",
-        "description": "Ký MOU kinh doanh quốc tế với năm tổ chức tại Nepal vào tháng 7 năm 2026. Ba công ty phái cử và hai tổ chức đào tạo kỹ năng, giáo dục phân chia tuyển chọn, xác minh, đào tạo và hành chính xuất nhập cảnh."
+        "description": "Ký MOU kinh doanh quốc tế với sáu tổ chức tại Nepal vào tháng 7 năm 2026. Ba công ty phái cử và ba tổ chức đào tạo kỹ năng, giáo dục phân chia tuyển chọn, xác minh, đào tạo và hành chính xuất nhập cảnh."
       },
       "banner": {
         "eyebrow": "Mạng lưới hợp tác",
@@ -362,8 +362,8 @@
       },
       "feature": {
         "alt": "Cảnh trao đổi về quan hệ đối tác quốc tế",
-        "title": "Ký thỏa thuận hợp tác kinh doanh quốc tế với năm tổ chức tại Nepal",
-        "description": "Ngày 5 tháng 7 năm 2026, Joong Woo HRD ký các MOU riêng với ba công ty phái cử lao động tại Nepal và hai tổ chức đào tạo kỹ năng, giáo dục. Hai bên xác định giáo dục kỹ năng nghề, liên kết việc làm Hàn Quốc và Nhật Bản, đào tạo công việc và ngôn ngữ, cùng thủ tục xuất nhập cảnh chi tiết là phạm vi hợp tác.",
+        "title": "Ký thỏa thuận hợp tác kinh doanh quốc tế với sáu tổ chức tại Nepal",
+        "description": "Ngày 5 tháng 7 năm 2026, Joong Woo HRD ký các MOU riêng với ba công ty phái cử lao động tại Nepal và ba tổ chức đào tạo kỹ năng, giáo dục. Hai bên xác định giáo dục kỹ năng nghề, liên kết việc làm Hàn Quốc và Nhật Bản, đào tạo công việc và ngôn ngữ, cùng thủ tục xuất nhập cảnh chi tiết là phạm vi hợp tác.",
         "mouItems": {
           "date": {
             "title": "Ngày ký",
@@ -371,7 +371,7 @@
           },
           "structure": {
             "title": "Cấu trúc thỏa thuận",
-            "description": "Ba công ty phái cử + hai tổ chức đào tạo kỹ năng, giáo dục; ký MOU riêng với từng đơn vị"
+            "description": "Ba công ty phái cử + ba tổ chức đào tạo kỹ năng, giáo dục; ký MOU riêng với từng đơn vị"
           },
           "partnerRole": {
             "title": "Vai trò của đối tác",
@@ -385,8 +385,8 @@
       },
       "mou": {
         "eyebrow": "Thỏa thuận hợp tác kinh doanh quốc tế tháng 7 năm 2026",
-        "title": "Năm tổ chức ký MOU",
-        "description": "Gồm ba công ty phái cử lao động và hai tổ chức đào tạo kỹ năng, giáo dục phụ trách tuyển chọn và đào tạo. Mỗi tổ chức chỉ được trình bày bằng các thông tin đã được xác nhận qua đăng ký chính thức.",
+        "title": "Sáu tổ chức ký MOU",
+        "description": "Gồm ba công ty phái cử lao động và ba tổ chức đào tạo kỹ năng, giáo dục phụ trách tuyển chọn và đào tạo. Mỗi tổ chức chỉ được trình bày bằng thông tin xác nhận qua nguồn chính thức hoặc nguồn trực tiếp của tổ chức.",
         "partners": {
           "richhood": {
             "name": "Richhood Overseas Inc. (P) Ltd.",
@@ -422,6 +422,13 @@
             "location": "Kathmandu, Nepal",
             "description": "Phụ trách tuyển sinh, đào tạo công việc và ngôn ngữ, cùng giáo dục trước khi xuất cảnh.",
             "basis": "Đăng ký tại Cơ quan Đăng ký Công ty Nepal (OCR)"
+          },
+          "kathmandu": {
+            "name": "Kathmandu Technical School (KTS)",
+            "type": "Trường đào tạo chăm sóc và dịch vụ lưu trú",
+            "location": "Sukedhara, Kathmandu, Nepal",
+            "description": "Đào tạo thực hành qua khóa Caregiver/Aged Care 3 tháng·390 giờ và các chương trình dịch vụ lưu trú.",
+            "basis": "Trang khóa học chính thức của KTS · Chương trình CTEVT Care Giver 2079 · MOU tháng 7 năm 2026"
           }
         }
       }
@@ -429,7 +436,7 @@
     "why": {
       "metadata": {
         "title": "Uy tín và chuyên môn",
-        "description": "Vì sao một công ty mới có thể đáng tin cậy? Quan hệ đối tác đã được xác minh bao gồm MOU với năm tổ chức ở Nepal, chuyên môn về chế độ và pháp luật, chuyên môn của lãnh đạo và đội ngũ, cùng quy trình minh bạch."
+        "description": "Vì sao một công ty mới có thể đáng tin cậy? Quan hệ đối tác đã được xác minh bao gồm MOU với sáu tổ chức ở Nepal, chuyên môn về chế độ và pháp luật, chuyên môn của lãnh đạo và đội ngũ, cùng quy trình minh bạch."
       },
       "banner": {
         "eyebrow": "Nguyên tắc vận hành",
@@ -446,7 +453,7 @@
         "principles": {
           "partnership": {
             "title": "Quan hệ đối tác đã được xác minh",
-            "description": "Ngày 5 tháng 7 năm 2026, chúng tôi ký MOU với năm tổ chức địa phương tại Nepal, thiết lập hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
+            "description": "Ngày 5 tháng 7 năm 2026, chúng tôi ký MOU với sáu tổ chức địa phương tại Nepal, thiết lập hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
           },
           "regulation": {
             "title": "Xác nhận chế độ và pháp luật",

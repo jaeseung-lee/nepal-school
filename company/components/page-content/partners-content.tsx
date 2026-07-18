@@ -10,7 +10,7 @@ import { PARTNER_NOTICE } from "@/lib/partner-notice";
 
 const MOU_ITEM_KEYS = ["date", "structure", "partnerRole", "joongwooRole"] as const;
 
-// MOU 체결 5개 기관 — 공식 등록으로 확인된 사실만 게시(로고·미확인 정보 미표기)
+// MOU 체결 6개 기관 — 공식·1차 자료로 확인된 사실만 게시(로고·미확인 정보 미표기)
 const MOU_PARTNERS = [
   {
     key: "richhood",
@@ -30,6 +30,10 @@ const MOU_PARTNERS = [
   },
   {
     key: "ocean",
+    icon: SealCheck,
+  },
+  {
+    key: "kathmandu",
     icon: SealCheck,
   },
 ] as const;

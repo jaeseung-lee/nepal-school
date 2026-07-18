@@ -19,6 +19,15 @@ const routes: { path: string; priority: number; changeFrequency?: "weekly" | "mo
   ...VISAS.map((visa) => ({ path: `/visa/${visa.slug}`, priority: visa.sitemapPriority })),
 ];
 
+const landingPages: MetadataRoute.Sitemap = [
+  {
+    url: `${SITE_URL}/lp/v1`,
+    lastModified: "2026-07-18",
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const localizedPages = LOCALES.flatMap((locale) =>
     routes.map(({ path, priority, changeFrequency = "monthly" }) => ({
@@ -57,6 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...localizedPages,
+    ...landingPages,
     ...BLOG_LOCALES.map((locale) => ({
       url: SITE_URL + getBlogIndexPath(locale),
       lastModified: blogLastModified,
