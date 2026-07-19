@@ -37,6 +37,20 @@ A4_WIDTH = 595.2755905511812
 A4_HEIGHT = 841.8897637795277
 MAX_BYTES = 10 * 1024 * 1024
 
+JA_REJECTED_COPY = (
+    "主要学習モジュール",
+    "現場記録",
+    "講義と実習を統合",
+    "モジュール＋統合プロジェクト",
+    "技術だけを反復するのではありません。介護の倫理と安全を軸に、準備、実施、片付け、記録までを一つの業務単位として学びます。",
+    "尊重ある対話",
+    "活動 · 対話 · 観察 · 報告",
+    "筆記 · 実技 · 最終実技・口頭試問",
+    "筆記・実技・最終実技・口頭試問",
+    "KTSの正式MOUパートナーとして、日本・韓国での連携営業を担います",
+    "事業開発・パートナー開拓・連携営業窓口",
+)
+
 
 def dereference(value: Any) -> Any:
     return value.get_object() if isinstance(value, IndirectObject) else value
@@ -192,19 +206,71 @@ def verify_one(locale: str) -> dict[str, Any]:
 
     extracted_text = "\n".join(text_parts)
     compact = compact_text(extracted_text)
-    required_anchors = [
-        *data["copy"]["hero"]["titleLines"],
-        *(item["value"] for item in data["copy"]["facts"]["items"]),
-        data["copy"]["curriculum"]["title"],
-        data["copy"]["workflow"]["title"],
-        *(item["caption"] for item in data["gallery"]),
-        data["copy"]["completion"]["title"],
-        data["copy"]["completion"]["disclaimer"],
-        data["contact"]["email"],
-        data["sourceUrl"],
-    ]
-    for anchor in required_anchors:
-        assert compact_text(anchor) in compact, f"missing selectable text anchor: {anchor!r}"
+    compact_pages = [compact_text(text) for text in text_parts]
+    copy = data["copy"]
+    hero = copy["hero"]
+    facts = copy["facts"]
+    curriculum = copy["curriculum"]
+    workflow = copy["workflow"]
+    completion = copy["completion"]
+    partnership = copy["partnership"]
+
+    page_anchors: dict[int, list[str]] = {
+        1: [
+            *hero["titleLines"],
+            hero["description"],
+            hero["imageCaption"],
+            hero["evidenceLabel"],
+            *(value for key in ("programLabel", "programBasis") if (value := hero.get(key))),
+            *(item[key] for item in facts["items"] for key in ("label", "value", "note")),
+            facts["evaluationLabel"],
+            facts["evaluation"],
+        ],
+        2: [
+            curriculum["title"],
+            curriculum["description"],
+            *(domain[key] for domain in curriculum["domains"] for key in ("title", "description", "detail")),
+            workflow["title"],
+        ],
+        3: [
+            copy["gallery"]["title"],
+            copy["gallery"]["description"],
+            "TRAINING / PRACTICE",
+            "01 - 06",
+            "VISITS / PARTNERSHIP DIALOGUE",
+            "07 - 16",
+        ],
+        4: [
+            completion["title"],
+            completion["description"],
+            *(item[key] for item in completion["items"] for key in ("label", "value")),
+            completion["disclaimerTitle"],
+            completion["disclaimer"],
+            data["contact"]["email"],
+            data["sourceUrl"],
+        ],
+    }
+    if locale == "ja":
+        page_anchors[4].extend(
+            (
+                partnership["badge"],
+                partnership["title"],
+                partnership["description"],
+                partnership["joongwoo"]["role"],
+            )
+        )
+    for page_number, anchors in page_anchors.items():
+        page_text = compact_pages[page_number - 1]
+        for anchor in anchors:
+            assert compact_text(anchor) in page_text, (
+                f"page {page_number} is missing selectable text anchor: {anchor!r}"
+            )
+
+    page_three_text = compact_pages[2]
+    for item in data["gallery"]:
+        assert compact_text(item["caption"]) not in page_three_text, (
+            f"page 3 must not render image captions: {item['caption']!r}"
+        )
 
     assert "\ufffd" not in extracted_text, "replacement glyph found in selectable text"
     cjk_characters = sum(
@@ -220,13 +286,20 @@ def verify_one(locale: str) -> dict[str, Any]:
     expected_mail = f"mailto:{data['contact']['email']}?subject="
     assert any(uri.startswith(expected_mail) for uri in uris), "clickable email link is missing"
     assert data["sourceUrl"] in uris, "official source link is missing"
-    assert data["landingUrl"] in uris, "locale landing-page/QR link is missing"
+    if locale == "ja":
+        assert data["landingUrl"] in uris, "locale landing-page/QR link is missing"
+    else:
+        # The approved KO PDF is frozen; its /lp/v1 target remains a permanent redirect.
+        legacy_landing_url = f"{data['contact']['siteUrl'].rstrip('/')}/lp/v1"
+        assert data["landingUrl"] in uris or legacy_landing_url in uris, (
+            "Korean landing-page/QR link is missing"
+        )
     assert len(uris) >= 5, f"expected at least five link annotations, got {len(uris)}"
 
-    assert image_count >= 7, f"expected hero and six gallery images, got {image_count}"
+    assert image_count >= 17, f"expected hero and all 16 gallery images, got {image_count}"
     assert image_color_spaces == {"/DeviceRGB"}, f"non-RGB images found: {image_color_spaces}"
     placed_image_count, minimum_image_ppi = image_resolution_summary(canonical)
-    assert placed_image_count >= 7, f"expected seven placed images, got {placed_image_count}"
+    assert placed_image_count >= 17, f"expected 17 placed images, got {placed_image_count}"
     assert minimum_image_ppi >= 180, f"image placement below 180 PPI: {minimum_image_ppi}"
     joined_content = b"\n".join(content_streams)
     cmyk_operator = re.compile(rb"(?:^|\s)(?:-?\d*\.?\d+\s+){4}[kK](?:\s|$)")
@@ -236,6 +309,10 @@ def verify_one(locale: str) -> dict[str, Any]:
     banned_claim_fragments = ("154시간", "154時間", "83%", "MOU 체결일", "MOU締結日")
     for fragment in banned_claim_fragments:
         assert compact_text(fragment) not in compact, f"unsupported claim found: {fragment}"
+
+    if locale == "ja":
+        for fragment in JA_REJECTED_COPY:
+            assert compact_text(fragment) not in compact, f"superseded Japanese copy found: {fragment}"
 
     return {
         "locale": locale,

@@ -50,7 +50,14 @@ export default function PageBanner({ locale, eyebrow, context, title, titleKo, d
           </div>
         </div>
         <div className="relative min-h-[280px] overflow-hidden rounded-[28px] border border-line bg-gray-100 lg:min-h-[380px]">
-          <Image src={image} alt={imageAlt ?? common.bannerImageAlt.replace("{title}", crumb)} fill sizes="(min-width: 1024px) 58vw, 100vw" className="object-cover" />
+          <Image
+            src={image}
+            alt={imageAlt ?? common.bannerImageAlt.replace("{title}", crumb)}
+            fill
+            priority
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            className="object-cover"
+          />
         </div>
       </div>
     </section>

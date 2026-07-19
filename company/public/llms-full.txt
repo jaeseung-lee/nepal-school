@@ -17,6 +17,10 @@
 ## Services and status information
 
 - [Services](https://www.joongwoohrd.com/services)
+- [Japan caregiver training and hiring](https://www.joongwoohrd.com/services/japan-caregiver)
+- [Japan hospitality training and hiring](https://www.joongwoohrd.com/services/japan-hospitality)
+- [Korea study partnership](https://www.joongwoohrd.com/services/korea-study)
+- [Korea welding workforce partnership](https://www.joongwoohrd.com/services/korea-welding)
 - [All visa/status information](https://www.joongwoohrd.com/visa)
 - [Korea E-9](https://www.joongwoohrd.com/visa/e-9)
 - [Korea E-7](https://www.joongwoohrd.com/visa/e-7)
@@ -30,9 +34,9 @@ These pages provide general information. Eligibility and procedure must be check
 
 ## Kathmandu Technical School caregiver training catalog
 
-- Bilingual catalog: https://www.joongwoohrd.com/lp/v1
+- Bilingual business page: https://www.joongwoohrd.com/services/japan-caregiver
 - Default language: Korean
-- Japanese view: https://www.joongwoohrd.com/lp/v1#ja
+- Japanese view: https://www.joongwoohrd.com/ja/services/japan-caregiver
 - Course: Caregiver / Aged Care vocational training
 - Training institution: Kathmandu Technical School, Sukedhara, Kathmandu, Nepal
 - Verified public duration and total: three months and 390 hours

@@ -12,7 +12,7 @@ asOf: "2026-07-16"
 effectiveAt: null
 effectiveStatus: null
 publishedAt: "2026-07-16"
-modifiedAt: "2026-07-16"
+modifiedAt: "2026-07-19"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
 author: { name: "정우인재개발원", role: "글로벌 인재 채용 운영팀" }
@@ -25,9 +25,9 @@ sources:
 relatedPosts: [{ label: "특정기능 숙박 안내", href: "/visa/tokutei-ginou-shukuhaku", description: "숙박 분야의 기본 요건과 절차를 확인합니다." }]
 ---
 
-## 직접 답변
+## 숙박 분야 채용 요건
 
-숙박 분야 특정기능 인재를 채용하려면 호텔·료칸의 실제 업무가 분야 기준에 맞고, 수용기관이 관련 법령과 분야별 요건을 충족하는지 먼저 확인해야 합니다. 후보자의 기능·일본어 요건, 직접고용 계약, 일본인과 동등 이상인 보수, 1호 지원계획을 한 일정표에서 준비하는 것이 핵심입니다.
+숙박 분야 특정기능 인재를 채용하려면 호텔·료칸의 실제 업무가 분야 기준에 맞고, 수용기관이 관련 법령과 분야별 요건을 충족하는지 먼저 확인해야 합니다. 후보자의 기능·일본어 요건, 직접고용 계약, 일본인과 동등 이상인 보수, 1호 지원계획을 하나의 일정표로 관리해야 합니다.
 
 ## 채용 준비표
 

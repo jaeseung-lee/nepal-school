@@ -153,8 +153,8 @@ def load_catalog_data(locale: str) -> dict[str, Any]:
     data = json.loads(completed.stdout)
     if data.get("locale") != locale or data.get("schemaVersion") != 1:
         raise ValueError("Unexpected catalog exporter payload")
-    if len(data.get("gallery", [])) != 6:
-        raise ValueError("Catalog exporter must provide exactly six PDF gallery images")
+    if len(data.get("gallery", [])) != 16:
+        raise ValueError("Catalog exporter must provide all 16 gallery images")
 
     TMP_ROOT.mkdir(parents=True, exist_ok=True)
     snapshot = TMP_ROOT / f"kts-caregiver-catalog-{locale}-data.json"
@@ -404,6 +404,38 @@ def draw_page_one(canvas: Canvas, data: dict[str, Any], prepared: dict[str, Path
         locale,
         3,
     )
+
+    if locale == "ja":
+        program_label = copy["hero"].get("programLabel")
+        program_basis = copy["hero"].get("programBasis")
+        if program_label and program_basis:
+            program_label_w = string_width(program_label, BOLD_FONT, 6.8) + 22
+            program_y = 604
+            rounded_rect(
+                canvas,
+                MARGIN,
+                program_y - 15,
+                program_label_w,
+                23,
+                11.5,
+                palette(data, "cobaltSoft"),
+            )
+            canvas.setFillColor(palette(data, "cobalt"))
+            canvas.setFont(BOLD_FONT, 6.8)
+            canvas.drawCentredString(MARGIN + program_label_w / 2, program_y - 7.2, program_label)
+            draw_wrapped(
+                canvas,
+                program_basis,
+                MARGIN + program_label_w + 10,
+                program_y,
+                CONTENT_W - program_label_w - 10,
+                REGULAR_FONT,
+                7.5,
+                9.4,
+                palette(data, "ink"),
+                locale,
+                2,
+            )
 
     hero_x, hero_y, hero_w, hero_h = MARGIN, 290, CONTENT_W, 292
     rounded_rect(canvas, hero_x - 1, hero_y - 1, hero_w + 2, hero_h + 2, 18, palette(data, "line"))
@@ -666,26 +698,26 @@ def draw_photo_card(
     width: float,
     image_height: float,
 ) -> None:
-    locale = data["locale"]
-    caption_h = 40
-    rounded_rect(canvas, x, y, width, image_height + caption_h, 13, palette(data, "surface"), palette(data, "line"), 0.7)
-    draw_clipped_photo(canvas, image_path, x + 1, y + caption_h - 1, width - 2, image_height, 12)
-    canvas.setFillColor(palette(data, "cobalt"))
-    canvas.setFont(BOLD_FONT, 6.6)
-    canvas.drawString(x + 11, y + 24, f"{item['order']:02d}")
-    draw_wrapped(
+    rounded_rect(canvas, x, y, width, image_height, 8, palette(data, "surface"), palette(data, "line"), 0.7)
+    draw_clipped_photo(canvas, image_path, x + 1, y + 1, width - 2, image_height - 2, 7)
+    badge_x = x + 6
+    badge_y = y + 6
+    badge_w = 22
+    badge_h = 14
+    rounded_rect(
         canvas,
-        item["caption"],
-        x + 32,
-        y + 25,
-        width - 43,
-        BOLD_FONT,
-        7.8 if locale == "ko" else 7.5,
-        10.1,
-        palette(data, "ink"),
-        locale,
-        2,
+        badge_x,
+        badge_y,
+        badge_w,
+        badge_h,
+        7,
+        Color(1, 1, 1, alpha=0.9),
+        Color(1, 1, 1, alpha=0.76),
+        0.4,
     )
+    canvas.setFillColor(palette(data, "cobalt"))
+    canvas.setFont(BOLD_FONT, 5.8)
+    canvas.drawCentredString(badge_x + badge_w / 2, badge_y + 4.3, f"{item['order']:02d}")
 
 
 def draw_page_three(canvas: Canvas, data: dict[str, Any], prepared: dict[str, Path]) -> None:
@@ -722,28 +754,40 @@ def draw_page_three(canvas: Canvas, data: dict[str, Any], prepared: dict[str, Pa
         3,
     )
 
-    gap = 9
-    card_w = (CONTENT_W - gap * 2) / 3
-    image_h = 177
+    gap = 7
+    columns = 4
+    card_w = (CONTENT_W - gap * (columns - 1)) / columns
+    image_h = 90
+
+    def draw_rows(items: list[dict[str, Any]], row_y_positions: tuple[float, ...]) -> None:
+        for row_index, y in enumerate(row_y_positions):
+            row = items[row_index * columns : (row_index + 1) * columns]
+            row_width = len(row) * card_w + max(0, len(row) - 1) * gap
+            start_x = MARGIN + (CONTENT_W - row_width) / 2
+            for column_index, item in enumerate(row):
+                x = start_x + column_index * (card_w + gap)
+                draw_photo_card(canvas, data, item, prepared[item["id"]], x, y, card_w, image_h)
+
+    training_items = [item for item in data["gallery"] if item["group"] == "training"]
+    partnership_items = [item for item in data["gallery"] if item["group"] == "partnership"]
+    if len(training_items) != 6 or len(partnership_items) != 10:
+        raise ValueError("Catalog gallery must contain 6 training and 10 partnership images")
+
     canvas.setFillColor(palette(data, "cobalt"))
     canvas.setFont(BOLD_FONT, 8.0)
     canvas.drawString(MARGIN, 665, "TRAINING / PRACTICE")
     canvas.setFillColor(palette(data, "muted"))
     canvas.setFont(REGULAR_FONT, 7.2)
-    canvas.drawRightString(PAGE_W - MARGIN, 665, "01 — 03")
-    for index, item in enumerate(data["gallery"][:3]):
-        x = MARGIN + index * (card_w + gap)
-        draw_photo_card(canvas, data, item, prepared[item["id"]], x, 424, card_w, image_h)
+    canvas.drawRightString(PAGE_W - MARGIN, 665, "01 - 06")
+    draw_rows(training_items, (540, 433))
 
     canvas.setFillColor(palette(data, "clay"))
     canvas.setFont(BOLD_FONT, 8.0)
-    canvas.drawString(MARGIN, 384, "VISITS / PARTNERSHIP DIALOGUE")
+    canvas.drawString(MARGIN, 411, "VISITS / PARTNERSHIP DIALOGUE")
     canvas.setFillColor(palette(data, "muted"))
     canvas.setFont(REGULAR_FONT, 7.2)
-    canvas.drawRightString(PAGE_W - MARGIN, 384, "04 — 06")
-    for index, item in enumerate(data["gallery"][3:]):
-        x = MARGIN + index * (card_w + gap)
-        draw_photo_card(canvas, data, item, prepared[item["id"]], x, 143, card_w, image_h)
+    canvas.drawRightString(PAGE_W - MARGIN, 411, "07 - 16")
+    draw_rows(partnership_items, (293, 186, 79))
 
     draw_footer(canvas, data, 3)
     canvas.showPage()
@@ -831,36 +875,87 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
 
     block_x, block_y, block_w, block_h = 28, 71, PAGE_W - 56, 365
     rounded_rect(canvas, block_x, block_y, block_w, block_h, 18, palette(data, "cobalt"))
-    draw_eyebrow(canvas, contact["eyebrow"], block_x + 22, block_y + block_h - 29, colors.white, 7.3)
-    draw_wrapped(
-        canvas,
-        contact["title"],
-        block_x + 22,
-        block_y + block_h - 56,
-        352,
-        BOLD_FONT,
-        16.8 if locale == "ko" else 15.8,
-        21,
-        colors.white,
-        locale,
-        2,
-    )
-    draw_wrapped(
-        canvas,
-        contact["description"],
-        block_x + 22,
-        block_y + block_h - 102,
-        345,
-        REGULAR_FONT,
-        7.5,
-        10.8,
-        Color(1, 1, 1, alpha=0.74),
-        locale,
-        3,
-    )
+
+    if locale == "ja":
+        partnership = copy["partnership"]
+        partnership_badge = partnership["badge"]
+        partnership_badge_w = string_width(partnership_badge, BOLD_FONT, 7.0) + 23
+        partnership_badge_y = block_y + block_h - 46
+        rounded_rect(
+            canvas,
+            block_x + 22,
+            partnership_badge_y,
+            partnership_badge_w,
+            22,
+            11,
+            Color(1, 1, 1, alpha=0.13),
+            Color(1, 1, 1, alpha=0.34),
+            0.6,
+        )
+        canvas.setFillColor(colors.white)
+        canvas.setFont(BOLD_FONT, 7.0)
+        canvas.drawCentredString(
+            block_x + 22 + partnership_badge_w / 2,
+            partnership_badge_y + 7.8,
+            partnership_badge,
+        )
+        draw_wrapped(
+            canvas,
+            partnership["title"],
+            block_x + 22,
+            block_y + block_h - 72,
+            block_w - 44,
+            BOLD_FONT,
+            14.4,
+            18.4,
+            colors.white,
+            locale,
+            2,
+        )
+        draw_wrapped(
+            canvas,
+            partnership["description"],
+            block_x + 22,
+            block_y + block_h - 121,
+            block_w - 44,
+            REGULAR_FONT,
+            7.1,
+            10.2,
+            Color(1, 1, 1, alpha=0.76),
+            locale,
+            3,
+        )
+    else:
+        draw_eyebrow(canvas, contact["eyebrow"], block_x + 22, block_y + block_h - 29, colors.white, 7.3)
+        draw_wrapped(
+            canvas,
+            contact["title"],
+            block_x + 22,
+            block_y + block_h - 56,
+            352,
+            BOLD_FONT,
+            16.8,
+            21,
+            colors.white,
+            locale,
+            2,
+        )
+        draw_wrapped(
+            canvas,
+            contact["description"],
+            block_x + 22,
+            block_y + block_h - 102,
+            345,
+            REGULAR_FONT,
+            7.5,
+            10.8,
+            Color(1, 1, 1, alpha=0.74),
+            locale,
+            3,
+        )
 
     badge_x = block_x + 22
-    badge_y = block_y + 211
+    badge_y = block_y + (204 if locale == "ja" else 211)
     for badge in contact["inquiryTypes"]:
         badge_w = string_width(badge, BOLD_FONT, 6.5) + 17
         rounded_rect(canvas, badge_x, badge_y, badge_w, 20, 10, Color(1, 1, 1, alpha=0.10), Color(1, 1, 1, alpha=0.22), 0.5)
@@ -870,11 +965,31 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
         badge_x += badge_w + 5
 
     text_x = block_x + 22
-    canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
-    canvas.setFont(BOLD_FONT, 6.5)
-    canvas.drawString(text_x, block_y + 185, contact["emailLabel"])
+    if locale == "ja":
+        sales_role = partnership["joongwoo"]["role"]
+        sales_role_w = string_width(sales_role, BOLD_FONT, 6.6) + 22
+        sales_role_y = block_y + 174
+        rounded_rect(
+            canvas,
+            text_x,
+            sales_role_y,
+            sales_role_w,
+            20,
+            10,
+            palette(data, "claySoft"),
+        )
+        canvas.setFillColor(palette(data, "clay"))
+        canvas.setFont(BOLD_FONT, 6.6)
+        canvas.drawCentredString(text_x + sales_role_w / 2, sales_role_y + 7.1, sales_role)
+        canvas.setFillColor(colors.white)
+        canvas.setFont(BOLD_FONT, 7.3)
+        canvas.drawString(text_x, block_y + 163, contact["cta"])
+    else:
+        canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
+        canvas.setFont(BOLD_FONT, 6.5)
+        canvas.drawString(text_x, block_y + 185, contact["emailLabel"])
     email = data["contact"]["email"]
-    email_y = block_y + 168
+    email_y = block_y + (146 if locale == "ja" else 168)
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 9.2)
     canvas.drawString(text_x, email_y, email)
@@ -883,15 +998,19 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
 
     canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
     canvas.setFont(BOLD_FONT, 6.5)
-    canvas.drawString(text_x, block_y + 143, contact["schoolLabel"])
-    draw_wrapped(canvas, contact["schoolAddress"], text_x, block_y + 128, 335, REGULAR_FONT, 7.1, 9.4, colors.white, locale, 2)
+    school_label_y = block_y + (125 if locale == "ja" else 143)
+    school_address_y = block_y + (110 if locale == "ja" else 128)
+    canvas.drawString(text_x, school_label_y, contact["schoolLabel"])
+    draw_wrapped(canvas, contact["schoolAddress"], text_x, school_address_y, 335, REGULAR_FONT, 7.1, 9.4, colors.white, locale, 2)
     canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
     canvas.setFont(BOLD_FONT, 6.5)
-    canvas.drawString(text_x, block_y + 98, contact["officeLabel"])
-    draw_wrapped(canvas, contact["officeAddress"], text_x, block_y + 83, 335, REGULAR_FONT, 7.0, 9.3, colors.white, locale, 2)
+    office_label_y = block_y + (77 if locale == "ja" else 98)
+    office_address_y = block_y + (62 if locale == "ja" else 83)
+    canvas.drawString(text_x, office_label_y, contact["officeLabel"])
+    draw_wrapped(canvas, contact["officeAddress"], text_x, office_address_y, 335, REGULAR_FONT, 7.0, 9.3, colors.white, locale, 2)
 
     source_label = contact["sourceLabel"]
-    source_y = block_y + 43
+    source_y = block_y + (34 if locale == "ja" else 43)
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 7.2)
     canvas.drawString(text_x, source_y, source_label)
@@ -904,14 +1023,18 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
 
     qr_size = 93
     qr_x = block_x + block_w - qr_size - 29
-    qr_y = block_y + 139
+    qr_y = block_y + (122 if locale == "ja" else 139)
     draw_qr(canvas, data["landingUrl"], qr_x, qr_y, qr_size, data)
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 6.8)
     canvas.drawCentredString(qr_x + qr_size / 2, qr_y - 18, "LANDING PAGE")
     canvas.setFillColor(Color(1, 1, 1, alpha=0.70))
     canvas.setFont(REGULAR_FONT, 5.7)
-    landing_display = data["landingUrl"].replace("https://", "")
+    if locale == "ja":
+        landing_display = data["landingUrl"].replace("https://www.", "").replace("https://", "")
+        canvas.setFont(REGULAR_FONT, 4.4)
+    else:
+        landing_display = data["landingUrl"].replace("https://", "")
     canvas.drawCentredString(qr_x + qr_size / 2, qr_y - 31, landing_display)
     canvas.linkURL(data["landingUrl"], (qr_x - 7, qr_y - 35, qr_x + qr_size + 7, qr_y - 10), relative=0, thickness=0)
 
@@ -945,8 +1068,8 @@ def generate(locale: str, font_paths: tuple[Path, Path]) -> Path:
         prepared[item["id"]] = prepare_photo(
             REPO_ROOT / item["imageFile"],
             asset_root / f"{item['order']:02d}-{item['id']}.jpg",
-            800,
-            860,
+            1000,
+            730,
             item["objectPosition"],
         )
 

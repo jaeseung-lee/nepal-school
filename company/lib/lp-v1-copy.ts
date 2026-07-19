@@ -57,19 +57,43 @@ export const LP_V1_COPY = {
     facts: {
       ariaLabel: "과정 핵심 정보",
       items: [
-        { value: "3개월", label: "훈련기간", note: "집중 직업훈련 과정" },
-        { value: "390시간", label: "총 교육시간", note: "이론과 실습을 통합" },
+        { value: "3개월", label: "훈련 기간", note: "집중 직업훈련 과정" },
+        { value: "390시간", label: "총 교육 시간", note: "이론과 실습을 통합" },
         { value: "10개", label: "핵심 학습 모듈", note: "모듈 + 통합 프로젝트" },
       ],
       evaluationLabel: "평가 방식",
       evaluation: "필기 · 실기 · 최종 실기 및 구술",
     },
+    partnership: {
+      eyebrow: "FORMAL MOU PARTNER · KOREA & JAPAN SALES LIAISON",
+      badge: "정식 MOU 파트너",
+      title: "KTS의 정식 MOU 파트너로서 한국·일본 영업대행과 사업협력을 담당합니다",
+      description:
+        "Kathmandu Technical School(KTS)은 정우인재개발원과 정식 MOU를 맺은 네팔 현지 파트너입니다. 정우인재개발원은 KTS의 개호 교육을 한국·일본 사업자와 기관에 알리고, 파트너 발굴과 협력 제안, 상담을 맡는 대외 영업 창구입니다.",
+      rolesAriaLabel: "MOU 파트너 역할",
+      school: {
+        label: "NEPAL · TRAINING",
+        name: "Kathmandu Technical School",
+        role: "개호 인재의 현지 교육·실습 운영",
+      },
+      connector: "MOU로 맺은 협력",
+      joongwoo: {
+        label: "KOREA & JAPAN · SALES",
+        name: "JOONG WOO HRD",
+        role: "KTS 개호교육의 한국·일본 영업대행·사업협력 창구",
+      },
+      basisLabel: "협력 범위",
+      basis: "개호·호스피탈리티 직업훈련 및 해외 취업 인재 양성",
+      cta: "KTS 개호 교육 사업 협력 상담",
+      mailSubject: "KTS 개호 교육 한국·일본 사업 협력 상담",
+      note: "MOU는 교육·사업 협력에 관한 합의이며, 자격·비자·취업 또는 배치 결과를 보장하지 않습니다.",
+    },
     curriculum: {
       eyebrow: "CURRICULUM",
       title: "생활 지원의 기본을 여섯 영역으로 익힙니다",
       description:
-        "수행 기술만 반복하지 않습니다. 돌봄 윤리와 안전을 바탕으로 준비, 실행, 정리, 기록까지 하나의 업무 단위로 학습합니다.",
-      domainLabel: "핵심 교육영역",
+        "돌봄 윤리와 안전을 먼저 익힌 뒤 준비·수행·정리·기록까지 한 업무로 연습합니다.",
+      domainLabel: "핵심 교육 영역",
       domains: [
         {
           icon: "ethics" as LpV1DomainIcon,
@@ -81,13 +105,13 @@ export const LP_V1_COPY = {
           icon: "nutrition" as LpV1DomainIcon,
           title: "영양·식사 지원",
           description: "식사 형태에 맞춰 준비하고 위생적으로 조리·보관하며 안전하게 식사를 돕습니다.",
-          detail: "준비 · 조리 · 보관 · 식사보조",
+          detail: "준비 · 조리 · 보관 · 식사 보조",
         },
         {
           icon: "hygiene" as LpV1DomainIcon,
-          title: "개인위생·환경관리",
-          description: "세면, 구강, 눈, 모발, 손발톱과 피부를 관리하고 생활공간과 도구를 청결하게 유지합니다.",
-          detail: "개인위생 · 환경 · 도구 · 기록",
+          title: "개인 위생·환경 관리",
+          description: "세면, 구강, 눈, 모발, 손발톱과 피부를 관리하고 생활 공간과 도구를 청결하게 유지합니다.",
+          detail: "개인 위생 · 환경 · 도구 · 기록",
         },
         {
           icon: "mobility" as LpV1DomainIcon,
@@ -126,9 +150,9 @@ export const LP_V1_COPY = {
     },
     gallery: {
       eyebrow: "FIELD EVIDENCE",
-      title: "16장의 기록으로 확인하는 교육과 교류 현장",
+      title: "사진 16장으로 보는 교육과 교류 현장",
       description:
-        "교육과 실습 6장, 기관 방문과 대화 10장을 한 기록으로 정리했습니다. 사진은 자격 취득이나 취업 사례가 아닌 당시의 교육환경과 방문 장면을 보여줍니다.",
+        "교육·실습 사진 6장과 기관 방문·대화 사진 10장을 담았습니다. 자격 취득이나 취업 사례가 아니라, 촬영 당시의 교육 환경과 방문 장면을 보여주는 기록입니다.",
       trainingLabel: "TRAINING RECORD",
       trainingTitle: "교육과 실습",
       trainingDescription: "병상 주변 실습, 이동 보조, 강의실과 과정 안내 전시를 촬영한 기록입니다.",
@@ -144,7 +168,7 @@ export const LP_V1_COPY = {
     },
     completion: {
       eyebrow: "ASSESSMENT & COMPLETION",
-      title: "평가 기준과 수료의 범위를 명확하게 안내합니다",
+      title: "평가 방법과 수료 후 절차를 구분해 안내합니다",
       description:
         "교육과정을 이수하는 것과 외부 기능시험에 응시·합격하는 것은 서로 다른 절차입니다.",
       items: [
@@ -158,10 +182,10 @@ export const LP_V1_COPY = {
     },
     contact: {
       eyebrow: "PARTNERSHIP ENQUIRY",
-      title: "교육과정을 직접 확인하고 협력 가능성을 논의하세요",
+      title: "교육과정을 살펴본 뒤 협력을 논의해 보세요",
       description:
-        "일본 개호사업자·등록지원기관과 한국의 채용·교육 파트너를 위한 교육기관 방문, 커리큘럼 확인 및 인재육성 협력 문의를 받습니다.",
-      inquiryTypes: ["교육기관 방문", "커리큘럼 확인", "인재육성·채용 협력"],
+        "일본 개호사업자·등록지원기관과 한국의 채용·교육 파트너를 위한 교육기관 방문, 커리큘럼 확인 및 인재 육성 협력 문의를 받습니다.",
+      inquiryTypes: ["교육기관 방문", "커리큘럼 확인", "인재 육성·채용 협력"],
       cta: "이메일로 협력 문의하기",
       emailLabel: "협력 문의",
       schoolLabel: "교육장",
@@ -173,7 +197,7 @@ export const LP_V1_COPY = {
     },
     footer: {
       description: "Kathmandu Technical School × JOONG WOO HRD",
-      sourceNote: "공개된 과정 정보와 확인된 교육자료를 기준으로 작성했습니다.",
+      sourceNote: "공개된 과정 정보와 확인된 교육 자료를 기준으로 작성했습니다.",
     },
   },
   ja: {
@@ -192,6 +216,8 @@ export const LP_V1_COPY = {
     },
     hero: {
       eyebrow: "KTS CAREGIVER TRAINING · KATHMANDU, NEPAL",
+      programLabel: "ネパール現地介護職業訓練コース",
+      programBasis: "CTEVT（ネパール）短期職業訓練コース",
       titleLines: ["介護の基本を、", "ネパールの", "実習現場から"],
       description:
         "ベッドサイドでの実習から観察、片付け、記録・報告まで。日々の介護業務を、実際の手順に沿って学ぶ職業訓練です。",
@@ -199,23 +225,47 @@ export const LP_V1_COPY = {
       pdfCta: "A4カタログを入手",
       imageAlt: "KTSのロゴ、ベッド、訓練用マネキンを備えた介護実習室",
       imageCaption: "Care Lab · Sukedhara, Kathmandu",
-      evidenceLabel: "現場記録",
+      evidenceLabel: "研修風景",
     },
     facts: {
       ariaLabel: "コースの基本情報",
       items: [
-        { value: "3か月", label: "訓練期間", note: "集中職業訓練コース" },
-        { value: "390時間", label: "総訓練時間", note: "講義と実習を統合" },
-        { value: "10科目", label: "主要学習モジュール", note: "モジュール＋統合プロジェクト" },
+        { value: "3か月", label: "訓練期間", note: "介護職集中訓練コース" },
+        { value: "390時間", label: "総訓練時間", note: "実習・演習を中心とした390時間" },
+        { value: "10科目", label: "主要カリキュラム", note: "各科目＋統合プロジェクト" },
       ],
       evaluationLabel: "評価方法",
-      evaluation: "筆記 · 実技 · 最終実技・口頭試問",
+      evaluation: "筆記試験・実技試験・最終実技評価・口頭試問",
+    },
+    partnership: {
+      eyebrow: "FORMAL MOU PARTNER · JAPAN & KOREA SALES LIAISON",
+      badge: "正式MOUパートナー",
+      title: "KTSの正式MOUパートナーとして、日本・韓国向けの営業代行と事業連携を担います",
+      description:
+        "Kathmandu Technical School（KTS）は、JOONG WOO HRDと正式なMOUを締結したネパール現地のパートナーです。KTSの介護研修を日本・韓国の事業者や機関に紹介し、パートナー開拓、連携提案、相談対応をJOONG WOO HRDが担います。",
+      rolesAriaLabel: "MOUパートナーの役割",
+      school: {
+        label: "NEPAL · TRAINING",
+        name: "Kathmandu Technical School",
+        role: "介護人材の現地教育・実習運営",
+      },
+      connector: "MOUによる連携",
+      joongwoo: {
+        label: "JAPAN & KOREA · SALES",
+        name: "JOONG WOO HRD",
+        role: "KTS介護研修の日本・韓国向け営業代行・事業連携窓口",
+      },
+      basisLabel: "連携分野",
+      basis: "介護・ホスピタリティ職業訓練および海外就職人材育成",
+      cta: "KTS介護研修の事業連携を相談する",
+      mailSubject: "KTS介護研修の日本・韓国における事業連携相談",
+      note: "MOUは教育・事業連携に関する合意です。資格、在留資格、就職、配属の結果を保証するものではありません。",
     },
     curriculum: {
       eyebrow: "CURRICULUM",
       title: "生活支援の基本を、6つの領域で身につけます",
       description:
-        "技術だけを反復するのではありません。介護の倫理と安全を軸に、準備、実施、片付け、記録までを一つの業務単位として学びます。",
+        "介護の倫理と安全を基本に、準備・実施・片付け・記録までを一連の業務として学びます。",
       domainLabel: "主要訓練領域",
       domains: [
         {
@@ -251,8 +301,8 @@ export const LP_V1_COPY = {
         {
           icon: "psychosocial" as LpV1DomainIcon,
           title: "運動・余暇・心理社会的支援",
-          description: "基本運動と余暇活動を支援し、尊重ある対話、ストレスへの対応、観察・報告を学びます。",
-          detail: "活動 · 対話 · 観察 · 報告",
+          description: "基本運動と余暇活動を支援し、尊重あるコミュニケーション、ストレスへの対応、観察・報告を学びます。",
+          detail: "活動 · コミュニケーション · 観察 · 報告",
         },
       ],
     },
@@ -275,13 +325,13 @@ export const LP_V1_COPY = {
       eyebrow: "FIELD EVIDENCE",
       title: "16枚の記録で見る研修と交流の現場",
       description:
-        "研修・実習の6枚と、機関訪問・対話の10枚を一つの記録にまとめました。資格取得や就職の実績ではなく、撮影時の研修環境と訪問場面を示す写真です。",
+        "研修・実習6枚と、機関訪問・対話10枚を掲載しています。資格取得や就職の実績ではなく、撮影時の研修環境と訪問場面を記録した写真です。",
       trainingLabel: "TRAINING RECORD",
       trainingTitle: "研修と実習",
       trainingDescription: "ベッド周辺での実習、移動介助、教室、コース案内展示を撮影した記録です。",
       partnershipLabel: "VISIT & DIALOGUE RECORD",
       partnershipTitle: "機関訪問と対話",
-      partnershipDescription: "キャンパスや現地機関を訪れ、関係者と対話した場面を撮影順に整理しました。",
+      partnershipDescription: "キャンパスや現地機関を訪れ、関係者と対話した場面を撮影順に掲載しています。",
       viewImage: "写真を拡大表示",
       previous: "前の写真",
       next: "次の写真",
@@ -291,11 +341,11 @@ export const LP_V1_COPY = {
     },
     completion: {
       eyebrow: "ASSESSMENT & COMPLETION",
-      title: "評価基準と修了の範囲を明確にご案内します",
+      title: "コース評価と修了後の手続きを分けて示します",
       description:
         "訓練コースを修了することと、外部技能試験を受験・合格することは、それぞれ別の手続きです。",
       items: [
-        { label: "コース評価", value: "筆記・実技・最終実技・口頭試問" },
+        { label: "コース評価", value: "筆記試験・実技試験・最終実技評価・口頭試問" },
         { label: "コース範囲", value: "3か月・総390時間のKTS職業訓練" },
         { label: "別途手続き", value: "NSTB Level 1技能試験の受験・合格" },
       ],
@@ -305,7 +355,7 @@ export const LP_V1_COPY = {
     },
     contact: {
       eyebrow: "PARTNERSHIP ENQUIRY",
-      title: "訓練内容を確認し、連携の可能性についてご相談ください",
+      title: "訓練内容をご覧のうえ、連携をご相談ください",
       description:
         "日本の介護事業者・登録支援機関、韓国の採用・教育パートナーを対象に、訓練施設の訪問、カリキュラム確認、人材育成に関するご相談を承ります。",
       inquiryTypes: ["訓練施設の訪問", "カリキュラム確認", "人材育成・採用連携"],

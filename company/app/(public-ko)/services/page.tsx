@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "사업영역",
   description:
-    "네팔 직업훈련학교, 한국 취업비자(E-9·E-7·D-2·D-4), 일본 특정기능까지. 정우인재개발원의 3대 사업영역과 원스톱 프로세스.",
+    "일본 개호 인재 채용, 일본 숙박 인재 채용, 한국 유학생 모집, 한국 용접 인재 채용의 네 가지 사업영역을 소개합니다. 네팔 현지 선발·교육부터 비자·입국·정착까지 지원합니다.",
   path: "/services",
 });
 

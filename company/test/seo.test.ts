@@ -5,6 +5,12 @@ import test from "node:test";
 import matter from "gray-matter";
 import robots from "../app/robots";
 import { BLOG_LOCALES } from "../lib/blog-routing";
+import { BUSINESS_AREA_LOCALES, BUSINESS_AREA_SLUGS } from "../lib/business-areas";
+import {
+  buildBusinessAreaMetadata,
+  businessAreaLanguageAlternates,
+  businessAreaPath,
+} from "../lib/business-area-seo";
 import { LOCALES } from "../lib/i18n";
 import { languageAlternates } from "../lib/seo";
 import { SITE, SITE_URL } from "../lib/site";
@@ -84,25 +90,109 @@ test("사이트맵은 명시적 수정일과 언어 대체 링크를 사용한�
   assert.match(source, /\/privacy/);
 });
 
-test("KTS 랜딩은 사이트맵에 대체 언어 URL 없이 정확히 한 번만 포함된다", () => {
+test("사업영역 상세 8개 URL은 한국어·일본어 hreflang만 제공한다", () => {
   const source = read("app/sitemap.ts");
-  const landingBlock = source.match(/const landingPages:[\s\S]*?\n\];/)?.[0] ?? "";
-  assert.equal((source.match(/`\$\{SITE_URL\}\/lp\/v1`/g) ?? []).length, 1);
-  assert.match(source, /\.\.\.landingPages/);
-  assert.doesNotMatch(landingBlock, /alternates/);
-  assert.doesNotMatch(source, /\/ja\/lp\/v1/);
+  const detailUrls = new Set(
+    BUSINESS_AREA_SLUGS.flatMap((slug) =>
+      BUSINESS_AREA_LOCALES.map((locale) => `${SITE_URL}${businessAreaPath(locale, slug)}`),
+    ),
+  );
+
+  assert.equal(detailUrls.size, BUSINESS_AREA_SLUGS.length * BUSINESS_AREA_LOCALES.length);
+  assert.equal(detailUrls.size, 8);
+  for (const slug of BUSINESS_AREA_SLUGS) {
+    const koreanUrl = `${SITE_URL}${businessAreaPath("ko", slug)}`;
+    assert.deepEqual(businessAreaLanguageAlternates(slug), {
+      ko: koreanUrl,
+      ja: `${SITE_URL}${businessAreaPath("ja", slug)}`,
+      "x-default": koreanUrl,
+    });
+  }
+  assert.match(source, /BUSINESS_AREA_SLUGS\.flatMap/);
+  assert.match(source, /businessAreaLanguageAlternates\(slug\)/);
+  assert.match(source, /\.\.\.businessAreaPages/);
+  assert.doesNotMatch(source, /\/lp\/v1/);
 });
 
-test("KTS 랜딩 메타데이터는 단일 canonical과 전용 OG 이미지를 사용한다", () => {
-  const page = read("app/(landing)/lp/v1/page.tsx");
-  assert.match(page, /alternates: \{ canonical: PAGE_PATH \}/);
-  assert.doesNotMatch(page, /languageAlternates|languages:/);
-  assert.match(page, /\/lp\/v1\/og\.png/);
-  for (const schemaType of ["WebSite", "WebPage"]) {
-    assert.match(page, new RegExp(`"@type": "${schemaType}"`));
+test("사업영역 상세 메타데이터는 로케일별 canonical과 제한된 hreflang을 사용한다", () => {
+  const slug = BUSINESS_AREA_SLUGS[0];
+  const korean = buildBusinessAreaMetadata({
+    locale: "ko",
+    slug,
+    title: "한국어 제목",
+    description: "한국어 설명",
+    image: { src: "/gallery/training-room-interior.webp", alt: "현장 이미지", width: 1650, height: 2200 },
+  });
+  const japanese = buildBusinessAreaMetadata({
+    locale: "ja",
+    slug,
+    title: "日本語タイトル",
+    description: "日本語の説明",
+  });
+
+  assert.equal(korean.alternates?.canonical, businessAreaPath("ko", slug));
+  assert.equal(japanese.alternates?.canonical, businessAreaPath("ja", slug));
+  assert.deepEqual(korean.alternates?.languages, businessAreaLanguageAlternates(slug));
+  assert.deepEqual(japanese.alternates?.languages, businessAreaLanguageAlternates(slug));
+  const openGraphImages = korean.openGraph?.images;
+  assert.ok(Array.isArray(openGraphImages));
+  const firstOpenGraphImage = openGraphImages[0];
+  assert.equal(
+    typeof firstOpenGraphImage === "string" || firstOpenGraphImage instanceof URL
+      ? firstOpenGraphImage.toString()
+      : firstOpenGraphImage?.url.toString(),
+    `${SITE_URL}/gallery/training-room-interior.webp`,
+  );
+});
+
+test("사업영역 상세 경로는 정적 slug만 허용하고 일본어 외 접두 언어를 만들지 않는다", () => {
+  const koreanRoute = read("app/(public-ko)/services/[slug]/page.tsx");
+  const localizedRoute = read("app/[locale]/[[...slug]]/page.tsx");
+
+  assert.match(koreanRoute, /export const dynamicParams = false/);
+  assert.match(koreanRoute, /BUSINESS_AREA_SLUGS\.map/);
+  assert.match(koreanRoute, /if \(!isBusinessAreaSlug\(slug\)\) notFound\(\)/);
+  assert.match(localizedRoute, /locale: "ja", slug: \["services", slug\]/);
+  assert.match(localizedRoute, /value === "ja" \? getJapaneseBusinessArea/);
+  assert.doesNotMatch(localizedRoute, /locale: "(?:en|ne|vi|lo)", slug: \["services", slug\]/);
+});
+
+test("개호 상세만 원본 lp/v1 본문을 사용하고 나머지 사업영역은 공통 상세를 유지한다", () => {
+  const koreanRoute = read("app/(public-ko)/services/[slug]/page.tsx");
+  const localizedRoute = read("app/[locale]/[[...slug]]/page.tsx");
+
+  assert.match(koreanRoute, /if \(slug === "japan-caregiver"\)/);
+  assert.match(koreanRoute, /<KtsCaregiverLanding locale="ko" \/>/);
+  assert.match(koreanRoute, /<BusinessAreaDetail area=\{area\} locale="ko" \/>/);
+
+  assert.match(localizedRoute, /businessArea\?\.slug === "japan-caregiver"/);
+  assert.match(localizedRoute, /<KtsCaregiverLanding locale="ja" \/>/);
+  assert.match(localizedRoute, /<BusinessAreaDetail area=\{businessArea\} locale="ja" \/>/);
+});
+
+test("개호 상세 메타데이터는 원본 lp/v1 값과 전용 OG 이미지를 사용한다", () => {
+  const routes = [
+    { locale: "ko", source: read("app/(public-ko)/services/[slug]/page.tsx") },
+    { locale: "ja", source: read("app/[locale]/[[...slug]]/page.tsx") },
+  ] as const;
+
+  for (const { locale, source } of routes) {
+    assert.match(source, new RegExp(`LP_V1_META\\.${locale}`));
+    assert.match(source, /src: "\/lp\/v1\/og\.png", alt: caregiverMetadata\.title, width: 1200, height: 630/);
+    assert.match(source, /title: \{ absolute: caregiverMetadata\.title \}/);
   }
-  assert.match(page, /<OrganizationSchema \/>/);
-  assert.match(page, /inLanguage: \["ko", "ja"\]/);
+});
+
+test("구 KTS 랜딩은 돌봄 상세로 영구 이동하고 #ja를 일본어 정식 경로에 연결한다", () => {
+  const page = read("app/(landing)/lp/v1/page.tsx");
+  const koreanRoute = read("app/(public-ko)/services/[slug]/page.tsx");
+  const bridge = read("components/business-area/legacy-lp-locale-bridge.tsx");
+
+  assert.match(page, /permanentRedirect\("\/services\/japan-caregiver"\)/);
+  assert.doesNotMatch(page, /export const metadata|components\/lp\/kts-caregiver-landing/);
+  assert.match(koreanRoute, /slug === "japan-caregiver"[\s\S]*<LegacyLpLocaleBridge/);
+  assert.match(bridge, /window\.location\.hash\.toLowerCase\(\) !== "#ja"/);
+  assert.match(bridge, /window\.location\.replace\(`\/ja\/services\/japan-caregiver/);
 });
 
 test("PDF 다운로드는 미들웨어를 건너뛰고 검색 제외 헤더를 받는다", async () => {

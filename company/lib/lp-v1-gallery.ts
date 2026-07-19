@@ -21,7 +21,6 @@ export type LpV1GalleryItem = {
   aspect: LpV1GalleryAspect;
   layout: LpV1GalleryLayout;
   objectPosition: `${number}% ${number}%`;
-  pdfOrder?: number;
   copy: Readonly<Record<LpV1Locale, LpV1GalleryCopy>>;
 };
 
@@ -43,7 +42,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "landscape",
     layout: "lead",
     objectPosition: "50% 50%",
-    pdfOrder: 1,
     copy: {
       ko: {
         alt: "KTS 교육생들이 병상 주변에서 돌봄 실습을 진행하는 모습",
@@ -65,7 +63,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "portrait",
     layout: "portrait",
     objectPosition: "48% 48%",
-    pdfOrder: 2,
     copy: {
       ko: {
         alt: "KTS 실습 공간에서 휠체어 이동 보조를 연습하는 모습",
@@ -87,7 +84,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "landscape",
     layout: "wide",
     objectPosition: "50% 47%",
-    pdfOrder: 3,
     copy: {
       ko: {
         alt: "보건·돌봄 교육 강의실에서 교육생들이 자리에 앉아 있는 모습",
@@ -193,7 +189,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "landscape",
     layout: "standard",
     objectPosition: "50% 48%",
-    pdfOrder: 4,
     copy: {
       ko: {
         alt: "캠퍼스 회의실에서 방문자와 기관 관계자들이 테이블에 앉아 대화하는 모습",
@@ -278,7 +273,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "portrait",
     layout: "portrait",
     objectPosition: "50% 50%",
-    pdfOrder: 5,
     copy: {
       ko: {
         alt: "Dakshinkali 지방자치단체 청사 앞에서 방문자와 관계자들이 함께 선 모습",
@@ -321,7 +315,6 @@ export const LP_V1_GALLERY_ITEMS: readonly LpV1GalleryItem[] = [
     aspect: "landscape",
     layout: "standard",
     objectPosition: "58% 50%",
-    pdfOrder: 6,
     copy: {
       ko: {
         alt: "사무실 회의에서 화면 자료를 보며 발표와 대화를 진행하는 모습",

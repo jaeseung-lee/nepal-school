@@ -21,7 +21,7 @@ const WORK_SCOPE = [
   { title: "프런트", desc: "체크인·체크아웃, 예약 관리, 안내 등 프런트 데스크 업무" },
   { title: "기획·홍보", desc: "상품 기획, 프로모션, 판촉물 제작 지원 등" },
   { title: "접객", desc: "관내 안내, 고객 응대, 컨시어지 성격의 서비스" },
-  { title: "레스토랑 서비스", desc: "관내 식당의 접객·배선 등 음식 서비스" },
+  { title: "레스토랑 서비스", desc: "관내 식당의 고객 응대·음식 제공 등 식음 서비스" },
 ];
 
 const PROCESS_STEPS = [
@@ -52,7 +52,7 @@ export default function ShukuhakuPage() {
         eyebrow="일본 비자 정보 · 특정기능 분야"
         context="観光庁 운용방침 기준"
         titleKo="특정기능 숙박(宿泊)"
-        desc="호텔·료칸의 프런트부터 레스토랑 서비스까지, 숙박 서비스 전반을 맡을 수 있는 특정기능 분야입니다. 수용상한 대비 실적이 낮아 채용 여지가 넓습니다."
+        desc="호텔·료칸의 프런트부터 레스토랑 서비스까지 숙박 서비스 전반을 맡을 수 있는 특정기능 분야입니다. 수용상한 14,800명 가운데 2025년 12월 말 재류자는 1,968명입니다."
         crumb="비자 정보"
         bgImage="/kv/redesign/japan.webp"
       />
@@ -73,8 +73,8 @@ export default function ShukuhakuPage() {
             </h2>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
               숙박 분야의 특정기능 인력은 <strong className="font-semibold text-ink">숙박 서비스 제공
-              전반</strong>을 담당할 수 있습니다. 청소 같은 부수 업무도 주 업무에 딸린 범위에서
-              가능하지만, 부수 업무만 전담시키는 것은 허용되지 않습니다.
+              전반</strong>을 담당할 수 있습니다. 청소 같은 부수 업무도 주된 업무에 수반되는 범위에서는
+              맡길 수 있지만, 부수 업무만 전담시키는 것은 허용되지 않습니다.
             </p>
           </Reveal>
           <Reveal delay={0.08} className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -100,14 +100,14 @@ export default function ShukuhakuPage() {
               </span>
               <div>
                 <h2 className="font-display text-2xl font-semibold text-ink">
-                  수용상한 대비 실적이 낮은 분야
+                  수용상한과 재류 현황
                 </h2>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted">
                   숙박 분야의 특정기능 1호 수용상한은{" "}
                   <strong className="font-semibold text-ink">14,800명</strong>(2026년 1월 각의결정
-                  운용방침)인데, 2025년 12월 말 기준 실제 재류자는 1,968명입니다. 상한의 13% 수준으로,
-                  16개 분야 중에서도 제도적 채용 여지가 특히 넓은 분야입니다. 인바운드 관광 회복으로
-                  인력 수요가 커진 호텔·료칸이라면 우선 검토할 만한 경로입니다.
+                  운용방침)이고, 2025년 12월 말 기준 실제 재류자는 1,968명입니다. 상한의 13% 수준이므로
+                  수용상한만 놓고 보면 추가 수용 여지가 있습니다. 인바운드 관광 회복으로 인력 수요가
+                  커진 호텔·료칸이라면 검토할 수 있는 경로입니다.
                 </p>
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function ShukuhakuPage() {
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              전체 구조는{" "}
+              전체 절차는{" "}
               <Link href="/visa/tokutei-ginou" className="font-medium text-cobalt underline underline-offset-2">
                 특정기능 1호 공통 절차
               </Link>

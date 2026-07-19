@@ -7,24 +7,21 @@ import {
   ChatsCircle,
   DownloadSimple,
   EnvelopeSimple,
-  FilePdf,
+  GlobeHemisphereWest,
   HandSoap,
+  Handshake,
   Heartbeat,
   MapPin,
+  SealCheck,
   ShieldCheck,
   WheelchairMotion,
   type Icon,
 } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import AnalyticsConsent from "@/components/analytics-consent";
 import KtsCaregiverGallery from "@/components/lp/kts-caregiver-gallery";
-import SeoTracker from "@/components/seo-tracker";
 import {
   LP_V1_COPY,
-  LP_V1_META,
   LP_V1_PDF_HREFS,
   LP_V1_SOURCE_URL,
   type LpV1DomainIcon,
@@ -44,71 +41,12 @@ const PHOTO_PATHS = {
   lab: "/lp/v1/caregiver-lab.webp",
 } as const;
 
-function localeFromHash(): LpV1Locale {
-  return typeof window !== "undefined" && window.location.hash.toLowerCase() === "#ja" ? "ja" : "ko";
-}
-
-function LanguageToggle({ locale, onChange, label }: { locale: LpV1Locale; onChange: (next: LpV1Locale) => void; label: string }) {
-  return (
-    <div role="group" aria-label={label} className="inline-flex min-h-12 items-center rounded-full border border-line bg-white/75 p-0.5 shadow-sm shadow-ink/5 backdrop-blur-sm">
-      {(["ko", "ja"] as const).map((option) => (
-        <button
-          key={option}
-          type="button"
-          onClick={() => onChange(option)}
-          aria-pressed={locale === option}
-          data-seo-event="language_changed"
-          data-content-id={option}
-          data-locale={option}
-          className={`min-h-11 rounded-full px-3.5 text-xs font-semibold transition sm:px-4 ${
-            locale === option ? "bg-cobalt text-white shadow-sm" : "text-muted hover:bg-cobalt-soft hover:text-cobalt"
-          }`}
-        >
-          {option === "ko" ? "한국어" : "日本語"}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-export default function KtsCaregiverLanding() {
-  const [locale, setLocale] = useState<LpV1Locale>("ko");
+export default function KtsCaregiverLanding({ locale }: { locale: LpV1Locale }) {
   const reduceMotion = useReducedMotion();
   const copy = LP_V1_COPY[locale];
+  const heroProgram = locale === "ja" ? LP_V1_COPY.ja.hero : null;
   const pdfHref = LP_V1_PDF_HREFS[locale];
   const pdfEventId = `lp-v1-pdf-${locale}`;
-
-  useEffect(() => {
-    const syncFromLocation = () => setLocale(localeFromHash());
-    syncFromLocation();
-    window.addEventListener("hashchange", syncFromLocation);
-    window.addEventListener("popstate", syncFromLocation);
-    return () => {
-      window.removeEventListener("hashchange", syncFromLocation);
-      window.removeEventListener("popstate", syncFromLocation);
-    };
-  }, []);
-
-  useEffect(() => {
-    const expectedTitle = LP_V1_META[locale].title;
-    const syncDocument = () => {
-      document.documentElement.lang = locale;
-      if (document.title !== expectedTitle) document.title = expectedTitle;
-    };
-
-    syncDocument();
-    const observer = new MutationObserver(syncDocument);
-    observer.observe(document.head, { childList: true, subtree: true, characterData: true });
-
-    return () => observer.disconnect();
-  }, [locale]);
-
-  const changeLanguage = (next: LpV1Locale) => {
-    if (next === locale) return;
-    const nextUrl = `${window.location.pathname}${window.location.search}${next === "ja" ? "#ja" : ""}`;
-    window.history.pushState({ lpV1Locale: next }, "", nextUrl);
-    setLocale(next);
-  };
 
   const scrollToCurriculum = () => {
     document.getElementById("curriculum")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
@@ -121,42 +59,13 @@ export default function KtsCaregiverLanding() {
   };
 
   const mailHref = `mailto:joongwoohrd@gmail.com?subject=${encodeURIComponent(copy.contact.mailSubject)}`;
+  const partnershipMailHref = `mailto:joongwoohrd@gmail.com?subject=${encodeURIComponent(copy.partnership.mailSubject)}`;
 
   return (
     <>
       <button type="button" onClick={skipToContent} className="fixed left-4 top-4 z-[100] min-h-11 -translate-y-24 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white focus:translate-y-0">
         {copy.skipToContent}
       </button>
-
-      <header className="sticky top-0 z-50 border-b border-line/80 bg-paper-soft/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-[72px] max-w-content items-center justify-between gap-3 px-4 sm:px-5 lg:px-8">
-          <Link href={locale === "ja" ? "/ja" : "/"} aria-label={copy.brand.homeAria} className="flex min-h-11 min-w-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cobalt text-[12px] font-bold tracking-tight text-white shadow-sm" aria-hidden="true">
-              JW
-            </span>
-            <span className="min-w-0 leading-tight">
-              <span className="block truncate text-sm font-bold text-ink sm:text-[15px]">{copy.brand.partner}</span>
-              <span className="block truncate text-[10px] font-semibold tracking-[0.07em] text-muted">{copy.brand.course}</span>
-            </span>
-          </Link>
-
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <LanguageToggle locale={locale} onChange={changeLanguage} label={copy.languageSelectorLabel} />
-            <a
-              href={pdfHref}
-              download
-              aria-label={copy.navigation.downloadAria}
-              data-seo-event="cta_clicked"
-              data-content-id={pdfEventId}
-              data-locale={locale}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-cobalt px-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-cobalt-ink sm:px-4"
-            >
-              <FilePdf size={18} weight="duotone" aria-hidden="true" />
-              <span className="hidden sm:inline">{copy.navigation.download}</span>
-            </a>
-          </div>
-        </div>
-      </header>
 
       <main id="lp-main" tabIndex={-1} lang={locale} className={locale === "ja" ? "[word-break:normal] [overflow-wrap:anywhere]" : "[word-break:keep-all]"}>
         <section className="relative isolate overflow-hidden bg-paper pb-16 pt-8 sm:pb-20 sm:pt-12 lg:pb-28 lg:pt-16">
@@ -168,8 +77,14 @@ export default function KtsCaregiverLanding() {
           <div className="mx-auto grid max-w-content items-center gap-10 px-5 lg:grid-cols-[0.78fr_1.22fr] lg:gap-14 lg:px-8">
             <div className="relative z-10">
               <p className="text-[11px] font-bold tracking-[0.18em] text-cobalt sm:text-xs">{copy.hero.eyebrow}</p>
+              {heroProgram ? (
+                <div className="mt-4 border-l-2 border-clay pl-3">
+                  <p className="text-sm font-semibold leading-6 text-ink">{heroProgram.programLabel}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted">{heroProgram.programBasis}</p>
+                </div>
+              ) : null}
               <h1
-                className={`mt-5 max-w-2xl font-display font-semibold text-ink ${
+                className={`${heroProgram ? "mt-4" : "mt-5"} max-w-2xl font-display font-semibold text-ink ${
                   locale === "ja"
                     ? "text-[clamp(2.3rem,10vw,3.4rem)] leading-[1.02] tracking-[-0.045em]"
                     : "text-[clamp(2.7rem,7.5vw,5.7rem)] leading-[0.98] tracking-[-0.055em]"
@@ -240,6 +155,83 @@ export default function KtsCaregiverLanding() {
             <div className="flex flex-col gap-2 border-t border-line py-4 text-sm sm:flex-row sm:items-center sm:justify-between">
               <span className="font-semibold text-cobalt">{copy.facts.evaluationLabel}</span>
               <span className="text-muted">{copy.facts.evaluation}</span>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="partnership-title" className="bg-paper py-12 sm:py-16 lg:py-20">
+          <div className="mx-auto max-w-content px-5 lg:px-8">
+            <div className="relative overflow-hidden rounded-[28px] bg-cobalt-ink px-6 py-8 text-white shadow-2xl shadow-cobalt-ink/15 sm:rounded-[34px] sm:px-9 sm:py-10 lg:px-12 lg:py-12">
+              <div className="pointer-events-none absolute -right-24 -top-28 h-80 w-80 rounded-full border-[52px] border-white/[0.045]" aria-hidden="true" />
+              <div className="pointer-events-none absolute -bottom-28 left-[38%] h-64 w-64 rounded-full bg-cobalt/30 blur-3xl" aria-hidden="true" />
+
+              <div className="relative grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-14">
+                <div>
+                  <p className="text-[10px] font-bold tracking-[0.18em] text-white/55 sm:text-xs">{copy.partnership.eyebrow}</p>
+                  <div className="mt-5 inline-flex min-h-9 items-center gap-2 rounded-full border border-clay/55 bg-clay/20 px-3.5 py-2 text-xs font-bold text-[#F4CDBA]">
+                    <SealCheck size={18} weight="fill" aria-hidden="true" />
+                    {copy.partnership.badge}
+                  </div>
+                  <h2 id="partnership-title" className="mt-5 max-w-xl font-display text-3xl font-semibold leading-[1.13] tracking-[-0.035em] sm:text-4xl lg:text-[2.7rem]">
+                    {copy.partnership.title}
+                  </h2>
+                  <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/72 sm:text-base sm:leading-8">{copy.partnership.description}</p>
+                  <a
+                    href={partnershipMailHref}
+                    data-seo-event="cta_clicked"
+                    data-content-id="lp-v1-mou-partnership"
+                    data-jurisdiction="NP"
+                    data-locale={locale}
+                    className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-cobalt transition-colors hover:bg-cobalt-soft sm:px-6"
+                  >
+                    <EnvelopeSimple size={18} weight="bold" aria-hidden="true" /> {copy.partnership.cta}
+                  </a>
+                </div>
+
+                <div>
+                  <div role="group" aria-label={copy.partnership.rolesAriaLabel} className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch">
+                    <div className="rounded-[22px] border border-white/15 bg-white/[0.08] p-5 backdrop-blur-sm sm:p-6">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white">
+                        <ShieldCheck size={24} weight="duotone" aria-hidden="true" />
+                      </span>
+                      <p className="mt-5 text-[10px] font-bold tracking-[0.16em] text-white/50">{copy.partnership.school.label}</p>
+                      <h3 className="mt-2 font-display text-xl font-semibold leading-snug tracking-[-0.02em]">{copy.partnership.school.name}</h3>
+                      <p className="mt-3 text-sm leading-6 text-white/67">{copy.partnership.school.role}</p>
+                    </div>
+
+                    <div className="flex items-center justify-center py-1 sm:px-1 sm:py-0">
+                      <div className="flex flex-wrap items-center justify-center gap-2 text-[#F4CDBA] sm:w-[72px] sm:flex-col sm:gap-1.5">
+                        <span className="h-px w-8 bg-clay/65 sm:h-8 sm:w-px" aria-hidden="true" />
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-clay/55 bg-clay/20">
+                          <Handshake size={24} weight="duotone" aria-hidden="true" />
+                        </span>
+                        <span className="h-px w-8 bg-clay/65 sm:h-8 sm:w-px" aria-hidden="true" />
+                        <span className="basis-full text-center text-[9px] font-bold leading-4 tracking-[0.06em] text-[#F4CDBA]/80">{copy.partnership.connector}</span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[22px] border border-cobalt-soft/25 bg-cobalt/35 p-5 backdrop-blur-sm sm:p-6">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white">
+                        <GlobeHemisphereWest size={24} weight="duotone" aria-hidden="true" />
+                      </span>
+                      <p className="mt-5 text-[10px] font-bold tracking-[0.16em] text-white/50">{copy.partnership.joongwoo.label}</p>
+                      <h3 className="mt-2 font-display text-xl font-semibold leading-snug tracking-[-0.02em]">{copy.partnership.joongwoo.name}</h3>
+                      <p className="mt-3 text-sm leading-6 text-white/67">{copy.partnership.joongwoo.role}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-[18px] border border-white/12 bg-black/10 px-4 py-4 sm:px-5">
+                    <div className="flex items-start gap-3">
+                      <SealCheck className="mt-0.5 shrink-0 text-[#F4CDBA]" size={20} weight="duotone" aria-hidden="true" />
+                      <div>
+                        <p className="text-[10px] font-bold tracking-[0.14em] text-white/50">{copy.partnership.basisLabel}</p>
+                        <p className="mt-1.5 text-sm font-semibold leading-6 text-white/90">{copy.partnership.basis}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-xs leading-5 text-white/45">{copy.partnership.note}</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -406,21 +398,7 @@ export default function KtsCaregiverLanding() {
           </div>
         </section>
 
-        <footer className="bg-paper py-8">
-          <div className="mx-auto flex max-w-content flex-col gap-4 border-t border-line px-5 pt-7 text-xs leading-5 text-muted sm:flex-row sm:items-end sm:justify-between lg:px-8">
-            <div>
-              <p className="font-semibold text-ink">{copy.footer.description}</p>
-              <p className="mt-1">{copy.footer.sourceNote}</p>
-            </div>
-            <p className="shrink-0">© 2026 {copy.brand.name}</p>
-          </div>
-        </footer>
       </main>
-
-      <div lang={locale} className={locale === "ja" ? "[word-break:normal] [overflow-wrap:anywhere]" : "[word-break:keep-all]"}>
-        <AnalyticsConsent locale={locale} />
-      </div>
-      <SeoTracker locale={locale} />
     </>
   );
 }

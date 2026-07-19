@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AboutContent } from "@/components/page-content/about-content";
+import BusinessAreaDetail from "@/components/business-area/business-area-detail";
+import CaregiverPageSchema from "@/components/lp/caregiver-page-schema";
+import KtsCaregiverLanding from "@/components/lp/kts-caregiver-landing";
 import ContactContent from "@/components/page-content/contact-content";
 import { GalleryContent } from "@/components/page-content/gallery-content";
 import { HomeContent } from "@/components/page-content/home-content";
@@ -11,6 +14,13 @@ import { ServicesContent } from "@/components/page-content/services-content";
 import VisaHubContent from "@/components/page-content/visa-hub-content";
 import WhyContent from "@/components/page-content/why-content";
 import { getMessages, isLocale, LOCALES, type Locale } from "@/lib/i18n";
+import {
+  BUSINESS_AREA_SLUGS,
+  getBusinessArea,
+  isBusinessAreaSlug,
+} from "@/lib/business-areas";
+import { buildBusinessAreaMetadata } from "@/lib/business-area-seo";
+import { LP_V1_META } from "@/lib/lp-v1-copy";
 import { PRIVACY_COPY } from "@/lib/privacy-copy";
 import { buildPageMetadata } from "@/lib/seo";
 import { VISAS } from "@/lib/visas";
@@ -23,10 +33,20 @@ const STATIC_ROUTES = ["", "about", "services", "gallery", "partners", "why", "c
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return LOCALES.filter((locale) => locale !== "ko").flatMap((locale) => [
-    ...STATIC_ROUTES.map((route) => ({ locale, slug: route ? [route] : [] })),
-    ...VISAS.map((visa) => ({ locale, slug: ["visa", visa.slug] })),
-  ]);
+  return [
+    ...LOCALES.filter((locale) => locale !== "ko").flatMap((locale) => [
+      ...STATIC_ROUTES.map((route) => ({ locale, slug: route ? [route] : [] })),
+      ...VISAS.map((visa) => ({ locale, slug: ["visa", visa.slug] })),
+    ]),
+    ...BUSINESS_AREA_SLUGS.map((slug) => ({ locale: "ja", slug: ["services", slug] })),
+  ];
+}
+
+function getJapaneseBusinessArea(route: readonly string[]) {
+  if (route.length !== 2 || route[0] !== "services" || !isBusinessAreaSlug(route[1])) {
+    return null;
+  }
+  return getBusinessArea("ja", route[1]);
 }
 
 function routeMetadata(locale: Locale, route: string) {
@@ -50,6 +70,27 @@ function routeMetadata(locale: Locale, route: string) {
 export async function generateMetadata({ params }: LocalizedPageProps): Promise<Metadata> {
   const { locale: value, slug = [] } = await params;
   if (!isLocale(value) || value === "ko") return {};
+  const businessArea = value === "ja" ? getJapaneseBusinessArea(slug) : null;
+  if (businessArea) {
+    const caregiverMetadata = LP_V1_META.ja;
+    const metadata = buildBusinessAreaMetadata({
+      locale: "ja",
+      slug: businessArea.slug,
+      title: businessArea.slug === "japan-caregiver" ? caregiverMetadata.title : businessArea.meta.title,
+      description: businessArea.slug === "japan-caregiver" ? caregiverMetadata.description : businessArea.meta.description,
+      image:
+        businessArea.slug === "japan-caregiver"
+          ? { src: "/lp/v1/og.png", alt: caregiverMetadata.title, width: 1200, height: 630 }
+          : businessArea.evidence.images[0],
+    });
+    if (businessArea.slug !== "japan-caregiver") return metadata;
+    return {
+      ...metadata,
+      title: { absolute: caregiverMetadata.title },
+      openGraph: metadata.openGraph ? { ...metadata.openGraph, title: caregiverMetadata.title } : undefined,
+      twitter: metadata.twitter ? { ...metadata.twitter, title: caregiverMetadata.title } : undefined,
+    };
+  }
   const route = slug.join("/");
   const copy = routeMetadata(value, route);
   if (!copy) return {};
@@ -77,6 +118,18 @@ export default async function LocalizedPage({ params }: LocalizedPageProps) {
   if (route === "contact") return <ContactContent locale={locale} />;
   if (route === "privacy") return <PrivacyContent locale={locale} />;
   if (route === "visa") return <VisaHubContent locale={locale} />;
+  if (locale === "ja") {
+    const businessArea = getJapaneseBusinessArea(slug);
+    if (businessArea?.slug === "japan-caregiver") {
+      return (
+        <>
+          <CaregiverPageSchema locale="ja" />
+          <KtsCaregiverLanding locale="ja" />
+        </>
+      );
+    }
+    if (businessArea) return <BusinessAreaDetail area={businessArea} locale="ja" />;
+  }
   if (route.startsWith("visa/")) {
     const visaSlug = route.slice("visa/".length);
     if (VISAS.some((visa) => visa.slug === visaSlug)) return <LocalizedVisaDetail locale={locale} slug={visaSlug} />;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getMessages, LOCALES, LOCALE_DETAILS, localizedHref, type Locale } from "./i18n";
 import { SITE, SITE_URL } from "./site";
 
-export const CONTENT_LAST_MODIFIED = "2026-07-16";
+export const CONTENT_LAST_MODIFIED = "2026-07-19";
 
 export function languageAlternates(path: string): Record<string, string> {
   const languages = Object.fromEntries(

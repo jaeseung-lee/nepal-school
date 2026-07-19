@@ -20,14 +20,14 @@ const visa = getVisa("tokutei-ginou");
 const GRADE_COMPARISON = [
   { label: "체류기간", first: "통산 5년 상한", second: "갱신 무제한" },
   { label: "가족동반", first: "원칙 불가", second: "가능" },
-  { label: "대상 분야", first: "16분야", second: "일부 분야만 (개호는 2호 없음)" },
-  { label: "숙련도", first: "즉전력 수준", second: "숙련 수준" },
+  { label: "대상 분야", first: "16개 분야", second: "일부 분야만 (개호는 2호 없음)" },
+  { label: "숙련도", first: "바로 일할 수 있는 수준", second: "숙련 수준" },
 ];
 
 // 기능실습(→육성취로) vs 특정기능 1호 - 01-제도-비자.md §6·7
 const SYSTEM_COMPARISON = [
-  { label: "제도 목적", old: "기술이전·국제협력 (→ 육성취로는 인재육성·특정기능 이행)", ssw: "인력부족 분야 즉전력 충원" },
-  { label: "고용 구조", old: "감리단체 등 감독·지원기관 경유", ssw: "수용기관 직접고용" },
+  { label: "제도 목적", old: "기술이전·국제협력 (→ 육성취로는 인재육성·특정기능 전환)", ssw: "인력부족 분야의 인력 채용" },
+  { label: "고용 방식", old: "감리단체 등 감독·지원기관 경유", ssw: "수용기관 직접고용" },
   { label: "입국 전 시험", old: "원칙적으로 없음 (개호 등 일부 예외)", ssw: "일본어시험 + 분야별 기능시험" },
   { label: "전직", old: "원칙 제한", ssw: "같은 분야(업무구분) 안에서 가능" },
   { label: "파견", old: "분야별 제한", ssw: "개호·숙박은 파견 불가" },
@@ -36,15 +36,15 @@ const SYSTEM_COMPARISON = [
 // 의무적 지원 10항목 - 01-제도-비자.md §7
 const SUPPORT_ITEMS = [
   "사전 가이던스 (재류신청 전, 이해 가능한 언어로)",
-  "공항 송영 (입·출국 시)",
+  "공항 이동 지원 (입·출국 시)",
   "주거 확보·계약 지원",
   "생활 오리엔테이션",
-  "공적수속 동행 (시청·은행·연금 등)",
+  "행정·금융 수속 동행 (시청·은행·연금 등)",
   "일본어 학습 기회 제공",
   "상담·고충 대응 (이해 가능한 언어로)",
   "일본인과의 교류 촉진",
   "전직 지원 (비자발적 이직 시)",
-  "정기면담·행정신고",
+  "정기 면담·행정 신고",
 ];
 
 // 해외 신규 입국 절차 - 01-제도-비자.md §8
@@ -63,14 +63,14 @@ const PROCESS_STEPS = [
   },
   {
     title: "비자(사증) 신청·발급",
-    desc: "교부된 COE를 본인에게 보내고, 재외 일본대사관·영사관에서 사증을 신청·발급받습니다.",
+    desc: "수용기관이 교부된 COE를 후보자에게 보냅니다. 후보자는 재외 일본대사관·영사관에서 사증을 신청해 발급받습니다.",
   },
   {
     title: "송출국 국내 절차 이행",
-    desc: "네팔 등 송출국의 해외노동허가 같은 국내 절차를 별도로 거칩니다. 일본 제도와는 독립된 게이트입니다.",
+    desc: "네팔 등 송출국의 해외노동허가 같은 국내 절차를 별도로 거칩니다. 일본 제도와 별개로 필요한 절차입니다.",
   },
   {
-    title: "일본 입국과 취로 개시",
+    title: "일본 입국과 근무 시작",
     desc: "입국 후 재류카드를 받고 근무를 시작합니다. 이때부터 수용기관의 의무적 지원이 함께 시작됩니다.",
   },
 ];
@@ -84,7 +84,7 @@ export default function TokuteiGinouPage() {
         eyebrow="일본 비자 정보"
         context="出入国在留管理庁 공식 기준"
         titleKo="일본 특정기능 1호"
-        desc="인력부족 분야의 즉전력 인재를 일본 기업이 직접 고용하는 취업 재류자격입니다. 16개 분야, 통산 5년, 시험 기반 선발이 핵심입니다."
+        desc="인력부족 분야에서 바로 일할 인력을 일본 기업이 직접 고용하는 취업 재류자격입니다. 16개 분야, 통산 5년, 시험을 거친 선발이 핵심입니다."
         crumb="비자 정보"
         bgImage="/kv/redesign/japan.webp"
       />
@@ -102,7 +102,7 @@ export default function TokuteiGinouPage() {
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">제도 개요</h2>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
-              특정기능(特定技能)은 일본이 인력부족 분야에 한해 외국인의 취업을 정면으로 허용한
+              특정기능(特定技能)은 일본이 인력부족 분야에 한해 외국인의 취업을 허용하는
               재류자격입니다. 1호는 <strong className="font-semibold text-ink">16개 분야</strong>
               (2024년 각의결정으로 자동차운송·철도·임업·목재산업 추가)에서 통산 5년까지 일할 수 있고,
               기능실습과 달리 <strong className="font-semibold text-ink">기업이 감리단체를 거치지 않고 직접 고용</strong>합니다.
@@ -174,7 +174,7 @@ export default function TokuteiGinouPage() {
               기능실습과 무엇이 다른가
             </h2>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
-              둘 다 &ldquo;일본에서 일하는 외국인&rdquo;이지만 법적 성격이 다릅니다. 기능실습은 기술이전
+              두 제도 모두 외국인이 일본에서 일하는 경로이지만 법적 성격은 다릅니다. 기능실습은 기술이전
               명목의 실습 제도이고, 특정기능 1호는 처음부터 취업 자격입니다. 기능실습은 2027년 4월
               1일부터{" "}
               <Link href="/visa/ikusei-shuro" className="font-medium text-cobalt underline underline-offset-2">
@@ -236,8 +236,8 @@ export default function TokuteiGinouPage() {
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              해외에서 신규 입국하는 경우의 큰 흐름입니다. 네팔은 일본과 특정기능 협력각서(MOC)가
-              체결되어 있어(2024년 4월부터 5년 갱신) 이 경로가 공식적으로 열려 있습니다.
+              해외에서 새로 입국할 때 거치는 주요 절차입니다. 네팔은 일본과 특정기능 협력각서(MOC)가
+              체결되어 있어(2024년 4월 1일부터 5년간 갱신) 이 경로가 공식적으로 열려 있습니다.
             </p>
           </Reveal>
           <Reveal delay={0.08} className="mt-10">

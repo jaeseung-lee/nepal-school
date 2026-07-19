@@ -1,6 +1,12 @@
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts, getPublishedTranslations } from "@/lib/blog";
 import { BLOG_LOCALES, getBlogIndexPath, getBlogPostPath } from "@/lib/blog-routing";
+import { BUSINESS_AREA_LOCALES, BUSINESS_AREA_SLUGS } from "@/lib/business-areas";
+import {
+  BUSINESS_AREA_LAST_MODIFIED,
+  businessAreaLanguageAlternates,
+  businessAreaPath,
+} from "@/lib/business-area-seo";
 import { LOCALES, localizedHref } from "@/lib/i18n";
 import { CONTENT_LAST_MODIFIED, languageAlternates } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
@@ -19,15 +25,6 @@ const routes: { path: string; priority: number; changeFrequency?: "weekly" | "mo
   ...VISAS.map((visa) => ({ path: `/visa/${visa.slug}`, priority: visa.sitemapPriority })),
 ];
 
-const landingPages: MetadataRoute.Sitemap = [
-  {
-    url: `${SITE_URL}/lp/v1`,
-    lastModified: "2026-07-18",
-    changeFrequency: "monthly",
-    priority: 0.8,
-  },
-];
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const localizedPages = LOCALES.flatMap((locale) =>
     routes.map(({ path, priority, changeFrequency = "monthly" }) => ({
@@ -36,6 +33,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency,
       priority,
       alternates: { languages: languageAlternates(path) },
+    })),
+  );
+
+  const businessAreaPages: MetadataRoute.Sitemap = BUSINESS_AREA_SLUGS.flatMap((slug) =>
+    BUSINESS_AREA_LOCALES.map((locale) => ({
+      url: `${SITE_URL}${businessAreaPath(locale, slug)}`,
+      lastModified: BUSINESS_AREA_LAST_MODIFIED,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+      alternates: { languages: businessAreaLanguageAlternates(slug) },
     })),
   );
 
@@ -66,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...localizedPages,
-    ...landingPages,
+    ...businessAreaPages,
     ...BLOG_LOCALES.map((locale) => ({
       url: SITE_URL + getBlogIndexPath(locale),
       lastModified: blogLastModified,

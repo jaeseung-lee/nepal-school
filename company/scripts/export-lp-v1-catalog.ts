@@ -56,15 +56,14 @@ function repositoryRelativeImage(src: string, id: string): string {
 }
 
 function exportCatalog(locale: LpV1Locale) {
-  const gallery = getLpV1GalleryItems(locale)
-    .filter((item) => item.pdfOrder !== undefined)
-    .sort((left, right) => left.pdfOrder! - right.pdfOrder!)
+  const gallery = [...getLpV1GalleryItems(locale)]
+    .sort((left, right) => left.order - right.order)
     .map((item) => ({
       id: item.id,
       src: item.src,
       imageFile: repositoryRelativeImage(item.src, item.id),
       group: item.group,
-      order: item.pdfOrder,
+      order: item.order,
       width: item.width,
       height: item.height,
       aspect: item.aspect,
@@ -73,11 +72,11 @@ function exportCatalog(locale: LpV1Locale) {
       caption: item.caption,
     }));
 
-  if (gallery.length !== 6 || gallery.some((item, index) => item.order !== index + 1)) {
-    throw new Error("LP v1 catalog gallery must expose exactly six consecutively ordered PDF images");
+  if (gallery.length !== 16 || gallery.some((item, index) => item.order !== index + 1)) {
+    throw new Error("LP v1 catalog gallery must expose all 16 consecutively ordered images");
   }
 
-  const landingUrl = `${SITE.url}/lp/v1${locale === "ja" ? "#ja" : ""}`;
+  const landingUrl = `${SITE.url}${locale === "ja" ? "/ja" : ""}/services/japan-caregiver`;
   const heroImage = existsSync(join(REPO_ROOT, HERO_ORIGINAL))
     ? HERO_ORIGINAL
     : "company/public/lp/v1/caregiver-lab.webp";

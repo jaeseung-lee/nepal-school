@@ -30,8 +30,8 @@ const EMPLOYER_POINTS = [
   },
   {
     icon: UsersThree,
-    title: "정부 간 알선 구조",
-    desc: "기업이 해외에서 직접 모집하는 것이 아니라, 송출국 정부가 선발한 인력 풀(EPS-TOPIK 통과자)에서 알선받는 G2G 구조입니다. 네팔을 포함한 16개 송출국이 참여합니다.",
+    title: "정부 간 알선 방식",
+    desc: "기업이 해외에서 직접 모집하는 것이 아니라 송출국 정부가 선발한 외국인 구직자 명부(EPS-TOPIK 통과자)에서 정부 간 알선으로 채용합니다. 네팔을 포함한 16개 송출국이 참여합니다.",
   },
 ];
 
@@ -71,7 +71,7 @@ export default function E9Page() {
         eyebrow="한국 비자 정보"
         context="고용노동부 고용허가제(EPS) 기준"
         titleKo="비전문취업 E-9 (고용허가제)"
-        desc="제조·농축산·어업·건설 등 인력부족 업종에서 외국인 근로자를 합법적으로 고용하는 대표 제도입니다. 정부 간 알선과 사업장 직접고용이 핵심 구조입니다."
+        desc="제조·농축산·어업·건설 등 인력부족 업종에서 외국인 근로자를 합법적으로 고용하는 대표 제도입니다. 정부 간 알선으로 후보자를 배정받아 사업장이 직접 고용합니다."
         crumb="비자 정보"
         bgImage="/kv/redesign/korea.webp"
       />
@@ -91,9 +91,9 @@ export default function E9Page() {
               기업이 먼저 확인할 것
             </h2>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
-              고용허가제는 &ldquo;기업이 원하는 사람을 데려오는&rdquo; 제도가 아니라, 정부가 검증한 인력
-              풀에서 <strong className="font-semibold text-ink">알선받는</strong> 제도입니다. 그래서 기업
-              쪽 요건과 절차 이해가 채용 성패를 좌우합니다.
+              고용허가제는 &ldquo;기업이 원하는 사람을 데려오는&rdquo; 제도가 아니라, 정부가 선발한 외국인
+              구직자 명부에서 <strong className="font-semibold text-ink">알선받는</strong> 제도입니다. 따라서 기업
+              요건과 신청 절차를 먼저 확인해야 합니다.
             </p>
           </Reveal>
           <Reveal delay={0.08} className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -113,7 +113,7 @@ export default function E9Page() {
             <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-muted">
               E-9의 기본 체류·취업활동 기간은 3년이고, 사업주가 재고용을 신청하면 최대 1년 10개월을
               연장할 수 있습니다. 일정 요건을 갖춘 성실근로자는 출국 후 재입국해 다시 근무하는 제도도
-              운영되어, 검증된 인력을 장기적으로 활용하는 경로가 존재합니다. 장기 고용 전환이
+              운영됩니다. 따라서 일정 요건을 갖춘 근로자를 장기 고용할 수 있습니다. 장기 고용 전환이
               필요하다면{" "}
               <Link href="/visa/e-7" className="font-medium text-cobalt underline underline-offset-2">
                 E-7-4 숙련기능인력
@@ -129,7 +129,7 @@ export default function E9Page() {
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              구인노력부터 사업장 배치까지의 표준 흐름입니다. 시기별 쿼터와 송출국 사정에 따라 전체
+              구인노력부터 사업장 배치까지의 일반적인 절차입니다. 시기별 쿼터와 송출국 사정에 따라 전체
               기간은 달라지므로 수개월 단위로 계획하는 것이 안전합니다.
             </p>
           </Reveal>

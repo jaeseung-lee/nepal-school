@@ -33,7 +33,7 @@ const CATEGORY_COPY: Readonly<Record<GalleryCategory, Readonly<Record<GalleryLoc
   training: {
     ko: {
       title: "교육과 실습",
-      description: "학생들이 함께 배우고 실습하는 네팔 현지 교육 현장입니다.",
+      description: "네팔 교육 현장에서 학생들이 함께 배우고 실습하는 모습입니다.",
       alt: "학생들이 교육 공간에서 수업과 실습에 참여하는 모습",
     },
     en: {
@@ -97,7 +97,7 @@ const CATEGORY_COPY: Readonly<Record<GalleryCategory, Readonly<Record<GalleryLoc
   visits: {
     ko: {
       title: "현지 기관 방문",
-      description: "현지 교육기관 및 협력 파트너와 교류하는 방문 현장입니다.",
+      description: "네팔의 교육기관과 협력 파트너를 방문해 교류하는 모습입니다.",
       alt: "네팔 현지 교육기관 또는 협력 파트너를 방문한 모습",
     },
     en: {
@@ -129,7 +129,7 @@ const CATEGORY_COPY: Readonly<Record<GalleryCategory, Readonly<Record<GalleryLoc
   meetings: {
     ko: {
       title: "협력 논의",
-      description: "학생 지원과 교육 협력을 위해 파트너와 의견을 나누는 자리입니다.",
+      description: "학생 지원과 교육 협력을 두고 파트너와 의견을 나누는 자리입니다.",
       alt: "협력 관계자들이 회의 또는 환영 행사에 참여하는 모습",
     },
     en: {
@@ -139,7 +139,7 @@ const CATEGORY_COPY: Readonly<Record<GalleryCategory, Readonly<Record<GalleryLoc
     },
     ja: {
       title: "協力に向けた対話",
-      description: "学生支援と教育連携について、パートナーと意見を交わす場面です。",
+      description: "学生支援や教育連携に向けて、パートナーと意見を交わす場面です。",
       alt: "協力関係者が会議または歓迎行事に参加している様子",
     },
     ne: {

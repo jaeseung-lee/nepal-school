@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "회사소개",
   description:
-    "네팔 인재를 현지 교육부터 양성해 한국·일본 기업에 합법적으로 연결하는 글로벌 인적자원 개발 기업, 정우인재개발원 회사소개.",
+    "네팔 인재를 현지에서 교육해 한국·일본 기업에 합법적으로 연결하는 정우인재개발원을 소개합니다.",
   path: "/about",
 });
 

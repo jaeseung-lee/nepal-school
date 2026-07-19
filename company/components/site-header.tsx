@@ -21,6 +21,9 @@ import {
 } from "@/lib/i18n";
 import { isInternalPath } from "@/lib/internal-routes";
 
+const BUSINESS_AREA_LANGUAGES = ["ko", "ja"] as const;
+const BUSINESS_AREA_PATH = /^\/(?:ja\/)?services\/(?:japan-caregiver|japan-hospitality|korea-study|korea-welding)\/?$/;
+
 export default function SiteHeader() {
   const pathname = usePathname() || "/";
   const locale = getLocaleFromPathname(pathname);
@@ -29,7 +32,12 @@ export default function SiteHeader() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const navItems = getNavItems(locale);
   const onBlog = isBlogPath(pathname);
-  const languageOptions = onBlog ? BLOG_LOCALES : LOCALES;
+  const onBilingualBusinessArea = BUSINESS_AREA_PATH.test(pathname);
+  const languageOptions = onBlog
+    ? BLOG_LOCALES
+    : onBilingualBusinessArea
+      ? BUSINESS_AREA_LANGUAGES
+      : LOCALES;
   const resolveHref = (href: string) => href === "/blog" && isBlogLocale(locale) ? getBlogIndexPath(locale) : localizedHref(locale, href);
   const isActive = (href: string) => {
     const resolved = resolveHref(href);
@@ -216,7 +224,9 @@ export default function SiteHeader() {
                       </Link>
                     ))}
                   </div>
-                  {!onBlog ? <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p> : null}
+                  {!onBlog && !onBilingualBusinessArea ? (
+                    <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p>
+                  ) : null}
                 </>
 
               <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">

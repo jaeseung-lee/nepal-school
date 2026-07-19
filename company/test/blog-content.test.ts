@@ -5,7 +5,7 @@ import { getBlogLocaleSwitchPath, getBlogPostPath } from "../lib/blog-routing";
 import { extractMarkdownImages, validateBlogContent, validateTemporalState } from "../scripts/validate-blog";
 
 test("현재 블로그 콘텐츠가 이미지, 출처, 상태 규칙을 통과한다", () => {
-  assert.deepEqual(validateBlogContent("2026-07-16"), []);
+  assert.deepEqual(validateBlogContent("2026-07-19"), []);
 });
 
 test("published 상태는 검토자 없이 공식 출처 대조 기록으로 공개할 수 있다", () => {
