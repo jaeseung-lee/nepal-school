@@ -1,11 +1,12 @@
-import { ArrowRight, ClipboardText, EnvelopeSimple, WarningCircle } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, ClipboardText, EnvelopeSimple, Phone, WarningCircle } from "@phosphor-icons/react/dist/ssr";
 import { getMessages, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
 const REQUEST_ITEM_KEYS = ["roleAndCount", "arrivalDate", "visa", "locationAndHousing"] as const;
 
 export default function ContactForm({ locale }: { locale?: Locale }) {
-  const form = getMessages(locale).pages.contact.form;
+  const messages = getMessages(locale);
+  const form = messages.pages.contact.form;
   const emailHref = `mailto:${SITE.email}`;
 
   return (
@@ -35,9 +36,25 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
         <p>{form.notice}</p>
       </div>
 
+      <div className="mt-7 grid gap-3 sm:grid-cols-2">
+        {SITE.phones.map((phone) => (
+          <a
+            key={phone.countryCode}
+            href={phone.href}
+            className="inline-flex items-center gap-3 rounded-[18px] border border-cobalt/20 bg-white px-4 py-3 text-cobalt transition hover:border-cobalt/45 hover:bg-cobalt-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
+          >
+            <Phone size={20} weight="duotone" aria-hidden="true" />
+            <span>
+              <span className="block text-xs font-medium text-muted">{messages.site.areaServed[phone.market]} {messages.common.mobile}</span>
+              <span className="mt-0.5 block text-sm font-semibold">{phone.national}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+
       <a
         href={emailHref}
-        className="mt-7 inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
+        className="mt-4 inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
       >
         <EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />
         {form.status}

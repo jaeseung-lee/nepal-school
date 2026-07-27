@@ -1,4 +1,4 @@
-import { Buildings, IdentificationCard, MapPin } from "@phosphor-icons/react/dist/ssr";
+import { Buildings, IdentificationCard, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import PageBanner from "@/components/page-banner";
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
 import ContactForm from "@/components/contact-form";
@@ -13,7 +13,12 @@ export default function ContactContent({ locale = DEFAULT_LOCALE }: { locale?: L
     { label: copy.main.companyItems.founder, value: messages.site.founder, icon: IdentificationCard },
     { label: copy.main.companyItems.businessNumber, value: messages.site.businessRegistrationNumber, icon: Buildings },
     { label: copy.main.companyItems.address, value: messages.site.streetAddress, icon: MapPin },
-    SITE.telephone ? { label: copy.main.companyItems.phone, value: SITE.telephone, icon: IdentificationCard } : null,
+    ...SITE.phones.map((phone) => ({
+      label: `${messages.site.areaServed[phone.market]} ${messages.common.mobile}`,
+      value: phone.national,
+      href: phone.href,
+      icon: Phone,
+    })),
     SITE.email ? { label: copy.main.companyItems.email, value: SITE.email, href: `mailto:${SITE.email}`, icon: IdentificationCard } : null,
   ].filter(Boolean) as { label: string; value: string; href?: string; icon: typeof IdentificationCard }[];
 

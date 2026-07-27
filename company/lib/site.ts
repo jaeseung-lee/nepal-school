@@ -30,7 +30,22 @@ export const SITE = {
     { code: "KR", nameKo: "한국", nameEn: "South Korea" },
     { code: "JP", nameKo: "일본", nameEn: "Japan" },
   ],
-  telephone: "",
+  phones: [
+    {
+      market: "korea",
+      countryCode: "KR",
+      national: "010-6363-6086",
+      international: "+82 10-6363-6086",
+      href: "tel:+821063636086",
+    },
+    {
+      market: "japan",
+      countryCode: "JP",
+      national: "080-2933-8838",
+      international: "+81 80-2933-8838",
+      href: "tel:+818029338838",
+    },
+  ],
   email: "joongwoohrd@gmail.com",
   sameAs: [] as string[],
 } as const;

@@ -32,6 +32,7 @@
     "businessNumber": "Business registration number",
     "address": "Address",
     "phone": "Phone",
+    "mobile": "Mobile",
     "email": "Email",
     "language": "Language",
     "comingSoon": "Coming soon",
@@ -102,7 +103,7 @@
       "title": "Fair opportunities",
       "lineBreak": "for everyone",
       "description": "A corporate partner responsible for foreign talent from training and examinations through visas and settlement.",
-      "contactCta": "Hiring preparation",
+      "contactCta": "Contact us",
       "servicesCta": "Explore services",
       "alt": "A vocational training setting representing local education and preparation for international mobility",
       "previousSlide": "Previous photo",
@@ -505,8 +506,8 @@
         }
       },
       "form": {
-        "title": "Send us an email",
-        "description": "We receive all inquiries, including recruitment and partnership inquiries, at the email address below.",
+        "title": "Call or email us",
+        "description": "For recruitment and partnership inquiries, call our Korean or Japanese mobile number or use the email address below.",
         "preparationTitle": "Useful information to organize before consultation",
         "preparationItems": {
           "roleAndCount": "Desired roles and headcount",
@@ -514,7 +515,7 @@
           "visa": "Visa or system under consideration",
           "locationAndHousing": "Work location and whether housing support is available"
         },
-        "notice": "To help us respond faster, please include the role and headcount, preferred arrival date, visa under consideration and work location in your email.",
+        "notice": "To help us respond faster, please include the role and headcount, preferred arrival date, visa under consideration and work location.",
         "status": "Send an email inquiry"
       }
     }

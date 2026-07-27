@@ -32,6 +32,7 @@
     "businessNumber": "Mã số đăng ký kinh doanh",
     "address": "Địa chỉ",
     "phone": "Điện thoại",
+    "mobile": "Di động",
     "email": "Email",
     "language": "Ngôn ngữ",
     "comingSoon": "Sắp ra mắt",
@@ -102,7 +103,7 @@
       "title": "Cơ hội công bằng",
       "lineBreak": "cho mọi người",
       "description": "Đối tác doanh nghiệp chịu trách nhiệm về nhân tài nước ngoài từ đào tạo, thi cử đến thị thực và ổn định cuộc sống.",
-      "contactCta": "Hướng dẫn chuẩn bị tuyển dụng",
+      "contactCta": "Liên hệ",
       "servicesCta": "Xem lĩnh vực hoạt động",
       "alt": "Khung cảnh đào tạo nghề tượng trưng cho giáo dục tại địa phương và chuẩn bị di chuyển quốc tế",
       "previousSlide": "Ảnh trước",
@@ -505,8 +506,8 @@
         }
       },
       "form": {
-        "title": "Liên hệ qua email",
-        "description": "Chúng tôi tiếp nhận mọi yêu cầu, bao gồm tuyển dụng và hợp tác, tại địa chỉ email bên dưới.",
+        "title": "Liên hệ qua điện thoại hoặc email",
+        "description": "Đối với yêu cầu tuyển dụng và hợp tác, hãy gọi số di động tại Hàn Quốc hoặc Nhật Bản, hoặc dùng địa chỉ email bên dưới.",
         "preparationTitle": "Thông tin nên chuẩn bị trước khi tư vấn",
         "preparationItems": {
           "roleAndCount": "Vị trí công việc và số lượng nhân sự mong muốn",
@@ -514,7 +515,7 @@
           "visa": "Loại thị thực hoặc chương trình đang xem xét",
           "locationAndHousing": "Khu vực làm việc và việc hỗ trợ chỗ ở"
         },
-        "notice": "Để được phản hồi nhanh hơn, vui lòng nêu vị trí và số lượng cần tuyển, thời điểm nhập cảnh mong muốn, loại thị thực đang xem xét và khu vực làm việc trong email.",
+        "notice": "Để được phản hồi nhanh hơn, vui lòng nêu vị trí và số lượng cần tuyển, thời điểm nhập cảnh mong muốn, loại thị thực đang xem xét và khu vực làm việc.",
         "status": "Gửi yêu cầu qua email"
       }
     }

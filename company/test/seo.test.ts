@@ -25,6 +25,10 @@ test("법인·브랜드·국가 역할이 분리되어 있다", () => {
   assert.deepEqual(SITE.trainingCountries.map((country) => country.code), ["NP"]);
   assert.deepEqual(SITE.sourcingCountries.map((country) => [country.code, country.model]), [["NP", "direct"], ["VN", "partner"], ["LA", "partner"]]);
   assert.deepEqual(SITE.destinationMarkets.map((country) => country.code), ["KR", "JP"]);
+  assert.deepEqual(SITE.phones.map((phone) => [phone.countryCode, phone.national, phone.href]), [
+    ["KR", "010-6363-6086", "tel:+821063636086"],
+    ["JP", "080-2933-8838", "tel:+818029338838"],
+  ]);
 });
 
 test("공통 대체 링크가 6개 언어와 x-default를 제공한다", () => {

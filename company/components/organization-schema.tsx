@@ -16,16 +16,27 @@ export default function OrganizationSchema() {
     logo: `${SITE_URL}/opengraph-image`,
     image: `${SITE_URL}/opengraph-image`,
     description: SITE.description,
+    telephone: SITE.phones.map((phone) => phone.international),
     ...(SITE.email
       ? {
           email: SITE.email,
-          contactPoint: {
+        }
+      : {}),
+    contactPoint: [
+      ...(SITE.email
+        ? [{
             "@type": "ContactPoint",
             email: SITE.email,
             contactType: "customer service",
-          },
-        }
-      : {}),
+          }]
+        : []),
+      ...SITE.phones.map((phone) => ({
+        "@type": "ContactPoint",
+        telephone: phone.international,
+        contactType: "customer service",
+        areaServed: phone.countryCode,
+      })),
+    ],
     ...(SITE.bizRegNo ? { taxID: SITE.bizRegNo } : {}),
     ...(SITE.streetAddress
       ? {

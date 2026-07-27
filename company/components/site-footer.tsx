@@ -16,7 +16,11 @@ export default function SiteFooter() {
   const navItems = getNavItems(locale);
   const resolveHref = (href: string) => href === "/blog" && isBlogLocale(locale) ? getBlogIndexPath(locale) : localizedHref(locale, href);
   const contacts = [
-    SITE.telephone ? { label: messages.common.phone, value: SITE.telephone } : null,
+    ...SITE.phones.map((phone) => ({
+      label: `${messages.site.areaServed[phone.market]} ${messages.common.mobile}`,
+      value: phone.national,
+      href: phone.href,
+    })),
     SITE.email ? { label: messages.common.email, value: SITE.email, href: `mailto:${SITE.email}` } : null,
   ].filter(Boolean) as { label: string; value: string; href?: string }[];
 
@@ -76,7 +80,7 @@ export default function SiteFooter() {
             {contacts.length ? (
               <dl className="mt-4 space-y-2.5 text-sm">
                 {contacts.map((item) => (
-                  <div key={item.label} className="grid grid-cols-[64px_1fr] gap-2">
+                  <div key={item.label} className="grid grid-cols-[96px_1fr] gap-2">
                     <dt className="text-gray-500">{item.label}</dt>
                     <dd className="text-ink">
                       {item.href ? <a href={item.href} className="hover:text-cobalt">{item.value}</a> : item.value}
