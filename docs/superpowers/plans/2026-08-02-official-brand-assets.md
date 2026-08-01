@@ -276,7 +276,7 @@ Expected: every command exits 0.
 
 - [x] **Step 2: Start and inspect the local app**
 
-Run npm --prefix company run dev -- --hostname 127.0.0.1 --port 3007 in a persistent session. For /, /en, and /services/japan-caregiver, inspect emitted icon, apple-touch-icon, og:image, and twitter:image tags. Root and English must use /brand/og-image.png; caregiver must keep /lp/v1/og.webp. Confirm brand SVG, social PNG, and icon URLs return HTTP 200 with correct content types.
+Run npm --prefix company run dev -- --hostname 127.0.0.1 --port 3007 in a persistent session. For /, /en, and /services/japan-caregiver, inspect emitted icon, apple-touch-icon, og:image, and twitter:image tags. Root and English must use /brand/og-image.png; caregiver must keep /lp/v1/og.png. Confirm brand SVG, social PNG, and icon URLs return HTTP 200 with correct content types.
 
 - [x] **Step 3: Capture screenshots**
 
