@@ -32,7 +32,11 @@ export default function SiteFooter() {
       <div className="max-w-content mx-auto px-5 py-14 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_0.7fr_1fr_0.9fr]">
           <div>
-            <BrandLogo kind="lockup" className="h-11 w-auto max-w-[174px]" />
+            <BrandLogo
+              kind="lockup"
+              className="h-11 w-auto max-w-[174px]"
+              screenReaderLabel={`${messages.site.name} — ${messages.site.alternateName}`}
+            />
             <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
             <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
           </div>

@@ -5,6 +5,7 @@ import { BRAND_ASSETS } from "@/lib/brand";
 type BrandLogoBaseProps = {
   className?: string;
   priority?: boolean;
+  screenReaderLabel?: string;
 };
 
 type LockupBrandLogoProps = BrandLogoBaseProps & {
@@ -19,8 +20,8 @@ type MarkBrandLogoProps = BrandLogoBaseProps & {
 export type BrandLogoProps = LockupBrandLogoProps | MarkBrandLogoProps;
 
 export function BrandLogo(props: BrandLogoProps) {
-  if (props.kind === "lockup") {
-    return (
+  const logo =
+    props.kind === "lockup" ? (
       <Image
         src={BRAND_ASSETS.lockup[props.tone ?? "color"]}
         alt=""
@@ -31,19 +32,25 @@ export function BrandLogo(props: BrandLogoProps) {
         className={props.className}
         priority={props.priority}
       />
+    ) : (
+      <Image
+        src={BRAND_ASSETS.mark.color}
+        alt=""
+        aria-hidden="true"
+        width={277}
+        height={198}
+        unoptimized
+        className={props.className}
+        priority={props.priority}
+      />
     );
-  }
 
-  return (
-    <Image
-      src={BRAND_ASSETS.mark.color}
-      alt=""
-      aria-hidden="true"
-      width={277}
-      height={198}
-      unoptimized
-      className={props.className}
-      priority={props.priority}
-    />
+  return props.screenReaderLabel ? (
+    <>
+      {logo}
+      <span className="sr-only">{props.screenReaderLabel}</span>
+    </>
+  ) : (
+    logo
   );
 }
