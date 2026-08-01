@@ -2,12 +2,19 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { createElement } from "react";
+import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import sharp from "sharp";
 import { BrandLogo } from "@/components/brand-logo";
+import OrganizationSchema from "@/components/organization-schema";
+import { buildPageMetadata, buildRootMetadata } from "@/lib/seo";
 
 const root = path.resolve(import.meta.dirname, "..");
+const { createElement } = React;
+
+// tsx executes TSX with the classic React runtime; match the app's server renderer
+// so calling this server component directly exposes its script element.
+globalThis.React = React;
 
 const expectedSvgFiles = [
   "public/brand/logo-color.svg",
@@ -110,4 +117,30 @@ test("BrandLogo exposes an optional screen-reader label while keeping its image 
 
   assert.match(logo, /aria-hidden="true"/);
   assert.ok(logo.includes(`<span class="sr-only">${screenReaderLabel}</span>`));
+});
+
+test("default social metadata and Organization JSON-LD use the published brand assets", () => {
+  const rootMetadata = buildRootMetadata("ko");
+  const pageMetadata = buildPageMetadata({
+    title: "채용 지원",
+    description: "정우인재개발원 채용 지원 안내",
+    path: "/contact",
+  });
+  const organizationScript = OrganizationSchema();
+  const organization = JSON.parse(organizationScript.props.dangerouslySetInnerHTML.__html);
+  const rootOpenGraphImages = rootMetadata.openGraph?.images;
+  const pageOpenGraphImages = pageMetadata.openGraph?.images;
+
+  assert.ok(Array.isArray(rootOpenGraphImages));
+  const rootOpenGraphImage = rootOpenGraphImages[0];
+  assert.ok(rootOpenGraphImage && typeof rootOpenGraphImage === "object" && "url" in rootOpenGraphImage);
+  assert.equal(rootOpenGraphImage.url, "/brand/og-image.png");
+  assert.deepEqual(rootMetadata.twitter?.images, ["/brand/og-image.png"]);
+  assert.ok(Array.isArray(pageOpenGraphImages));
+  const pageOpenGraphImage = pageOpenGraphImages[0];
+  assert.ok(pageOpenGraphImage && typeof pageOpenGraphImage === "object" && "url" in pageOpenGraphImage);
+  assert.equal(pageOpenGraphImage.url, "/brand/og-image.png");
+  assert.deepEqual(pageMetadata.twitter?.images, ["/brand/og-image.png"]);
+  assert.equal(organization.logo, "https://www.joongwoohrd.com/brand/logo-color.svg");
+  assert.equal(organization.image, "https://www.joongwoohrd.com/brand/og-image.png");
 });

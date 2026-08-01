@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BRAND_SOCIAL_IMAGE } from "./brand";
 import { getMessages, LOCALES, LOCALE_DETAILS, localizedHref, type Locale } from "./i18n";
 import { SITE, SITE_URL } from "./site";
 
@@ -41,8 +42,9 @@ export function buildPageMetadata({
       url: `${SITE_URL}${canonical}`,
       title: fullTitle,
       description,
+      images: [BRAND_SOCIAL_IMAGE],
     },
-    twitter: { card: "summary_large_image", title: fullTitle, description },
+    twitter: { card: "summary_large_image", title: fullTitle, description, images: [BRAND_SOCIAL_IMAGE.url] },
   };
 }
 
@@ -78,8 +80,14 @@ export function buildRootMetadata(locale: Locale): Metadata {
       url: `${SITE_URL}${localizedHref(locale, "/")}`,
       title,
       description: messages.site.description,
+      images: [BRAND_SOCIAL_IMAGE],
     },
-    twitter: { card: "summary_large_image", title, description: messages.site.description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: messages.site.description,
+      images: [BRAND_SOCIAL_IMAGE.url],
+    },
     verification,
     other: {
       "organization-legal-name": SITE.legalName.en,

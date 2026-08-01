@@ -1,3 +1,4 @@
+import { BRAND_ASSETS } from "@/lib/brand";
 import { SITE, SITE_URL } from "@/lib/site";
 
 // Organization 구조화 데이터 (JSON-LD)
@@ -13,8 +14,8 @@ export default function OrganizationSchema() {
     legalName: SITE.legalName.ko,
     alternateName: [SITE.brandName.en, SITE.legalName.en],
     url: SITE_URL,
-    logo: `${SITE_URL}/opengraph-image`,
-    image: `${SITE_URL}/opengraph-image`,
+    logo: `${SITE_URL}${BRAND_ASSETS.lockup.color}`,
+    image: `${SITE_URL}${BRAND_ASSETS.social}`,
     description: SITE.description,
     telephone: SITE.phones.map((phone) => phone.international),
     ...(SITE.email
