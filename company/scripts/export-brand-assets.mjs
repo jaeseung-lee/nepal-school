@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -12,10 +13,10 @@ const FULL_ARTBOARDS = [
 const MARK = { x: 28.3473, y: 217.794, width: 277, height: 198.413 };
 const ICON = { x: 28.3473, y: 178.5005, width: 277, height: 277 };
 const LIGHT_BACKGROUND = "#F7F4ED";
+const SOURCE_SHA256 = "03d31c21877613ffd0d388436af4ad23bc319c199f44f60a03c4b27b8c65366e";
 
 const companyRoot = path.resolve(import.meta.dirname, "..");
-const brandDirectory = path.join(companyRoot, "public", "brand");
-const appDirectory = path.join(companyRoot, "app");
+const trackedSource = path.join(companyRoot, "assets", "brand", "logo.ai");
 
 function fail(message) {
   throw new Error(`Brand asset export failed: ${message}`);
@@ -28,6 +29,43 @@ function run(command, args) {
     fail(`${command} exited with ${result.status}: ${(result.stderr || result.stdout || "unknown error").trim()}`);
   }
   return result.stdout;
+}
+
+function parseArguments(args) {
+  let outputRoot = companyRoot;
+  let source = trackedSource;
+  let sourceWasProvided = false;
+  let outputRootWasProvided = false;
+
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index];
+    if (argument === "--output-root") {
+      if (outputRootWasProvided) fail("--output-root may only be specified once");
+      const value = args[index + 1];
+      if (!value || value.startsWith("--")) fail("--output-root requires an absolute directory path");
+      if (!path.isAbsolute(value)) fail("--output-root must be an absolute directory path");
+      outputRoot = path.resolve(value);
+      if (outputRoot === path.parse(outputRoot).root) fail("--output-root may not be the filesystem root");
+      outputRootWasProvided = true;
+      index += 1;
+      continue;
+    }
+    if (argument.startsWith("--")) fail(`unknown option: ${argument}`);
+    if (sourceWasProvided) fail("only one source path may be provided");
+    if (!path.isAbsolute(argument)) fail("source path must be absolute");
+    source = argument;
+    sourceWasProvided = true;
+  }
+
+  return { outputRoot, source };
+}
+
+function verifySource(source) {
+  if (!fs.existsSync(source)) fail(`source does not exist: ${source}`);
+  const checksum = createHash("sha256").update(fs.readFileSync(source)).digest("hex");
+  if (checksum !== SOURCE_SHA256) {
+    fail(`source checksum mismatch: expected ${SOURCE_SHA256}, received ${checksum}`);
+  }
 }
 
 function verifyPageCount(source) {
@@ -109,10 +147,10 @@ async function renderAssets(colorSvg, markSvg, iconSvg) {
 }
 
 async function main() {
-  const source = process.argv[2];
-  if (!source) fail("missing source argument; pass an absolute Illustrator/PDF-compatible file path");
-  if (!path.isAbsolute(source)) fail("source path must be absolute");
-  if (!fs.existsSync(source)) fail(`source does not exist: ${source}`);
+  const { outputRoot, source } = parseArguments(process.argv.slice(2));
+  const brandDirectory = path.join(outputRoot, "public", "brand");
+  const appDirectory = path.join(outputRoot, "app");
+  verifySource(source);
   verifyPageCount(source);
 
   const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "brand-assets-"));
@@ -135,6 +173,7 @@ async function main() {
     const rasterAssets = await renderAssets(fullSvgs[0].svg, markSvg, iconSvg);
 
     fs.mkdirSync(brandDirectory, { recursive: true });
+    fs.mkdirSync(appDirectory, { recursive: true });
     for (const { name, svg } of fullSvgs) fs.writeFileSync(path.join(brandDirectory, name), svg);
     fs.writeFileSync(path.join(brandDirectory, "mark-color.svg"), markSvg);
     fs.writeFileSync(path.join(brandDirectory, "og-image.png"), rasterAssets.ogImage);

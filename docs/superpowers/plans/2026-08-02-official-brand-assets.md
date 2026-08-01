@@ -26,6 +26,8 @@
 **Files:**
 - Create: company/scripts/export-brand-assets.mjs
 - Create: company/test/brand-assets.test.ts
+- Create: company/assets/brand/logo.ai
+- Create: company/assets/brand/README.md
 - Create: company/public/brand/logo-color.svg
 - Create: company/public/brand/logo-white.svg
 - Create: company/public/brand/logo-black.svg
@@ -34,10 +36,12 @@
 - Modify: company/app/icon.svg
 - Modify: company/app/favicon.ico
 - Modify: company/app/apple-icon.png
+- Modify: company/package.json
+- Modify: company/package-lock.json
 
 **Interfaces:**
-- Consumes: an absolute source path passed to node scripts/export-brand-assets.mjs.
-- Produces: the five public brand assets plus the three Next browser-icon assets.
+- Consumes: the checksum-verified `company/assets/brand/logo.ai` source by default, with an optional checksum-equivalent absolute source path.
+- Produces: the five public brand assets plus the three Next browser-icon assets under the company root, or under an absolute `--output-root` for clean reproducibility checks.
 
 - [x] **Step 1: Write the failing asset contract test**
 
@@ -73,7 +77,7 @@ Expected: FAIL because public/brand/logo-color.svg and the other new files do no
 
 - [x] **Step 3: Implement the exporter**
 
-Create scripts/export-brand-assets.mjs using node:child_process, node:fs, node:os, node:path, and sharp. Use these SVG top-origin crop boxes:
+Create scripts/export-brand-assets.mjs using node:child_process, node:crypto, node:fs, node:os, node:path, and sharp. Enforce the approved source SHA-256, support a safe absolute `--output-root`, and use these SVG top-origin crop boxes:
 
 ~~~js
 const FULL_ARTBOARDS = [
@@ -88,13 +92,13 @@ For each page, run pdftocairo -svg -f PAGE -l PAGE INPUT OUTPUT. Replace only th
 
 Use Sharp to render transparent square mark images at 16, 32, and 48 pixels. Pack the PNG buffers into one ICO using the standard 6-byte header and one 16-byte directory record per image. Render Apple icon at 180 x 180 on #F7F4ED. Composite the color lockup at no more than 820 x 230 pixels onto a 1200 x 630 #F7F4ED canvas.
 
-Exit non-zero with a clear error if the source argument is missing, pdftocairo fails, an output is absent, or fewer than three pages are available.
+Exit non-zero with a clear error if the tracked or explicitly supplied source is missing, its checksum differs, Poppler fails, an output is absent, or fewer than three pages are available.
 
 - [x] **Step 4: Export production assets**
 
 ~~~bash
 cd company
-node scripts/export-brand-assets.mjs "/Users/ijaeseung/Downloads/JW HRDI-최종시안/로고.ai"
+node scripts/export-brand-assets.mjs
 ~~~
 
 Expected: the five public files and three app icons are written without warnings.
@@ -107,12 +111,13 @@ Run the focused test directly so the concurrently modified package.json remains 
 cd company && node --import tsx --test test/brand-assets.test.ts
 ~~~
 
-Expected: PASS.
+Expected: PASS, including a clean export into a temporary output root and byte comparison against every committed derivative.
 
 - [x] **Step 6: Commit the asset unit and implementation plan**
 
 ~~~bash
-git add company/scripts/export-brand-assets.mjs company/test/brand-assets.test.ts company/public/brand company/app/icon.svg company/app/favicon.ico company/app/apple-icon.png docs/superpowers/plans/2026-08-02-official-brand-assets.md
+git add company/scripts/export-brand-assets.mjs company/test/brand-assets.test.ts company/assets/brand company/package-lock.json company/public/brand company/app/icon.svg company/app/favicon.ico company/app/apple-icon.png docs/superpowers/plans/2026-08-02-official-brand-assets.md
+git add -p company/package.json
 git commit -m "feat: export official brand assets"
 ~~~
 
@@ -131,7 +136,7 @@ git commit -m "feat: export official brand assets"
 - Consumes: Task 1 public asset URLs.
 - Produces: BRAND_ASSETS, BRAND_SOCIAL_IMAGE, and BrandLogo props kind, tone, className, and priority.
 
-- [ ] **Step 1: Extend the test with component rendering assertions**
+- [x] **Step 1: Extend the test with component rendering assertions**
 
 Import BrandLogo and render it through react-dom/server. Assert consumer-visible output rather than source text:
 
@@ -149,7 +154,7 @@ assert.match(lockup + mark, /alt=""/);
 
 Run the direct brand test command and expect FAIL because BrandLogo does not exist yet. The placement edits are verified through task review and the Task 4 browser captures, which exercise the real Next-rendered pages.
 
-- [ ] **Step 2: Define constants**
+- [x] **Step 2: Define constants**
 
 Create lib/brand.ts:
 
@@ -172,11 +177,11 @@ export const BRAND_SOCIAL_IMAGE = {
 } as const;
 ~~~
 
-- [ ] **Step 3: Implement BrandLogo**
+- [x] **Step 3: Implement BrandLogo**
 
 Create components/brand-logo.tsx around next/image. Accept kind lockup or mark, tone color/white/black only for lockup, className, and priority as a discriminated prop union. Render alt="", aria-hidden="true", unoptimized, lockup intrinsic size 785 x 198, and mark size 277 x 198.
 
-- [ ] **Step 4: Replace placeholders**
+- [x] **Step 4: Replace placeholders**
 
 In site-header.tsx replace only the badge and localized text block with:
 
@@ -186,7 +191,7 @@ In site-header.tsx replace only the badge and localized text block with:
 
 Keep its link and localized aria-label. In site-footer.tsx replace only the badge/name group with a lockup at h-11 and max width 174px, preserving the concurrent footer.network removal. In the login page and sales layout replace only square JW spans with mark logos at h-11 and h-10 respectively. Preserve all auth, text, routing, and content edits.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 Run the direct brand test and typecheck; both must PASS. Stage the clean Task 2 files normally. For site-footer.tsx, use git add -p and stage only the logo replacement; leave the pre-existing messages.footer.network deletion unstaged. If both edits appear in one hunk, use patch edit mode and remove the network-deletion lines before applying the staged patch. Inspect git diff --cached before committing and confirm the staged footer still contains the network paragraph from HEAD.
 
@@ -211,17 +216,17 @@ git commit -m "feat: replace placeholder logo treatments"
 - Consumes: BRAND_ASSETS.social and BRAND_SOCIAL_IMAGE.
 - Produces: explicit shared Open Graph/Twitter images and stable Organization JSON-LD URLs.
 
-- [ ] **Step 1: Extend metadata tests**
+- [x] **Step 1: Extend metadata tests**
 
 Import buildRootMetadata and buildPageMetadata. Assert both return /brand/og-image.png in Open Graph images and Twitter images. Call OrganizationSchema(), read the returned script element's dangerouslySetInnerHTML.__html, parse it as JSON, and assert logo equals the absolute /brand/logo-color.svg URL and image equals the absolute /brand/og-image.png URL. Re-run the existing SEO suite as the regression contract for caregiver and business-area image overrides.
 
 Run the direct brand test and expect FAIL because shared images and Organization JSON-LD still point at the old generated route.
 
-- [ ] **Step 2: Add shared metadata images**
+- [x] **Step 2: Add shared metadata images**
 
 Import BRAND_SOCIAL_IMAGE in lib/seo.ts. Add images: [BRAND_SOCIAL_IMAGE] to both Open Graph objects and images: [BRAND_SOCIAL_IMAGE.url] to both Twitter objects. Do not alter titles, descriptions, canonicals, alternates, or verification.
 
-- [ ] **Step 3: Correct Organization JSON-LD**
+- [x] **Step 3: Correct Organization JSON-LD**
 
 Import BRAND_ASSETS in organization-schema.tsx and use:
 
@@ -232,11 +237,11 @@ image: `${SITE_URL}${BRAND_ASSETS.social}`,
 
 Preserve all remaining schema fields.
 
-- [ ] **Step 4: Remove obsolete generators**
+- [x] **Step 4: Remove obsolete generators**
 
 Delete the shared generated-image module and both App Router wrappers so file-based metadata cannot override the stable public image. Do not change business-area, caregiver, or blog metadata.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 Run the direct brand test, test:seo, and typecheck; all must PASS. Stage only Task 3 files:
 
@@ -256,7 +261,7 @@ git commit -m "feat: publish official social brand metadata"
 - Consumes: Tasks 1-3.
 - Produces: passing build, HTTP metadata evidence, and desktop/mobile screenshots.
 
-- [ ] **Step 1: Run full relevant verification**
+- [x] **Step 1: Run full relevant verification**
 
 ~~~bash
 cd company && node --import tsx --test test/brand-assets.test.ts
@@ -269,14 +274,14 @@ npm --prefix company run build
 
 Expected: every command exits 0.
 
-- [ ] **Step 2: Start and inspect the local app**
+- [x] **Step 2: Start and inspect the local app**
 
 Run npm --prefix company run dev -- --hostname 127.0.0.1 --port 3007 in a persistent session. For /, /en, and /services/japan-caregiver, inspect emitted icon, apple-touch-icon, og:image, and twitter:image tags. Root and English must use /brand/og-image.png; caregiver must keep /lp/v1/og.webp. Confirm brand SVG, social PNG, and icon URLs return HTTP 200 with correct content types.
 
-- [ ] **Step 3: Capture screenshots**
+- [x] **Step 3: Capture screenshots**
 
 Using the in-app browser, capture desktop home at 1440 x 1000, mobile home at 390 x 844, and the social image at its native 1200 x 630 size. Save under tmp/brand-qa/. Inspect for clipping, illegible outlined text, wrong backgrounds, stale JW badges, and layout shifts. Fix any defect and rerun verification.
 
-- [ ] **Step 4: Confirm repository scope**
+- [x] **Step 4: Confirm repository scope**
 
 Run git status --short and git log -5 --oneline. Logo commits must contain only files listed here; unrelated content-refresh changes must remain uncommitted and untouched.

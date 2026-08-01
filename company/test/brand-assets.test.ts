@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import * as React from "react";
@@ -11,6 +14,17 @@ import { buildPageMetadata, buildRootMetadata } from "@/lib/seo";
 
 const root = path.resolve(import.meta.dirname, "..");
 const { createElement } = React;
+const sourceSha256 = "03d31c21877613ffd0d388436af4ad23bc319c199f44f60a03c4b27b8c65366e";
+const generatedAssets = [
+  "public/brand/logo-color.svg",
+  "public/brand/logo-white.svg",
+  "public/brand/logo-black.svg",
+  "public/brand/mark-color.svg",
+  "public/brand/og-image.png",
+  "app/icon.svg",
+  "app/apple-icon.png",
+  "app/favicon.ico",
+] as const;
 
 // tsx executes TSX with the classic React runtime; match the app's server renderer
 // so calling this server component directly exposes its script element.
@@ -80,6 +94,40 @@ test("official brand assets satisfy the published vector and raster contract", (
   assert.deepEqual(readPngDimensions(path.join(root, "app/apple-icon.png")), { width: 180, height: 180 });
   assert.deepEqual(readPngDimensions(path.join(root, "public/brand/og-image.png")), { width: 1200, height: 630 });
   assert.deepEqual(readIcoSizes(path.join(root, "app/favicon.ico")).sort((a, b) => a - b), [16, 32, 48]);
+});
+
+test("tracked Illustrator source reproduces every committed brand asset byte for byte", () => {
+  const source = path.join(root, "assets", "brand", "logo.ai");
+  const outputRoot = fs.mkdtempSync(path.join(os.tmpdir(), "brand-assets-reproduction-"));
+
+  try {
+    assert.equal(
+      createHash("sha256").update(fs.readFileSync(source)).digest("hex"),
+      sourceSha256,
+      "tracked logo.ai must match the approved source checksum",
+    );
+
+    const exported = spawnSync(
+      process.execPath,
+      [path.join(root, "scripts", "export-brand-assets.mjs"), "--output-root", outputRoot],
+      { cwd: root, encoding: "utf8" },
+    );
+    assert.equal(
+      exported.status,
+      0,
+      `brand exporter must succeed with the tracked source:\n${exported.stderr || exported.stdout}`,
+    );
+
+    for (const asset of generatedAssets) {
+      assert.deepEqual(
+        fs.readFileSync(path.join(outputRoot, asset)),
+        fs.readFileSync(path.join(root, asset)),
+        `${asset} must be byte-identical after a clean export`,
+      );
+    }
+  } finally {
+    fs.rmSync(outputRoot, { recursive: true, force: true });
+  }
 });
 
 test("official social card preserves the light background around the lockup", async () => {
