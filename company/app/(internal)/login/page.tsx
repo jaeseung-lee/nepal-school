@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BrandLogo } from "@/components/brand-logo";
 import GoogleLoginButton from "@/components/sales/google-login-button";
 import { getPublicSupabaseConfig } from "@/lib/supabase/config";
 
@@ -28,7 +29,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <main className="flex min-h-screen items-center justify-center bg-[#edf1f5] px-5 py-16 text-[#162238]">
       <section className="w-full max-w-md rounded-[28px] border border-[#d9e0e8] bg-white p-8 shadow-[0_24px_80px_rgba(22,34,56,0.12)] sm:p-10">
         <div className="mb-8 flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1d5cff] text-xs font-bold text-white">JW</span>
+          <BrandLogo kind="mark" className="h-11 w-auto" priority />
           <div>
             <p className="font-semibold">介護営業リード</p>
             <p className="text-xs text-[#6f7b8c]">社内専用 · 사내 전용</p>

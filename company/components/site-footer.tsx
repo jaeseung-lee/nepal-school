@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "@/components/brand-logo";
 import { getNavItems } from "@/lib/nav";
 import { getBlogIndexPath, isBlogLocale } from "@/lib/blog-routing";
 import { SITE } from "@/lib/site";
@@ -31,15 +32,7 @@ export default function SiteFooter() {
       <div className="max-w-content mx-auto px-5 py-14 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_0.7fr_1fr_0.9fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cobalt text-[12px] font-bold text-white" aria-hidden="true">
-                JW
-              </span>
-              <span className="leading-tight">
-                <span className="block text-[15px] font-bold text-ink">{messages.site.name}</span>
-                <span className="block text-[10px] font-display font-medium text-muted">{messages.site.alternateName}</span>
-              </span>
-            </div>
+            <BrandLogo kind="lockup" className="h-11 w-auto max-w-[174px]" />
             <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
             <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
           </div>

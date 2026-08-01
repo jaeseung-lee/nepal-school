@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import sharp from "sharp";
+import { BrandLogo } from "@/components/brand-logo";
 
 const root = path.resolve(import.meta.dirname, "..");
 
@@ -86,4 +89,17 @@ test("official social card preserves the light background around the lockup", as
     [247, 244, 237, 255],
     "the lockup's padded top edge must composite to the #F7F4ED card background",
   );
+});
+
+test("BrandLogo renders the official lockup and mark at their intrinsic dimensions", () => {
+  const lockup = renderToStaticMarkup(createElement(BrandLogo, { kind: "lockup" }));
+  const mark = renderToStaticMarkup(createElement(BrandLogo, { kind: "mark" }));
+
+  assert.match(lockup, /src="\/brand\/logo-color\.svg"/);
+  assert.match(lockup, /width="785"/);
+  assert.match(lockup, /height="198"/);
+  assert.match(mark, /src="\/brand\/mark-color\.svg"/);
+  assert.match(mark, /width="277"/);
+  assert.match(mark, /height="198"/);
+  assert.match(lockup + mark, /alt=""/);
 });

@@ -4,6 +4,7 @@ import { ArrowRight, CaretDown, Globe, List, X } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BrandLogo } from "@/components/brand-logo";
 import { getNavItems } from "@/lib/nav";
 import {
   BLOG_LOCALES,
@@ -85,13 +86,7 @@ export default function SiteHeader() {
       <div className="max-w-content mx-auto px-5 lg:px-8">
         <div className="flex h-[72px] items-center justify-between gap-3">
           <Link href={localizedHref(locale, "/")} className="flex min-w-0 shrink items-center gap-2.5" aria-label={messages.header.homeAria}>
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cobalt text-[12px] font-bold text-white shadow-sm" aria-hidden="true">
-              JW
-            </span>
-            <span className="min-w-0 leading-tight">
-              <span className="block truncate text-[16px] font-bold text-ink">{messages.site.name}</span>
-              <span className="block truncate text-[10px] font-display font-medium text-muted">{messages.site.alternateName}</span>
-            </span>
+            <BrandLogo kind="lockup" className="h-10 w-auto max-w-[158px] sm:max-w-[176px]" priority />
           </Link>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">

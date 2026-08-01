@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import SalesLocaleSwitcher from "@/components/sales/locale-switcher";
 import SalesNav from "@/components/sales/sales-nav";
 import { requireInternalProfile } from "@/lib/sales/auth";
@@ -36,7 +37,7 @@ export default async function SalesLayout({ children }: { children: React.ReactN
       <a href="#sales-main" className="sr-only z-50 rounded-lg bg-[#17233a] px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{t.skipToContent}</a>
       <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-[#dce3eb] bg-white px-5 py-6 lg:flex lg:flex-col">
         <Link href="/sales" className="flex items-center gap-3 px-2">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1d5cff] text-xs font-bold text-white">JW</span>
+          <BrandLogo kind="mark" className="h-10 w-auto" priority />
           <span>
             <span className="block text-sm font-bold">{t.appName}</span>
             <span className="block text-[11px] uppercase tracking-[0.18em] text-[#8792a2]">{t.internal}</span>
