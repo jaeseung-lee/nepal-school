@@ -92,7 +92,7 @@ async function renderAssets(colorSvg, markSvg, iconSvg) {
     .flatten({ background: LIGHT_BACKGROUND })
     .png()
     .toBuffer();
-  const lockup = await sharp(Buffer.from(colorSvg)).resize(820, 230, { fit: "contain" }).png().toBuffer();
+  const lockup = await sharp(Buffer.from(colorSvg)).resize(820, 230, { fit: "inside" }).png().toBuffer();
   const lockupMetadata = await sharp(lockup).metadata();
   const ogImage = await sharp({
     create: { width: 1200, height: 630, channels: 4, background: LIGHT_BACKGROUND },

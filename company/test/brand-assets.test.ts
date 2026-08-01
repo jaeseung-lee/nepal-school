@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import sharp from "sharp";
 
 const root = path.resolve(import.meta.dirname, "..");
 
@@ -69,4 +70,20 @@ test("official brand assets satisfy the published vector and raster contract", (
   assert.deepEqual(readPngDimensions(path.join(root, "app/apple-icon.png")), { width: 180, height: 180 });
   assert.deepEqual(readPngDimensions(path.join(root, "public/brand/og-image.png")), { width: 1200, height: 630 });
   assert.deepEqual(readIcoSizes(path.join(root, "app/favicon.ico")).sort((a, b) => a - b), [16, 32, 48]);
+});
+
+test("official social card preserves the light background around the lockup", async () => {
+  const { data, info } = await sharp(path.join(root, "public/brand/og-image.png"))
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const x = 600;
+  const y = 205;
+  const pixelOffset = (y * info.width + x) * info.channels;
+
+  assert.deepEqual(
+    [...data.subarray(pixelOffset, pixelOffset + 4)],
+    [247, 244, 237, 255],
+    "the lockup's padded top edge must composite to the #F7F4ED card background",
+  );
 });
