@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "ດຳເນີນງານຮັບສະໝັກສາກົນ" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "ດຳເນີນງານຮັບສະໝັກສາກົນ" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/japan.webp", alt: "ທີມໂຮງແຮມກຽມຕຳແໜ່ງ SSW ແລະ ແຜນຊ່ວຍ", width: 1586, height: 992 }

@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/korea.webp", alt: "कोरियाली पदका लागि E-9 र E-7 मार्ग तुलना गर्दै रोजगारदाता", width: 1586, height: 992 }

@@ -5,7 +5,7 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "JOONG WOO HRD",
+  title: "Jeongwoo Human Resource Development Institute",
   robots: { index: false, follow: false, noarchive: true },
 };
 

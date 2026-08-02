@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: BusinessAreaPageProps): Promi
     description: slug === "japan-caregiver" ? caregiverMetadata.description : area.meta.description,
     image:
       slug === "japan-caregiver"
-        ? { src: "/lp/v1/og.png", alt: caregiverMetadata.title, width: 1200, height: 630 }
+        ? { src: "/lp/v1/og.webp", alt: caregiverMetadata.title, width: 1200, height: 630 }
         : area.evidence.images[0],
   });
 

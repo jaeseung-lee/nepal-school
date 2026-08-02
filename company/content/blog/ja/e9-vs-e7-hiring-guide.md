@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-19"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "グローバル採用運営チーム" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/korea.webp", alt: "韓国での採用職務についてE-9とE-7を比較する企業担当者", width: 1586, height: 992 }

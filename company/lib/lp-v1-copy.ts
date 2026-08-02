@@ -17,12 +17,12 @@ export const LP_V1_SOURCE_URL = "https://ktsnepal.com/courses/care-giver-aged-ca
 
 export const LP_V1_META: Record<LpV1Locale, { title: string; description: string }> = {
   ko: {
-    title: "돌봄의 기본을, 네팔의 실습 현장에서 | KTS × JOONG WOO HRD",
+    title: "돌봄의 기본을, 네팔의 실습 현장에서 | KTS × Jeongwoo Human Resource Development Institute",
     description:
       "Kathmandu Technical School의 3개월·총 390시간 Caregiver / Aged Care 직업훈련 과정을 한국어와 일본어로 확인하세요.",
   },
   ja: {
-    title: "介護の基本を、ネパールの実習現場から | KTS × JOONG WOO HRD",
+    title: "介護の基本を、ネパールの実習現場から | KTS × Jeongwoo Human Resource Development Institute",
     description:
       "Kathmandu Technical Schoolの3か月・総390時間のCaregiver / Aged Care職業訓練コースを日本語でご案内します。",
   },
@@ -34,7 +34,7 @@ export const LP_V1_COPY = {
     languageSelectorLabel: "카탈로그 언어",
     skipToContent: "본문으로 건너뛰기",
     brand: {
-      name: "JOONG WOO HRD",
+      name: "Jeongwoo Human Resource Development Institute",
       partner: "Kathmandu Technical School",
       course: "Caregiver / Aged Care",
       homeAria: "정우인재개발원 홈페이지",
@@ -79,7 +79,7 @@ export const LP_V1_COPY = {
       connector: "MOU로 맺은 협력",
       joongwoo: {
         label: "KOREA & JAPAN · SALES",
-        name: "JOONG WOO HRD",
+        name: "Jeongwoo Human Resource Development Institute",
         role: "KTS 개호교육의 한국·일본 영업대행·사업협력 창구",
       },
       basisLabel: "협력 범위",
@@ -196,7 +196,7 @@ export const LP_V1_COPY = {
       mailSubject: "KTS Caregiver 과정 협력 문의",
     },
     footer: {
-      description: "Kathmandu Technical School × JOONG WOO HRD",
+      description: "Kathmandu Technical School × Jeongwoo Human Resource Development Institute",
       sourceNote: "공개된 과정 정보와 확인된 교육 자료를 기준으로 작성했습니다.",
     },
   },
@@ -205,7 +205,7 @@ export const LP_V1_COPY = {
     languageSelectorLabel: "カタログの言語",
     skipToContent: "本文へ移動",
     brand: {
-      name: "JOONG WOO HRD",
+      name: "Jeongwoo Human Resource Development Institute",
       partner: "Kathmandu Technical School",
       course: "Caregiver / Aged Care",
       homeAria: "チョンウ人材開発院ホームページ",
@@ -242,7 +242,7 @@ export const LP_V1_COPY = {
       badge: "正式MOUパートナー",
       title: "KTSの正式MOUパートナーとして、日本・韓国向けの営業代行と事業連携を担います",
       description:
-        "Kathmandu Technical School（KTS）は、JOONG WOO HRDと正式なMOUを締結したネパール現地のパートナーです。KTSの介護研修を日本・韓国の事業者や機関に紹介し、パートナー開拓、連携提案、相談対応をJOONG WOO HRDが担います。",
+        "Kathmandu Technical School（KTS）は、Jeongwoo Human Resource Development Instituteと正式なMOUを締結したネパール現地のパートナーです。KTSの介護研修を日本・韓国の事業者や機関に紹介し、パートナー開拓、連携提案、相談対応をJeongwoo Human Resource Development Instituteが担います。",
       rolesAriaLabel: "MOUパートナーの役割",
       school: {
         label: "NEPAL · TRAINING",
@@ -252,7 +252,7 @@ export const LP_V1_COPY = {
       connector: "MOUによる連携",
       joongwoo: {
         label: "JAPAN & KOREA · SALES",
-        name: "JOONG WOO HRD",
+        name: "Jeongwoo Human Resource Development Institute",
         role: "KTS介護研修の日本・韓国向け営業代行・事業連携窓口",
       },
       basisLabel: "連携分野",
@@ -369,7 +369,7 @@ export const LP_V1_COPY = {
       mailSubject: "KTS Caregiverコースの連携に関するお問い合わせ",
     },
     footer: {
-      description: "Kathmandu Technical School × JOONG WOO HRD",
+      description: "Kathmandu Technical School × Jeongwoo Human Resource Development Institute",
       sourceNote: "公開されているコース情報と確認済みの教育資料に基づいて作成しています。",
     },
   },

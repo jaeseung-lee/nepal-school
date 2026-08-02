@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-19"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "グローバル採用運営チーム" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/process.webp", alt: "E-9雇用許可の申請日程と事業主書類を確認する場面", width: 1587, height: 991 }

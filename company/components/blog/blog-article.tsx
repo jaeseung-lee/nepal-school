@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, CalendarBlank, CheckCircle, Clock, LinkSimple } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, ArrowRight, CalendarBlank, Clock, LinkSimple } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import BlogPostSchema from "@/components/blog-post-schema";
@@ -89,18 +89,6 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
           <div className="mt-12">
             <BlogMarkdown content={post.content} images={getImageManifest()} />
           </div>
-
-          <section className="mt-14 rounded-[24px] border border-line bg-paper-soft p-6 lg:p-8" aria-labelledby="disclosure-title">
-            <div className="flex items-center gap-2 text-cobalt"><CheckCircle size={20} weight="duotone" aria-hidden="true" /><h2 id="disclosure-title" className="font-display text-xl font-semibold text-ink">{copy.disclosureTitle}</h2></div>
-            <p className="mt-4 text-sm leading-7 text-muted">{post.generationMethod === "ai-assisted" ? copy.aiDisclosure : copy.humanDisclosure}</p>
-            <p className="mt-2 text-sm leading-7 text-muted">{copy.legalNotice}</p>
-            <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
-              <div><dt className="font-semibold text-ink">{copy.author}</dt><dd className="mt-1 text-muted">{post.author.name} · {post.author.role}</dd></div>
-              <div><dt className="font-semibold text-ink">{copy.sourcesTitle}</dt><dd className="mt-1 text-muted">official-primary-sources · {copy.accessedAt} {formatBlogDate(locale, post.sourceVerification.checkedAt)}</dd></div>
-              {post.reviewer ? <div className="sm:col-span-2"><dt className="font-semibold text-ink">{copy.reviewer}</dt><dd className="mt-1 text-muted">{post.reviewer.name} · {post.reviewer.credentials} · {copy.reviewedAt} {formatBlogDate(locale, post.reviewer.reviewedAt)}</dd></div> : null}
-              <div className="sm:col-span-2"><dt className="font-semibold text-ink">{copy.revisions}</dt><dd className="mt-1 text-muted">{copy.published} {formatBlogDate(locale, post.publishedAt)} · {copy.updated} {formatBlogDate(locale, post.modifiedAt)}</dd></div>
-            </dl>
-          </section>
 
           <section className="mt-12 border-t border-line pt-10" aria-labelledby="sources-title">
             <h2 id="sources-title" className="font-display text-2xl font-semibold text-ink">{copy.sourcesTitle}</h2>

@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Vận hành tuyển dụng quốc tế" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/partner.webp", alt: "Nhóm doanh nghiệp rà soát yêu cầu tuyển dụng quốc tế", width: 1587, height: 991 }

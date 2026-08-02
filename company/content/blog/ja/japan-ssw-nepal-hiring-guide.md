@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-19"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "グローバル採用運営チーム" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/japan.webp", alt: "ネパール人材の特定技能在留手続と支援を準備する担当者", width: 1586, height: 992 }

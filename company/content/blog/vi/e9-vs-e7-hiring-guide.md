@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Vận hành tuyển dụng quốc tế" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/korea.webp", alt: "Doanh nghiệp so sánh E-9 và E-7 cho một vị trí tại Hàn Quốc", width: 1586, height: 992 }

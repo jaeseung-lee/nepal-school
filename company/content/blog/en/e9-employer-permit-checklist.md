@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Global hiring operations" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/process.webp", alt: "Employer checking the E-9 permit schedule and required records", width: 1587, height: 991 }

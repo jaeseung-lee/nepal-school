@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/process.webp", alt: "E-9 अनुमति तालिका र रोजगारदाता कागजात जाँच्दै गरेको दृश्य", width: 1587, height: 991 }

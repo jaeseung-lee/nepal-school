@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/japan.webp", alt: "नेपाली SSW उम्मेदवारको जापान प्रवेश र सहयोग तयारी", width: 1586, height: 992 }

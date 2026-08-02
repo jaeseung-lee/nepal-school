@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Global hiring operations" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/korea.webp", alt: "Employer comparing E-9 and E-7 pathways for a job in Korea", width: 1586, height: 992 }

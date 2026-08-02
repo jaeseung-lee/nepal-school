@@ -23,7 +23,7 @@ export default function CaregiverPageSchema({ locale }: { locale: LpV1Locale }) 
         publisher: { "@id": `${SITE_URL}/#organization` },
         primaryImageOfPage: {
           "@type": "ImageObject",
-          url: `${SITE_URL}/lp/v1/og.png`,
+          url: `${SITE_URL}/lp/v1/og.webp`,
           width: 1200,
           height: 630,
         },

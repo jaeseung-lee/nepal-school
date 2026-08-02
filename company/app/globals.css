@@ -42,6 +42,12 @@ body {
   overflow-wrap: break-word;
 }
 
+/* 일본어는 공백 없이 이어지는 문장이 많으므로 일본어 표준 줄바꿈을 복원한다. */
+html:lang(ja) body {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
 .nav-link.nav-active { position: relative; }
 .nav-link.nav-active::after {
   content: '';

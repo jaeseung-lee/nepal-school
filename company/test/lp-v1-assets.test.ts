@@ -41,8 +41,8 @@ const APPROVED_GALLERY_IDS = [
   "visiting-group-building-entrance",
 ] as const;
 const APPROVED_PDF_SHA256: Readonly<Partial<Record<LpV1Locale, string>>> = {
-  ko: "fc9346caf552dfb546ebe16ac6ade54b3be0db5d050037d3dadab80cdb1a9d53",
-  ja: "7114c45bb59fe052f3fa8828d470b0b6a9d0aee640926df846fcbc4fa6200b6a",
+  ko: "c0fa65d5cab62a8b8c724fdaeb6bbe4194e63ececcc12d3b06c278ca6988b8b0",
+  ja: "9992e92985ed74f845f13e75238f0e846fb244c6f9bbbed43bd87bccf98ea85d",
 };
 const REJECTED_PDF_SHA256: Readonly<Partial<Record<LpV1Locale, string>>> = {
   ja: "266d53593fa2dc163e79450fa890273a7debd5c4c4a70af7b74457b0c6d254c5",
@@ -60,6 +60,7 @@ const REJECTED_JA_COPY = [
   "KTSの正式MOUパートナーとして、日本・韓国での連携営業を担います",
   "事業開発・パートナー開拓・連携営業窓口",
 ] as const;
+const PUBLIC_BRAND = "Jeongwoo Human Resource Development Institute";
 
 function duplicateValues(values: readonly string[]): string[] {
   const seen = new Set<string>();
@@ -80,10 +81,30 @@ function sha256(buffer: Buffer): string {
 test("lp/v1 원문·메타데이터·PDF 링크는 승인된 카피를 유지한다", () => {
   const approvedCopy = JSON.stringify({ LP_V1_COPY, LP_V1_META, LP_V1_PDF_HREFS });
 
+  assert.match(approvedCopy, new RegExp(PUBLIC_BRAND, "g"));
+  assert.doesNotMatch(approvedCopy, /JOONG WOO HRD|Joong Woo HRD/);
+
   assert.equal(
     createHash("sha256").update(approvedCopy).digest("hex"),
-    "8266e9ba17b9f3df283a9e625c6ecc0fb532b3639aea6038a32673a7bceb0e4f",
+    "49af4d0463cbeba981fcb813aed2cc38061cc1f5bdf4c4b96f5b67dcbffc7115",
   );
+});
+
+test("개호 상세는 텍스트 없는 WebP OG만 참조하고 구 PNG 자산을 배포하지 않는다", async () => {
+  const references = [
+    path.join(COMPANY_DIRECTORY, "app/(public-ko)/services/[slug]/page.tsx"),
+    path.join(COMPANY_DIRECTORY, "app/[locale]/[[...slug]]/page.tsx"),
+    path.join(COMPANY_DIRECTORY, "components/lp/caregiver-page-schema.tsx"),
+  ];
+
+  for (const file of references) {
+    const source = await readFile(file, "utf8");
+    assert.match(source, /\/lp\/v1\/og\.webp/);
+    assert.doesNotMatch(source, /\/lp\/v1\/og\.png/);
+  }
+
+  assert.ok((await stat(path.join(PUBLIC_DIRECTORY, "lp/v1/og.webp"))).size > 0);
+  await assert.rejects(stat(path.join(PUBLIC_DIRECTORY, "lp/v1/og.png")), { code: "ENOENT" });
 });
 
 test("lp/v1 일본어 카탈로그는 승인된 직업훈련·평가·영업대행 카피를 사용한다", () => {

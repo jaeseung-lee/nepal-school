@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/partner.webp", alt: "अन्तर्राष्ट्रिय भर्ती आवश्यकता समीक्षा गर्दै कम्पनी प्रतिनिधि", width: 1587, height: 991 }

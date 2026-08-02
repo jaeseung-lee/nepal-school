@@ -1,13 +1,13 @@
 {
   "site": {
     "name": "정우인재개발원",
-    "nameEnglish": "JOONG WOO HRD",
+    "nameEnglish": "Jeongwoo Human Resource Development Institute",
     "legalName": "주식회사 정우인력개발",
     "legalNameEnglish": "Jungwoo Human Development Co., Ltd.",
-    "alternateName": "JOONG WOO HRD",
+    "alternateName": "Jeongwoo Human Resource Development Institute",
     "slogan": "ネパールで育成した人材と、韓国・日本の採用企業をつなぐ",
     "seoTitle": "ネパール人材育成・韓国・日本への就職連携",
-    "description": "ネパールでは人材を直接育成し、韓国・日本企業へ紹介します。ベトナム・ラオスでは提携機関と協力して候補者を紹介します。",
+    "description": "ネパールでは人材を直接育成・紹介し、ベトナム・ミャンマー・ラオス・スリランカでは現地パートナーを通じて候補者を紹介します。韓国・日本は就業先・採用市場です。",
     "founder": "오제환",
     "foundingDate": "2026年6月10日",
     "businessRegistrationNumber": "684-13-02918",
@@ -68,10 +68,9 @@
     }
   },
   "footer": {
-    "description": "ネパールで育成した人材を、適法な手続で韓国・日本企業へ紹介します。",
-    "network": "ネパールでは直接育成し、ベトナム・ラオスでは提携機関と協力します。韓国・日本の採用企業へ人材を紹介します。",
+    "description": "体系的な教育と客観的な評価を通じて、現場に適した人材を選抜します。",
     "contactNotice": "ウェブでのお問い合わせ窓口は正式運用前です。ご相談前に、企業側で確認していただく項目をお知らせします。",
-    "countries": "直接育成：ネパール · 提携機関：ベトナム・ラオス · 紹介先：韓国・日本"
+    "countries": "ネパール、ベトナム、ミャンマー、ラオス、スリランカ、韓国、日本"
   },
   "metrics": {
     "ariaLabel": "客観的な指標",
@@ -85,22 +84,22 @@
         "sub": "韓国4種類、日本の特定技能1号"
       },
       "countries": {
-        "value": "5",
+        "value": "7",
         "unit": "か国",
         "label": "協力国",
-        "sub": "ネパール、ベトナム、ラオス、韓国、日本"
+        "sub": "ネパール、ベトナム、ミャンマー、ラオス、スリランカ、韓国、日本"
       },
       "partners": {
-        "value": "7",
+        "value": "11",
         "unit": "団体",
         "label": "協力パートナー",
-        "sub": "教育、送り出し、産業分野"
+        "sub": "ネパール6機関、ベトナム3機関、ラオス2機関"
       }
     }
   },
   "home": {
     "hero": {
-      "title": "ネパールでの教育から",
+      "title": "海外現地での教育・募集から",
       "lineBreak": "韓国・日本での就業まで",
       "description": "教育、試験、在留手続、入国後の支援まで対応します。",
       "contactCta": "お問い合わせ",
@@ -114,7 +113,7 @@
       "slideStatus": "現地写真"
     },
     "intro": {
-      "title": "紹介の前に、現地教育と確認基準を整えます",
+      "title": "体系的な教育と客観的な評価を通じて、現場に適した人材を選抜します。",
       "description": "2026年6月設立の新しい会社です。裏付けのない実績は掲げず、現地パートナーの役割と制度上の基準を公開します。",
       "aboutCta": "会社紹介",
       "whyCta": "信頼の基準"
@@ -134,8 +133,8 @@
       "alt": "企業との相談の様子",
       "items": {
         "company": {
-          "q": "JOONG WOO HRDはどのような会社ですか？",
-          "a": "JOONG WOO HRDは、ネパールで人材を育成し、適法な手続で韓国・日本企業へ紹介する会社です。"
+          "q": "Jeongwoo Human Resource Development Instituteはどのような会社ですか？",
+          "a": "Jeongwoo Human Resource Development Instituteは、ネパールで人材を育成し、適法な手続で韓国・日本企業へ紹介する会社です。"
         },
         "visa": {
           "q": "どの就労ビザと制度を支援していますか？",
@@ -148,7 +147,7 @@
         },
         "countries": {
           "q": "どの国の人材をつなぎますか？",
-          "a": "ネパール現地で育成した人材を、韓国・日本企業へつなぎます。現在の協力ネットワークは、ネパール、ベトナム、ラオス、韓国、日本の5か国を中心に運営されています。"
+          "a": "ネパールでは人材を直接育成・紹介し、ベトナム・ミャンマー・ラオス・スリランカでは現地パートナーを通じて候補者を紹介します。韓国・日本は就業先・採用市場です。"
         },
         "trust": {
           "q": "新設企業でも信頼できますか？",
@@ -283,7 +282,7 @@
     "about": {
       "metadata": {
         "title": "会社紹介",
-        "description": "ネパールで育成した人材を、適法な手続で韓国・日本企業へ紹介するJOONG WOO HRDの会社概要。"
+        "description": "ネパールで育成した人材を、適法な手続で韓国・日本企業へ紹介するJeongwoo Human Resource Development Instituteの会社概要。"
       },
       "banner": {
         "eyebrow": "会社概要",
@@ -296,7 +295,7 @@
       "main": {
         "title": "現地で準備を重ねた人材を、企業の要件につなぎます",
         "paragraphs": {
-          "first": "JOONG WOO HRDは、ネパールでの職業訓練から取り組みます。職種、言語、文化を学んだ人材を、韓国・日本企業の要件に合わせ、適法な手続で紹介します。",
+          "first": "Jeongwoo Human Resource Development Instituteは、ネパールでの職業訓練から取り組みます。職種、言語、文化を学んだ人材を、韓国・日本企業の要件に合わせ、適法な手続で紹介します。",
           "second": "2026年7月にネパール現地の6機関とMOUを締結し、労働者の選抜、資格確認、教育、出入国行政で連携しています。"
         },
         "servicesCta": "事業領域",
@@ -307,7 +306,7 @@
     "services": {
       "metadata": {
         "title": "事業領域",
-        "description": "日本の介護・宿泊、韓国留学・溶接人材採用まで。ネパールでの選抜・教育からビザ、入国、定着へつなぐJOONG WOO HRDの4つの事業領域。"
+        "description": "日本の介護・宿泊、韓国留学・溶接人材採用まで。ネパールでの選抜・教育からビザ、入国、定着へつなぐJeongwoo Human Resource Development Instituteの4つの事業領域。"
       },
       "banner": {
         "eyebrow": "事業構造",
@@ -364,7 +363,7 @@
       "feature": {
         "alt": "国際パートナーシップ協議の様子",
         "title": "ネパールの6機関と国際事業MOUを締結",
-        "description": "JOONG WOO HRDは2026年7月5日、ネパール現地の人材送り出し3社、職業技術・教育3機関と個別にMOUを締結しました。協力範囲は、職業技術教育、韓国・日本への就職連携、職種・語学教育、出入国手続です。",
+        "description": "Jeongwoo Human Resource Development Instituteは2026年7月5日、ネパール現地の人材送り出し3社、職業技術・教育3機関と個別にMOUを締結しました。協力範囲は、職業技術教育、韓国・日本への就職連携、職種・語学教育、出入国手続です。",
         "mouItems": {
           "date": {
             "title": "締結日",
@@ -379,7 +378,7 @@
             "description": "労働者の選抜と資格確認、職業技術・職種・語学教育、出入国関連の行政支援"
           },
           "joongwooRole": {
-            "title": "JOONG WOO HRDの役割",
+            "title": "Jeongwoo Human Resource Development Instituteの役割",
             "description": "韓国・日本企業の開拓とマッチング、入国後の生活・就労・行政手続に関する連携支援"
           }
         }
@@ -454,7 +453,7 @@
         "principles": {
           "partnership": {
             "title": "MOUに基づくパートナーシップ",
-            "description": "2026年7月5日にネパール現地の6機関とMOUを締結し、労働者の選抜、資格確認、教育、出入国行政の協力体制を整えました。"
+            "description": "海外人材事業で培った運営経験と、海外現地機関との戦略的な協力体制を基盤に、労働者の選抜、能力評価、事前教育、出入国関連の行政手続に関する案内・連携までを一元管理するシステムを運用しています。"
           },
           "regulation": {
             "title": "制度と法規の確認",
@@ -496,7 +495,7 @@
       },
       "main": {
         "title": "ご相談前に、次の項目をご用意ください",
-        "description": "ウェブフォームはまだ受け付けていません。会社情報と相談項目をご確認のうえ、メールでご連絡ください。",
+        "description": "的確なご相談対応のため、お問い合わせ時に必要な情報と手順をご案内します。",
         "companyItems": {
           "founder": "代表取締役",
           "businessNumber": "事業者登録番号",
@@ -506,8 +505,8 @@
         }
       },
       "form": {
-        "title": "携帯電話またはメールでお問い合わせください",
-        "description": "採用・提携に関するお問い合わせは、韓国・日本の携帯電話または下記のメールアドレスで受け付けています。",
+        "title": "お問い合わせのご案内",
+        "description": "採用・提携に関するお問い合わせは、下記の電話番号またはメールアドレスまでご連絡ください。",
         "preparationTitle": "相談前に整理するとよい情報",
         "preparationItems": {
           "roleAndCount": "希望する職種と採用人数",
@@ -516,7 +515,8 @@
           "locationAndHousing": "勤務地域と住居支援の有無"
         },
         "notice": "より早くご案内するため、希望職種・人数、希望入国時期、検討中のビザ、勤務地域をお知らせください。",
-        "status": "メールで問い合わせる"
+        "status": "メールで問い合わせる",
+        "reassurance": "お問い合わせ内容がまだ明確でなくても、どうぞお気軽にご連絡ください。専門の担当者がお話を伺い、お客様の状況に最適な方法をご案内いたします。"
       }
     }
   }

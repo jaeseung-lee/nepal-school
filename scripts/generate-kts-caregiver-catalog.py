@@ -378,9 +378,15 @@ def draw_page_one(canvas: Canvas, data: dict[str, Any], prepared: dict[str, Path
     canvas.circle(-28, 438, 88, stroke=0, fill=1)
 
     draw_eyebrow(canvas, copy["hero"]["eyebrow"], MARGIN, 800, palette(data, "cobalt"), 8.2)
+    cover_brand = f"KTS × {data['contact']['brandName']['en']}"
+    cover_brand_max_width = (PAGE_W / 2) - MARGIN
+    cover_brand_size = min(
+        7.8,
+        7.8 * cover_brand_max_width / string_width(cover_brand, BOLD_FONT, 7.8),
+    )
     canvas.setFillColor(palette(data, "muted"))
-    canvas.setFont(BOLD_FONT, 7.8)
-    canvas.drawRightString(PAGE_W - MARGIN, 800, "KTS  ×  JOONG WOO HRD")
+    canvas.setFont(BOLD_FONT, cover_brand_size)
+    canvas.drawRightString(PAGE_W - MARGIN, 800, cover_brand)
 
     title_size = 31 if locale == "ko" else 28
     title_leading = 38 if locale == "ko" else 34
@@ -954,8 +960,9 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
             3,
         )
 
+    contact_y_shift = -8 if locale == "ja" else 0
     badge_x = block_x + 22
-    badge_y = block_y + (204 if locale == "ja" else 211)
+    badge_y = block_y + (204 if locale == "ja" else 211) + contact_y_shift
     for badge in contact["inquiryTypes"]:
         badge_w = string_width(badge, BOLD_FONT, 6.5) + 17
         rounded_rect(canvas, badge_x, badge_y, badge_w, 20, 10, Color(1, 1, 1, alpha=0.10), Color(1, 1, 1, alpha=0.22), 0.5)
@@ -968,7 +975,7 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
     if locale == "ja":
         sales_role = partnership["joongwoo"]["role"]
         sales_role_w = string_width(sales_role, BOLD_FONT, 6.6) + 22
-        sales_role_y = block_y + 174
+        sales_role_y = block_y + 174 + contact_y_shift
         rounded_rect(
             canvas,
             text_x,
@@ -983,13 +990,13 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
         canvas.drawCentredString(text_x + sales_role_w / 2, sales_role_y + 7.1, sales_role)
         canvas.setFillColor(colors.white)
         canvas.setFont(BOLD_FONT, 7.3)
-        canvas.drawString(text_x, block_y + 163, contact["cta"])
+        canvas.drawString(text_x, block_y + 163 + contact_y_shift, contact["cta"])
     else:
         canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
         canvas.setFont(BOLD_FONT, 6.5)
         canvas.drawString(text_x, block_y + 185, contact["emailLabel"])
     email = data["contact"]["email"]
-    email_y = block_y + (146 if locale == "ja" else 168)
+    email_y = block_y + (146 if locale == "ja" else 168) + contact_y_shift
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 9.2)
     canvas.drawString(text_x, email_y, email)
@@ -998,19 +1005,19 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
 
     canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
     canvas.setFont(BOLD_FONT, 6.5)
-    school_label_y = block_y + (125 if locale == "ja" else 143)
-    school_address_y = block_y + (110 if locale == "ja" else 128)
+    school_label_y = block_y + (125 if locale == "ja" else 143) + contact_y_shift
+    school_address_y = block_y + (110 if locale == "ja" else 128) + contact_y_shift
     canvas.drawString(text_x, school_label_y, contact["schoolLabel"])
     draw_wrapped(canvas, contact["schoolAddress"], text_x, school_address_y, 335, REGULAR_FONT, 7.1, 9.4, colors.white, locale, 2)
     canvas.setFillColor(Color(1, 1, 1, alpha=0.64))
     canvas.setFont(BOLD_FONT, 6.5)
-    office_label_y = block_y + (77 if locale == "ja" else 98)
-    office_address_y = block_y + (62 if locale == "ja" else 83)
+    office_label_y = block_y + (77 if locale == "ja" else 98) + contact_y_shift
+    office_address_y = block_y + (62 if locale == "ja" else 83) + contact_y_shift
     canvas.drawString(text_x, office_label_y, contact["officeLabel"])
     draw_wrapped(canvas, contact["officeAddress"], text_x, office_address_y, 335, REGULAR_FONT, 7.0, 9.3, colors.white, locale, 2)
 
     source_label = contact["sourceLabel"]
-    source_y = block_y + (34 if locale == "ja" else 43)
+    source_y = block_y + (34 if locale == "ja" else 43) + contact_y_shift
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 7.2)
     canvas.drawString(text_x, source_y, source_label)
@@ -1023,7 +1030,7 @@ def draw_page_four(canvas: Canvas, data: dict[str, Any]) -> None:
 
     qr_size = 93
     qr_x = block_x + block_w - qr_size - 29
-    qr_y = block_y + (122 if locale == "ja" else 139)
+    qr_y = block_y + (122 if locale == "ja" else 139) + contact_y_shift
     draw_qr(canvas, data["landingUrl"], qr_x, qr_y, qr_size, data)
     canvas.setFillColor(colors.white)
     canvas.setFont(BOLD_FONT, 6.8)
@@ -1089,7 +1096,9 @@ def generate(locale: str, font_paths: tuple[Path, Path]) -> Path:
     canvas.setAuthor(data["contact"]["legalName"]["ko"])
     canvas.setSubject(data["metadata"]["description"])
     canvas.setCreator("KTS caregiver catalog generator · ReportLab")
-    canvas.setKeywords("KTS, Caregiver, Aged Care, Kathmandu, Nepal, JOONG WOO HRD")
+    canvas.setKeywords(
+        f"KTS, Caregiver, Aged Care, Kathmandu, Nepal, {data['contact']['brandName']['en']}"
+    )
 
     draw_page_one(canvas, data, prepared)
     draw_page_two(canvas, data)

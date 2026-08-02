@@ -33,7 +33,10 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
 
       <div className="mt-6 flex items-start gap-3 rounded-[18px] border border-cobalt/20 bg-cobalt-soft p-4 text-sm text-cobalt-ink">
         <WarningCircle size={20} className="mt-0.5 shrink-0" aria-hidden="true" />
-        <p>{form.notice}</p>
+        <div>
+          <p>{form.notice}</p>
+          <p className="mt-2">{form.reassurance}</p>
+        </div>
       </div>
 
       <div className="mt-7 grid gap-3 sm:grid-cols-2">
@@ -45,7 +48,7 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
           >
             <Phone size={20} weight="duotone" aria-hidden="true" />
             <span>
-              <span className="block text-xs font-medium text-muted">{messages.site.areaServed[phone.market]} {messages.common.mobile}</span>
+              <span className="block text-xs font-medium text-muted">{messages.common.mobile}</span>
               <span className="mt-0.5 block text-sm font-semibold">{phone.national}</span>
             </span>
           </a>

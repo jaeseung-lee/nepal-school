@@ -1,13 +1,13 @@
 {
   "site": {
-    "name": "Joong Woo HRD",
-    "nameEnglish": "JOONG WOO HRD",
+    "name": "Jeongwoo Human Resource Development Institute",
+    "nameEnglish": "Jeongwoo Human Resource Development Institute",
     "legalName": "주식회사 정우인력개발",
     "legalNameEnglish": "Jungwoo Human Development Co., Ltd.",
-    "alternateName": "JOONG WOO HRD",
+    "alternateName": "Jeongwoo Human Resource Development Institute",
     "slogan": "Đối tác nhân lực toàn cầu đào tạo nhân tài Nepal từ nền tảng giáo dục tại địa phương",
     "seoTitle": "Đào tạo nhân tài Nepal và kết nối việc làm tại Hàn Quốc, Nhật Bản",
-    "description": "Chúng tôi trực tiếp đào tạo và cung ứng tại Nepal, hợp tác cung ứng tại Việt Nam và Lào, đồng thời chuẩn bị tuyển dụng cho thị trường Hàn Quốc và Nhật Bản.",
+    "description": "Chúng tôi trực tiếp đào tạo và cung ứng nhân lực tại Nepal; cung ứng qua đối tác tại Việt Nam, Myanmar, Lào và Sri Lanka; đồng thời kết nối ứng viên với doanh nghiệp tại các thị trường tiếp nhận và tuyển dụng là Hàn Quốc và Nhật Bản.",
     "founder": "Oh Je-hwan",
     "foundingDate": "Ngày 10 tháng 6 năm 2026",
     "businessRegistrationNumber": "684-13-02918",
@@ -51,7 +51,7 @@
     "contact": "Chuẩn bị tuyển dụng"
   },
   "header": {
-    "homeAria": "Trang chủ Joong Woo HRD",
+    "homeAria": "Trang chủ Jeongwoo Human Resource Development Institute",
     "primaryNav": "Điều hướng chính",
     "languageSelector": "Chọn ngôn ngữ",
     "openMenu": "Mở menu",
@@ -68,10 +68,9 @@
     }
   },
   "footer": {
-    "description": "Chúng tôi đào tạo nhân tài Nepal tại địa phương và kết nối họ một cách hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
-    "network": "Đào tạo/cung ứng trực tiếp tại Nepal; cung ứng đối tác tại Việt Nam, Lào; thị trường tuyển dụng Hàn Quốc, Nhật Bản.",
+    "description": "Thông qua đào tạo bài bản và đánh giá khách quan, chúng tôi tuyển chọn nhân lực phù hợp với yêu cầu thực tế tại nơi làm việc.",
     "contactNotice": "Kênh liên hệ trực tuyến chưa chính thức hoạt động. Khu vực này trước hết cung cấp hướng dẫn để doanh nghiệp sắp xếp các yêu cầu cần thiết.",
-    "countries": "Đào tạo/cung ứng: Nepal · Đối tác: Việt Nam, Lào · Tuyển dụng: Hàn Quốc, Nhật Bản"
+    "countries": "Nepal, Việt Nam, Myanmar, Lào, Sri Lanka, Hàn Quốc và Nhật Bản"
   },
   "metrics": {
     "ariaLabel": "Các chỉ số khách quan",
@@ -85,23 +84,23 @@
         "sub": "Bốn loại của Hàn Quốc và Lao động kỹ năng đặc định số 1 của Nhật Bản"
       },
       "countries": {
-        "value": "5",
+        "value": "7",
         "unit": "quốc gia",
         "label": "Quốc gia hợp tác",
-        "sub": "Nepal, Việt Nam, Lào, Hàn Quốc và Nhật Bản"
+        "sub": "Nepal, Việt Nam, Myanmar, Lào, Sri Lanka, Hàn Quốc và Nhật Bản"
       },
       "partners": {
-        "value": "7",
+        "value": "11",
         "unit": "đối tác",
         "label": "Tổ chức đối tác",
-        "sub": "Lĩnh vực đào tạo, phái cử và công nghiệp"
+        "sub": "6 tại Nepal, 3 tại Việt Nam và 2 tại Lào"
       }
     }
   },
   "home": {
     "hero": {
-      "title": "Cơ hội công bằng",
-      "lineBreak": "cho mọi người",
+      "title": "Từ đào tạo và tuyển mộ tại nước ngoài",
+      "lineBreak": "đến việc làm tại Hàn Quốc và Nhật Bản",
       "description": "Đối tác doanh nghiệp chịu trách nhiệm về nhân tài nước ngoài từ đào tạo, thi cử đến thị thực và ổn định cuộc sống.",
       "contactCta": "Liên hệ",
       "servicesCta": "Xem lĩnh vực hoạt động",
@@ -114,7 +113,7 @@
       "slideStatus": "Ảnh thực tế"
     },
     "intro": {
-      "title": "Trước khi giới thiệu nhân lực, chúng tôi thiết kế việc đào tạo và xác minh",
+      "title": "Thông qua đào tạo bài bản và đánh giá khách quan, chúng tôi tuyển chọn nhân lực phù hợp với yêu cầu thực tế tại nơi làm việc.",
       "description": "Chúng tôi là doanh nghiệp mới bắt đầu từ tháng 6 năm 2026. Thay vì đưa ra thành tích phóng đại, chúng tôi công khai rõ ràng đối tác địa phương, tiêu chuẩn chế độ và vai trò ở từng giai đoạn.",
       "aboutCta": "Giới thiệu",
       "whyCta": "Tiêu chuẩn uy tín"
@@ -134,8 +133,8 @@
       "alt": "Khung cảnh tư vấn doanh nghiệp",
       "items": {
         "company": {
-          "q": "Joong Woo HRD là công ty như thế nào?",
-          "a": "Joong Woo HRD là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản."
+          "q": "Jeongwoo Human Resource Development Institute là công ty như thế nào?",
+          "a": "Jeongwoo Human Resource Development Institute là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản."
         },
         "visa": {
           "q": "Công ty hỗ trợ những loại thị thực và chương trình việc làm nào?",
@@ -148,7 +147,7 @@
         },
         "countries": {
           "q": "Công ty kết nối nhân lực từ những quốc gia nào?",
-          "a": "Chúng tôi kết nối nhân tài được đào tạo tại Nepal với các doanh nghiệp tại Hàn Quốc và Nhật Bản. Mạng lưới hiện tại tập trung vào năm quốc gia: Nepal, Việt Nam, Lào, Hàn Quốc và Nhật Bản."
+          "a": "Chúng tôi trực tiếp đào tạo và cung ứng nhân lực tại Nepal; cung ứng qua đối tác tại Việt Nam, Myanmar, Lào và Sri Lanka; đồng thời kết nối ứng viên với doanh nghiệp tại các thị trường tiếp nhận và tuyển dụng là Hàn Quốc và Nhật Bản."
         },
         "trust": {
           "q": "Một doanh nghiệp mới có đáng tin cậy không?",
@@ -283,7 +282,7 @@
     "about": {
       "metadata": {
         "title": "Giới thiệu",
-        "description": "Giới thiệu Joong Woo HRD, doanh nghiệp phát triển nguồn nhân lực toàn cầu đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp Hàn Quốc và Nhật Bản."
+        "description": "Giới thiệu Jeongwoo Human Resource Development Institute, doanh nghiệp phát triển nguồn nhân lực toàn cầu đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp Hàn Quốc và Nhật Bản."
       },
       "banner": {
         "eyebrow": "Tổng quan công ty",
@@ -296,7 +295,7 @@
       "main": {
         "title": "Nhân tài không chỉ để phái cử mà cần được chuẩn bị",
         "paragraphs": {
-          "first": "Joong Woo HRD bắt đầu từ đào tạo nghề tại Nepal. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+          "first": "Jeongwoo Human Resource Development Institute bắt đầu từ đào tạo nghề tại Nepal. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp tại Hàn Quốc và Nhật Bản.",
           "second": "Tháng 7 năm 2026, chúng tôi ký MOU với sáu tổ chức tại Nepal để củng cố hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
         },
         "servicesCta": "Lĩnh vực hoạt động",
@@ -307,7 +306,7 @@
     "services": {
       "metadata": {
         "title": "Lĩnh vực hoạt động",
-        "description": "Từ trường đào tạo nghề tại Nepal, thị thực việc làm Hàn Quốc (E-9, E-7, D-2, D-4) đến Kỹ năng đặc định Nhật Bản: ba lĩnh vực hoạt động cốt lõi và quy trình một cửa của Joong Woo HRD."
+        "description": "Từ trường đào tạo nghề tại Nepal, thị thực việc làm Hàn Quốc (E-9, E-7, D-2, D-4) đến Kỹ năng đặc định Nhật Bản: ba lĩnh vực hoạt động cốt lõi và quy trình một cửa của Jeongwoo Human Resource Development Institute."
       },
       "banner": {
         "eyebrow": "Cấu trúc hoạt động",
@@ -364,7 +363,7 @@
       "feature": {
         "alt": "Cảnh trao đổi về quan hệ đối tác quốc tế",
         "title": "Ký thỏa thuận hợp tác kinh doanh quốc tế với sáu tổ chức tại Nepal",
-        "description": "Ngày 5 tháng 7 năm 2026, Joong Woo HRD ký các MOU riêng với ba công ty phái cử lao động tại Nepal và ba tổ chức đào tạo kỹ năng, giáo dục. Hai bên xác định giáo dục kỹ năng nghề, liên kết việc làm Hàn Quốc và Nhật Bản, đào tạo công việc và ngôn ngữ, cùng thủ tục xuất nhập cảnh chi tiết là phạm vi hợp tác.",
+        "description": "Ngày 5 tháng 7 năm 2026, Jeongwoo Human Resource Development Institute ký các MOU riêng với ba công ty phái cử lao động tại Nepal và ba tổ chức đào tạo kỹ năng, giáo dục. Hai bên xác định giáo dục kỹ năng nghề, liên kết việc làm Hàn Quốc và Nhật Bản, đào tạo công việc và ngôn ngữ, cùng thủ tục xuất nhập cảnh chi tiết là phạm vi hợp tác.",
         "mouItems": {
           "date": {
             "title": "Ngày ký",
@@ -379,8 +378,8 @@
             "description": "Tuyển chọn lao động và xác minh điều kiện, đào tạo kỹ năng nghề, công việc và ngôn ngữ, hỗ trợ hành chính liên quan đến xuất nhập cảnh"
           },
           "joongwooRole": {
-            "title": "Vai trò của Joong Woo HRD",
-            "description": "Tìm kiếm và kết nối doanh nghiệp Hàn Quốc, Nhật Bản; hỗ trợ ổn định pháp lý, lao động, hành chính và kế toán cho người lao động sau khi nhập cảnh"
+            "title": "Vai trò của Jeongwoo Human Resource Development Institute",
+            "description": "Chúng tôi tìm kiếm và kết nối doanh nghiệp tại Hàn Quốc và Nhật Bản; hướng dẫn, phối hợp hành chính để hỗ trợ người lao động ổn định sau khi nhập cảnh; và khi cần, giới thiệu họ đến các chuyên gia pháp lý, lao động hoặc kế toán có đủ chuyên môn. Chúng tôi không thực hiện đại diện pháp lý."
           }
         }
       },
@@ -454,7 +453,7 @@
         "principles": {
           "partnership": {
             "title": "Quan hệ đối tác đã được xác minh",
-            "description": "Ngày 5 tháng 7 năm 2026, chúng tôi ký MOU với sáu tổ chức địa phương tại Nepal, thiết lập hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
+            "description": "Dựa trên kinh nghiệm tích lũy trong quản lý nhân lực quốc tế và hệ thống hợp tác chiến lược với các tổ chức địa phương ở nước ngoài, chúng tôi vận hành một hệ thống quản lý tích hợp, bao quát việc tuyển chọn lao động, xác minh năng lực, đào tạo trước khi xuất cảnh, cùng hướng dẫn và phối hợp các thủ tục hành chính liên quan đến xuất nhập cảnh."
           },
           "regulation": {
             "title": "Xác nhận chế độ và pháp luật",
@@ -496,7 +495,7 @@
       },
       "main": {
         "title": "Hãy sắp xếp các thông tin cần thiết trước khi tư vấn",
-        "description": "Chức năng gửi biểu mẫu web chưa hoạt động. Trước hết chúng tôi cung cấp thông tin cơ bản của công ty và các hạng mục cần chuẩn bị cho tư vấn.",
+        "description": "Để tư vấn chính xác, chúng tôi hướng dẫn những thông tin cần cung cấp và quy trình khi liên hệ.",
         "companyItems": {
           "founder": "Giám đốc điều hành",
           "businessNumber": "Mã số đăng ký kinh doanh",
@@ -506,8 +505,8 @@
         }
       },
       "form": {
-        "title": "Liên hệ qua điện thoại hoặc email",
-        "description": "Đối với yêu cầu tuyển dụng và hợp tác, hãy gọi số di động tại Hàn Quốc hoặc Nhật Bản, hoặc dùng địa chỉ email bên dưới.",
+        "title": "Hướng dẫn liên hệ",
+        "description": "Đối với các yêu cầu về tuyển dụng hoặc hợp tác, vui lòng liên hệ qua số điện thoại hoặc email bên dưới.",
         "preparationTitle": "Thông tin nên chuẩn bị trước khi tư vấn",
         "preparationItems": {
           "roleAndCount": "Vị trí công việc và số lượng nhân sự mong muốn",
@@ -516,7 +515,8 @@
           "locationAndHousing": "Khu vực làm việc và việc hỗ trợ chỗ ở"
         },
         "notice": "Để được phản hồi nhanh hơn, vui lòng nêu vị trí và số lượng cần tuyển, thời điểm nhập cảnh mong muốn, loại thị thực đang xem xét và khu vực làm việc.",
-        "status": "Gửi yêu cầu qua email"
+        "status": "Gửi yêu cầu qua email",
+        "reassurance": "Ngay cả khi nội dung cần trao đổi chưa thật rõ ràng, quý khách cũng đừng ngần ngại liên hệ. Qua tư vấn chuyên môn, chúng tôi sẽ đề xuất phương án phù hợp nhất với tình hình của quý khách."
       }
     }
   }

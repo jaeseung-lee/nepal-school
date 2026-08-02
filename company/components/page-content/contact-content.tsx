@@ -10,17 +10,18 @@ export default function ContactContent({ locale = DEFAULT_LOCALE }: { locale?: L
   const messages = getMessages(locale);
   const copy = messages.pages.contact;
   const companyItems = [
-    { label: copy.main.companyItems.founder, value: messages.site.founder, icon: IdentificationCard },
-    { label: copy.main.companyItems.businessNumber, value: messages.site.businessRegistrationNumber, icon: Buildings },
-    { label: copy.main.companyItems.address, value: messages.site.streetAddress, icon: MapPin },
+    { key: "founder", label: copy.main.companyItems.founder, value: messages.site.founder, icon: IdentificationCard },
+    { key: "business-number", label: copy.main.companyItems.businessNumber, value: messages.site.businessRegistrationNumber, icon: Buildings },
+    { key: "address", label: copy.main.companyItems.address, value: messages.site.streetAddress, icon: MapPin },
     ...SITE.phones.map((phone) => ({
-      label: `${messages.site.areaServed[phone.market]} ${messages.common.mobile}`,
+      key: `phone-${phone.countryCode}`,
+      label: messages.common.mobile,
       value: phone.national,
       href: phone.href,
       icon: Phone,
     })),
-    SITE.email ? { label: copy.main.companyItems.email, value: SITE.email, href: `mailto:${SITE.email}`, icon: IdentificationCard } : null,
-  ].filter(Boolean) as { label: string; value: string; href?: string; icon: typeof IdentificationCard }[];
+    SITE.email ? { key: "email", label: copy.main.companyItems.email, value: SITE.email, href: `mailto:${SITE.email}`, icon: IdentificationCard } : null,
+  ].filter(Boolean) as { key: string; label: string; value: string; href?: string; icon: typeof IdentificationCard }[];
 
   return (
     <main>
@@ -46,7 +47,7 @@ export default function ContactContent({ locale = DEFAULT_LOCALE }: { locale?: L
               {companyItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.label} className="flex gap-4 rounded-[22px] border border-line bg-surface p-5 shadow-sm shadow-ink/5">
+                  <div key={item.key} className="flex gap-4 rounded-[22px] border border-line bg-surface p-5 shadow-sm shadow-ink/5">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
                       <Icon size={22} weight="duotone" aria-hidden="true" />
                     </span>

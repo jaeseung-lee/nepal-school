@@ -38,7 +38,6 @@ export default function SiteFooter() {
               screenReaderLabel={`${messages.site.name} — ${messages.site.alternateName}`}
             />
             <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
-            <p className="mt-4 text-xs text-gray-500">{messages.footer.network}</p>
           </div>
 
           <div>

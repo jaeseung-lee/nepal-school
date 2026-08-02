@@ -5,7 +5,7 @@ import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import JsonLd from "@/components/json-ld";
 import { getMessages, type Locale } from "@/lib/i18n";
-import { SITE_URL } from "@/lib/site";
+import { SITE, SITE_URL } from "@/lib/site";
 
 export default function PublicShell({ children, locale }: { children: React.ReactNode; locale: Locale }) {
   const messages = getMessages(locale);
@@ -20,7 +20,7 @@ export default function PublicShell({ children, locale }: { children: React.Reac
           "@id": `${SITE_URL}/#website`,
           url: SITE_URL,
           name: messages.site.name,
-          alternateName: "JOONG WOO HRD",
+          alternateName: SITE.brandName.en,
           inLanguage: ["ko", "en", "ja", "ne", "vi", "lo"],
           publisher: { "@id": `${SITE_URL}/#organization` },
         }}

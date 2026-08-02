@@ -8,7 +8,7 @@ A single repo holding three loosely-coupled things about a **Nepal → Japan 특
 
 1. **Root wiki** — Korean-language research/feasibility markdown (`00-사업개요.md` … `07-취업타임라인-주체별역할.md` + `README.md`). This is the source of truth; the dashboard app renders it.
 2. **`dashboard/`** — Next.js 14 internal viewer that renders the root wiki markdown.
-3. **`company/`** — Next.js 15 marketing site for 정우인재개발원 (Joong Woo HRD), a separate B2B corporate site.
+3. **`company/`** — Next.js 15 marketing site for 정우인재개발원 (Jeongwoo Human Resource Development Institute), a separate B2B corporate site.
 
 The two apps are **independent** (own `package.json`, own `node_modules`, different React/Next versions). The repo root itself is not a JS project — there is no root `package.json`.
 

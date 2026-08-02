@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Global hiring operations" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/japan.webp", alt: "Hotel team preparing an SSW accommodation role and support plan", width: 1586, height: 992 }

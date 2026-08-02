@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Vận hành tuyển dụng quốc tế" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/japan.webp", alt: "Cơ sở chăm sóc chuẩn bị nơi làm việc và hỗ trợ cho lao động SSW1", width: 1586, height: 992 }

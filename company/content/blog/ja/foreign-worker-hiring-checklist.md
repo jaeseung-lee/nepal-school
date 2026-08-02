@@ -15,7 +15,7 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-19"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "グローバル採用運営チーム" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/partner.webp", alt: "外国人材採用の要件を確認する企業担当者の協議", width: 1587, height: 991 }

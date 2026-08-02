@@ -917,7 +917,7 @@ const BUSINESS_AREA_REGISTRY = {
       notice: {
         title: "入学・査証は教育機関・関係当局の審査に従います",
         body:
-          "JOONG WOO HRDは、大学や政府機関に代わって入学許可・査証発給を保証しません。募集対象、提出書類、費用、日程、支援範囲は、連携大学・語学堂および学生ごとに確認する必要があります。",
+          "Jeongwoo Human Resource Development Instituteは、大学や政府機関に代わって入学許可・査証発給を保証しません。募集対象、提出書類、費用、日程、支援範囲は、連携大学・語学堂および学生ごとに確認する必要があります。",
       },
       cta: {
         eyebrow: "INSTITUTIONAL PARTNERSHIP",
@@ -1100,7 +1100,7 @@ const BUSINESS_AREA_REGISTRY = {
       stages: [
         {
           title: "ネパールの訓練パートナーとの連携",
-          description: "Bhairav Industrial Skills Hubの法人登録と、JOONG WOO HRDとの2026年7月のMOUを確認しています。実際の溶接コースと施設は別途調査します。",
+          description: "Bhairav Industrial Skills Hubの法人登録と、Jeongwoo Human Resource Development Instituteとの2026年7月のMOUを確認しています。実際の溶接コースと施設は別途調査します。",
           status: "verified",
           points: ["ネパール会社登録局への法人登録", "職業技術教育に関するMOU", "コース・施設・安全基準は別途調査"],
         },

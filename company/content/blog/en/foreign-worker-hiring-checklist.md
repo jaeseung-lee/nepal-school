@@ -15,14 +15,14 @@ publishedAt: "2026-07-16"
 modifiedAt: "2026-07-16"
 generationMethod: ai-assisted
 sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" }
-author: { name: "JOONG WOO HRD", role: "Global hiring operations" }
+author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
 heroImage: { src: "/kv/redesign/partner.webp", alt: "Company team reviewing requirements for international recruitment", width: 1587, height: 991 }
 sources:
   - { label: "HRDKorea employer support", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "Official employer information for preparing and managing employment under the permit system.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "HRDKorea EPS procedure comparison", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "Official sequence for domestic recruitment effort, permit, contract and employment management.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
-relatedPosts: [{ label: "Services", href: "/services", description: "See the preparation stages supported by JOONG WOO HRD." }]
+relatedPosts: [{ label: "Services", href: "/services", description: "See the preparation stages supported by Jeongwoo Human Resource Development Institute." }]
 ---
 
 ## Direct answer

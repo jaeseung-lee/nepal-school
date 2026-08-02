@@ -36,6 +36,8 @@ BUNDLED_FONT_FILES = (
 A4_WIDTH = 595.2755905511812
 A4_HEIGHT = 841.8897637795277
 MAX_BYTES = 10 * 1024 * 1024
+EXACT_BRAND_NAME = "Jeongwoo Human Resource Development Institute"
+REJECTED_BRAND_ALIASES = ("JOONG WOO HRD", "Joong Woo HRD")
 
 JA_REJECTED_COPY = (
     "主要学習モジュール",
@@ -139,6 +141,17 @@ def verify_one(locale: str) -> dict[str, Any]:
 
     metadata = reader.metadata
     assert metadata is not None
+    brand_name = data["contact"]["brandName"]["en"]
+    assert brand_name == EXACT_BRAND_NAME, f"unexpected shared English brand: {brand_name!r}"
+    assert brand_name in (metadata.title or ""), "exact English brand is missing from PDF title"
+    assert brand_name in (metadata.keywords or ""), "exact English brand is missing from PDF keywords"
+    metadata_text = "\n".join(
+        str(value)
+        for value in (metadata.title, metadata.subject, metadata.keywords, metadata.author)
+        if value
+    )
+    for alias in REJECTED_BRAND_ALIASES:
+        assert alias not in metadata_text, f"old brand alias found in PDF metadata: {alias}"
     assert metadata.title == data["metadata"]["title"]
     assert metadata.subject == data["metadata"]["description"]
     assert metadata.author == data["contact"]["legalName"]["ko"]
@@ -152,6 +165,7 @@ def verify_one(locale: str) -> dict[str, Any]:
     image_count = 0
     image_color_spaces: set[str] = set()
     content_streams: list[bytes] = []
+    page_four_text_runs: list[tuple[str, float]] = []
 
     for page_number, page in enumerate(reader.pages, start=1):
         box = page.mediabox
@@ -163,7 +177,20 @@ def verify_one(locale: str) -> dict[str, Any]:
         for forbidden_box in ("/BleedBox", "/TrimBox", "/ArtBox"):
             assert forbidden_box not in page, f"page {page_number} unexpectedly defines {forbidden_box}"
 
-        extracted = page.extract_text()
+        if page_number == 4:
+            def record_page_four_text(
+                text: str,
+                _current_transformation_matrix: list[float],
+                text_matrix: list[float],
+                _font_dictionary: DictionaryObject | None,
+                _font_size: float,
+            ) -> None:
+                if text.strip():
+                    page_four_text_runs.append((text.strip(), float(text_matrix[5])))
+
+            extracted = page.extract_text(visitor_text=record_page_four_text)
+        else:
+            extracted = page.extract_text()
         assert extracted, f"page {page_number} has no selectable text"
         text_parts.append(extracted)
 
@@ -205,6 +232,9 @@ def verify_one(locale: str) -> dict[str, Any]:
                 uris.append(str(uri))
 
     extracted_text = "\n".join(text_parts)
+    assert brand_name in extracted_text, "exact English brand is missing from selectable PDF text"
+    for alias in REJECTED_BRAND_ALIASES:
+        assert alias not in extracted_text, f"old brand alias found in selectable PDF text: {alias}"
     compact = compact_text(extracted_text)
     compact_pages = [compact_text(text) for text in text_parts]
     copy = data["copy"]
@@ -311,6 +341,27 @@ def verify_one(locale: str) -> dict[str, Any]:
         assert compact_text(fragment) not in compact, f"unsupported claim found: {fragment}"
 
     if locale == "ja":
+        page_four_lines: dict[float, str] = {}
+        for text, y in page_four_text_runs:
+            page_four_lines[y] = page_four_lines.get(y, "") + text
+        description_compact = compact_text(partnership["description"])
+        description_y_positions = [
+            y
+            for y, text in page_four_lines.items()
+            if len(compact_text(text)) >= 4 and compact_text(text) in description_compact
+        ]
+        first_inquiry = compact_text(copy["contact"]["inquiryTypes"][0])
+        inquiry_y_positions = [
+            y for y, text in page_four_lines.items() if first_inquiry in compact_text(text)
+        ]
+        assert description_y_positions and inquiry_y_positions, (
+            "could not locate Japanese partnership description/inquiry text geometry"
+        )
+        description_to_inquiry_gap = min(description_y_positions) - max(inquiry_y_positions)
+        assert description_to_inquiry_gap >= 18, (
+            "Japanese partnership description is too close to inquiry pills: "
+            f"{description_to_inquiry_gap:.1f}pt baseline gap"
+        )
         for fragment in JA_REJECTED_COPY:
             assert compact_text(fragment) not in compact, f"superseded Japanese copy found: {fragment}"
 

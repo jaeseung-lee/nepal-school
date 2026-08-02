@@ -1,13 +1,13 @@
 {
   "site": {
-    "name": "Joong Woo HRD",
-    "nameEnglish": "JOONG WOO HRD",
+    "name": "Jeongwoo Human Resource Development Institute",
+    "nameEnglish": "Jeongwoo Human Resource Development Institute",
     "legalName": "Jungwoo Human Development Co., Ltd.",
     "legalNameEnglish": "Jungwoo Human Development Co., Ltd.",
-    "alternateName": "JOONG WOO HRD",
+    "alternateName": "Jeongwoo Human Resource Development Institute",
     "slogan": "A global human-resources partner developing Nepali talent through local training",
     "seoTitle": "Nepali Talent Development and Employment Pathways to Korea and Japan",
-    "description": "We directly train and source talent in Nepal, work with sourcing partners in Vietnam and Laos, and prepare recruitment for employers in Korea and Japan.",
+    "description": "We directly train and source talent in Nepal, source talent through partners in Vietnam, Myanmar, Laos, and Sri Lanka, and connect candidates with employers in the destination and hiring markets of Korea and Japan.",
     "founder": "Oh Je-hwan",
     "foundingDate": "June 10, 2026",
     "businessRegistrationNumber": "684-13-02918",
@@ -51,7 +51,7 @@
     "contact": "Hiring preparation"
   },
   "header": {
-    "homeAria": "Joong Woo HRD home",
+    "homeAria": "Jeongwoo Human Resource Development Institute home",
     "primaryNav": "Primary navigation",
     "languageSelector": "Select language",
     "openMenu": "Open menu",
@@ -68,10 +68,9 @@
     }
   },
   "footer": {
-    "description": "We develop Nepali talent through local training and connect them lawfully with companies in Korea and Japan.",
-    "network": "Direct training and sourcing in Nepal; partner sourcing in Vietnam and Laos; destination markets in Korea and Japan.",
+    "description": "Through structured training and objective assessment, we select talent suited to real workplace needs.",
     "contactNotice": "Our web inquiry channel is not yet formally open. This area first provides guidance for organizing company requirements.",
-    "countries": "Train/source: Nepal · Partner source: Vietnam, Laos · Recruit: Korea, Japan"
+    "countries": "Nepal, Vietnam, Myanmar, Laos, Sri Lanka, Republic of Korea, and Japan"
   },
   "metrics": {
     "ariaLabel": "Key facts",
@@ -85,23 +84,23 @@
         "sub": "Four Korean categories and Japan’s Specified Skilled Worker No. 1"
       },
       "countries": {
-        "value": "5",
+        "value": "7",
         "unit": "countries",
         "label": "Partner countries",
-        "sub": "Nepal, Vietnam, Laos, Republic of Korea, and Japan"
+        "sub": "Nepal, Vietnam, Myanmar, Laos, Sri Lanka, Republic of Korea, and Japan"
       },
       "partners": {
-        "value": "7",
+        "value": "11",
         "unit": "partners",
         "label": "Partner organizations",
-        "sub": "Training, sending, and industry sectors"
+        "sub": "6 in Nepal, 3 in Vietnam, and 2 in Laos"
       }
     }
   },
   "home": {
     "hero": {
-      "title": "Fair opportunities",
-      "lineBreak": "for everyone",
+      "title": "From local training and recruitment abroad",
+      "lineBreak": "to employment in Korea and Japan",
       "description": "A corporate partner responsible for foreign talent from training and examinations through visas and settlement.",
       "contactCta": "Contact us",
       "servicesCta": "Explore services",
@@ -114,7 +113,7 @@
       "slideStatus": "Field photo"
     },
     "intro": {
-      "title": "Before placement, we design training and verification",
+      "title": "Through structured training and objective assessment, we select talent suited to real workplace needs.",
       "description": "We are a company founded in June 2026. Rather than making exaggerated claims, we clearly disclose local partners, regulatory standards, and roles at every stage.",
       "aboutCta": "About us",
       "whyCta": "Our trust standards"
@@ -134,8 +133,8 @@
       "alt": "A company consultation scene",
       "items": {
         "company": {
-          "q": "What kind of company is Joong Woo HRD?",
-          "a": "Joong Woo HRD is a global human-resources development company that develops Nepali talent through local vocational training and lawfully connects it with companies in Korea and Japan."
+          "q": "What kind of company is Jeongwoo Human Resource Development Institute?",
+          "a": "Jeongwoo Human Resource Development Institute is a global human-resources development company that develops Nepali talent through local vocational training and lawfully connects it with companies in Korea and Japan."
         },
         "visa": {
           "q": "Which work visas and systems do you support?",
@@ -148,7 +147,7 @@
         },
         "countries": {
           "q": "Which countries do your candidates come from?",
-          "a": "We connect talent developed in Nepal with companies in Korea and Japan. Our current network focuses on five countries: Nepal, Vietnam, Laos, Republic of Korea, and Japan."
+          "a": "We directly train and source talent in Nepal, source talent through partners in Vietnam, Myanmar, Laos, and Sri Lanka, and connect candidates with employers in the destination and hiring markets of Korea and Japan."
         },
         "trust": {
           "q": "Can a new company be trusted?",
@@ -283,7 +282,7 @@
     "about": {
       "metadata": {
         "title": "About us",
-        "description": "Learn about Joong Woo HRD, a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan."
+        "description": "Learn about Jeongwoo Human Resource Development Institute, a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan."
       },
       "banner": {
         "eyebrow": "Company overview",
@@ -296,7 +295,7 @@
       "main": {
         "title": "Talent should not simply be sent; it should be prepared",
         "paragraphs": {
-          "first": "Joong Woo HRD begins with vocational training in Nepal. We lawfully connect talent equipped with job, language, and cultural skills to the requirements of companies in Korea and Japan.",
+          "first": "Jeongwoo Human Resource Development Institute begins with vocational training in Nepal. We lawfully connect talent equipped with job, language, and cultural skills to the requirements of companies in Korea and Japan.",
           "second": "In July 2026, we signed MOUs with six organizations in Nepal to strengthen cooperation for worker selection, qualification verification, education, and immigration administration."
         },
         "servicesCta": "Services",
@@ -307,7 +306,7 @@
     "services": {
       "metadata": {
         "title": "Services",
-        "description": "From vocational schools in Nepal and Korean work visas (E-9, E-7, D-2, D-4) to Japan’s Specified Skilled Worker program: Joong Woo HRD’s three core service areas and one-stop process."
+        "description": "From vocational schools in Nepal and Korean work visas (E-9, E-7, D-2, D-4) to Japan’s Specified Skilled Worker program: Jeongwoo Human Resource Development Institute’s three core service areas and one-stop process."
       },
       "banner": {
         "eyebrow": "Service structure",
@@ -327,7 +326,7 @@
     "gallery": {
       "metadata": {
         "title": "Field gallery",
-        "description": "Explore photos from Joong Woo HRD's training, facilities, visits, and collaboration activities in Nepal."
+        "description": "Explore photos from Jeongwoo Human Resource Development Institute's training, facilities, visits, and collaboration activities in Nepal."
       },
       "eyebrow": "Training and collaboration in the field",
       "title": "Field gallery",
@@ -364,7 +363,7 @@
       "feature": {
         "alt": "An international partnership discussion",
         "title": "International business MOUs signed with six organizations in Nepal",
-        "description": "On July 5, 2026, Joong Woo HRD signed separate MOUs with three local Nepali worker-sending agencies and three vocational skills and education organizations. The parties defined vocational education, employment links to Korea and Japan, job and language education, and detailed immigration procedures as areas of cooperation.",
+        "description": "On July 5, 2026, Jeongwoo Human Resource Development Institute signed separate MOUs with three local Nepali worker-sending agencies and three vocational skills and education organizations. The parties defined vocational education, employment links to Korea and Japan, job and language education, and detailed immigration procedures as areas of cooperation.",
         "mouItems": {
           "date": {
             "title": "Date signed",
@@ -379,8 +378,8 @@
             "description": "Worker selection and qualification verification, vocational skills, job, and language education, and immigration-related administrative support"
           },
           "joongwooRole": {
-            "title": "Joong Woo HRD’s role",
-            "description": "Developing and matching companies in Korea and Japan, and providing legal, labor, administrative, and accounting settlement support for arriving workers"
+            "title": "Jeongwoo Human Resource Development Institute’s role",
+            "description": "We develop and match employers in Korea and Japan, provide administrative guidance and coordination for arriving workers, and refer them to appropriately qualified legal, labor, or accounting professionals when needed. We do not provide legal representation."
           }
         }
       },
@@ -454,7 +453,7 @@
         "principles": {
           "partnership": {
             "title": "Verified partnerships",
-            "description": "On July 5, 2026, we signed MOUs with six local organizations in Nepal and established a cooperative system for worker selection, qualification verification, education, and immigration administration."
+            "description": "Building on our experience in international workforce management and strategic partnerships with local institutions abroad, we operate an integrated management system covering worker selection, competency assessment, pre-departure training, and guidance and coordination for immigration-related administrative procedures."
           },
           "regulation": {
             "title": "Checking systems and regulations",
@@ -496,7 +495,7 @@
       },
       "main": {
         "title": "Let us organize the necessary facts before the consultation",
-        "description": "Web-form submission is not yet in operation. We first provide company information and items to prepare for a consultation.",
+        "description": "To ensure an accurate consultation, we explain the information required and the steps to follow when you contact us.",
         "companyItems": {
           "founder": "CEO",
           "businessNumber": "Business registration number",
@@ -506,8 +505,8 @@
         }
       },
       "form": {
-        "title": "Call or email us",
-        "description": "For recruitment and partnership inquiries, call our Korean or Japanese mobile number or use the email address below.",
+        "title": "How to contact us",
+        "description": "For recruitment or partnership inquiries, please contact us using one of the phone numbers or the email address below.",
         "preparationTitle": "Useful information to organize before consultation",
         "preparationItems": {
           "roleAndCount": "Desired roles and headcount",
@@ -516,7 +515,8 @@
           "locationAndHousing": "Work location and whether housing support is available"
         },
         "notice": "To help us respond faster, please include the role and headcount, preferred arrival date, visa under consideration and work location.",
-        "status": "Send an email inquiry"
+        "status": "Send an email inquiry",
+        "reassurance": "Even if you are not yet sure how to frame your inquiry, please feel free to contact us. Through a professional consultation, we will guide you toward the approach best suited to your circumstances."
       }
     }
   }

@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: LocalizedPageProps): Promise<
       description: businessArea.slug === "japan-caregiver" ? caregiverMetadata.description : businessArea.meta.description,
       image:
         businessArea.slug === "japan-caregiver"
-          ? { src: "/lp/v1/og.png", alt: caregiverMetadata.title, width: 1200, height: 630 }
+          ? { src: "/lp/v1/og.webp", alt: caregiverMetadata.title, width: 1200, height: 630 }
           : businessArea.evidence.images[0],
     });
     if (businessArea.slug !== "japan-caregiver") return metadata;

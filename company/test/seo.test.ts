@@ -17,18 +17,52 @@ import { SITE, SITE_URL } from "../lib/site";
 
 const root = process.cwd();
 const read = (file: string) => fs.readFileSync(path.join(root, file), "utf8");
+const PUBLIC_BRAND = "Jeongwoo Human Resource Development Institute";
+const ACTIVE_PUBLIC_SOURCE_ROOTS = ["app", "components", "content", "lib", "messages", "public"];
+const ACTIVE_PUBLIC_DOCUMENTS = ["../CLAUDE.md", "README.md"];
+const TEXT_SOURCE_EXTENSIONS = new Set([
+  ".css", ".html", ".js", ".json", ".jsx", ".md", ".mjs", ".svg", ".ts", ".tsx", ".txt",
+]);
+
+function activePublicSources(directory: string): string[] {
+  return fs.readdirSync(path.join(root, directory), { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return activePublicSources(relativePath);
+    return TEXT_SOURCE_EXTENSIONS.has(path.extname(entry.name)) ? [relativePath] : [];
+  });
+}
 
 test("법인·브랜드·국가 역할이 분리되어 있다", () => {
   assert.equal(SITE.legalName.ko, "주식회사 정우인력개발");
   assert.equal(SITE.legalName.en, "Jungwoo Human Development Co., Ltd.");
-  assert.equal(SITE.brandName.en, "JOONG WOO HRD");
+  assert.equal(SITE.brandName.en, PUBLIC_BRAND);
+  assert.notEqual(SITE.brandName.en, SITE.legalName.en);
   assert.deepEqual(SITE.trainingCountries.map((country) => country.code), ["NP"]);
-  assert.deepEqual(SITE.sourcingCountries.map((country) => [country.code, country.model]), [["NP", "direct"], ["VN", "partner"], ["LA", "partner"]]);
+  assert.deepEqual(SITE.sourcingCountries.map((country) => [country.code, country.model]), [["NP", "direct"], ["VN", "partner"], ["MM", "partner"], ["LA", "partner"], ["LK", "partner"]]);
   assert.deepEqual(SITE.destinationMarkets.map((country) => country.code), ["KR", "JP"]);
   assert.deepEqual(SITE.phones.map((phone) => [phone.countryCode, phone.national, phone.href]), [
     ["KR", "010-6363-6086", "tel:+821063636086"],
     ["JP", "080-2933-8838", "tel:+818029338838"],
   ]);
+});
+
+test("활성 런타임·공개 문서에는 구 영문 브랜드 별칭이 남지 않는다", () => {
+  // The include-only roots exclude historical/tmp records, tests, .next output,
+  // scripts (including the catalog generator), while the extension allowlist excludes PDFs and other binaries.
+  const sourceFiles = [
+    ...ACTIVE_PUBLIC_SOURCE_ROOTS.flatMap(activePublicSources),
+    ...ACTIVE_PUBLIC_DOCUMENTS,
+  ];
+  const legacyAliases = /Joong Woo HRD|JOONG WOO\(JW\)|Joong Woo Human Resource Development Co\., Ltd\./i;
+  const offenders = sourceFiles.filter((file) => legacyAliases.test(read(file)));
+
+  assert.deepEqual(offenders, []);
+  assert.match(read("../CLAUDE.md"), new RegExp(PUBLIC_BRAND));
+  assert.match(read("README.md"), new RegExp(PUBLIC_BRAND));
+  assert.match(read("README.md"), /Jungwoo Human Development Co\., Ltd\./);
+  assert.match(read("components/public-shell.tsx"), /alternateName: SITE\.brandName\.en/);
+  assert.equal(SITE.brandName.en, PUBLIC_BRAND);
+  assert.equal(SITE.legalName.en, "Jungwoo Human Development Co., Ltd.");
 });
 
 test("공통 대체 링크가 6개 언어와 x-default를 제공한다", () => {
@@ -182,7 +216,7 @@ test("개호 상세 메타데이터는 원본 lp/v1 값과 전용 OG 이미지�
 
   for (const { locale, source } of routes) {
     assert.match(source, new RegExp(`LP_V1_META\\.${locale}`));
-    assert.match(source, /src: "\/lp\/v1\/og\.png", alt: caregiverMetadata\.title, width: 1200, height: 630/);
+    assert.match(source, /src: "\/lp\/v1\/og\.webp", alt: caregiverMetadata\.title, width: 1200, height: 630/);
     assert.match(source, /title: \{ absolute: caregiverMetadata\.title \}/);
   }
 });
