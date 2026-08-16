@@ -160,7 +160,7 @@ test("BrandLogo renders the official lockup and mark at their intrinsic dimensio
 });
 
 test("BrandLogo exposes an optional screen-reader label while keeping its image decorative", () => {
-  const screenReaderLabel = "정우 인재개발원 — Joongwoo Human Resources Development Institute";
+  const screenReaderLabel = "정우인재개발원 — Jeongwoo Human Resource Development Institute";
   const logo = renderToStaticMarkup(createElement(BrandLogo, { kind: "lockup", screenReaderLabel }));
 
   assert.match(logo, /aria-hidden="true"/);

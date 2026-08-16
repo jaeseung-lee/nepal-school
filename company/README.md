@@ -1,6 +1,6 @@
-# 주식회사 정우인력개발 — 회사 홈페이지
+# 정우인재개발원 — 회사 홈페이지
 
-외국인력 채용을 원하는 한국·일본 기업(B2B)을 대상으로 한 정우인력개발 소개 사이트입니다.
+외국인력 채용을 원하는 한국·일본 기업(B2B)을 대상으로 한 정우인재개발원 소개 사이트입니다.
 Claude Design로 만든 정적 6페이지 디자인을 **Next.js(App Router) + TypeScript + Tailwind CSS v4**로 이식했습니다.
 
 ## 기술 스택
@@ -95,6 +95,6 @@ Tailwind 유틸(`bg-primary-main`, `text-gold-deep`, `font-display`, `max-w-cont
 
 ## 회사 기본 정보(확정)
 
-- 국문: 주식회사 정우인력개발 / 영문: Jungwoo Human Development Co., Ltd. / 브랜드: Jeongwoo Human Resource Development Institute
+- 국문: 정우인재개발원 / 영문: Jeongwoo Human Resource Development Institute
 - 대표이사: 오제환 · 설립: 2026년 6월 · 직접 교육·공급: 네팔 · 파트너 소싱: 베트남·미얀마·라오스·스리랑카 · 취업 목적국: 한국·일본
 - 사업: 해외 직업훈련학교 운영 · 한국 취업비자(E-9/E-7/D-2/D-4) · 일본 특정기능1호(개호·숙박)

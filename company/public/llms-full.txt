@@ -2,8 +2,8 @@
 
 ## Entity facts
 
-- Legal name (Korean): 주식회사 정우인력개발
-- Legal name (English): Jungwoo Human Development Co., Ltd.
+- Legal name (Korean): 정우인재개발원
+- Legal name (English): Jeongwoo Human Resource Development Institute
 - Brand: 정우인재개발원 / Jeongwoo Human Resource Development Institute
 - Business registration number: 684-13-02918
 - Address: 경기도 용인시 기흥구 구갈로28번길 21-6, 금보빌딩 6층 6034호

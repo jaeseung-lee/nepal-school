@@ -213,7 +213,7 @@ test("company refresh copy is complete in every supported locale", () => {
     assert.equal("network" in catalog.footer, false);
     assert.equal(catalog.site.nameEnglish, "Jeongwoo Human Resource Development Institute");
     assert.equal(catalog.site.alternateName, "Jeongwoo Human Resource Development Institute");
-    assert.equal(catalog.site.legalNameEnglish, "Jungwoo Human Development Co., Ltd.");
+    assert.equal(catalog.site.legalNameEnglish, "Jeongwoo Human Resource Development Institute");
     assert.doesNotMatch(JSON.stringify(catalog), /JOONG WOO HRD|Joong Woo HRD/);
   }
 });

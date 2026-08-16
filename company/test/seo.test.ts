@@ -17,6 +17,7 @@ import { SITE, SITE_URL } from "../lib/site";
 
 const root = process.cwd();
 const read = (file: string) => fs.readFileSync(path.join(root, file), "utf8");
+const PUBLIC_BRAND_KO = "정우인재개발원";
 const PUBLIC_BRAND = "Jeongwoo Human Resource Development Institute";
 const ACTIVE_PUBLIC_SOURCE_ROOTS = ["app", "components", "content", "lib", "messages", "public"];
 const ACTIVE_PUBLIC_DOCUMENTS = ["../CLAUDE.md", "README.md"];
@@ -32,11 +33,12 @@ function activePublicSources(directory: string): string[] {
   });
 }
 
-test("법인·브랜드·국가 역할이 분리되어 있다", () => {
-  assert.equal(SITE.legalName.ko, "주식회사 정우인력개발");
-  assert.equal(SITE.legalName.en, "Jungwoo Human Development Co., Ltd.");
+test("공개 회사명은 정우인재개발원으로 통일되어 있다", () => {
+  assert.equal(SITE.legalName.ko, PUBLIC_BRAND_KO);
+  assert.equal(SITE.brandName.ko, PUBLIC_BRAND_KO);
+  assert.equal(SITE.legalName.en, PUBLIC_BRAND);
   assert.equal(SITE.brandName.en, PUBLIC_BRAND);
-  assert.notEqual(SITE.brandName.en, SITE.legalName.en);
+  assert.equal(SITE.brandName.en, SITE.legalName.en);
   assert.deepEqual(SITE.trainingCountries.map((country) => country.code), ["NP"]);
   assert.deepEqual(SITE.sourcingCountries.map((country) => [country.code, country.model]), [["NP", "direct"], ["VN", "partner"], ["MM", "partner"], ["LA", "partner"], ["LK", "partner"]]);
   assert.deepEqual(SITE.destinationMarkets.map((country) => country.code), ["KR", "JP"]);
@@ -46,23 +48,22 @@ test("법인·브랜드·국가 역할이 분리되어 있다", () => {
   ]);
 });
 
-test("활성 런타임·공개 문서에는 구 영문 브랜드 별칭이 남지 않는다", () => {
+test("활성 런타임·공개 문서에는 잘못된 회사명과 구 브랜드 별칭이 남지 않는다", () => {
   // The include-only roots exclude historical/tmp records, tests, .next output,
   // scripts (including the catalog generator), while the extension allowlist excludes PDFs and other binaries.
   const sourceFiles = [
     ...ACTIVE_PUBLIC_SOURCE_ROOTS.flatMap(activePublicSources),
     ...ACTIVE_PUBLIC_DOCUMENTS,
   ];
-  const legacyAliases = /Joong Woo HRD|JOONG WOO\(JW\)|Joong Woo Human Resource Development Co\., Ltd\./i;
+  const legacyAliases = /정우인력개발|정우 인재개발원|Jungwoo Human Development Co\., Ltd\.|Joongwoo Human Resources Development Institute|Joong Woo HRD|JOONG WOO\(JW\)|Joong Woo Human Resource Development Co\., Ltd\./i;
   const offenders = sourceFiles.filter((file) => legacyAliases.test(read(file)));
 
   assert.deepEqual(offenders, []);
   assert.match(read("../CLAUDE.md"), new RegExp(PUBLIC_BRAND));
   assert.match(read("README.md"), new RegExp(PUBLIC_BRAND));
-  assert.match(read("README.md"), /Jungwoo Human Development Co\., Ltd\./);
   assert.match(read("components/public-shell.tsx"), /alternateName: SITE\.brandName\.en/);
   assert.equal(SITE.brandName.en, PUBLIC_BRAND);
-  assert.equal(SITE.legalName.en, "Jungwoo Human Development Co., Ltd.");
+  assert.equal(SITE.legalName.en, PUBLIC_BRAND);
 });
 
 test("공통 대체 링크가 6개 언어와 x-default를 제공한다", () => {

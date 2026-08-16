@@ -3,8 +3,8 @@ export const SITE_URL = "https://www.joongwoohrd.com";
 export const SITE = {
   url: SITE_URL,
   legalName: {
-    ko: "주식회사 정우인력개발",
-    en: "Jungwoo Human Development Co., Ltd.",
+    ko: "정우인재개발원",
+    en: "Jeongwoo Human Resource Development Institute",
   },
   brandName: {
     ko: "정우인재개발원",
@@ -52,7 +52,7 @@ export const SITE = {
   sameAs: [] as string[],
 } as const;
 
-// Compatibility aliases for existing presentational code. New SEO/entity code
-// must use legalName, brandName and the explicit country-role collections above.
+// Compatibility aliases for existing presentational code. Public company-name
+// fields intentionally share one Korean and English brand identity.
 export const SITE_NAME_KO = SITE.brandName.ko;
 export const SITE_NAME_EN = SITE.brandName.en;
