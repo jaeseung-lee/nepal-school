@@ -2,14 +2,18 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   activityTypeLabels,
+  addressTypeLabels,
   confidenceLabels,
   contactKindLabels,
+  contactReadinessLabels,
+  discoveryMethodLabels,
   employmentTypeLabels,
   formatEmploymentType,
   formatOrganizationType,
   formatStatusLabel,
   organizationTypeLabels,
   priorityLabels,
+  researchStatusLabels,
   roleLabels,
   salesMessages,
   scoreReasonLabels,
@@ -20,7 +24,7 @@ import {
 
 test("Japanese and Korean sales dictionaries contain identical keys", () => {
   assert.deepEqual(Object.keys(salesMessages.ja).sort(), Object.keys(salesMessages.ko).sort());
-  for (const labels of [stageLabels, statusLabels, employmentTypeLabels, organizationTypeLabels, priorityLabels, activityTypeLabels, contactKindLabels, confidenceLabels, roleLabels, signalLabels, scoreReasonLabels]) {
+  for (const labels of [stageLabels, statusLabels, employmentTypeLabels, organizationTypeLabels, priorityLabels, activityTypeLabels, contactKindLabels, contactReadinessLabels, researchStatusLabels, discoveryMethodLabels, addressTypeLabels, confidenceLabels, roleLabels, signalLabels, scoreReasonLabels]) {
     assert.deepEqual(Object.keys(labels.ja).sort(), Object.keys(labels.ko).sort());
   }
 });

@@ -30,8 +30,11 @@ test("list pagination normalizes invalid pages and returns a 25-row range", () =
 test("list parsers keep supported filters and discard invalid values", () => {
   const jobs = parseJobListParams(new URLSearchParams("q=care&status=broken&employment=FULL_TIME&grade=A&page=2"));
   assert.deepEqual({ q: jobs.q, status: jobs.status, employment: jobs.employment, grade: jobs.grade, page: jobs.page }, { q: "care", status: "all", employment: "FULL_TIME", grade: "A", page: 2 });
-  const companies = parseCompanyListParams(new URLSearchParams("stage=meeting&contact=invalid&owner=not-a-uuid"));
-  assert.deepEqual({ stage: companies.stage, contact: companies.contact, owner: companies.owner }, { stage: "meeting", contact: "all", owner: "all" });
+  const companies = parseCompanyListParams(new URLSearchParams("stage=meeting&readiness=ready&research=ambiguous&owner=not-a-uuid"));
+  assert.deepEqual(
+    { stage: companies.stage, readiness: companies.readiness, research: companies.research, owner: companies.owner },
+    { stage: "meeting", readiness: "ready", research: "ambiguous", owner: "all" },
+  );
 });
 
 test("pagination links preserve active filters, omit defaults, and show bounded page numbers", () => {

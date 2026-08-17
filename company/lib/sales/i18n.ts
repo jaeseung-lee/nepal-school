@@ -120,6 +120,27 @@ export const salesMessages = {
     pagesAndErrors: "ページ / エラー",
     warnings: "警告",
     filterResults: "該当件数",
+    contactReadiness: "連絡準備状況",
+    officialCompanyInfo: "公式法人情報",
+    communicationMethods: "連絡手段",
+    jobLocations: "求人の勤務地",
+    corporateNumber: "法人番号",
+    officialAddress: "公式法人住所",
+    department: "担当部署",
+    purpose: "用途",
+    primaryContact: "代表連絡先",
+    discoveryMethod: "登録方法",
+    lastChecked: "最終確認",
+    researchStatus: "調査結果",
+    lastResearch: "最終調査",
+    postalCode: "郵便番号",
+    countryCode: "国コード",
+    candidateInfo: "候補情報",
+    addCandidate: "候補を追加",
+    noOfficialAddress: "確認済みの公式法人住所はありません。",
+    addressType: "住所区分",
+    verifiedInformation: "確認済み情報",
+    pendingReview: "確認待ち候補",
   },
   ko: {
     appName: "개호 영업 리드",
@@ -238,6 +259,27 @@ export const salesMessages = {
     pagesAndErrors: "페이지 / 오류",
     warnings: "경고",
     filterResults: "검색 결과",
+    contactReadiness: "연락 준비 상태",
+    officialCompanyInfo: "공식 기업정보",
+    communicationMethods: "소통 수단",
+    jobLocations: "공고 근무지",
+    corporateNumber: "법인번호",
+    officialAddress: "공식 회사 주소",
+    department: "담당 부서",
+    purpose: "용도",
+    primaryContact: "대표 연락처",
+    discoveryMethod: "등록 방식",
+    lastChecked: "최근 확인",
+    researchStatus: "조사 결과",
+    lastResearch: "최근 조사",
+    postalCode: "우편번호",
+    countryCode: "국가 코드",
+    candidateInfo: "후보 정보",
+    addCandidate: "후보 추가",
+    noOfficialAddress: "확인된 공식 회사 주소가 없습니다.",
+    addressType: "주소 유형",
+    verifiedInformation: "확인된 정보",
+    pendingReview: "검토 대기 후보",
   },
 } as const;
 
@@ -249,8 +291,8 @@ export const stageLabels: LocalizedLabels = {
 };
 
 export const statusLabels: LocalizedLabels = {
-  ja: { active: "有効", missing: "未検出", closed: "終了", running: "実行中", succeeded: "成功", failed: "失敗", pending: "確認待ち", verified: "確認済み", rejected: "却下", suspended: "停止", none: "未登録" },
-  ko: { active: "활성", missing: "누락", closed: "종료", running: "실행 중", succeeded: "성공", failed: "실패", pending: "검토 대기", verified: "확인", rejected: "반려", suspended: "중지", none: "미등록" },
+  ja: { active: "有効", missing: "未検出", closed: "終了", queued: "待機中", running: "実行中", succeeded: "成功", found: "発見", partial: "一部発見", ambiguous: "要照合", not_found: "未発見", failed: "失敗", pending: "確認待ち", review_pending: "確認待ち", ready: "連絡準備完了", verified: "確認済み", rejected: "却下", suspended: "停止", none: "未登録" },
+  ko: { active: "활성", missing: "누락", closed: "종료", queued: "대기 중", running: "실행 중", succeeded: "성공", found: "발견", partial: "일부 발견", ambiguous: "추가 확인 필요", not_found: "찾지 못함", failed: "실패", pending: "검토 대기", review_pending: "검토 대기", ready: "연락 준비 완료", verified: "확인", rejected: "반려", suspended: "중지", none: "미등록" },
 };
 
 export const employmentTypeLabels: LocalizedLabels = {
@@ -274,8 +316,28 @@ export const activityTypeLabels: LocalizedLabels = {
 };
 
 export const contactKindLabels: LocalizedLabels = {
-  ja: { website: "ウェブサイト", phone: "電話", email: "メール", contact_form: "問い合わせフォーム", visit_address: "訪問先住所" },
-  ko: { website: "웹사이트", phone: "전화", email: "이메일", contact_form: "문의 양식", visit_address: "방문 주소" },
+  ja: { official_name: "正式法人名", corporate_number: "法人番号", official_address: "公式法人住所", website: "ウェブサイト", phone: "電話", email: "メール", contact_form: "問い合わせフォーム", visit_address: "訪問先住所" },
+  ko: { official_name: "공식 법인명", corporate_number: "법인번호", official_address: "공식 회사 주소", website: "웹사이트", phone: "전화", email: "이메일", contact_form: "문의 양식", visit_address: "방문 주소" },
+};
+
+export const contactReadinessLabels: LocalizedLabels = {
+  ja: { ready: "連絡準備完了", review_pending: "確認待ち", partial: "一部確認済み", missing: "候補なし" },
+  ko: { ready: "연락 준비 완료", review_pending: "검토 대기", partial: "일부 확인", missing: "후보 없음" },
+};
+
+export const researchStatusLabels: LocalizedLabels = {
+  ja: { queued: "待機中", running: "調査中", found: "発見", partial: "一部発見", ambiguous: "要照合", not_found: "未発見", failed: "失敗" },
+  ko: { queued: "대기 중", running: "조사 중", found: "발견", partial: "일부 발견", ambiguous: "추가 확인 필요", not_found: "찾지 못함", failed: "실패" },
+};
+
+export const discoveryMethodLabels: LocalizedLabels = {
+  ja: { automated: "自動調査", manual: "手動登録" },
+  ko: { automated: "자동 조사", manual: "수동 등록" },
+};
+
+export const addressTypeLabels: LocalizedLabels = {
+  ja: { registered_office: "登記住所", head_office: "本社", facility: "施設", other: "その他" },
+  ko: { registered_office: "등기 주소", head_office: "본사", facility: "시설", other: "기타" },
 };
 
 export const confidenceLabels: LocalizedLabels = {

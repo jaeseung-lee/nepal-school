@@ -3,6 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminProfile, requireInternalProfile } from "@/lib/sales/auth";
+import {
+  CONTACT_CANDIDATE_KINDS,
+  normalizeContactCandidate,
+  normalizeHttpUrl,
+  toContactCandidateDatabaseRow,
+} from "@/lib/sales/contact-enrichment";
 import { SALES_STAGES } from "@/lib/sales/i18n";
 import { calculateLeadScore } from "@/lib/sales/scoring";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -65,12 +71,19 @@ export async function reviewContactAction(formData: FormData) {
     })
     .parse(Object.fromEntries(formData));
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase
+  const { data: reviewed, error } = await supabase
     .from("contact_candidates")
     .update({ status: parsed.status, reviewed_by: profile.id, reviewed_at: new Date().toISOString() })
-    .eq("id", parsed.contactId);
+    .eq("id", parsed.contactId)
+    .eq("organization_id", parsed.organizationId)
+    .eq("status", "pending")
+    .select("id")
+    .maybeSingle();
   if (error) throw error;
+  if (!reviewed) throw new Error("Contact candidate was not updated.");
   revalidatePath(`/sales/companies/${parsed.organizationId}`);
+  revalidatePath("/sales/companies");
+  revalidatePath("/sales/jobs");
 }
 
 export async function addContactAction(formData: FormData) {
@@ -78,27 +91,57 @@ export async function addContactAction(formData: FormData) {
   const parsed = z
     .object({
       organizationId: z.string().uuid(),
-      kind: z.enum(["website", "phone", "email", "contact_form", "visit_address"]),
+      kind: z.enum(CONTACT_CANDIDATE_KINDS),
       value: z.string().min(1).max(500),
       sourceUrl: z.string().url(),
+      department: z.string().max(200),
+      purpose: z.string().max(200),
+      isPrimary: z.preprocess((value) => value === "on", z.boolean()),
+      postalCode: z.string().max(32),
+      countryCode: z.string().max(64),
+      region: z.string().max(100),
+      locality: z.string().max(200),
+      streetAddress: z.string().max(300),
+      addressType: z.preprocess(
+        (value) => value === "" ? undefined : value,
+        z.enum(["registered_office", "head_office", "facility", "other"]).optional(),
+      ),
       notes: z.string().max(1_000),
     })
     .parse(Object.fromEntries(formData));
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.from("contact_candidates").upsert(
+  const isAddressCandidate = parsed.kind === "official_address" || parsed.kind === "visit_address";
+  const normalized = normalizeContactCandidate(
     {
-      organization_id: parsed.organizationId,
       kind: parsed.kind,
       value: parsed.value,
-      source_url: parsed.sourceUrl,
+      sourceUrl: parsed.sourceUrl,
       confidence: "high",
-      status: "pending",
-      notes: parsed.notes || null,
+      department: parsed.department || undefined,
+      purpose: parsed.purpose || undefined,
+      isPrimary: parsed.isPrimary,
+      discoveryMethod: "manual",
+      postalCode: isAddressCandidate ? parsed.postalCode || undefined : undefined,
+      countryCode: isAddressCandidate ? parsed.countryCode || undefined : undefined,
+      region: isAddressCandidate ? parsed.region || undefined : undefined,
+      locality: isAddressCandidate ? parsed.locality || undefined : undefined,
+      streetAddress: isAddressCandidate ? parsed.streetAddress || undefined : undefined,
+      addressType: isAddressCandidate ? parsed.addressType : undefined,
+      notes: parsed.notes || undefined,
     },
-    { onConflict: "organization_id,kind,value", ignoreDuplicates: true },
+    { organizationId: parsed.organizationId, defaultDiscoveryMethod: "manual" },
+  );
+  const { error } = await supabase.from("contact_candidates").upsert(
+    toContactCandidateDatabaseRow(normalized),
+    {
+      onConflict: "organization_id,kind,normalized_value",
+      ignoreDuplicates: true,
+    },
   );
   if (error) throw error;
   revalidatePath(`/sales/companies/${parsed.organizationId}`);
+  revalidatePath("/sales/companies");
+  revalidatePath("/sales/jobs");
 }
 
 export async function addActivityAction(formData: FormData) {
@@ -168,6 +211,9 @@ export async function updateOrganizationAction(formData: FormData) {
       organizationType: z.enum(["direct_employer", "agency", "unknown"]),
       officialName: z.string().max(300),
       officialDomain: z.preprocess((value) => (value === "" ? null : value), z.string().url().nullable()),
+      corporateNumber: z.string().max(50)
+        .transform((value) => value.replace(/[^0-9]/g, ""))
+        .refine((value) => value === "" || /^\d{13}$/.test(value), "Corporate number must contain exactly 13 digits."),
     })
     .parse(Object.fromEntries(formData));
   const supabase = await createServerSupabaseClient();
@@ -176,7 +222,10 @@ export async function updateOrganizationAction(formData: FormData) {
     .update({
       organization_type: parsed.organizationType,
       official_name: parsed.officialName || null,
-      official_domain: parsed.officialDomain,
+      official_domain: parsed.officialDomain
+        ? normalizeHttpUrl(parsed.officialDomain, "officialDomain")
+        : null,
+      corporate_number: parsed.corporateNumber || null,
     })
     .eq("id", parsed.organizationId);
   if (error) throw error;

@@ -15,7 +15,8 @@ const GRADES = ["all", "A", "B", "C"] as const;
 const ORGANIZATION_TYPES = ["all", "direct_employer", "agency", "unknown"] as const;
 const FRESHNESS_VALUES = ["all", "new"] as const;
 const COMPANY_STAGES = ["all", "unreviewed", "researching", "contact_ready", "contacted", "follow_up", "meeting", "proposal", "won", "lost", "do_not_contact"] as const;
-const CONTACT_STATUSES = ["all", "verified", "pending", "rejected", "none"] as const;
+const CONTACT_READINESS_VALUES = ["all", "ready", "review_pending", "partial", "missing"] as const;
+const RESEARCH_STATUSES = ["all", "queued", "running", "found", "partial", "ambiguous", "not_found", "failed"] as const;
 
 export const FILTERABLE_EMPLOYMENT_TYPES = EMPLOYMENT_TYPES.filter((value) => value !== "all");
 
@@ -34,7 +35,8 @@ export type CompanyListParams = {
   q: string;
   stage: (typeof COMPANY_STAGES)[number];
   grade: (typeof GRADES)[number];
-  contact: (typeof CONTACT_STATUSES)[number];
+  readiness: (typeof CONTACT_READINESS_VALUES)[number];
+  research: (typeof RESEARCH_STATUSES)[number];
   owner: string;
   page: number;
 };
@@ -80,7 +82,8 @@ export function parseCompanyListParams(source: SearchParamSource): CompanyListPa
     q: textValue(source, "q", 120),
     stage: enumValue(source, "stage", COMPANY_STAGES, "all"),
     grade: enumValue(source, "grade", GRADES, "all"),
-    contact: enumValue(source, "contact", CONTACT_STATUSES, "all"),
+    readiness: enumValue(source, "readiness", CONTACT_READINESS_VALUES, "all"),
+    research: enumValue(source, "research", RESEARCH_STATUSES, "all"),
     owner: owner === "all" || /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(owner) ? owner || "all" : "all",
     page: parsePage(valueFrom(source, "page")),
   };

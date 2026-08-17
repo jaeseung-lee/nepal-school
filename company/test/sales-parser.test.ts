@@ -18,6 +18,8 @@ function jobCard(overrides: Record<string, unknown> = {}, href = "/ja/recruit/jo
         addressRegion: "東京都",
         addressLocality: "新宿区",
         streetAddress: "西新宿1-1",
+        postalCode: "〒160-0023",
+        addressCountry: "Japan",
       },
     },
     ...overrides,
@@ -47,6 +49,8 @@ test("parser extracts normalized facts and support signals without retaining des
   assert.equal(job.housingSupport, true);
   assert.equal(job.salaryMin, 220_000);
   assert.equal(job.salaryMax, 260_000);
+  assert.equal(job.postalCode, "160-0023");
+  assert.equal(job.countryCode, "JP");
   assert.equal("description" in job, false);
   assert.match(job.sourceHash, /^[a-f0-9]{64}$/);
 });
@@ -57,6 +61,8 @@ test("parser tolerates missing optional fields and reports malformed cards", () 
   const result = parseYoloListingPage(minimal + malformed, "https://www.yolo-japan.com/ja/sitemap/job-category/77/1");
   assert.equal(result.jobs.length, 1);
   assert.equal(result.jobs[0].normalizedAddress, "住所未確認");
+  assert.equal(result.jobs[0].postalCode, null);
+  assert.equal(result.jobs[0].countryCode, "JP");
   assert.equal(result.jobs[0].validThrough, null);
   assert.ok(result.warnings.some((warning) => warning.includes("invalid_jsonld")));
 });

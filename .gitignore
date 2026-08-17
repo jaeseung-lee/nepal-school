@@ -75,3 +75,6 @@ Thumbs.db
 *.pem
 *.key
 *.crt
+
+# 영업 아웃리치 산출물(수집 연락처·발송 상태). 공개 저장소에 올리지 않는다.
+output/outreach/

@@ -62,41 +62,68 @@ npm run sales:sync -- --skip-details
 - 1ページでも失敗、または直近成功件数・掲載件数から20%超減少した実行は `failed` です。その実行では未検出・終了への変更を一切行いません。
 - HTML と求人本文全体は保存しません。構造化された事実、判定シグナル、ハッシュ、原文 URL のみ保存します。
 
-## 4. 公式連絡先の調査
+## 4. 企業情報・公式連絡先の調査
 
-連絡先が確認できていない上位企業を JSON で表示します。
+通常のキュー表示は読み取り専用です。スコア上位の企業について、不足している企業情報・連絡手段と既存候補を JSON で確認できます。
 
 ```bash
-npm run sales:contacts:queue -- 20
+npm run sales:contacts:queue -- --limit 20
 ```
 
-調査結果は次の形式で作成し、`pending` として取り込みます。必ず公式法人サイトなど公開された法人用情報の出典 URL を付けます。
+自動化が調査対象を確保するときだけ `--claim` を付けます。1回の上限は10社で、claim は90分間有効です。出力には実行 ID、会社 ID、claim token、不足フィールド、会社名、求人勤務地の手掛かり、既存候補が含まれます。
+
+```bash
+npm run sales:contacts:queue -- --claim --limit 10
+```
+
+調査対象は `official_name`、`corporate_number`、`official_address`、`website`、`phone`、`email`、`contact_form` です。公式法人サイトの会社概要・問い合わせ・アクセス・採用ページ、または国税庁の公開ページだけを出典として使います。会社名と地域で法人を一意に特定できない場合は推測せず `ambiguous` とします。メールアドレスの生成、問い合わせフォーム送信、メール・電話などの外部接触は禁止です。
+
+自動化の結果は次の envelope で保存します。発見値には必ず値そのものを確認できる公開ページの URL を付け、住所は可能な範囲で構造化します。
 
 ```json
-[
-  {
-    "organizationId": "00000000-0000-0000-0000-000000000000",
-    "kind": "website",
-    "value": "https://official.example.jp",
-    "sourceUrl": "https://official.example.jp/company",
-    "confidence": "high",
-    "notes": "法人名と所在地が一致"
-  }
-]
+{
+  "runId": "00000000-0000-0000-0000-000000000000",
+  "results": [
+    {
+      "organizationId": "00000000-0000-0000-0000-000000000000",
+      "claimToken": "33333333-3333-4333-8333-333333333333",
+      "outcome": "found",
+      "candidates": [
+        {
+          "kind": "official_address",
+          "value": "東京都千代田区…",
+          "postalCode": "100-0001",
+          "countryCode": "JP",
+          "region": "東京都",
+          "locality": "千代田区",
+          "streetAddress": "…",
+          "addressType": "head_office",
+          "sourceUrl": "https://official.example.jp/company",
+          "confidence": "high",
+          "lastCheckedAt": "2026-07-21T03:15:00+09:00"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ```bash
-npm run sales:contacts:import -- /absolute/path/candidates.json
+npm run sales:contacts:import -- /absolute/path/contact-enrichment.json
 ```
 
-同名企業、非公開の採用企業、個人メールは推測して登録しません。取り込んだ候補は `/sales/companies/[id]` で人が確認または却下します。
+従来の単純な候補配列も引き続き取り込めます。取り込み時にメール、電話、URL、住所を正規化・重複排除します。自動・手動を問わず新しい発見はすべて `pending` となり、既存の `verified` / `rejected` 判定は再調査で戻しません。候補は `/sales/companies/[id]` で人が確認または却下します。
+
+連絡準備状態は、検証済み公式住所と検証済みのメール・電話・問い合わせフォームのいずれかが揃えば `ready`、承認待ち候補があれば `review_pending`、一部だけ検証済みなら `partial`、候補がなければ `missing` です。Webサイトだけが検証済みの場合も `partial` です。
+
+Codex のローカル自動化 `yolo` は毎日03:00（JST）に求人同期後、最大10社を claim して同じ手順で調査します。`not_found` / `ambiguous` は30日後、`ready` は90日後に再調査し、失敗は1日・3日・7日間隔で最大3回再試行します。
 
 ## 5. 画面と権限
 
 - `/sales`: 直近実行、新規・変更・未検出・終了、今日のフォロー、Aランク
-- `/sales/jobs`: 求人の検索・フィルター・CSV・原文リンク
-- `/sales/companies`: 法人・施設単位の需要、担当、段階、連絡先状態
-- `/sales/companies/[id]`: 求人、連絡先、日韓メール下書き、訪問チェック、活動履歴
+- `/sales/jobs`: 求人の検索・フィルター・1求人1行の総合CSV・原文リンク
+- `/sales/companies`: 法人・施設単位の需要、担当、段階、連絡準備状態、公式住所、最終調査結果
+- `/sales/companies/[id]`: 公式企業情報、連絡手段、求人勤務地、候補の出典・確認、日韓メール下書き、訪問チェック、活動履歴
 - `/sales/admin/runs`: 実行 warning / error（admin のみ）
 - `/sales/admin/users`: Google メール許可リスト（admin のみ）
 
@@ -118,6 +145,8 @@ npm run build
 2. `sales` が `/sales/admin/*` に入れず、Supabase API から求人原本を変更できないこと。
 3. 初回全件同期後、同一データの2回目で新規0件になること。
 4. テスト環境でページ失敗を起こし、既存求人が `closed` にならず実行が `failed` と表示されること。
+5. 公式Webサイトだけを承認すると `partial`、公式住所と直接連絡手段を承認すると `ready` になること。
+6. `/sales/jobs` の現在のフィルターを反映したCSVが求人ごとに1行となり、複数候補、カンマ、引用符、改行、数式接頭辞を安全に扱うこと。
 
 ## 運用上の注意
 

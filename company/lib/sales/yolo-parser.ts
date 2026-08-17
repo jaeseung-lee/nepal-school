@@ -11,6 +11,7 @@ const addressSchema = z
     addressRegion: z.string().optional(),
     addressLocality: z.string().optional(),
     streetAddress: z.string().optional(),
+    postalCode: z.union([z.string(), z.number()]).optional(),
   })
   .passthrough();
 
@@ -74,6 +75,8 @@ export type ParsedYoloJob = {
   region: string | null;
   locality: string | null;
   streetAddress: string | null;
+  postalCode: string | null;
+  countryCode: string | null;
   normalizedAddress: string;
   salaryMin: number | null;
   salaryMax: number | null;
@@ -135,8 +138,22 @@ function extractAddress(job: z.infer<typeof jobPostingSchema>) {
   const region = normalizeSpace(address?.addressRegion) || null;
   const locality = normalizeSpace(address?.addressLocality) || null;
   const streetAddress = normalizeSpace(address?.streetAddress) || null;
+  const postalCode = address?.postalCode == null
+    ? null
+    : normalizeSpace(String(address.postalCode)).replace(/^〒\s*/, "") || null;
+  const country = address?.addressCountry;
+  const countryCode = normalizeCountryCode(
+    typeof country === "string" ? country : country?.name,
+  ) ?? "JP";
   const normalizedAddress = normalizeSpace([region, locality, streetAddress].filter(Boolean).join(" ")) || "住所未確認";
-  return { region, locality, streetAddress, normalizedAddress };
+  return { region, locality, streetAddress, postalCode, countryCode, normalizedAddress };
+}
+
+function normalizeCountryCode(value: string | null | undefined): string | null {
+  const normalized = normalizeSpace(value).toUpperCase();
+  if (!normalized) return null;
+  if (["JP", "JPN", "JAPAN", "日本", "日本国"].includes(normalized)) return "JP";
+  return /^[A-Z]{2}$/.test(normalized) ? normalized : null;
 }
 
 function extractSalary(job: z.infer<typeof jobPostingSchema>, text: string) {

@@ -18,6 +18,8 @@ function parsed(id: string, hash = `hash-${id}`): ParsedYoloJob {
     region: null,
     locality: null,
     streetAddress: null,
+    postalCode: null,
+    countryCode: null,
     normalizedAddress: "住所未確認",
     salaryMin: null,
     salaryMax: null,

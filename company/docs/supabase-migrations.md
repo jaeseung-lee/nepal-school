@@ -8,8 +8,9 @@
 |---|---|---|
 | `202607160001` | `202607160001_sales_dashboard.sql` | 영업 대시보드의 기본 테이블, 함수, 정책, RLS 구성 |
 | `202607160002` | `202607160002_sales_list_views.sql` | 페이지네이션 목록용 읽기 전용 뷰와 조회 인덱스 구성 |
+| `202607210001` | `202607210001_contact_enrichment.sql` | 기업정보 후보, 연락 준비 상태, 조사 작업·claim, 종합 CSV 뷰 구성 |
 
-`202607160002`는 `202607160001`의 테이블을 사용하므로 반드시 버전 순서대로 적용해야 합니다.
+각 마이그레이션은 앞선 버전의 객체를 사용하므로 반드시 버전 순서대로 적용해야 합니다.
 
 ## 최초 CLI 설정
 
@@ -67,6 +68,8 @@ npx supabase@latest migration list --linked
 3. 뷰와 보안 옵션 검증
 4. 애플리케이션 배포
 5. `/sales/jobs`, `/sales/companies` 동작 확인
+6. 기업 3곳을 `sales:contacts:queue -- --claim --limit 3`으로 시험 조사하고 후보가 모두 `pending`인지 검토
+7. Codex `yolo` 자동화를 매일 03:00 JST 일정으로 갱신·활성화
 
 ## 기존 DB를 나중에 마이그레이션 이력에 연결하는 경우
 
@@ -96,24 +99,57 @@ Supabase Dashboard의 SQL Editor에서 다음 쿼리를 실행합니다.
 select table_name
 from information_schema.views
 where table_schema = 'public'
-  and table_name in ('sales_job_list', 'sales_company_list')
+  and table_name in (
+    'sales_job_list',
+    'sales_company_list',
+    'organization_contact_readiness',
+    'sales_job_export'
+  )
 order by table_name;
 ```
 
-두 뷰가 모두 반환되어야 합니다. 이어서 뷰가 호출 사용자의 RLS 권한을 따르도록 `security_invoker`가 설정됐는지 확인합니다.
+네 뷰가 모두 반환되어야 합니다. 이어서 뷰가 호출 사용자의 RLS 권한을 따르도록 `security_invoker`가 설정됐는지 확인합니다.
 
 ```sql
 select relname, reloptions
 from pg_class
-where relname in ('sales_job_list', 'sales_company_list')
+where relname in (
+  'sales_job_list',
+  'sales_company_list',
+  'organization_contact_readiness',
+  'sales_job_export'
+)
 order by relname;
 ```
 
-두 행의 `reloptions`에 `security_invoker=true`가 있어야 합니다. 그다음 앱에서 다음 항목을 확인합니다.
+네 행의 `reloptions`에 `security_invoker=true`가 있어야 합니다. 그다음 앱에서 다음 항목을 확인합니다.
+
+조사 claim과 원자 import 함수의 실행 권한도 확인합니다.
+
+```sql
+select
+  p.proname,
+  has_function_privilege('anon', p.oid, 'EXECUTE') as anon_execute,
+  has_function_privilege('authenticated', p.oid, 'EXECUTE') as authenticated_execute,
+  has_function_privilege('service_role', p.oid, 'EXECUTE') as service_role_execute
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.proname in (
+    'claim_contact_enrichment_tasks',
+    'complete_contact_enrichment_task',
+    'import_contact_enrichment_result'
+  )
+order by p.proname;
+```
+
+세 함수 모두 `anon_execute=false`, `authenticated_execute=false`, `service_role_execute=true`여야 합니다.
 
 - `/sales/jobs`와 `/sales/companies`가 정상 조회되는지
 - 목록 한 페이지가 최대 25개인지
 - 검색·필터·페이지 이동이 정상 동작하는지
+- 공고 CSV가 공고당 한 행을 유지하면서 기업정보·연락처 후보를 포함하는지
+- 웹사이트만 검증된 기업은 `partial`, 공식 주소와 직접 연락 채널이 검증된 기업은 `ready`인지
 - 익명 사용자와 비활성 사용자가 영업 데이터를 조회할 수 없는지
 
 ## 주의사항
