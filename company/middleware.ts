@@ -10,13 +10,16 @@ function copyCookies(source: NextResponse, target: NextResponse) {
 }
 
 export async function middleware(request: NextRequest) {
-  const config = getPublicSupabaseConfig();
   const isPrivate = PRIVATE_PREFIXES.some((prefix) =>
     request.nextUrl.pathname.startsWith(prefix),
   );
 
+  // 공개 페이지는 로그인이 필요 없다. 여기서 Supabase를 호출하면 인증 백엔드가
+  // 느려지거나 멈출 때 공개 사이트 전체가 미들웨어 타임아웃으로 함께 죽는다.
+  if (!isPrivate) return NextResponse.next();
+
+  const config = getPublicSupabaseConfig();
   if (!config) {
-    if (!isPrivate) return NextResponse.next();
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.search = "?error=not_configured";
@@ -41,7 +44,7 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (isPrivate && !user) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
