@@ -4,14 +4,16 @@
 네팔 현지 일본어 면접용 인쇄물 생성기.
 
 산출물 (output/):
-  · 일본어면접_평가시트_학생배부용_A4.pdf   A4 1p, 학생 배부용 (이름·면접순번만 학생 기입)
+  · 일본어면접_평가시트_학생배부용_A4.pdf        A4 1p, 학생 배부용 (한국어 + 일본어)
+  · 일본어면접_평가시트_학생배부용_JP-NE_A4.pdf  A4 1p, 학생 배부용 (일본어 + 네팔어)
   · 일본어면접_질문지_면접관용_KO.pdf       A4 4p, 면접관 전용 (6분류 x 10문항, 일본어 원문 + 한국어 해석)
 
 사용법 (레포 루트에서):
   python3 scripts/interview-sheets/build.py            # HTML 생성 + PDF 렌더
   python3 scripts/interview-sheets/build.py --html     # HTML만 생성 (playwright 불필요)
 
-PDF 렌더에는 node + playwright(chromium)가 필요하다. 없으면 --html 으로 만든 뒤
+PDF 렌더에는 node + playwright(chromium)가 필요하고, 렌더 환경에 CJK 글리프와
+데바나가리 글리프(Noto Sans Devanagari / macOS 의 Kohinoor Devanagari 등)가 있어야 한다. 없으면 --html 으로 만든 뒤
 브라우저에서 '인쇄 → PDF로 저장'(A4, 배경 그래픽 켜기)으로 대체할 수 있다.
 """
 import argparse
@@ -29,6 +31,7 @@ OUT_DIR = ROOT / "output"
 BUILD_DIR = HERE / ".build"
 
 SHEET_PDF = "일본어면접_평가시트_학생배부용_A4.pdf"
+SHEET_NE_PDF = "일본어면접_평가시트_학생배부용_JP-NE_A4.pdf"
 QUEST_PDF = "일본어면접_질문지_면접관용_KO.pdf"
 
 # 공식 브랜드 에셋을 인라인 data URI 로 삽입한다(PDF 자체 완결성 확보).
@@ -269,6 +272,7 @@ QUESTIONS_HTML = f'<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><s
 
 
 SHEET_HTML = (HERE / "sheet.template.html").read_text(encoding="utf-8").replace("{{LOGO}}", LOGO)
+SHEET_NE_HTML = (HERE / "sheet.ne.template.html").read_text(encoding="utf-8").replace("{{LOGO}}", LOGO)
 
 RENDER_JS = """
 const { chromium } = require('playwright');
@@ -296,11 +300,13 @@ def main():
     OUT_DIR.mkdir(exist_ok=True)
 
     sheet_html = BUILD_DIR / "sheet.html"
+    sheet_ne_html = BUILD_DIR / "sheet.ne.html"
     quest_html = BUILD_DIR / "questions.html"
     sheet_html.write_text(SHEET_HTML, encoding="utf-8")
+    sheet_ne_html.write_text(SHEET_NE_HTML, encoding="utf-8")
     quest_html.write_text(QUESTIONS_HTML, encoding="utf-8")
-    print(f"HTML  {sheet_html}")
-    print(f"HTML  {quest_html}")
+    for p in (sheet_html, sheet_ne_html, quest_html):
+        print(f"HTML  {p}")
 
     if args.html:
         return 0
@@ -314,6 +320,7 @@ def main():
     cmd = [
         "node", str(render_js),
         f"{sheet_html}::{OUT_DIR / SHEET_PDF}",
+        f"{sheet_ne_html}::{OUT_DIR / SHEET_NE_PDF}",
         f"{quest_html}::{OUT_DIR / QUEST_PDF}",
     ]
     try:
