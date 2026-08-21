@@ -79,16 +79,17 @@ Key routing rules:
 - Author a backlog-ready spec/issue → invoke /spec
 
 ## Deploy Configuration (configured by /setup-deploy)
-- Platform: Vercel (`company` project; application root: `company/`)
+- Platform: Vercel (`jaeseungs-projects-afaa059f/nepal-school`; application root: `company/`)
 - Production URL: https://www.jeongwoohrd.com
-- Deploy workflow: automatic on push to `main`; manual production deploy with `vercel --prod` from `company/`
-- Deploy status command: `vercel ls --prod`
+- Deploy workflow: automatic on push to `main`
+- Deploy status: https://vercel.com/jaeseungs-projects-afaa059f/nepal-school
+- Local note: `company/.vercel` is linked to an obsolete project; do not use it for production deploys until it is explicitly relinked
 - Merge method: direct commit to `main`
 - Project type: Next.js web app
 - Post-deploy health check: https://www.jeongwoohrd.com
 
 ### Custom deploy hooks
 - Pre-merge: `cd company && npm run test:seo && npm run typecheck && npm run build`
-- Deploy trigger: automatic on push to `main`, or `cd company && vercel --prod`
-- Deploy status: `cd company && vercel ls --prod`
+- Deploy trigger: `git push origin main`
+- Deploy status: open https://vercel.com/jaeseungs-projects-afaa059f/nepal-school
 - Health check: `curl -fsS -o /dev/null -w "%{http_code}" https://www.jeongwoohrd.com`
