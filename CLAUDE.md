@@ -77,3 +77,18 @@ Key routing rules:
 - Save progress → invoke /context-save
 - Resume context → invoke /context-restore
 - Author a backlog-ready spec/issue → invoke /spec
+
+## Deploy Configuration (configured by /setup-deploy)
+- Platform: Vercel (`company` project; application root: `company/`)
+- Production URL: https://www.jeongwoohrd.com
+- Deploy workflow: automatic on push to `main`; manual production deploy with `vercel --prod` from `company/`
+- Deploy status command: `vercel ls --prod`
+- Merge method: direct commit to `main`
+- Project type: Next.js web app
+- Post-deploy health check: https://www.jeongwoohrd.com
+
+### Custom deploy hooks
+- Pre-merge: `cd company && npm run test:seo && npm run typecheck && npm run build`
+- Deploy trigger: automatic on push to `main`, or `cd company && vercel --prod`
+- Deploy status: `cd company && vercel ls --prod`
+- Health check: `curl -fsS -o /dev/null -w "%{http_code}" https://www.jeongwoohrd.com`
