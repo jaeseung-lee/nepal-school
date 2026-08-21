@@ -27,6 +27,7 @@ import {
   type LpV1DomainIcon,
   type LpV1Locale,
 } from "@/lib/lp-v1-copy";
+import { SITE } from "@/lib/site";
 
 const DOMAIN_ICONS: Record<LpV1DomainIcon, Icon> = {
   ethics: ShieldCheck,
@@ -58,8 +59,8 @@ export default function KtsCaregiverLanding({ locale }: { locale: LpV1Locale }) 
     main?.scrollIntoView({ behavior: "auto", block: "start" });
   };
 
-  const mailHref = `mailto:joongwoohrd@gmail.com?subject=${encodeURIComponent(copy.contact.mailSubject)}`;
-  const partnershipMailHref = `mailto:joongwoohrd@gmail.com?subject=${encodeURIComponent(copy.partnership.mailSubject)}`;
+  const mailHref = `mailto:${SITE.email}?subject=${encodeURIComponent(copy.contact.mailSubject)}`;
+  const partnershipMailHref = `mailto:${SITE.email}?subject=${encodeURIComponent(copy.partnership.mailSubject)}`;
 
   return (
     <>
@@ -374,14 +375,14 @@ export default function KtsCaregiverLanding({ locale }: { locale: LpV1Locale }) 
                   <div className="rounded-[22px] border border-white/20 bg-white/[0.08] p-5 backdrop-blur-sm">
                     <p className="flex items-center gap-2 text-xs font-semibold text-white/80"><EnvelopeSimple size={16} weight="duotone" aria-hidden="true" /> {copy.contact.emailLabel}</p>
                     <a
-                      href="mailto:joongwoohrd@gmail.com"
+                      href={`mailto:${SITE.email}`}
                       data-seo-event="cta_clicked"
                       data-content-id="lp-v1-contact"
                       data-jurisdiction="NP"
                       data-locale={locale}
                       className="mt-1 inline-flex min-h-11 items-center break-all text-sm font-semibold text-white underline decoration-white/30 underline-offset-4 sm:text-base"
                     >
-                      joongwoohrd@gmail.com
+                      {SITE.email}
                     </a>
                   </div>
                   <div className="rounded-[22px] border border-white/20 bg-white/[0.08] p-5 backdrop-blur-sm">

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://www.joongwoohrd.com";
+export const SITE_URL = "https://www.jeongwoohrd.com";
 
 export const SITE = {
   url: SITE_URL,
@@ -48,7 +48,7 @@ export const SITE = {
       href: "tel:+818029338838",
     },
   ],
-  email: "joongwoohrd@gmail.com",
+  email: "jeongwoohrd@gmail.com",
   sameAs: [] as string[],
 } as const;
 

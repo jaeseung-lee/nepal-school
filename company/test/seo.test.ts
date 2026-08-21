@@ -48,6 +48,10 @@ test("공개 회사명은 정우인재개발원으로 통일되어 있다", () =
   ]);
 });
 
+test("공개 문의 이메일은 새 정우 주소를 사용한다", () => {
+  assert.equal(SITE.email, "jeongwoohrd@gmail.com");
+});
+
 test("활성 런타임·공개 문서에는 잘못된 회사명과 구 브랜드 별칭이 남지 않는다", () => {
   // The include-only roots exclude historical/tmp records, tests, .next output,
   // scripts (including the catalog generator), while the extension allowlist excludes PDFs and other binaries.
@@ -250,19 +254,31 @@ test("PDF 다운로드는 미들웨어를 건너뛰고 검색 제외 헤더를 �
   );
 });
 
-test("구 Vercel 호스트와 apex는 정식 www 동일 경로로 영구 이동한다", async () => {
+test("구 호스트들과 새 apex는 새 정식 www의 동일 경로로 영구 이동한다", async () => {
   const config = (await import("../next.config.mjs")).default;
   const redirects = await config.redirects!();
   assert.deepEqual(redirects[0], {
     source: "/:path*",
     has: [{ type: "host", value: "company-iota-murex.vercel.app" }],
-    destination: "https://www.joongwoohrd.com/:path*",
+    destination: "https://www.jeongwoohrd.com/:path*",
     permanent: true,
   });
   assert.deepEqual(redirects[1], {
     source: "/:path*",
     has: [{ type: "host", value: "joongwoohrd.com" }],
-    destination: "https://www.joongwoohrd.com/:path*",
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
+  assert.deepEqual(redirects[2], {
+    source: "/:path*",
+    has: [{ type: "host", value: "www.joongwoohrd.com" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
+  assert.deepEqual(redirects[3], {
+    source: "/:path*",
+    has: [{ type: "host", value: "jeongwoohrd.com" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
     permanent: true,
   });
 });

@@ -11,13 +11,25 @@ const nextConfig = {
       {
         source: "/:path*",
         has: [{ type: "host", value: "company-iota-murex.vercel.app" }],
-        destination: "https://www.joongwoohrd.com/:path*",
+        destination: "https://www.jeongwoohrd.com/:path*",
         permanent: true,
       },
       {
         source: "/:path*",
         has: [{ type: "host", value: "joongwoohrd.com" }],
-        destination: "https://www.joongwoohrd.com/:path*",
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.joongwoohrd.com" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "jeongwoohrd.com" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
         permanent: true,
       },
     ];
