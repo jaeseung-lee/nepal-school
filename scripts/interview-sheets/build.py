@@ -6,6 +6,8 @@
 산출물 (output/):
   · 일본어면접_평가시트_학생배부용_A4.pdf        A4 1p, 학생 배부용 (한국어 + 일본어)
   · 일본어면접_평가시트_학생배부용_JP-NE_A4.pdf  A4 1p, 학생 배부용 (일본어 + 네팔어)
+  · 면접진행안내_학생용_KO-JP_A4.pdf             A4 1p, 면접 진행 절차 안내 (한국어 + 일본어)
+  · 면접진행안내_학생용_NE-JP_A4.pdf             A4 1p, 면접 진행 절차 안내 (네팔어 + 일본어)
   · 일본어면접_질문지_면접관용_KO.pdf       A4 4p, 면접관 전용 (6분류 x 10문항, 일본어 원문 + 한국어 해석)
 
 사용법 (레포 루트에서):
@@ -26,12 +28,16 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import guide  # noqa: E402  (HERE 를 path 에 넣은 뒤에 import 해야 한다)
 LOGO_SVG = ROOT / "company" / "public" / "brand" / "logo-black.svg"
 OUT_DIR = ROOT / "output"
 BUILD_DIR = HERE / ".build"
 
 SHEET_PDF = "일본어면접_평가시트_학생배부용_A4.pdf"
 SHEET_NE_PDF = "일본어면접_평가시트_학생배부용_JP-NE_A4.pdf"
+GUIDE_KO_PDF = "면접진행안내_학생용_KO-JP_A4.pdf"
+GUIDE_NE_PDF = "면접진행안내_학생용_NE-JP_A4.pdf"
 QUEST_PDF = "일본어면접_질문지_면접관용_KO.pdf"
 
 # 공식 브랜드 에셋을 인라인 data URI 로 삽입한다(PDF 자체 완결성 확보).
@@ -273,6 +279,8 @@ QUESTIONS_HTML = f'<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><s
 
 SHEET_HTML = (HERE / "sheet.template.html").read_text(encoding="utf-8").replace("{{LOGO}}", LOGO)
 SHEET_NE_HTML = (HERE / "sheet.ne.template.html").read_text(encoding="utf-8").replace("{{LOGO}}", LOGO)
+GUIDE_KO_HTML = guide.build("ko", LOGO)
+GUIDE_NE_HTML = guide.build("ne", LOGO)
 
 RENDER_JS = """
 const { chromium } = require('playwright');
@@ -299,14 +307,16 @@ def main():
     BUILD_DIR.mkdir(exist_ok=True)
     OUT_DIR.mkdir(exist_ok=True)
 
-    sheet_html = BUILD_DIR / "sheet.html"
-    sheet_ne_html = BUILD_DIR / "sheet.ne.html"
-    quest_html = BUILD_DIR / "questions.html"
-    sheet_html.write_text(SHEET_HTML, encoding="utf-8")
-    sheet_ne_html.write_text(SHEET_NE_HTML, encoding="utf-8")
-    quest_html.write_text(QUESTIONS_HTML, encoding="utf-8")
-    for p in (sheet_html, sheet_ne_html, quest_html):
-        print(f"HTML  {p}")
+    pages = [
+        ("sheet.html", SHEET_HTML, SHEET_PDF),
+        ("sheet.ne.html", SHEET_NE_HTML, SHEET_NE_PDF),
+        ("guide.ko.html", GUIDE_KO_HTML, GUIDE_KO_PDF),
+        ("guide.ne.html", GUIDE_NE_HTML, GUIDE_NE_PDF),
+        ("questions.html", QUESTIONS_HTML, QUEST_PDF),
+    ]
+    for name, html, _ in pages:
+        (BUILD_DIR / name).write_text(html, encoding="utf-8")
+        print(f"HTML  {BUILD_DIR / name}")
 
     if args.html:
         return 0
@@ -317,11 +327,8 @@ def main():
 
     render_js = BUILD_DIR / "render.js"
     render_js.write_text(RENDER_JS, encoding="utf-8")
-    cmd = [
-        "node", str(render_js),
-        f"{sheet_html}::{OUT_DIR / SHEET_PDF}",
-        f"{sheet_ne_html}::{OUT_DIR / SHEET_NE_PDF}",
-        f"{quest_html}::{OUT_DIR / QUEST_PDF}",
+    cmd = ["node", str(render_js)] + [
+        f"{BUILD_DIR / name}::{OUT_DIR / pdf}" for name, _, pdf in pages
     ]
     try:
         subprocess.run(cmd, check=True, cwd=ROOT)
