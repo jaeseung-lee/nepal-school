@@ -32,6 +32,12 @@ const nextConfig = {
         destination: "https://www.jeongwoohrd.com/:path*",
         permanent: true,
       },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "nepal-school.vercel.app" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
     ];
   },
   async headers() {

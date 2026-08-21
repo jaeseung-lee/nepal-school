@@ -281,6 +281,12 @@ test("구 호스트들과 새 apex는 새 정식 www의 동일 경로로 영구 
     destination: "https://www.jeongwoohrd.com/:path*",
     permanent: true,
   });
+  assert.deepEqual(redirects[4], {
+    source: "/:path*",
+    has: [{ type: "host", value: "nepal-school.vercel.app" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
 });
 
 test("GA4와 PostHog는 선택 환경변수와 동의 상태 뒤에만 렌더된다", () => {
