@@ -32,7 +32,7 @@ interface GalleryExplorerProps {
   labels: GalleryLabels;
 }
 
-const CATEGORIES: GalleryCategory[] = ["training", "facilities", "visits", "meetings"];
+const CATEGORIES: GalleryCategory[] = ["training", "facilities", "visits", "meetings", "interviews"];
 
 const CARD_LAYOUTS = [
   {

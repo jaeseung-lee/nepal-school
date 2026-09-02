@@ -344,7 +344,8 @@
         "training": "Training",
         "facilities": "Facilities",
         "visits": "Visits",
-        "meetings": "Collaboration meetings"
+        "meetings": "Collaboration meetings",
+        "interviews": "Interviews"
       }
     },
     "partners": {

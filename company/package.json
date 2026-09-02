@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "gallery:derive": "node --import tsx scripts/build-gallery-derivative.ts",
     "validate:gallery": "node --import tsx scripts/validate-gallery-assets.ts",
     "test:gallery": "node --import tsx --test test/gallery-assets.test.ts",
     "test:lp-v1": "node --import tsx --test test/lp-v1-assets.test.ts",
