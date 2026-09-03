@@ -154,8 +154,8 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
     const missing = BLOG_LOCALES.filter((locale) => !locales.has(locale));
     if (missing.length) errors.push(`${translationKey}: 번역 묶음에 누락된 언어가 있습니다: ${missing.join(", ")}`);
   }
-  if (translationLocales.size !== 6) errors.push(`핵심 주제는 6개여야 합니다: 현재 ${translationLocales.size}개`);
-  if (identifiers.size !== 36) errors.push(`공개 준비 글은 36개여야 합니다: 현재 ${identifiers.size}개`);
+  if (translationLocales.size !== 8) errors.push(`핵심 주제는 8개여야 합니다: 현재 ${translationLocales.size}개`);
+  if (identifiers.size !== 48) errors.push(`공개 준비 글은 48개여야 합니다: 현재 ${identifiers.size}개`);
 
   return errors;
 }

@@ -9,16 +9,16 @@ import { BLOG_LOCALES, getBlogLocaleSwitchPath, getBlogPostPath } from "../lib/b
 import { extractMarkdownImages, validateBlogContent, validateTemporalState } from "../scripts/validate-blog";
 
 const PUBLIC_BRAND = "Jeongwoo Human Resource Development Institute";
-const EXPECTED_PROVENANCE_MANIFEST_SHA256 = "78398cb95d327b5d4ce2ae3e7e851bdef22d4166114cef8982fca604169a7f1a";
+const EXPECTED_PROVENANCE_MANIFEST_SHA256 = "602cc9e225ee60367f4ac5c824b3bca261d5e8b36820c5e8e320430ef70b31be";
 
-test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 이력을 보존한다", () => {
+test("48개 글은 40개 영문 브랜드·8개 한국어 브랜드와 출처 이력을 보존한다", () => {
   const counts = { nonKorean: 0, korean: 0, total: 0 };
   const provenanceEntries: Array<[string, unknown]> = [];
 
   for (const locale of BLOG_LOCALES) {
     const directory = path.join(process.cwd(), "content/blog", locale);
     const files = fs.readdirSync(directory).filter((file) => file.endsWith(".md")).sort();
-    assert.equal(files.length, 6);
+    assert.equal(files.length, 8);
 
     for (const file of files) {
       const { data } = matter(fs.readFileSync(path.join(directory, file), "utf8"));
@@ -80,11 +80,11 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
     }
   }
 
-  assert.deepEqual(counts, { nonKorean: 30, korean: 6, total: 36 });
+  assert.deepEqual(counts, { nonKorean: 40, korean: 8, total: 48 });
   const provenanceManifest = Object.fromEntries(
     provenanceEntries.sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0),
   );
-  assert.equal(Object.keys(provenanceManifest).length, 36);
+  assert.equal(Object.keys(provenanceManifest).length, 48);
   const provenanceHash = createHash("sha256")
     .update(JSON.stringify(provenanceManifest))
     .digest("hex");
@@ -92,7 +92,7 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
 });
 
 test("현재 블로그 콘텐츠가 이미지, 출처, 상태 규칙을 통과한다", () => {
-  assert.deepEqual(validateBlogContent("2026-07-19"), []);
+  assert.deepEqual(validateBlogContent("2026-09-03"), []);
 });
 
 test("published 상태는 검토자 없이 공식 출처 대조 기록으로 공개할 수 있다", () => {

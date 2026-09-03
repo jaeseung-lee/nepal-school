@@ -95,13 +95,13 @@ test("Pretendard는 로컬 WOFF2와 라이선스를 사용한다", () => {
   assert.doesNotMatch(read("app/(public-ko)/layout.tsx"), /cdn\.jsdelivr|next\/font\/google/);
 });
 
-test("36개 글이 6개 번역 묶음으로 완성되어 있다", () => {
+test("48개 글이 8개 번역 묶음으로 완성되어 있다", () => {
   const groups = new Map<string, Set<string>>();
   let count = 0;
   for (const locale of BLOG_LOCALES) {
     const directory = path.join(root, "content/blog", locale);
     const files = fs.readdirSync(directory).filter((file) => file.endsWith(".md"));
-    assert.equal(files.length, 6);
+    assert.equal(files.length, 8);
     for (const file of files) {
       const { data } = matter(fs.readFileSync(path.join(directory, file), "utf8"));
       const locales = groups.get(data.translationKey) ?? new Set<string>();
@@ -112,8 +112,8 @@ test("36개 글이 6개 번역 묶음으로 완성되어 있다", () => {
       count += 1;
     }
   }
-  assert.equal(count, 36);
-  assert.equal(groups.size, 6);
+  assert.equal(count, 48);
+  assert.equal(groups.size, 8);
   for (const locales of groups.values()) assert.deepEqual([...locales].sort(), [...BLOG_LOCALES].sort());
 });
 
