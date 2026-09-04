@@ -48,7 +48,7 @@ export const SITE = {
       href: "tel:+818029338838",
     },
   ],
-  email: "jeongwoohrd@gmail.com",
+  email: "lee_js@jeongwoohrd.com",
   sameAs: [] as string[],
 } as const;
 

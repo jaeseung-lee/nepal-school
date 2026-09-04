@@ -49,7 +49,7 @@ test("공개 회사명은 정우인재개발원으로 통일되어 있다", () =
 });
 
 test("공개 문의 이메일은 새 정우 주소를 사용한다", () => {
-  assert.equal(SITE.email, "jeongwoohrd@gmail.com");
+  assert.equal(SITE.email, "lee_js@jeongwoohrd.com");
 });
 
 test("활성 런타임·공개 문서에는 잘못된 회사명과 구 브랜드 별칭이 남지 않는다", () => {
