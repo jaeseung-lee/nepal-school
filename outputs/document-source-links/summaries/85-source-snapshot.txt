@@ -1,0 +1,376 @@
+- banner:
+  - heading [level=1]:
+    - link:
+      - /url: https://www.osakafusyakyo.or.jp/fcenter/
+  - link "修学資金専用ダイヤル 06-6776-2943 （平日9:00～17:00）":
+    - /url: tel:0667762943
+    - paragraph: 修学資金専用ダイヤル
+    - paragraph:
+      - generic: 06-6776-2943
+    - paragraph: （平日9:00～17:00）
+- main:
+  - link ">貸付制度TOP":
+    - /url: ../
+  - article:
+    - paragraph: これからの介護・福祉を 支えるあなたへ
+    - heading "介護・福祉 応援貸付金" [level=2]
+    - figure
+    - paragraph:
+      - strong:
+        - text: 資格を取得する。 介護の仕事に復職する。
+        - text: 介護職のあなたを応援します！
+    - paragraph:
+      - text: 介護・福祉応援貸付金は、資格取得や復職についての必要な費用を無利子で貸し付ける制度です。
+      - text: 各制度の定められた要件を満たし、大阪府内の社会福祉施設等で従事すれば、返還免除となる貸付制度です。
+    - heading "介護・福祉応援貸付金" [level=3]
+    - list:
+      - link "介護福祉士 修学資金 貸付制度":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#介護福祉士-修学資金-貸付制度
+        - text: 介護福祉士
+        - text: 修学資金 貸付制度
+      - link "社会福祉士 修学資金 貸付制度":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#社会福祉士-修学資金-貸付制度
+        - text: 社会福祉士
+        - text: 修学資金 貸付制度
+      - link "介護福祉士 実務者研修 受講資金 貸付制度":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#介護福祉士実務者研修-受講資金貸付制度
+        - text: 介護福祉士 実務者研修
+        - text: 受講資金 貸付制度
+      - link "離職した 介護人材の 再就職準備金 貸付制度":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#離職した介護人材の-再就職準備金貸付制度
+        - text: 離職した 介護人材の
+        - text: 再就職準備金 貸付制度
+      - link "障害福祉分野 就職支援金 貸付事業":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#障害福祉分野-就職支援金貸付事業
+        - text: 障害福祉分野
+        - text: 就職支援金 貸付事業
+      - link "介護分野 就職支援金 貸付事業":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#介護分野-就職支援金貸付事業
+        - text: 介護分野
+        - text: 就職支援金 貸付事業
+      - link "福祉系高校 修学資金 貸付事業":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#福祉系高校修学資金-貸付事業
+        - text: 福祉系高校
+        - text: 修学資金 貸付事業
+      - link "法人の方 法人保証 （介護福祉士 修学 資金等貸付制度）":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/nursing/#「介護福祉士修学資金等貸付制度」-法人保証の審査受付開始について
+        - generic: 法人の方
+        - generic: 法人保証 （介護福祉士 修学 資金等貸付制度）
+    - heading "介護福祉士修学資金貸付制度" [level=3]
+    - paragraph:
+      - strong:
+        - text: 令和8年度入学生対象
+        - text: 「介護福祉士修学資金」修学生募集
+    - paragraph:
+      - text: 令和8（2026）年度対象の「介護福祉士修学資金」修学生の募集を開始します。
+      - text: 申請を希望する方は、介護福祉士養成施設を通じてご申請ください。
+      - text: なお、詳しくは「令和8年度修学生募集要領」をご覧ください。
+    - heading "養成施設向け" [level=4]
+    - paragraph: 貸付希望者の申請書類を取りまとめいただき、大阪福祉人材支援センターへ提出してください。
+    - separator
+    - list:
+      - link "推薦状":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/03-【養成施設向け】推薦状（様式第2-1号）-1.docx
+      - link "推薦者名簿":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/02-【養成施設向け】推薦者名簿.xlsx
+      - link "参考：介護福祉士修学資金貸付の申請にかかる留意点":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/04-【養成施設向け】介護修学の申請および契約に向けた留意点.pdf
+      - link "受入状況調査票":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/05-【養成施設向け】受入状況調査票.xlsx
+      - link "参考：令和8年度介護福祉士修学資金貸付制度の実施について":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/01-【養成施設向け】令和8年度介護福祉士修学資金貸付制度の実施について（募集の案内文）.pdf
+    - heading "貸付希望者向け" [level=4]
+    - paragraph
+    - paragraph: 介護福祉士の資格を取得するため、修学に必要な費用を貸付けます。
+    - paragraph:
+      - text: ■申請期限 令和8年5月20日（水）
+      - text: ※「高等教育の修学支援新制度」との併用をお考えの場合は、支援区分の決定後に申請してください。
+      - text: ※養成施設によって申請方法や期間は異なりますので、必ず、学校に提出期限等をご確認ください。
+    - separator
+    - list:
+      - link "介護福祉士修学資金 令和8年度修学生募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/06-【貸付希望者向け】令和8年度介護福祉士修学資金募集要領.pdf
+      - link "作文用紙":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/⑥作文用紙.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/07-【貸付希望者向け】令和8年度介護福祉士修学資金貸付申請書（様式第1-2）.xlsx
+      - link "申請書記入例":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/08-【貸付希望者向け】記入例）令和8年度介護福祉士修学資金貸付申請書.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/④同意書-（ルビ付き）.pdf
+    - separator
+    - paragraph: 「高等教育の修学支援新制度」の利用者は、本貸付金の申請額を算出するために、次の申請額シミュレーションをご活用ください。（Excel内のsheetが、大学、短期大学、専門学校に分かれています）
+    - list:
+      - link "申請額":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/（介護）②③④通信-申請額シミュレーション　1区分～多子世帯.xlsx
+      - link "シミュレーション":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/（介護）②③④通信-申請額シミュレーション　1区分～多子世帯.xlsx
+    - separator
+    - paragraph:
+      - text: 学校が設定している入学金が減免上限額未満の場合、第Ⅱ区分、第Ⅲ区分、第Ⅳ区分の減免額はシミュレーションの設定金額とは異なりますので、
+      - link "コチラ":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/（介護）②③④申請額シミュレーション　減免上限未満1区分～多子世帯.xlsx
+      - text: をご使用ください。
+    - list:
+      - link "大阪府社会福祉協議会 介護福祉士修学資金貸付要綱・貸付要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/03/（最新）介護福祉士修学資金貸付要綱・要領.pdf
+    - paragraph
+    - heading "貸付終了後、返還免除対象業務に従事している人向け" [level=4]
+    - paragraph: 貸付希望者の申請書類を取りまとめいただき、大阪福祉人材支援センターへ提出してください。
+    - separator
+    - list:
+      - link "業務従事期間証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/業務従事期間証明書（介護・社福）.pdf
+      - link "業務従事先変更届":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/業務従事先変更届（介護・社福）.pdf
+      - link "住所・氏名・勤務先等変更届":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/住所氏名勤務先等変更届（介護・社福・保育）.pdf
+    - heading "社会福祉士修学資金貸付制度 （令和8年度）" [level=3]:
+      - text: 社会福祉士修学資金貸付制度
+      - text: （令和8年度）
+    - paragraph:
+      - text: 令和8（2026）年度入学者対象の「社会福祉士修学資金」修学生の募集を開始します。
+      - text: 申請を希望する方は、大阪府内の社会福祉士養成施設を通じてご申請ください。
+      - text: なお、詳しくは「令和8年度修学生募集要領」をご覧ください。
+    - heading "養成施設向け" [level=4]
+    - paragraph: 貸付希望者の申請書類を取りまとめいただき、大阪福祉人材支援センターへ提出してください。
+    - separator
+    - list:
+      - link "推薦状":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/03-【養成施設向け】推薦状（様式第2-1号）.docx
+      - link "定員・現員調査表":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/05-2026定員・現員調査票.docx
+      - link "推薦者名簿（通学課程）":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/02-【養成施設向け】推薦者名簿（2026）社福・通学.doc
+      - link "参考：令和8年度社会福祉士修学資金貸付制度の実施について":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/01-R8養成施設への募集案内文.pdf
+      - link "推薦者名簿（通信課程）":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/02-【養成施設向け】推薦者名簿（2026）社福・通信.doc
+      - link "参考：社会福祉士修学資金貸付の申請および契約に向けた留意点":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/04-【養成施設向け】社会福祉士修学資金貸付の申請における留意点.pdf
+    - paragraph: ※本貸付において「社会福祉士養成施設」とは、「社会福祉士及び介護福祉士法第7条第2号又は第3号の規定に基づき文部科学大臣及び厚生労働大臣の指定した学校又は都道府県知事の指定した養成施設」を指します（4年制大学や大学の通信教育、3年制の専門学校は対象外となります）。
+    - heading "貸付希望者向け" [level=4]
+    - paragraph:
+      - text: 社会福祉士を取得するため、修学に必要な費用を貸付けます。
+      - text: ※ただし福祉系大学は対象外です。
+    - separator
+    - list:
+      - link "社会福祉士修学資金貸付制度 令和8年度募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/①R08社会福祉士修学募集要領.pdf
+      - link "作文用紙":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/④作文用紙.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/②社会福祉士修学資金貸付申請書（様式第1）.xlsx
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/②【記入例】社会福祉士修学資金貸付申請書（様式第1）.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/③同意書（社福）.pdf
+    - heading "貸付終了後、返還免除対象業務に従事している人向け" [level=4]
+    - separator
+    - list:
+      - link "業務従事期間証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/業務従事期間証明書（介護・社福）.pdf
+      - link "業務従事先変更届":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/業務従事先変更届（介護・社福）.pdf
+      - link "住所・氏名・勤務先等変更届":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2024/01/住所氏名勤務先等変更届（介護・社福・保育）.pdf
+    - heading "介護福祉士実務者研修 受講資金貸付制度 （令和8年度）" [level=3]:
+      - text: 介護福祉士実務者研修 受講資金貸付制度
+      - text: （令和8年度）
+    - paragraph: 介護福祉士の資格を取得するため、介護福祉士実務者研修を受講する実務経験3年以上（年度内の見込みを含む）の介護職員に対して受講費用を貸付けます。
+    - heading "申請方法" [level=4]
+    - separator
+    - list:
+      - link "介護福祉士実務者研修受講資金貸付制度 募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/①令和８年度実務者研修募集要領（確定版）.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/④同意書（実務者研修）（確定版）.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/③R8実務者研修受講資金貸付申請書（様式第1-1号）（確定版）.xlsx
+      - link "実務経験証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/⑤実務経験証明書（様式第20-1号）（確定版）.pdf
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/②【記入例】実務者研修受講資金貸付申請書（様式第1-1号）2026.pdf
+      - link "推薦状":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/⓺実務者研修　推薦状（様式第2-1号）.pdf
+    - heading "離職した介護人材の 再就職準備金貸付制度" [level=3]:
+      - text: 離職した介護人材の
+      - text: 再就職準備金貸付制度
+    - paragraph: 介護保険施設で介護職員として1年以上勤務していた有資格者（介護福祉士・実務者研修修了者・初任者研修修了者など）が、あらたに介護保険施設で介護職員として週20時間以上の勤務が決まった際に、再就職に必要な費用を貸付けます。
+    - paragraph:
+      - text: ただし、再就職する日までに貸付申請とともに、大阪福祉人材支援センターに求職登録もしくは
+      - link "届出":
+        - /url: https://www.fukushi-work.jp/todokede/
+      - text: が必要です。
+    - heading "申請方法" [level=4]
+    - separator
+    - list:
+      - link "離職した介護人材の再就職準備金貸付制度 募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/①R08離職した介護人材の再就職準備金貸付募集要領（確定版）.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/③同意書（再就職準備金）.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/②【様式第１-１号】再就職準備金貸付申請書（令和8年度）.xlsx
+      - link "実務経験証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/⑤【様式第２０－１号】再就職準備金実務経験証明書（令和８年度）.pdf
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/【記入例】再就職準備金貸付申請書（令和8年度）.pdf
+      - link "採用予定証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/④【様式第２号】再就職準備金採用予定証明書（令和8年度）.pdf
+    - heading "障害福祉分野 就職支援金貸付事業" [level=3]:
+      - text: 障害福祉分野
+      - text: 就職支援金貸付事業
+    - paragraph: 他業種で働いていた方等の障がい福祉分野への参入を促進するため、就職の際に必要な経費に係る支援金の貸し付けを実施します。
+    - paragraph: 有資格者（介護福祉士・実務者研修修了者・初任者研修修了者・居宅介護職員初任者研修修了者など）のうち、障がい福祉職員や介護職員として就労したことがない者または直近の障がい福祉職員や介護職員としての離職日から1年以上経過した者が、あらたに障がい福祉サービスを提供する事業所・施設で障がい福祉職員として週20時間以上の勤務を開始した際に、就職に必要な費用を貸付けます。
+    - heading "申請方法" [level=4]
+    - separator
+    - list:
+      - link "障害福祉分野就職支援金貸付制度 募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/障害福祉分野就職支援金貸付制度　募集要領.pdf
+      - link "採用証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/採用証明書.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/申請書.xlsx
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/記入例　申請書-.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/同意書.pdf
+      - link "記入例：採用証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/記入例　採用証明書.pdf
+    - heading "介護分野 就職支援金貸付事業" [level=3]:
+      - text: 介護分野
+      - text: 就職支援金貸付事業
+    - paragraph: 他業種で働いていた方等の介護分野における介護職としての参入を促進するため、就職の際に必要な経費に係る支援金の貸し付けを実施します。
+    - paragraph: 有資格者（介護福祉士・実務者研修修了者・初任者研修修了者など）のうち、介護職員や障がい福祉職員として就労したことがない者または直近の介護職員や障がい福祉職員としての離職日から1年以上経過した者が、あらたに介護保険施設で介護職員として週20時間以上の勤務を開始した際に、就職に必要な費用を貸付けます。
+    - heading "申請方法" [level=4]
+    - separator
+    - list:
+      - link "介護分野就職支援金貸付制度 募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/介護分野就職支援金貸付事業_募集要領.pdf
+        - text: 介護分野就職支援金貸付制度
+        - text: 募集要領
+      - link "採用証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/採用証明書-1.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/②【様式第１-１号】申請書.xlsx
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/記入例　申請書.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/同意書-1.pdf
+      - link "記入例：採用証明書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/帰入例　採用証明書.pdf
+    - heading "福祉系高校修学資金 貸付事業 （令和8年度）" [level=3]:
+      - text: 福祉系高校修学資金 貸付事業
+      - text: （令和8年度）
+    - paragraph: 大阪府内の福祉系高校(※)に在学し、介護福祉士の資格の取得を目指す学生に対し、修学資金の貸し付けを実施します。提出期限は在学する福祉系高校にご確認ください。
+    - paragraph: ※「福祉系高校とは」社会福祉士及び介護福祉士法第40条第2項第4号の規定に基づき、学校教育法に基づく高等学校又は中等教育学校であって文部科学大臣及び厚生労働大臣の指定したもの。
+    - heading "福祉系高校向け" [level=4]
+    - separator
+    - list:
+      - link "推薦状":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/【福祉系高校向け③】推薦状.docx
+      - link "推薦者名簿":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/【福祉系高校向け④】推薦者名簿.xlsx
+      - link "定員・現員調査票":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/【福祉系高校向け⑤】定員・現員調査票.docx
+      - link "参考：福祉系高校修学資金貸付の申請および契約に向けた留意点":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/【福祉系高校向け②】福祉系高校修学の申請および契約に向けた留意点.pdf
+    - heading "貸付希望者向け" [level=4]
+    - separator
+    - list:
+      - link "福祉系高校修学資金貸付事業 募集要領":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/01-R08募集要領.pdf
+      - link "申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/02-福祉系高校修学資金貸付申請書.xlsx
+      - link "記入例：申請書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/02-記入例：申請書.pdf
+      - link "同意書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/03-同意書.pdf
+    - paragraph: 法人の方
+    - heading "令和8年度「介護福祉士修学資金等貸付制度」 法人保証の審査受付開始について" [level=3]:
+      - text: 令和8年度「介護福祉士修学資金等貸付制度」
+      - text: 法人保証の審査受付開始について
+    - paragraph: このたび、令和8年度の法人保証に向けた審査の受付を開始いたします。令和8年4月に介護福祉士養成施設へ入学する方等の法人保証をお考えの場合には、本制度の申請をしていただく、もしくは公益社団法人日本介護福祉士養成施設協会が実施する「介護福祉士修学資金保証制度」のお申込みをご検討ください。
+    - heading "審査方法" [level=4]
+    - separator
+    - paragraph: 法人保証の申請方法や申込資格等については、下記の「法人保証の手引き」をご覧ください。
+    - list:
+      - link "法人保証の手引き":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2025/12/③完成）法人保証の手引き（令和８年度版）.pdf
+    - heading "申込期日" [level=4]
+    - separator
+    - paragraph: 令和8年3月31日（火）
+    - heading "申請方法" [level=4]
+    - separator
+    - paragraph:
+      - strong: 【継続審査】（これまで法人保証の承認を受けた法人）
+    - paragraph: 以下書類を、郵送により提出してください。
+    - list:
+      - link "令和8年度(2026年度) 貸付事業 法人保証申込書":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/法人保証申込書（令和8年度版）.xlsx
+      - text: （A4版両面もしくはA3版）
+      - text: 決算関係書類（直近年度分を原本証明したもの）
+      - text: ※昨年以前に継続審査を行っていない場合は、前回提出した以降の分が必要です（原本証明付）
+      - listitem: 直近年度の法人税納税証明書（その3の3）
+    - paragraph:
+      - strong: 【新規審査】（初めて事前審査を受ける法人）
+    - paragraph: 「法人保証の手引き」8～11ページをご参照のうえ、必要な書類を郵送してください。また、法人保証申込書の様式は、上記1と同じものをお使いください。
+    - heading "審査方法" [level=4]
+    - separator
+    - paragraph: 書類の提出後、概ね2週間以内で審査を実施し、審査結果を郵送にて通知いたします（ただし、継続審査を優先しますので、新規審査の際は3週間ほどかかる場合がございます）。
+    - heading "提出先および問合せ先" [level=4]
+    - separator
+    - paragraph:
+      - text: 社会福祉法人 大阪府社会福祉協議会 大阪福祉人材支援センター 修学資金係
+      - text: 〒542-0065 大阪市中央区中寺1-1-54 大阪社会福祉指導センター3階
+      - text: TEL：06-6776-2943（平日9時～17時）／FAX：06-6761-5413
+    - paragraph:
+      - link "▶︎養成施設向けの届出様式はこちら":
+        - /url: https://www.osakafusyakyo.or.jp/syuugakushikin/format/
+    - paragraph:
+      - link:
+        - /url: tel:0667762943
+    - link "修学資金専用ダイヤル 06-6776-2943 （平日9:00～17:00） 転職、退職や住所変更の場合、届出が必要ですので、 まずは事務局へご連絡ください。":
+      - /url: tel:0667762943
+      - paragraph: 修学資金専用ダイヤル
+      - paragraph:
+        - generic: 06-6776-2943
+      - paragraph: （平日9:00～17:00）
+      - paragraph:
+        - text: 転職、退職や住所変更の場合、届出が必要ですので、
+        - text: まずは事務局へご連絡ください。
+- contentinfo:
+  - figure
+  - link "修学資金専用ダイヤル 06-6776-2943 （平日9:00～17:00）":
+    - /url: tel:0667762943
+    - paragraph: 修学資金専用ダイヤル
+    - paragraph:
+      - generic: 06-6776-2943
+    - paragraph: （平日9:00～17:00）
+  - list:
+    - paragraph: 求人・求職相談、職業紹介のお問い合わせ
+    - paragraph:
+      - link "TEL：06-6762-9020":
+        - /url: tel:0667629020
+    - paragraph: 就職フェアや各種イベント・セミナー、体験・インターンシップ、高校生出前授業、ガイダンスなどのお問い合わせ
+    - paragraph:
+      - link "TEL：06-6762-9006":
+        - /url: tel:0667629006
+    - paragraph: 保育士・保育所支援センターへのお問い合わせ
+    - paragraph:
+      - link "TEL：06-6762-9006":
+        - /url: tel:0667629006
+  - figure
+  - paragraph:
+    - text: 〒542-0065
+    - text: 大阪市中央区中寺1-1-54
+    - text: 大阪社会福祉指導センター3F
+  - paragraph:
+    - text: Osaka Metro（旧大阪市営地下鉄）
+    - text: 谷町線・長堀鶴見緑地線 「谷町六丁目」
+    - text: 駅下車 ④号出口から南西へ400m
+  - paragraph:
+    - text: Osaka Metro（旧大阪市営地下鉄）
+    - text: 谷町線・千日前線 「谷町九丁目」駅下車
+    - text: ②号出口から北西へ600m
+  - paragraph: © 大阪福祉人材支援センター All Rights Reserved.
