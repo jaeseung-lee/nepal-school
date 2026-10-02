@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<style>
+@page { size: A4 portrait; margin: 11mm 12mm; }
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family:"Noto Sans CJK JP","Noto Sans CJK KR",sans-serif; color:#000; font-size:10pt; line-height:1.35; }
+.ne { font-family:"Noto Sans Devanagari","Kohinoor Devanagari","Devanagari Sangam MN",sans-serif; }
+table { border-collapse: collapse; width:100%; }
+td,th { border:1px solid #000; padding:2mm 2.5mm; vertical-align:middle; }
+.outer { border:2.2pt solid #000; }
+
+.title { border:2.2pt solid #000; border-bottom:none; padding:2.4mm 4mm 2.2mm;
+         display:flex; align-items:center; }
+.title .logo { width:33mm; flex:0 0 33mm; }
+.title .pad  { width:33mm; flex:0 0 33mm; }
+.title .tt { flex:1; text-align:center; }
+.title h1 { font-size:19pt; font-weight:800; letter-spacing:.04em; }
+.title .n1 { font-size:10.5pt; margin-top:.8mm; }
+.title .sub { font-size:8pt; margin-top:.6mm; letter-spacing:.06em; color:#333; }
+
+.band { background:#000; color:#fff; font-size:8.6pt; font-weight:700; letter-spacing:.03em;
+        padding:1.1mm 2.5mm; }
+.band .n { font-size:8pt; font-weight:600; }
+.lbl { font-size:9pt; font-weight:700; width:30mm; background:#f0f0f0; line-height:1.3; }
+.lbl .n { display:block; font-size:8pt; font-weight:500; margin-top:.3mm; }
+.big { height:13mm; }
+.hint { font-size:7pt; font-weight:400; }
+
+.eval th { background:#e8e8e8; font-size:8.4pt; font-weight:700; text-align:center; padding:1.3mm 0; line-height:1.3; }
+.eval th .n { display:block; font-size:7.4pt; font-weight:500; }
+.eval td { height:15mm; }
+.no  { width:9mm;  text-align:center; font-weight:700; font-size:11pt; }
+.area{ width:59mm; font-size:9.1pt; font-weight:700; line-height:1.25; }
+.area .n { display:block; font-weight:500; font-size:8pt; margin-top:.7mm; line-height:1.3; }
+.qn  { width:18mm; text-align:center; }
+.sc  { width:21mm; text-align:center; padding:0; }
+.scbox { display:flex; align-items:center; justify-content:center; gap:1.5mm; }
+.scbox .b { width:11mm; height:11mm; border:1.6pt solid #000; }
+.scbox .d { font-size:10pt; font-weight:700; }
+
+.bottom { display:flex; gap:3mm; margin-top:3mm; }
+.crit { flex:1.36; border:2.2pt solid #000; }
+.fin  { flex:1; border:2.2pt solid #000; }
+.crit table td { border:none; border-bottom:.6pt solid #bbb; font-size:8.2pt; padding:1.55mm 2.5mm; line-height:1.3; }
+.crit table td .n { display:block; font-size:7.6pt; margin-top:.4mm; line-height:1.32; }
+.crit table tr:last-child td { border-bottom:none; }
+.crit .p { width:10mm; font-weight:800; text-align:center; font-size:9.5pt; }
+.fin .row { border-bottom:1pt solid #000; padding:1.8mm 2.5mm; }
+.fin .row:last-child { border-bottom:none; }
+.fin .k { font-size:8.4pt; font-weight:700; line-height:1.3; }
+.fin .k .n { display:block; font-size:7.6pt; font-weight:500; margin-top:.2mm; }
+.total { display:flex; align-items:baseline; justify-content:center; gap:2mm; margin-top:.8mm; }
+.total .u { border-bottom:1.6pt solid #000; width:26mm; height:7mm; }
+.total .t { font-size:12pt; font-weight:800; }
+.grade { display:flex; gap:4.5mm; margin-top:1.2mm; justify-content:center; }
+.grade span { font-size:11pt; font-weight:700; }
+.grade i { display:inline-block; width:4.4mm; height:4.4mm; border:1.4pt solid #000; margin-right:1.2mm;
+           vertical-align:-.4mm; font-style:normal; }
+.cnt .u { display:inline-block; border-bottom:1.2pt solid #000; width:18mm; }
+.notes { height:15mm; }
+.notes .ln { border-bottom:.7pt solid #999; height:5mm; }
+.foot { border:1.2pt solid #000; margin-top:2.5mm; padding:1.5mm 2.5mm; font-size:7.6pt;
+        display:flex; justify-content:space-between; align-items:center; line-height:1.35; }
+.foot b { font-weight:800; }
+.foot .n { font-size:7.2pt; }
+</style></head><body>
+
+<div class="title">
+  <img class="logo" src="{{LOGO}}" alt="JW HRDI">
+  <div class="tt">
+    <h1>日本語面接評価シート</h1>
+    <div class="n1 ne">जापानी भाषा अन्तर्वार्ता मूल्याङ्कन फारम</div>
+    <div class="sub">Japanese Interview Evaluation Sheet</div>
+  </div>
+  <div class="pad"></div>
+</div>
+
+<table class="outer" style="border-top:none;">
+  <tr><td colspan="4" class="band" style="border:none;">学生記入 &nbsp;<span class="n ne">विद्यार्थीले भर्ने</span>
+      <span class="hint" style="color:#ddd;">　名前と面接番号を書いて提出してください</span></td></tr>
+  <tr>
+    <td class="lbl">氏名 / Name<span class="n ne">नाम</span></td>
+    <td class="big"></td>
+    <td class="lbl" style="width:27mm;">面接番号<span class="n ne">अन्तर्वार्ता नम्बर</span></td>
+    <td class="big" style="width:28mm;"></td>
+  </tr>
+  <tr><td colspan="4" class="band" style="border:none;">面接官記入 &nbsp;<span class="n ne">अन्तर्वार्ताकर्ताले भर्ने</span></td></tr>
+  <tr>
+    <td class="lbl">面接日<span class="n ne">अन्तर्वार्ता मिति</span></td>
+    <td style="height:9mm;"></td>
+    <td class="lbl">評価者<span class="n ne">मूल्याङ्कनकर्ता</span></td>
+    <td style="height:9mm;"></td>
+  </tr>
+</table>
+
+<table class="eval outer" style="border-top:none;">
+  <tr>
+    <th class="no">No.</th>
+    <th class="area" style="text-align:left; padding-left:2.5mm;">評価領域<span class="n ne">मूल्याङ्कन क्षेत्र</span></th>
+    <th class="qn">質問番号<span class="n"><span class="ne">प्रश्न नं.</span> (1〜10)</span></th>
+    <th class="sc">点数 / 5<span class="n ne">अङ्क</span></th>
+    <th>メモ<span class="n ne">टिप्पणी</span></th>
+  </tr>
+  <tr><td class="no">1</td><td class="area">自己紹介・基本会話<span class="n ne">आफ्नो परिचय・आधारभूत कुराकानी</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+  <tr><td class="no">2</td><td class="area">日本語学習・日本理解<span class="n ne">जापानी भाषा अध्ययन・जापानको बुझाइ</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+  <tr><td class="no">3</td><td class="area">就労動機・将来計画<span class="n ne">काम गर्ने कारण・भविष्यको योजना</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+  <tr><td class="no">4</td><td class="area">日常生活・問題解決<span class="n ne">दैनिक जीवन・समस्या समाधान</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+  <tr><td class="no">5</td><td class="area">職場コミュニケーション・指示理解<span class="n ne">कार्यस्थल संवाद・निर्देशन बुझाइ</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+  <tr><td class="no">6</td><td class="area">現場の安全・報告<span class="n ne">कार्यस्थलको सुरक्षा・रिपोर्टिङ</span></td>
+      <td class="qn"></td><td class="sc"><div class="scbox"><div class="b"></div><div class="d">/ 5</div></div></td><td></td></tr>
+</table>
+
+<div class="bottom">
+  <div class="crit">
+    <div class="band">採点基準（0〜5点）&nbsp;<span class="n ne">मूल्याङ्कन मापदण्ड</span></div>
+    <table>
+      <tr><td class="p">5</td><td>質問をすぐ理解し、自然に答えられる<span class="n ne">प्रश्न तुरुन्तै बुझी स्वाभाविक रूपमा जवाफ दिन सक्ने</span></td></tr>
+      <tr><td class="p">4</td><td>質問を理解し、適切に答えられる<span class="n ne">प्रश्न बुझी उपयुक्त जवाफ दिन सक्ने</span></td></tr>
+      <tr><td class="p">3</td><td>だいたい理解し、簡単な文で答えられる<span class="n ne">प्रायः बुझी सरल वाक्यमा जवाफ दिन सक्ने</span></td></tr>
+      <tr><td class="p">2</td><td>聞き返しが必要、単語中心の答え<span class="n ne">दोहोर्‍याउनुपर्ने वा शब्दमा मात्र जवाफ दिने</span></td></tr>
+      <tr><td class="p">1</td><td>質問の一部だけ理解、答えが非常に限られる<span class="n ne">प्रश्नको केही भाग मात्र बुझ्ने, धेरै सीमित जवाफ</span></td></tr>
+      <tr><td class="p">0</td><td>質問が理解できない、答えられない<span class="n ne">प्रश्न बुझ्न वा जवाफ दिन नसक्ने</span></td></tr>
+    </table>
+    <div style="border-top:1pt solid #000; padding:1.7mm 2.5mm; font-size:7.5pt; line-height:1.45;">
+      <b style="font-size:7.9pt;">メモ記入例</b>　質問2回繰り返し・暗記した答え・追加質問に対応可・<br>
+      文をつなげられる・語彙不足・指示の理解良好・ゆっくりだが正確
+      <span class="ne" style="display:block; font-size:7.1pt; margin-top:.6mm; line-height:1.4;">प्रश्न २ पटक दोहोर्‍याइएको・घोकेको जवाफ・थप प्रश्नमा जवाफ दिन सक्ने・वाक्य जोड्न सक्ने・शब्दभण्डार कम・निर्देशन राम्ररी बुझेको・ढिलो तर सही</span>
+    </div>
+  </div>
+  <div class="fin">
+    <div class="band">総合評価 &nbsp;<span class="n ne">समग्र मूल्याङ्कन</span></div>
+    <div class="row">
+      <div class="k">総点 / Total Score<span class="n ne">कुल अङ्क</span></div>
+      <div class="total"><div class="u"></div><div class="t">/ 30</div></div>
+    </div>
+    <div class="row">
+      <div class="k">判定 / Result<span class="n ne">नतिजा</span></div>
+      <div class="grade"><span><i></i>A</span><span><i></i>B</span><span><i></i>C</span><span><i></i>D</span></div>
+    </div>
+    <div class="row cnt">
+      <div class="k">聞き返しの回数<span class="n ne">प्रश्न दोहोर्‍याउन अनुरोध गरेको पटक</span></div>
+      <div style="text-align:center; margin-top:.8mm;"><span class="u"></span> <span style="font-size:8.5pt;">回</span></div>
+    </div>
+    <div class="row">
+      <div class="k">備考 / Notes<span class="n ne">कैफियत</span></div>
+      <div class="notes"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div><b>判定基準</b> &nbsp; A : 26〜30点 &nbsp;·&nbsp; B : 22〜25点 &nbsp;·&nbsp; C : 18〜21点 &nbsp;·&nbsp; D : 17点以下
+       <span class="n ne" style="display:block;">ग्रेड मापदण्ड</span></div>
+  <div style="text-align:right;">※ 5番・6番が <b>0〜1点</b> の場合は別途検討
+       <span class="n ne" style="display:block;">※ क्रम ५ वा ६ मा ०–१ अङ्क आएमा छुट्टै समीक्षा गरिनेछ</span></div>
+</div>
+
+</body></html>

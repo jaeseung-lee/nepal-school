@@ -48,6 +48,10 @@ test("공개 회사명은 정우인재개발원으로 통일되어 있다", () =
   ]);
 });
 
+test("공개 문의 이메일은 새 정우 주소를 사용한다", () => {
+  assert.equal(SITE.email, "lee_js@jeongwoohrd.com");
+});
+
 test("활성 런타임·공개 문서에는 잘못된 회사명과 구 브랜드 별칭이 남지 않는다", () => {
   // The include-only roots exclude historical/tmp records, tests, .next output,
   // scripts (including the catalog generator), while the extension allowlist excludes PDFs and other binaries.
@@ -91,13 +95,13 @@ test("Pretendard는 로컬 WOFF2와 라이선스를 사용한다", () => {
   assert.doesNotMatch(read("app/(public-ko)/layout.tsx"), /cdn\.jsdelivr|next\/font\/google/);
 });
 
-test("36개 글이 6개 번역 묶음으로 완성되어 있다", () => {
+test("144개 글이 24개 번역 묶음으로 완성되어 있다", () => {
   const groups = new Map<string, Set<string>>();
   let count = 0;
   for (const locale of BLOG_LOCALES) {
     const directory = path.join(root, "content/blog", locale);
     const files = fs.readdirSync(directory).filter((file) => file.endsWith(".md"));
-    assert.equal(files.length, 6);
+    assert.equal(files.length, 24);
     for (const file of files) {
       const { data } = matter(fs.readFileSync(path.join(directory, file), "utf8"));
       const locales = groups.get(data.translationKey) ?? new Set<string>();
@@ -108,8 +112,8 @@ test("36개 글이 6개 번역 묶음으로 완성되어 있다", () => {
       count += 1;
     }
   }
-  assert.equal(count, 36);
-  assert.equal(groups.size, 6);
+  assert.equal(count, 144);
+  assert.equal(groups.size, 24);
   for (const locales of groups.values()) assert.deepEqual([...locales].sort(), [...BLOG_LOCALES].sort());
 });
 
@@ -250,19 +254,37 @@ test("PDF 다운로드는 미들웨어를 건너뛰고 검색 제외 헤더를 �
   );
 });
 
-test("구 Vercel 호스트와 apex는 정식 www 동일 경로로 영구 이동한다", async () => {
+test("구 호스트들과 새 apex는 새 정식 www의 동일 경로로 영구 이동한다", async () => {
   const config = (await import("../next.config.mjs")).default;
   const redirects = await config.redirects!();
   assert.deepEqual(redirects[0], {
     source: "/:path*",
     has: [{ type: "host", value: "company-iota-murex.vercel.app" }],
-    destination: "https://www.joongwoohrd.com/:path*",
+    destination: "https://www.jeongwoohrd.com/:path*",
     permanent: true,
   });
   assert.deepEqual(redirects[1], {
     source: "/:path*",
     has: [{ type: "host", value: "joongwoohrd.com" }],
-    destination: "https://www.joongwoohrd.com/:path*",
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
+  assert.deepEqual(redirects[2], {
+    source: "/:path*",
+    has: [{ type: "host", value: "www.joongwoohrd.com" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
+  assert.deepEqual(redirects[3], {
+    source: "/:path*",
+    has: [{ type: "host", value: "jeongwoohrd.com" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
+    permanent: true,
+  });
+  assert.deepEqual(redirects[4], {
+    source: "/:path*",
+    has: [{ type: "host", value: "nepal-school.vercel.app" }],
+    destination: "https://www.jeongwoohrd.com/:path*",
     permanent: true,
   });
 });

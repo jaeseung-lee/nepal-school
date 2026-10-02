@@ -78,3 +78,6 @@ Thumbs.db
 
 # 영업 아웃리치 산출물(수집 연락처·발송 상태). 공개 저장소에 올리지 않는다.
 output/outreach/
+
+# 면접 인쇄물 빌드 중간 산출물
+scripts/interview-sheets/.build/

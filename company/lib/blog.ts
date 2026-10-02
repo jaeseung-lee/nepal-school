@@ -3,6 +3,9 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { cache } from "react";
+import { unstable_noStore as noStore } from "next/cache";
+import { isPublicPost, resolvePublication } from "@/lib/blog-publication";
 import { blogFrontmatterSchema, imageManifestSchema, type BlogPost, type ImageManifestEntry } from "@/lib/blog-schema";
 import { BLOG_LOCALES, getBlogPostPath, type BlogLocale } from "@/lib/blog-routing";
 import { SITE, SITE_URL } from "@/lib/site";
@@ -17,7 +20,9 @@ function estimateReadingMinutes(content: string): number {
   return Math.max(1, Math.ceil(words / 260));
 }
 
-function readPostFile(locale: BlogLocale, fileName: string): BlogPost {
+const publicationNow = cache(() => new Date());
+
+const readPostFile = cache((locale: BlogLocale, fileName: string): BlogPost => {
   const filePath = path.join(BLOG_CONTENT_ROOT, locale, fileName);
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
@@ -34,7 +39,7 @@ function readPostFile(locale: BlogLocale, fileName: string): BlogPost {
     readingMinutes: estimateReadingMinutes(content),
     filePath,
   };
-}
+});
 
 function shouldIncludeReviewPosts(): boolean {
   return (
@@ -48,6 +53,8 @@ export function getBlogPosts(
   locale: BlogLocale,
   options: { includeReview?: boolean } = {},
 ): BlogPost[] {
+  noStore();
+  const now = publicationNow();
   const localeDirectory = path.join(BLOG_CONTENT_ROOT, locale);
   if (!fs.existsSync(localeDirectory)) return [];
 
@@ -56,7 +63,8 @@ export function getBlogPosts(
     .readdirSync(localeDirectory)
     .filter((fileName) => fileName.endsWith(".md"))
     .map((fileName) => readPostFile(locale, fileName))
-    .filter((post) => includeReview || post.status === "published")
+    .map((post) => resolvePublication(post, now))
+    .filter((post) => includeReview || isPublicPost(post, now))
     .sort((a, b) => b.modifiedAt.localeCompare(a.modifiedAt) || a.title.localeCompare(b.title));
 }
 

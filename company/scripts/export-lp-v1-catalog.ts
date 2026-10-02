@@ -31,7 +31,7 @@ const PALETTE = {
   line: "#DED8CC",
 } as const;
 
-const HERO_ORIGINAL = "images/KakaoTalk_Photo_2026-07-18-14-45-32 009.jpeg";
+const HERO_ORIGINAL = "images/etc/KakaoTalk_Photo_2026-07-18-14-45-32 009.jpeg";
 
 function parseLocale(argv: readonly string[]): LpV1Locale {
   const index = argv.indexOf("--locale");

@@ -6,18 +6,37 @@ const nextConfig = {
   // The repository root has a small package only for Husky. Keep Next's file
   // tracing rooted at this application so the two lockfiles are unambiguous.
   outputFileTracingRoot: fileURLToPath(new URL("./", import.meta.url)),
+  outputFileTracingIncludes: { "/*": ["./content/blog/**/*.md", "./content/blog/image-library.json"] },
   async redirects() {
     return [
       {
         source: "/:path*",
         has: [{ type: "host", value: "company-iota-murex.vercel.app" }],
-        destination: "https://www.joongwoohrd.com/:path*",
+        destination: "https://www.jeongwoohrd.com/:path*",
         permanent: true,
       },
       {
         source: "/:path*",
         has: [{ type: "host", value: "joongwoohrd.com" }],
-        destination: "https://www.joongwoohrd.com/:path*",
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.joongwoohrd.com" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "jeongwoohrd.com" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "nepal-school.vercel.app" }],
+        destination: "https://www.jeongwoohrd.com/:path*",
         permanent: true,
       },
     ];

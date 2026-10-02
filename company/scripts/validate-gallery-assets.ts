@@ -32,6 +32,7 @@ const GALLERY_CATEGORIES = new Set<GalleryCategory>([
   "facilities",
   "visits",
   "meetings",
+  "interviews",
 ]);
 
 export type GalleryAssetValidationResult = {
@@ -79,6 +80,19 @@ async function findFilesRecursively(directory: string): Promise<string[]> {
 
 function isSupportedSourceImage(filePath: string): boolean {
   return SOURCE_IMAGE_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+}
+
+/**
+ * Directories whose name starts with `_` hold originals kept for provenance but
+ * deliberately excluded from the public gallery. Applied to the source scan
+ * only — `public/gallery` must stay fully accounted for.
+ */
+function isArchivedSource(filePath: string): boolean {
+  return path
+    .relative(GALLERY_SOURCE_DIRECTORY, filePath)
+    .split(path.sep)
+    .slice(0, -1)
+    .some((segment) => segment.startsWith("_"));
 }
 
 function isWithin(directory: string, candidate: string): boolean {
@@ -196,7 +210,10 @@ export async function validateGalleryAssets(
   if (!publicDirectoryExists) errors.push(`Public gallery directory is missing: ${GALLERY_PUBLIC_DIRECTORY}.`);
 
   const sourceFiles = sourceDirectoryExists
-    ? (await findFilesRecursively(GALLERY_SOURCE_DIRECTORY)).filter(isSupportedSourceImage).sort()
+    ? (await findFilesRecursively(GALLERY_SOURCE_DIRECTORY))
+        .filter(isSupportedSourceImage)
+        .filter((filePath) => !isArchivedSource(filePath))
+        .sort()
     : [];
   const webpFiles = publicDirectoryExists
     ? (await findFilesRecursively(GALLERY_PUBLIC_DIRECTORY)).filter((filePath) => path.extname(filePath).toLowerCase() === ".webp").sort()

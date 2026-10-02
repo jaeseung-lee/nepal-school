@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "ດຳເນີນງານຮັບສະໝັກສາກົນ" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "ສະຖານດູແລກຽມບ່ອນວຽກແລະຊີວິດສຳລັບ SSW1", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "ເຄື່ອງຍົກຄົນເຈັບ ແລະ ຕຽງຝຶກໃນຫ້ອງຝຶກດູແລທີ່ເນປານ"
+  caption: "ນີ້ແມ່ນຫ້ອງຝຶກດູແລໃນສະຖານສຶກສາທີ່ເນປານ."
+  width: 2200
+  height: 1650
 sources:
   - { label: "ກະຊວງສາທາລະນະສຸກຍີ່ປຸ່ນ ແຮງງານດູແລ", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "ພາບລວມທາງການແລະເອກະສານສຳລັບສະຖານຮັບແຮງງານດູແລ.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "ສຳນັກງານເຂົ້າເມືອງ ຂະແໜງດູແລ", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "ຂອບເຂດວຽກແລະກົດຂະແໜງ SSW ດູແລທາງການ.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

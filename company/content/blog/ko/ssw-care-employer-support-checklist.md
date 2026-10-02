@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "정우인재개발원", role: "글로벌 인재 채용 운영팀" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "일본 개호 현장의 외국인 인재 수용과 생활 지원을 준비하는 장면", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "네팔 개호 실습실의 환자 리프트와 실습용 침대"
+  caption: "네팔 현지 교육시설의 개호 실습실입니다."
+  width: 2200
+  height: 1650
 sources:
   - { label: "일본 후생노동성 외국인 개호인재 안내", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "개호 분야의 외국인 인재 수용 제도와 사업자용 자료를 제공하는 공식 안내입니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "일본 출입국재류관리청 개호 분야", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "특정기능 개호의 업무 범위와 분야별 운용 기준을 확인하는 공식 페이지입니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

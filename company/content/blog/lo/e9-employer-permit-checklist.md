@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "ດຳເນີນງານຮັບສະໝັກສາກົນ" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "ນາຍຈ້າງກວດຕາຕະລາງອະນຸຍາດ E-9 ແລະ ເອກະສານ", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "ນາຍຈ້າງກວດຕາຕະລາງອະນຸຍາດ E-9 ແລະ ເອກະສານ", width: 1568, height: 1003 }
 sources:
   - { label: "HRDKorea ຊ່ວຍນາຍຈ້າງ", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "ຂໍ້ມູນທາງການສຳລັບນາຍຈ້າງໃນລະບົບອະນຸຍາດຈ້າງ.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "ຂັ້ນຕອນຈ້າງ EPS", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "ລຳດັບທາງການຈາກຊອກຄົນໃນປະເທດເຖິງອະນຸຍາດແລະສັນຍາ.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

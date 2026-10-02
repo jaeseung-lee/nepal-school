@@ -1,0 +1,238 @@
+# 편집한 6개 문서의 출처 링크
+
+문서별 출처 총 **97건**, 동일 URL 중복을 제거하면 **84개**입니다.
+
+이 작업에서 문서에 반영한 출처 목록을 기준으로 추출했습니다. 출처 URL을 그대로 보존했으며, 언어·쿼리 매개변수가 다른 URL은 별도로 유지했습니다.
+
+| 문서 | 출처 수 |
+|---|---:|
+| [기능실습 비자란](https://docs.google.com/document/d/1xgDM5uddwQzq-_j06U0wUz5GWMSMvpsnDycTpLxnBYU/edit) | 16 |
+| [외국인 학생이 일본에서 금전적인 지원을 받는 방법](https://docs.google.com/document/d/1xBgvG-habXQkwXDJyIqW4AIdlGWjOjKljwuE5w2wXeE/edit) | 17 |
+| [특정기능 1호 개호비자란](https://docs.google.com/document/d/1-AregAxcHI3ZEckKbM9ELyMzqWUT2FjJlb_qDLI2Dg4/edit) | 18 |
+| [특정활동 비자와 미얀마인에 대한 긴급피난조치](https://docs.google.com/document/d/1DXR9J4Mygg9xzUftmqV1p3lRa1AsHiGM8XLbONEozbw/edit) | 7 |
+| [일본 유학생 및 취업자 동향](https://docs.google.com/document/d/126DWYiWs2AKbVKZXSMGzUj23WMst_z3sdCydrl88nBE/edit) | 17 |
+| [특정 기능 1호 공장 비자란](https://docs.google.com/document/d/124sHuh7Seotr8jK1ZHMLBUJlRPfOSh8Z-IY0PBwEdvc/edit) | 22 |
+
+## 기능실습 비자란
+
+[원본 Google 문서](https://docs.google.com/document/d/1xgDM5uddwQzq-_j06U0wUz5GWMSMvpsnDycTpLxnBYU/edit)
+
+1. [출입국재류관리청 | 육성취로 제도 Q&A](https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html)
+   - URL: <https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html>
+2. [외국인기능실습기구(OTIT) | 기능실습 제도의 이념](https://www.otit.go.jp/system/philosophy/)
+   - URL: <https://www.otit.go.jp/system/philosophy/>
+3. [출입국재류관리청 | 기능실습 관련 통계·제도 자료 (PDF)](https://www.moj.go.jp/isa/content/001451535.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001451535.pdf>
+4. [출입국재류관리청 | 재류외국인 통계 관련 공표 자료](https://www.moj.go.jp/isa/publications/press/13_00062.html)
+   - URL: <https://www.moj.go.jp/isa/publications/press/13_00062.html>
+5. [출입국재류관리청 | 신규 입국자 통계 관련 공표 자료](https://www.moj.go.jp/isa/publications/press/13_00063.html)
+   - URL: <https://www.moj.go.jp/isa/publications/press/13_00063.html>
+6. [후생노동성 | 기능실습·국제협력 관련 안내](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/global_cooperation/index.html)
+   - URL: <https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/global_cooperation/index.html>
+7. [외국인기능실습기구(OTIT) | 송출기관 안내](https://www.otit.go.jp/system/sender/)
+   - URL: <https://www.otit.go.jp/system/sender/>
+8. [출입국재류관리청 | 기능실습계획 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/930005219.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/930005219.pdf>
+9. [출입국재류관리청 | 재류자격 「기능실습」](https://www.moj.go.jp/isa/applications/status/technicalinterntraining)
+   - URL: <https://www.moj.go.jp/isa/applications/status/technicalinterntraining>
+10. [출입국재류관리청 | 기능실습 제도 안내 자료 (PDF)](https://www.moj.go.jp/isa/content/001385692.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001385692.pdf>
+11. [출입국재류관리청 | 재류자격·신청 절차 안내](https://www.moj.go.jp/isa/applications/)
+   - URL: <https://www.moj.go.jp/isa/applications/>
+12. [출입국재류관리청 | 기능실습 2호 수료자 관련 안내](https://www.moj.go.jp/isa/11_00037.html)
+   - URL: <https://www.moj.go.jp/isa/11_00037.html>
+13. [출입국재류관리청 | 특정기능 제도 Q&A](https://www.moj.go.jp/isa/policies/ssw/faq.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/faq.html>
+14. [출입국재류관리청 | 특정기능 제도 안내](https://www.moj.go.jp/isa/policies/ssw/nyuukokukanri06_00103.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/nyuukokukanri06_00103.html>
+15. [출입국재류관리청 | 재류자격 「기술·인문지식·국제업무」](https://www.moj.go.jp/isa/applications/status/gijinkoku)
+   - URL: <https://www.moj.go.jp/isa/applications/status/gijinkoku>
+16. [출입국재류관리청 | 육성취로 제도 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001452485.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001452485.pdf>
+
+## 외국인 학생이 일본에서 금전적인 지원을 받는 방법
+
+[원본 Google 문서](https://docs.google.com/document/d/1xBgvG-habXQkwXDJyIqW4AIdlGWjOjKljwuE5w2wXeE/edit)
+
+1. [후생노동성 | 개호복지사 수학자금·유학생 지원 관련 자료 (PDF)](https://www.mhlw.go.jp/content/12000000/001592637.pdf)
+   - URL: <https://www.mhlw.go.jp/content/12000000/001592637.pdf>
+2. [오사카부사회복지협의회 | 2026년도 개호복지사 수학자금 모집요강 (PDF)](https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/06-%E3%80%90%E8%B2%B8%E4%BB%98%E5%B8%8C%E6%9C%9B%E8%80%85%E5%90%91%E3%81%91%E3%80%91%E4%BB%A4%E5%92%8C8%E5%B9%B4%E5%BA%A6%E4%BB%8B%E8%AD%B7%E7%A6%8F%E7%A5%89%E5%A3%AB%E4%BF%AE%E5%AD%A6%E8%B3%87%E9%87%91%E5%8B%9F%E9%9B%86%E8%A6%81%E9%A0%98.pdf)
+   - URL: <https://www.osakafusyakyo.or.jp/syuugakushikin/wp-content/uploads/2026/03/06-%E3%80%90%E8%B2%B8%E4%BB%98%E5%B8%8C%E6%9C%9B%E8%80%85%E5%90%91%E3%81%91%E3%80%91%E4%BB%A4%E5%92%8C8%E5%B9%B4%E5%BA%A6%E4%BB%8B%E8%AD%B7%E7%A6%8F%E7%A5%89%E5%A3%AB%E4%BF%AE%E5%AD%A6%E8%B3%87%E9%87%91%E5%8B%9F%E9%9B%86%E8%A6%81%E9%A0%98.pdf>
+3. [지바현 | 외국인 개호인재 육성·취업 프로그램](https://www.pref.chiba.lg.jp/kenshidou/jinzai/ryugakusei.html)
+   - URL: <https://www.pref.chiba.lg.jp/kenshidou/jinzai/ryugakusei.html>
+4. [출입국재류관리청 | 민간기업 대여형 장학금 관련 안내](https://www.moj.go.jp/isa/applications/resources/nyuukokukanri07_00155.html?lang=xh)
+   - URL: <https://www.moj.go.jp/isa/applications/resources/nyuukokukanri07_00155.html?lang=xh>
+5. [출입국재류관리청 | 유학생 경비지변·장학금 제출자료 안내](https://www.moj.go.jp/isa/publications/materials/nyuukokukanri07_00155.html)
+   - URL: <https://www.moj.go.jp/isa/publications/materials/nyuukokukanri07_00155.html>
+6. [오사카부 | 개호복지사 양성시설 목록](https://www.pref.osaka.lg.jp/o090040/houjin/kaigohukushi/index.html)
+   - URL: <https://www.pref.osaka.lg.jp/o090040/houjin/kaigohukushi/index.html>
+7. [후생노동성 | 외국인 유학생 장학금 지원사업 자료 (PDF)](https://www.mhlw.go.jp/content/10200000/001646467.pdf)
+   - URL: <https://www.mhlw.go.jp/content/10200000/001646467.pdf>
+8. [가나가와현 | 외국인 유학생 지원사업](https://www.pref.kanagawa.jp/docs/n7j/ryugakuseishien.html)
+   - URL: <https://www.pref.kanagawa.jp/docs/n7j/ryugakuseishien.html>
+9. [지바현 | 외국인 개호인재 사업 비용·보조금 자료 (PDF)](https://www.pref.chiba.lg.jp/kenshidou/jinzai/documents/kaigo-siryou.pdf)
+   - URL: <https://www.pref.chiba.lg.jp/kenshidou/jinzai/documents/kaigo-siryou.pdf>
+10. [오사카부 | 재류자격 「개호」 외국인 유학생 수용 가이드라인 (PDF)](https://www.pref.osaka.lg.jp/documents/5835/24.pdf)
+   - URL: <https://www.pref.osaka.lg.jp/documents/5835/24.pdf>
+11. [오사카부 | 외국인 개호인재 수용사업자 지원 안내](https://www.pref.osaka.lg.jp/o090040/houjin/jinzai/ukeirejigyousya.html)
+   - URL: <https://www.pref.osaka.lg.jp/o090040/houjin/jinzai/ukeirejigyousya.html>
+12. [출입국재류관리청 | 대여형 장학금 관련 참고자료 (PDF)](https://www.moj.go.jp/isa/content/001417508.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001417508.pdf>
+13. [후생노동성 | 외국인 유학생 지원제도 활용 사례 (PDF)](https://www.mhlw.go.jp/content/12000000/001240343.pdf)
+   - URL: <https://www.mhlw.go.jp/content/12000000/001240343.pdf>
+14. [후생노동성 | 개호복지사 등 수학자금 대여제도 관련 통지](https://www.mhlw.go.jp/web/t_doc?dataId=00ta8389&dataType=1&pageNo=1)
+   - URL: <https://www.mhlw.go.jp/web/t_doc?dataId=00ta8389&dataType=1&pageNo=1>
+15. [후생노동성 | 수학자금 대여제도 확충 관련 자료 (PDF)](https://www.mhlw.go.jp/bunya/seikatsuhogo/fukusijinzai_kakuho02/dl/01.pdf)
+   - URL: <https://www.mhlw.go.jp/bunya/seikatsuhogo/fukusijinzai_kakuho02/dl/01.pdf>
+16. [후생노동성 | 외국인 유학생 장학금 지원사업 관련 자료 (PDF)](https://www.mhlw.go.jp/content/10200000/000889057.pdf)
+   - URL: <https://www.mhlw.go.jp/content/10200000/000889057.pdf>
+17. [후생노동성 | 개호복지사 자격 경과조치 관련 통지 (PDF)](https://guardianship.mhlw.go.jp/common/uploads/2026/05/notice20260508.pdf)
+   - URL: <https://guardianship.mhlw.go.jp/common/uploads/2026/05/notice20260508.pdf>
+
+## 특정기능 1호 개호비자란
+
+[원본 Google 문서](https://docs.google.com/document/d/1-AregAxcHI3ZEckKbM9ELyMzqWUT2FjJlb_qDLI2Dg4/edit)
+
+1. [출입국재류관리청 | 재류자격·신청 절차 안내](https://www.moj.go.jp/isa/applications/)
+   - URL: <https://www.moj.go.jp/isa/applications/>
+2. [トモハタ | 특정기능 인원·통계 해설](https://tomohata.jp/guide/tokutei-ginou-toukei)
+   - URL: <https://tomohata.jp/guide/tokutei-ginou-toukei>
+3. [출입국재류관리청 | 재류자격 「특정기능」](https://www.moj.go.jp/isa/applications/status/specifiedskilledworker.html)
+   - URL: <https://www.moj.go.jp/isa/applications/status/specifiedskilledworker.html>
+4. [후생노동성 | 개호 분야 특정기능 요건 안내](https://www.mhlw.go.jp/stf/newpage_000117702.html)
+   - URL: <https://www.mhlw.go.jp/stf/newpage_000117702.html>
+5. [출입국재류관리청 | 특정기능 개호 분야 안내](https://www.moj.go.jp/isa/policies/ssw/nursingcare.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/nursingcare.html>
+6. [출입국재류관리청 | 개호 분야 고용·수용 요건 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001457658.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001457658.pdf>
+7. [출입국재류관리청 | 육성취로 제도 Q&A](https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html)
+   - URL: <https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html>
+8. [출입국재류관리청 | 개호 분야 육성취로·특정기능 정책 자료 (PDF)](https://www.moj.go.jp/isa/content/001457667.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001457667.pdf>
+9. [トモハタ | 개호 특정기능 채용·국적·지역 통계 해설](https://tomohata.jp/guide/kaigo-saiyo)
+   - URL: <https://tomohata.jp/guide/kaigo-saiyo>
+10. [출입국재류관리청 | 특정기능 재류외국인 상세 통계](https://www.moj.go.jp/isa/applications/ssw/nyuukokukanri07_00215.html?lang=en)
+   - URL: <https://www.moj.go.jp/isa/applications/ssw/nyuukokukanri07_00215.html?lang=en>
+11. [미쓰비시UFJ리서치&컨설팅 | 외국인 개호인재 관련 조사 자료 (PDF)](https://www.murc.jp/wp-content/uploads/2026/04/koukai_260410_02.pdf)
+   - URL: <https://www.murc.jp/wp-content/uploads/2026/04/koukai_260410_02.pdf>
+12. [지바현 | 외국인 개호인재 제도·현황](https://www.pref.chiba.lg.jp/kenshidou/jinzai/gaikokujinkaigoshikumi.html)
+   - URL: <https://www.pref.chiba.lg.jp/kenshidou/jinzai/gaikokujinkaigoshikumi.html>
+13. [출입국재류관리청 | 특정기능 1호 이행을 위한 특정활동 안내](https://www.moj.go.jp/isa/policies/ssw/10_00025)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/10_00025>
+14. [출입국재류관리청 | 재류자격 「개호」](https://www.moj.go.jp/isa/applications/status/nursingcare)
+   - URL: <https://www.moj.go.jp/isa/applications/status/nursingcare>
+15. [출입국재류관리청 | 재류자격 「개호」 인원 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001442566.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001442566.pdf>
+16. [介護レピ[Répit] | 외국인 개호인력 도도부현별 통계 해설](https://kaigoaruaru.com/care-data/foreign-care-workers-prefecture-data/)
+   - URL: <https://kaigoaruaru.com/care-data/foreign-care-workers-prefecture-data/>
+17. [후생노동성 | 개호복지사 국가시험 응시·합격 통계 (PDF)](https://www.mhlw.go.jp/content/12004000/001669882.pdf)
+   - URL: <https://www.mhlw.go.jp/content/12004000/001669882.pdf>
+18. [후생노동성 | 개호 특정기능 1호 체류기간 연장 안내](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/kaigo.tokuteiginou.extension)
+   - URL: <https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/kaigo.tokuteiginou.extension>
+
+## 특정활동 비자와 미얀마인에 대한 긴급피난조치
+
+[원본 Google 문서](https://docs.google.com/document/d/1DXR9J4Mygg9xzUftmqV1p3lRa1AsHiGM8XLbONEozbw/edit)
+
+1. [출입국재류관리청 | 미얀마 정세에 따른 긴급피난조치 안내](https://www.moj.go.jp/isa/applications/resources/10_00036.html)
+   - URL: <https://www.moj.go.jp/isa/applications/resources/10_00036.html>
+2. [출입국재류관리청 | 재류자격 「특정활동」](https://www.moj.go.jp/isa/applications/status/designatedactivities)
+   - URL: <https://www.moj.go.jp/isa/applications/status/designatedactivities>
+3. [출입국재류관리청 | 재류관리 관련 Q&A](https://www.moj.go.jp/isa/immigration/faq/kanri_qa.html)
+   - URL: <https://www.moj.go.jp/isa/immigration/faq/kanri_qa.html>
+4. [출입국재류관리청 | 미얀마 긴급피난조치 안내자료 (PDF · 001349365)](https://www.moj.go.jp/isa/content/001349365.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001349365.pdf>
+5. [출입국재류관리청 | 미얀마 긴급피난조치 Q&A (PDF)](https://www.moj.go.jp/isa/content/001352920.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001352920.pdf>
+6. [출입국재류관리청 | 미얀마 긴급피난조치 안내자료 (PDF · 001349360)](https://www.moj.go.jp/isa/content/001349360.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001349360.pdf>
+7. [출입국재류관리청 | 미얀마 긴급피난조치 신청 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001439274.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001439274.pdf>
+
+## 일본 유학생 및 취업자 동향
+
+[원본 Google 문서](https://docs.google.com/document/d/126DWYiWs2AKbVKZXSMGzUj23WMst_z3sdCydrl88nBE/edit)
+
+1. [e-Stat | 재류외국인 통계 데이터셋](https://www.e-stat.go.jp/stat-search/files?cycle=1&layout=dataset&tclass1=000001060399&tclass2val=0&toukei=00250012&tstat=000001018034)
+   - URL: <https://www.e-stat.go.jp/stat-search/files?cycle=1&layout=dataset&tclass1=000001060399&tclass2val=0&toukei=00250012&tstat=000001018034>
+2. [JASSO | 2025년도 외국인 유학생 재적상황 조사](https://www.jasso.go.jp/about/press/jp2026052901.html)
+   - URL: <https://www.jasso.go.jp/about/press/jp2026052901.html>
+3. [출입국재류관리청 | 2025년 말 재류외국인 통계 공표](https://www.moj.go.jp/isa/publications/press/13_00062.html)
+   - URL: <https://www.moj.go.jp/isa/publications/press/13_00062.html>
+4. [법무성 | 국적별 유학 재류자격 관련 통계 자료 (PDF)](https://www.moj.go.jp/content/001464243.pdf)
+   - URL: <https://www.moj.go.jp/content/001464243.pdf>
+5. [출입국재류관리청 | 도도부현별 재류외국인 상세 통계 (PDF)](https://www.moj.go.jp/isa/content/001459094.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001459094.pdf>
+6. [후생노동성 | 2025년 10월 말 외국인 고용상황 신고 집계](https://www.mhlw.go.jp/stf/newpage_68794.html)
+   - URL: <https://www.mhlw.go.jp/stf/newpage_68794.html>
+7. [출입국재류관리청 | 특정기능 관련 공표·통계 안내](https://www.moj.go.jp/isa/applications/ssw/)
+   - URL: <https://www.moj.go.jp/isa/applications/ssw/>
+8. [トモハタ | 특정기능 재류인원 통계 해설](https://tomohata.jp/guide/tokutei-ginou-toukei)
+   - URL: <https://tomohata.jp/guide/tokutei-ginou-toukei>
+9. [행정서사 시카마 사무소 | 특정기능 개호 인원 관련 해설](https://gyousei-shikama-office.com/blog228/)
+   - URL: <https://gyousei-shikama-office.com/blog228/>
+10. [출입국재류관리청 | 특정산업분야 관련 자료](https://www.moj.go.jp/isa/content/001335263)
+   - URL: <https://www.moj.go.jp/isa/content/001335263>
+11. [출입국재류관리청 | 주요 국적·지역별 특정산업분야별 특정기능 1호 인원 (PDF)](https://www.moj.go.jp/isa/content/001459471.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001459471.pdf>
+12. [출입국재류관리청 | 특정기능 분야·국적 관련 상세 자료 (PDF)](https://www.moj.go.jp/isa/content/001459490.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001459490.pdf>
+13. [출입국재류관리청 | 재류자격 「介護」 관련 제도 안내](https://www.moj.go.jp/isa/laws/h28_kaisei.html)
+   - URL: <https://www.moj.go.jp/isa/laws/h28_kaisei.html>
+14. [e-Stat | 재류자격 「介護」 관련 통계표](https://www.e-stat.go.jp/stat-search/database?statdisp_id=0004019020)
+   - URL: <https://www.e-stat.go.jp/stat-search/database?statdisp_id=0004019020>
+15. [外国人人材.com | 재류자격 「介護」 국적별 통계 해설](https://gaikokujinjinzai.com/data/zairyu/kaigo/)
+   - URL: <https://gaikokujinjinzai.com/data/zairyu/kaigo/>
+16. [출입국재류관리청 | 특정기능 개호 분야 안내](https://www.moj.go.jp/isa/policies/ssw/nursingcare.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/nursingcare.html>
+17. [후생노동성 | 외국인 개호인력 수용제도 관련 자료 (PDF)](https://www.mhlw.go.jp/content/12000000/001592637.pdf)
+   - URL: <https://www.mhlw.go.jp/content/12000000/001592637.pdf>
+
+## 특정 기능 1호 공장 비자란
+
+[원본 Google 문서](https://docs.google.com/document/d/124sHuh7Seotr8jK1ZHMLBUJlRPfOSh8Z-IY0PBwEdvc/edit)
+
+1. [출입국재류관리청 | 재류 관련 신청·제도 안내](https://www.moj.go.jp/isa/applications/)
+   - URL: <https://www.moj.go.jp/isa/applications/>
+2. [출입국재류관리청 | 특정기능 공업제품제조업 분야](https://www.moj.go.jp/isa/policies/ssw/manufacturing.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/manufacturing.html>
+3. [출입국재류관리청 | 특정기능 FAQ (영문)](https://www.moj.go.jp/isa/policies/ssw/faq.html?hl=en)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/faq.html?hl=en>
+4. [경제산업성 | 공업제품제조업 제도 개요 (PDF)](https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kogyoseihin-seizogyo_gaiyo_2026.4.pdf)
+   - URL: <https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kogyoseihin-seizogyo_gaiyo_2026.4.pdf>
+5. [출입국재류관리청 | 특정기능 제도 관련 안내자료 (PDF)](https://www.moj.go.jp/isa/content/930004944.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/930004944.pdf>
+6. [출입국재류관리청 | 특정기능 고용·보수 관련 유의사항](https://www.moj.go.jp/isa/policies/ssw/chuui.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/chuui.html>
+7. [출입국재류관리청 | 특정기능 통계·제도 공표자료](https://www.moj.go.jp/isa/applications/ssw/)
+   - URL: <https://www.moj.go.jp/isa/applications/ssw/>
+8. [출입국재류관리청 | 특정기능 분야별 인원 통계 (PDF)](https://www.moj.go.jp/isa/content/001459471.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001459471.pdf>
+9. [출입국재류관리청 | 특정기능 FAQ](https://www.moj.go.jp/isa/policies/ssw/faq.html)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/faq.html>
+10. [출입국재류관리청 | 특정기능 재류자격 안내](https://www.moj.go.jp/isa/applications/status/specifiedskilledworker)
+   - URL: <https://www.moj.go.jp/isa/applications/status/specifiedskilledworker>
+11. [출입국재류관리청 | 재류자격별 업무·요건 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001452975.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001452975.pdf>
+12. [출입국재류관리청 | 특정기능 이행 준비를 위한 특정활동 안내](https://www.moj.go.jp/isa/policies/ssw/10_00025)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/10_00025>
+13. [출입국재류관리청 | 특정기능 2호 요건 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001439633.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001439633.pdf>
+14. [경제산업성 | 제조업 특정기능 제도 개요·수정본 (PDF)](https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/pdf/kogyoseihin-seizogyo_gaiyo_2026.4r.pdf)
+   - URL: <https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/pdf/kogyoseihin-seizogyo_gaiyo_2026.4r.pdf>
+15. [출입국재류관리청 | 영주허가 신청 안내](https://www.moj.go.jp/isa/applications/procedures/16-2.html)
+   - URL: <https://www.moj.go.jp/isa/applications/procedures/16-2.html>
+16. [출입국재류관리청 | 육성취업 제도 Q&A](https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html)
+   - URL: <https://www.moj.go.jp/isa/applications/faq/ikusei_qa_00002.html>
+17. [출입국재류관리청 | 육성취업 단계별 요건 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001454867.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001454867.pdf>
+18. [경제산업성 | 제조업 육성취업 협의·연락회 자료 (PDF)](https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kyogikai/ikusesyuro_kyogi_renrakukai_20260508.pdf)
+   - URL: <https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kyogikai/ikusesyuro_kyogi_renrakukai_20260508.pdf>
+19. [출입국재류관리청 | 특정기능 FAQ (일문)](https://www.moj.go.jp/isa/policies/ssw/faq.html?hl=ja)
+   - URL: <https://www.moj.go.jp/isa/policies/ssw/faq.html?hl=ja>
+20. [출입국재류관리청 | 특정기능 1호 지원체계 관련 자료 (PDF)](https://www.moj.go.jp/isa/content/001454687.pdf)
+   - URL: <https://www.moj.go.jp/isa/content/001454687.pdf>
+21. [경제산업성 | 공업제품제조업 육성취업 분야별 자료 (PDF)](https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kogyoseihin-seizogyo_ikusesyuro_2026.01.pdf)
+   - URL: <https://www.meti.go.jp/policy/mono_info_service/gaikokujinzai/kogyoseihin-seizogyo_ikusesyuro_2026.01.pdf>
+22. [トモハタ | 특정기능 재류인원 통계 해설](https://tomohata.jp/guide/tokutei-ginou-toukei)
+   - URL: <https://tomohata.jp/guide/tokutei-ginou-toukei>

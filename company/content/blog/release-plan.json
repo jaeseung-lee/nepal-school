@@ -1,0 +1,36 @@
+{
+  "id": "2026-10-editorial-batch",
+  "timezone": "Asia/Tokyo",
+  "initialTopicCount": 3,
+  "followingWeekdays": [
+    "Monday",
+    "Wednesday",
+    "Friday"
+  ],
+  "followingTime": "09:00",
+  "locales": [
+    "ko",
+    "en",
+    "ja",
+    "ne",
+    "vi",
+    "lo"
+  ],
+  "topics": [
+    "ssw-care-exam-evidence",
+    "ssw-care-job-description",
+    "care-first-90-days",
+    "care-worker-qualification-residence",
+    "hotel-ssw-duty-matrix",
+    "hotel-japanese-roleplay",
+    "hotel-first-30-days",
+    "registered-support-contract-review",
+    "e9-first-90-days",
+    "foreign-worker-contract-housing",
+    "welding-skills-assessment-sheet",
+    "korea-d2-d4-study-route",
+    "nepal-student-document-review",
+    "nepal-recruitment-agency-check",
+    "nepal-predeparture-contract-check"
+  ]
+}

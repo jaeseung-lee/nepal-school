@@ -17,7 +17,7 @@ loadEnv({ path: resolve(process.cwd(), ".env.local"), override: true, quiet: tru
 
 const SOURCE = "yolo_japan";
 const LIST_URL = "https://www.yolo-japan.com/ja/sitemap/job-category/77";
-const USER_AGENT = "JoongwooHRD-InternalLeadMonitor/1.0 (+https://www.joongwoohrd.com)";
+const USER_AGENT = "JeongwooHRD-InternalLeadMonitor/1.0 (+https://www.jeongwoohrd.com)";
 
 type CliOptions = {
   dryRun: boolean;

@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "ホテルで特定技能宿泊人材の職務と支援を準備する担当者", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "ネパールのホスピタリティ教育施設にあるレストランサービス実習室"
+  caption: "ネパール現地の教育施設にあるホスピタリティ実習室です。"
+  width: 2200
+  height: 1650
 sources:
   - { label: "出入国在留管理庁・宿泊分野", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "特定技能宿泊分野の業務範囲と分野別運用基準を掲載した公式ページです。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "出入国在留管理庁・特定技能制度", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "1号の共通雇用、支援、申請・届出に関する公式案内です。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

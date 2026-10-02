@@ -189,6 +189,6 @@ test("default social metadata and Organization JSON-LD use the published brand a
   assert.ok(pageOpenGraphImage && typeof pageOpenGraphImage === "object" && "url" in pageOpenGraphImage);
   assert.equal(pageOpenGraphImage.url, "/brand/og-image.png");
   assert.deepEqual(pageMetadata.twitter?.images, ["/brand/og-image.png"]);
-  assert.equal(organization.logo, "https://www.joongwoohrd.com/brand/logo-color.svg");
-  assert.equal(organization.image, "https://www.joongwoohrd.com/brand/og-image.png");
+  assert.equal(organization.logo, "https://www.jeongwoohrd.com/brand/logo-color.svg");
+  assert.equal(organization.image, "https://www.jeongwoohrd.com/brand/og-image.png");
 });

@@ -2,10 +2,17 @@
   {
     "id": "international-partnership",
     "path": "/kv/redesign/partner.webp",
-    "topics": ["상담", "국제 채용", "파트너십"],
+    "topics": [
+      "상담",
+      "국제 채용",
+      "파트너십"
+    ],
     "provenance": "existing-site-asset",
     "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
-    "allowedUses": ["hero", "inline"],
+    "allowedUses": [
+      "hero",
+      "inline"
+    ],
     "defaultAlt": {
       "ko": "국제 채용 협업을 논의하는 기업 담당자들의 상담 장면",
       "en": "Company representatives discussing cooperation for international recruitment",
@@ -13,15 +20,24 @@
       "ne": "अन्तर्राष्ट्रिय भर्ती सहकार्यबारे छलफल गरिरहेका कम्पनी प्रतिनिधिहरू",
       "vi": "Đại diện doanh nghiệp thảo luận hợp tác tuyển dụng quốc tế",
       "lo": "ຕົວແທນບໍລິສັດປຶກສາການຮ່ວມມືຮັບສະໝັກສາກົນ"
-    }
+    },
+    "width": 1587,
+    "height": 991
   },
   {
     "id": "korea-workplace",
     "path": "/kv/redesign/korea.webp",
-    "topics": ["한국", "기업", "현장 배치"],
+    "topics": [
+      "한국",
+      "기업",
+      "현장 배치"
+    ],
     "provenance": "existing-site-asset",
     "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
-    "allowedUses": ["hero", "inline"],
+    "allowedUses": [
+      "hero",
+      "inline"
+    ],
     "defaultAlt": {
       "ko": "한국 기업의 외국인 인재 채용과 현장 배치를 상징하는 장면",
       "en": "A scene representing foreign talent recruitment and placement in Korea",
@@ -29,15 +45,24 @@
       "ne": "कोरियाली कम्पनीमा विदेशी प्रतिभाको भर्ती र कार्यस्थल नियुक्ति",
       "vi": "Hình ảnh tuyển dụng và bố trí nhân lực nước ngoài tại doanh nghiệp Hàn Quốc",
       "lo": "ພາບແທນການຮັບສະໝັກແລະຈັດວາງພະນັກງານຕ່າງຊາດໃນເກົາຫຼີ"
-    }
+    },
+    "width": 1586,
+    "height": 992
   },
   {
     "id": "japan-support",
     "path": "/kv/redesign/japan.webp",
-    "topics": ["일본", "특정기능", "정착 지원"],
+    "topics": [
+      "일본",
+      "특정기능",
+      "정착 지원"
+    ],
     "provenance": "existing-site-asset",
     "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
-    "allowedUses": ["hero", "inline"],
+    "allowedUses": [
+      "hero",
+      "inline"
+    ],
     "defaultAlt": {
       "ko": "일본 취업 준비와 현지 정착 지원을 상징하는 상담 장면",
       "en": "A consultation representing work preparation and settlement support in Japan",
@@ -45,15 +70,24 @@
       "ne": "जापानमा रोजगारी तयारी र बसोबास सहयोगसम्बन्धी परामर्श",
       "vi": "Buổi tư vấn về chuẩn bị việc làm và hỗ trợ ổn định tại Nhật Bản",
       "lo": "ການປຶກສາການກຽມເຮັດວຽກແລະການຕັ້ງຖິ່ນຖານໃນຍີ່ປຸ່ນ"
-    }
+    },
+    "width": 1586,
+    "height": 992
   },
   {
     "id": "vocational-training",
     "path": "/kv/redesign/training.webp",
-    "topics": ["직업 교육", "안전 교육", "기능 훈련"],
+    "topics": [
+      "직업 교육",
+      "안전 교육",
+      "기능 훈련"
+    ],
     "provenance": "existing-site-asset",
     "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
-    "allowedUses": ["hero", "inline"],
+    "allowedUses": [
+      "hero",
+      "inline"
+    ],
     "defaultAlt": {
       "ko": "작업 장비를 활용해 직업 기능을 익히는 교육 현장",
       "en": "A vocational training site where workers learn skills with equipment",
@@ -61,15 +95,24 @@
       "ne": "कार्य उपकरण प्रयोग गरेर व्यावसायिक सीप सिकाइँदै गरेको तालिम",
       "vi": "Cơ sở đào tạo nghề nơi học viên thực hành kỹ năng với thiết bị",
       "lo": "ສະຖານທີ່ຝຶກອາຊີບທີ່ຮຽນທັກສະດ້ວຍອຸປະກອນ"
-    }
+    },
+    "width": 1586,
+    "height": 992
   },
   {
     "id": "recruitment-process",
     "path": "/kv/redesign/process.webp",
-    "topics": ["채용 절차", "서류 검토", "일정 관리"],
+    "topics": [
+      "채용 절차",
+      "서류 검토",
+      "일정 관리"
+    ],
     "provenance": "existing-site-asset",
     "rights": "현재 사이트용으로 제공되어 블로그 사용을 승인한 내부 자산",
-    "allowedUses": ["hero", "inline"],
+    "allowedUses": [
+      "hero",
+      "inline"
+    ],
     "defaultAlt": {
       "ko": "채용 일정과 제출 서류를 함께 검토하는 업무 장면",
       "en": "A work session reviewing recruitment schedules and required documents",
@@ -77,6 +120,287 @@
       "ne": "भर्ती समयतालिका र पेश गर्नुपर्ने कागजात समीक्षा गरिँदै गरेको दृश्य",
       "vi": "Buổi làm việc rà soát lịch tuyển dụng và hồ sơ cần nộp",
       "lo": "ການກວດທົບຕາຕະລາງຮັບສະໝັກແລະເອກະສານທີ່ຕ້ອງຍື່ນ"
-    }
+    },
+    "width": 1568,
+    "height": 1003
+  },
+  {
+    "id": "nepal-care-practice-room",
+    "path": "/gallery/caregiver-practice-room-patient-hoist.webp",
+    "topics": [
+      "네팔",
+      "개호 실습",
+      "환자 리프트"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트 공개 갤러리에 사용 중인 내부 사진을 블로그 대표 이미지로 재사용",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 개호 실습실의 환자 리프트와 실습용 침대",
+      "en": "Patient hoist and practice bed in a Nepalese care training room",
+      "ja": "ネパールの介護実習室にある患者用リフトと実習ベッド",
+      "ne": "नेपालको हेरचाह अभ्यास कक्षमा बिरामी उठाउने उपकरण र अभ्यास शय्या",
+      "vi": "Thiết bị nâng bệnh nhân và giường thực hành trong phòng đào tạo chăm sóc tại Nepal",
+      "lo": "ເຄື່ອງຍົກຄົນເຈັບ ແລະ ຕຽງຝຶກໃນຫ້ອງຝຶກດູແລທີ່ເນປານ"
+    },
+    "width": 2200,
+    "height": 1650
+  },
+  {
+    "id": "nepal-hospitality-training-lab",
+    "path": "/gallery/hospitality-training-restaurant-lab.webp",
+    "topics": [
+      "네팔",
+      "호스피탈리티 교육",
+      "레스토랑 실습"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트 공개 갤러리에 사용 중인 내부 사진을 블로그 대표 이미지로 재사용",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 호스피탈리티 교육장의 레스토랑 서비스 실습 공간",
+      "en": "Restaurant service practice area at a hospitality training site in Nepal",
+      "ja": "ネパールのホスピタリティ教育施設にあるレストランサービス実習室",
+      "ne": "नेपालको आतिथ्य प्रशिक्षण केन्द्रमा रेस्टुरेन्ट सेवाको अभ्यास कक्ष",
+      "vi": "Khu thực hành dịch vụ nhà hàng tại cơ sở đào tạo dịch vụ lưu trú ở Nepal",
+      "lo": "ຫ້ອງຝຶກບໍລິການຮ້ານອາຫານໃນສະຖານທີ່ຝຶກວຽກຕ້ອນຮັບທີ່ເນປານ"
+    },
+    "width": 2200,
+    "height": 1650
+  },
+  {
+    "id": "nepal-candidate-interview",
+    "path": "/gallery/interview-candidate-conversation.webp",
+    "topics": [
+      "네팔",
+      "현지 면접",
+      "후보자 선발"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트 공개 갤러리에 사용 중인 내부 사진을 블로그 대표 이미지로 재사용",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 현지에서 면접 담당자와 지원자들이 대화하는 모습",
+      "en": "An interviewer speaking with candidates during a recruitment session in Nepal",
+      "ja": "ネパール現地の面接会場で担当者と応募者が対話する様子",
+      "ne": "नेपालमा अन्तर्वार्ताकर्ता र उम्मेदवारहरूबीच भएको कुराकानी",
+      "vi": "Người phỏng vấn trao đổi với các ứng viên tại buổi tuyển chọn ở Nepal",
+      "lo": "ຜູ້ສຳພາດສົນທະນາກັບຜູ້ສະໝັກໃນການຄັດເລືອກທີ່ເນປານ"
+    },
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": "nepal-healthcare-training-classroom",
+    "path": "/gallery/healthcare-training-classroom.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 개호 교육 교실에서 수업을 듣는 교육생들",
+      "en": "Trainees attending a care training class in Nepal",
+      "ja": "ネパールの介護教育教室で授業を受ける研修生",
+      "ne": "नेपालको हेरचाह तालिम कक्षामा सहभागी प्रशिक्षार्थीहरू",
+      "vi": "Học viên tham gia lớp đào tạo chăm sóc tại Nepal",
+      "lo": "ຜູ້ຝຶກຮຽນໃນຫ້ອງຮຽນການດູແລທີ່ເນປານ"
+    },
+    "width": 1400,
+    "height": 1050
+  },
+  {
+    "id": "nepal-caregiver-practice",
+    "path": "/lp/v1/caregiver-practice.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 카트만두 기술학교에서 침대 옆 돌봄을 실습하는 교육생들",
+      "en": "Trainees practising bedside care at Kathmandu Technical School in Nepal",
+      "ja": "ネパールのカトマンズ技術学校でベッドサイドの介助を練習する研修生",
+      "ne": "नेपालको काठमाडौँ टेक्निकल स्कुलमा शय्याछेउको हेरचाह अभ्यास गरिरहेका प्रशिक्षार्थीहरू",
+      "vi": "Học viên thực hành chăm sóc bên giường tại Trường Kỹ thuật Kathmandu ở Nepal",
+      "lo": "ຜູ້ຝຶກຮຽນຝຶກດູແລຂ້າງຕຽງທີ່ໂຮງຮຽນເຕັກນິກ Kathmandu ໃນເນປານ"
+    },
+    "width": 1600,
+    "height": 900
+  },
+  {
+    "id": "nepal-caregiver-mobility",
+    "path": "/lp/v1/caregiver-mobility.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 카트만두 기술학교의 휠체어 이용자 지원 실습 장면",
+      "en": "Wheelchair assistance practice at Kathmandu Technical School in Nepal",
+      "ja": "ネパールのカトマンズ技術学校での車いす利用者の介助実習",
+      "ne": "नेपालको काठमाडौँ टेक्निकल स्कुलमा ह्विलचेयर प्रयोगकर्तालाई सहयोग गर्ने अभ्यास",
+      "vi": "Thực hành hỗ trợ người dùng xe lăn tại Trường Kỹ thuật Kathmandu ở Nepal",
+      "lo": "ການຝຶກຊ່ວຍຜູ້ໃຊ້ລໍ້ເຂັນທີ່ໂຮງຮຽນເຕັກນິກ Kathmandu ໃນເນປານ"
+    },
+    "width": 1200,
+    "height": 1600
+  },
+  {
+    "id": "nepal-interview-session-panel",
+    "path": "/gallery/interview-session-panel.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 현지 면접에서 담당자 앞에 앉아 답변하는 지원자들",
+      "en": "Candidates answering questions at a recruitment interview in Nepal",
+      "ja": "ネパール現地の採用面接で担当者の質問に答える応募者",
+      "ne": "नेपालमा भर्ती अन्तर्वार्ताका प्रश्नको उत्तर दिइरहेका उम्मेदवारहरू",
+      "vi": "Ứng viên trả lời câu hỏi trong buổi phỏng vấn tuyển dụng tại Nepal",
+      "lo": "ຜູ້ສະໝັກຕອບຄຳຖາມໃນການສຳພາດຮັບສະໝັກທີ່ເນປານ"
+    },
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": "nepal-training-room-interior",
+    "path": "/gallery/training-room-interior.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 현지 방문에서 촬영한 침대와 책상이 있는 객실",
+      "en": "A room with a bed and desk photographed during a visit in Nepal",
+      "ja": "ネパール現地訪問時に撮影したベッドと机のある客室",
+      "ne": "नेपाल भ्रमणका क्रममा खिचिएको ओछ्यान र टेबल भएको कोठा",
+      "vi": "Phòng có giường và bàn được chụp trong chuyến thăm tại Nepal",
+      "lo": "ຫ້ອງທີ່ມີຕຽງແລະໂຕະ ຖ່າຍໃນການຢ້ຽມຢາມທີ່ເນປານ"
+    },
+    "width": 1650,
+    "height": 2200
+  },
+  {
+    "id": "nepal-office-presentation-meeting",
+    "path": "/gallery/office-presentation-meeting.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 현지 사무실에서 화면 자료를 보며 회의하는 방문단",
+      "en": "A visiting group discussing a presentation in an office in Nepal",
+      "ja": "ネパールの事務所で画面の資料を見ながら打ち合わせをする訪問団",
+      "ne": "नेपालको कार्यालयमा प्रस्तुति हेर्दै छलफल गरिरहेको भ्रमण टोली",
+      "vi": "Đoàn khách trao đổi về nội dung trình chiếu tại văn phòng ở Nepal",
+      "lo": "ຄະນະຢ້ຽມຢາມປຶກສາເນື້ອຫາໃນຈໍຢູ່ຫ້ອງການທີ່ເນປານ"
+    },
+    "width": 1280,
+    "height": 960
+  },
+  {
+    "id": "nepal-campus-partnership-meeting",
+    "path": "/gallery/campus-partnership-meeting.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 교육기관 방문 중 회의 테이블에 앉아 있는 관계자들",
+      "en": "Representatives at a meeting table during an educational institution visit in Nepal",
+      "ja": "ネパールの教育機関訪問で会議テーブルを囲む関係者",
+      "ne": "नेपालको शैक्षिक संस्था भ्रमणमा बैठक टेबलमा बसेका प्रतिनिधिहरू",
+      "vi": "Các đại diện ngồi họp trong chuyến thăm cơ sở giáo dục tại Nepal",
+      "lo": "ຜູ້ຕາງໜ້ານັ່ງປະຊຸມໃນການຢ້ຽມຢາມສະຖາບັນການສຶກສາທີ່ເນປານ"
+    },
+    "width": 2200,
+    "height": 1650
+  },
+  {
+    "id": "nepal-interview-room-overview",
+    "path": "/gallery/interview-room-overview.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 채용 면접실에서 자료를 놓고 대화하는 담당자와 지원자들",
+      "en": "Interviewers and candidates talking across a table in a Nepal recruitment interview room",
+      "ja": "ネパールの採用面接室で資料を前に話す担当者と応募者",
+      "ne": "नेपालको भर्ती अन्तर्वार्ता कक्षमा टेबलमा बसेर कुराकानी गरिरहेका अन्तर्वार्ताकर्ता र उम्मेदवारहरू",
+      "vi": "Người phỏng vấn và ứng viên trao đổi tại phòng phỏng vấn tuyển dụng ở Nepal",
+      "lo": "ຜູ້ສຳພາດແລະຜູ້ສະໝັກສົນທະນາຢູ່ຫ້ອງສຳພາດຮັບສະໝັກທີ່ເນປານ"
+    },
+    "width": 1200,
+    "height": 900
+  },
+  {
+    "id": "nepal-group-at-transit-terminal",
+    "path": "/gallery/group-at-transit-terminal.webp",
+    "topics": [
+      "네팔",
+      "교육·채용 현장"
+    ],
+    "provenance": "existing-site-asset",
+    "rights": "현재 사이트의 공개 갤러리·교육 페이지에 제공된 사진을 블로그에 재사용. 현장과 촬영 맥락을 캡션에 표시.",
+    "allowedUses": [
+      "hero"
+    ],
+    "defaultAlt": {
+      "ko": "네팔 터미널에서 여행 가방과 함께 서 있는 방문단",
+      "en": "A visiting group standing with luggage at a terminal in Nepal",
+      "ja": "ネパールのターミナルで旅行かばんとともに立つ訪問団",
+      "ne": "नेपालको टर्मिनलमा सामानसहित उभिएको भ्रमण टोली",
+      "vi": "Đoàn khách đứng cùng hành lý tại nhà ga ở Nepal",
+      "lo": "ຄະນະຢ້ຽມຢາມຢືນກັບກະເປົາເດີນທາງຢູ່ອາຄານຜູ້ໂດຍສານທີ່ເນປານ"
+    },
+    "width": 1280,
+    "height": 960
   }
 ]

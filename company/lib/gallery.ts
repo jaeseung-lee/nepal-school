@@ -1,7 +1,7 @@
 import { LOCALES, type Locale } from "@/lib/i18n";
 
 /** The presentation groups used to filter and label the public gallery. */
-export type GalleryCategory = "training" | "facilities" | "visits" | "meetings";
+export type GalleryCategory = "training" | "facilities" | "visits" | "meetings" | "interviews";
 
 export const GALLERY_LOCALES = LOCALES;
 
@@ -158,6 +158,38 @@ const CATEGORY_COPY: Readonly<Record<GalleryCategory, Readonly<Record<GalleryLoc
       alt: "ຕົວແທນຄູ່ຮ່ວມງານເຂົ້າຮ່ວມການປະຊຸມ ຫຼື ງານຕ້ອນຮັບ",
     },
   },
+  interviews: {
+    ko: {
+      title: "면접과 선발",
+      description: "네팔 현지에서 진행한 지원자 면접과 선발 절차의 현장입니다.",
+      alt: "면접장에서 지원자와 면접 담당자가 면접을 진행하는 모습",
+    },
+    en: {
+      title: "Interviews and selection",
+      description: "Candidate interviews and the selection process carried out on site in Nepal.",
+      alt: "Candidates and interviewers taking part in an interview session",
+    },
+    ja: {
+      title: "面接と選抜",
+      description: "ネパール現地で実施した応募者の面接と選抜の様子です。",
+      alt: "面接会場で応募者と面接担当者が面接を行っている様子",
+    },
+    ne: {
+      title: "अन्तर्वार्ता र छनोट",
+      description: "नेपालमै सञ्चालन गरिएको आवेदकको अन्तर्वार्ता र छनोट प्रक्रिया।",
+      alt: "अन्तर्वार्ता कक्षमा आवेदक र अन्तर्वार्ताकर्ता सहभागी भएको दृश्य",
+    },
+    vi: {
+      title: "Phỏng vấn và tuyển chọn",
+      description: "Phỏng vấn ứng viên và quy trình tuyển chọn được thực hiện tại Nepal.",
+      alt: "Ứng viên và cán bộ phỏng vấn tham gia buổi phỏng vấn",
+    },
+    lo: {
+      title: "ການສຳພາດ ແລະ ການຄັດເລືອກ",
+      description: "ການສຳພາດຜູ້ສະໝັກ ແລະ ຂັ້ນຕອນການຄັດເລືອກທີ່ດຳເນີນຢູ່ເນປານ.",
+      alt: "ຜູ້ສະໝັກ ແລະ ຜູ້ສຳພາດເຂົ້າຮ່ວມການສຳພາດ",
+    },
+  },
 };
 
 function item(
@@ -175,33 +207,43 @@ function item(
  * into a one-to-one `public/gallery` WebP derivative.
  */
 export const GALLERY_ITEMS: readonly GalleryItem[] = [
-  item("campus-welcome-garlanded-guests", 1, "images/KakaoTalk_Photo_2026-07-18-14-45-27 001.jpeg", "/gallery/campus-welcome-garlanded-guests.webp", "visits"),
-  item("campus-partnership-meeting", 2, "images/KakaoTalk_Photo_2026-07-18-14-45-28 002.jpeg", "/gallery/campus-partnership-meeting.webp", "meetings"),
-  item("campus-visit-outdoor-group", 3, "images/KakaoTalk_Photo_2026-07-18-14-45-28 003.jpeg", "/gallery/campus-visit-outdoor-group.webp", "visits"),
-  item("nursing-classroom-visit", 4, "images/KakaoTalk_Photo_2026-07-18-14-45-28 004.jpeg", "/gallery/nursing-classroom-visit.webp", "training"),
-  item("visitor-hosts-terrace-meeting", 5, "images/KakaoTalk_Photo_2026-07-18-14-45-29 005.jpeg", "/gallery/visitor-hosts-terrace-meeting.webp", "visits"),
-  item("visiting-group-building-entrance", 6, "images/KakaoTalk_Photo_2026-07-18-14-45-29 006.jpeg", "/gallery/visiting-group-building-entrance.webp", "visits"),
-  item("skill-lab-v-tour", 7, "images/KakaoTalk_Photo_2026-07-18-14-45-30 007.jpeg", "/gallery/skill-lab-v-tour.webp", "facilities"),
-  item("hospitality-training-restaurant-lab", 8, "images/KakaoTalk_Photo_2026-07-18-14-45-31 008.jpeg", "/gallery/hospitality-training-restaurant-lab.webp", "training"),
-  item("healthcare-training-simulation-ward", 9, "images/KakaoTalk_Photo_2026-07-18-14-45-32 009.jpeg", "/gallery/healthcare-training-simulation-ward.webp", "training"),
-  item("training-room-interior", 10, "images/KakaoTalk_Photo_2026-07-18-14-45-33 010.jpeg", "/gallery/training-room-interior.webp", "facilities"),
-  item("institutional-visit-group", 11, "images/KakaoTalk_Photo_2026-07-18-14-45-34 011.jpeg", "/gallery/institutional-visit-group.webp", "visits"),
-  item("institutional-visit-group-wide", 12, "images/KakaoTalk_Photo_2026-07-18-14-45-34 012.jpeg", "/gallery/institutional-visit-group-wide.webp", "visits"),
-  item("dakshinkali-municipality-partnership-visit", 13, "images/KakaoTalk_Photo_2026-07-18-14-45-35 013.jpeg", "/gallery/dakshinkali-municipality-partnership-visit.webp", "visits"),
-  item("municipal-office-meeting", 14, "images/KakaoTalk_Photo_2026-07-18-14-46-29.jpeg", "/gallery/municipal-office-meeting.webp", "meetings"),
-  item("cafe-group-meeting", 15, "images/KakaoTalk_Photo_2026-07-18-15-03-24.jpeg", "/gallery/cafe-group-meeting.webp", "visits"),
-  item("group-at-transit-terminal", 16, "images/KakaoTalk_Photo_2026-07-18-15-03-40.jpeg", "/gallery/group-at-transit-terminal.webp", "visits"),
-  item("office-group-meeting", 17, "images/KakaoTalk_Photo_2026-07-18-15-03-44.jpeg", "/gallery/office-group-meeting.webp", "meetings"),
-  item("office-presentation-meeting", 18, "images/KakaoTalk_Photo_2026-07-18-15-03-47.jpeg", "/gallery/office-presentation-meeting.webp", "meetings"),
-  item("dakshinkali-municipality-office-group", 19, "images/KakaoTalk_Photo_2026-07-18-15-03-50.jpeg", "/gallery/dakshinkali-municipality-office-group.webp", "visits"),
-  item("oxbridge-foundation-welcome-ceremony", 20, "images/KakaoTalk_Photo_2026-07-18-15-03-58 001.jpeg", "/gallery/oxbridge-foundation-welcome-ceremony.webp", "visits"),
-  item("ceremonial-office-group", 21, "images/KakaoTalk_Photo_2026-07-18-15-03-58 002.jpeg", "/gallery/ceremonial-office-group.webp", "visits"),
-  item("stakeholder-meeting-presentation", 22, "images/KakaoTalk_Photo_2026-07-18-15-03-59 003.jpeg", "/gallery/stakeholder-meeting-presentation.webp", "meetings"),
-  item("campus-programme-display", 23, "images/KakaoTalk_Photo_2026-07-18-15-03-59 004.jpeg", "/gallery/campus-programme-display.webp", "facilities"),
-  item("caregiver-training-programme-display", 24, "images/KakaoTalk_Photo_2026-07-18-15-04-00 005.jpeg", "/gallery/caregiver-training-programme-display.webp", "facilities"),
-  item("kathmandu-technical-school-friday-fusion", 25, "images/KakaoTalk_Photo_2026-07-18-15-04-00 006.jpeg", "/gallery/kathmandu-technical-school-friday-fusion.webp", "facilities"),
-  item("healthcare-training-classroom", 26, "images/KakaoTalk_Photo_2026-07-18-15-04-01 007.jpeg", "/gallery/healthcare-training-classroom.webp", "training"),
-  item("municipal-office-ceremonial-visit", 27, "images/KakaoTalk_Photo_2026-07-18-15-04-05.jpeg", "/gallery/municipal-office-ceremonial-visit.webp", "visits"),
+  item("campus-welcome-garlanded-guests", 1, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-27 001.jpeg", "/gallery/campus-welcome-garlanded-guests.webp", "visits"),
+  item("campus-partnership-meeting", 2, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-28 002.jpeg", "/gallery/campus-partnership-meeting.webp", "meetings"),
+  item("campus-visit-outdoor-group", 3, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-28 003.jpeg", "/gallery/campus-visit-outdoor-group.webp", "visits"),
+  item("nursing-classroom-visit", 4, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-28 004.jpeg", "/gallery/nursing-classroom-visit.webp", "training"),
+  item("visitor-hosts-terrace-meeting", 5, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-29 005.jpeg", "/gallery/visitor-hosts-terrace-meeting.webp", "visits"),
+  item("visiting-group-building-entrance", 6, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-29 006.jpeg", "/gallery/visiting-group-building-entrance.webp", "visits"),
+  item("skill-lab-v-tour", 7, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-30 007.jpeg", "/gallery/skill-lab-v-tour.webp", "facilities"),
+  item("hospitality-training-restaurant-lab", 8, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-31 008.jpeg", "/gallery/hospitality-training-restaurant-lab.webp", "training"),
+  item("healthcare-training-simulation-ward", 9, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-32 009.jpeg", "/gallery/healthcare-training-simulation-ward.webp", "training"),
+  item("training-room-interior", 10, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-33 010.jpeg", "/gallery/training-room-interior.webp", "facilities"),
+  item("institutional-visit-group", 11, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-34 011.jpeg", "/gallery/institutional-visit-group.webp", "visits"),
+  item("institutional-visit-group-wide", 12, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-34 012.jpeg", "/gallery/institutional-visit-group-wide.webp", "visits"),
+  item("dakshinkali-municipality-partnership-visit", 13, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-35 013.jpeg", "/gallery/dakshinkali-municipality-partnership-visit.webp", "visits"),
+  item("municipal-office-meeting", 14, "images/etc/KakaoTalk_Photo_2026-07-18-14-46-29.jpeg", "/gallery/municipal-office-meeting.webp", "meetings"),
+  item("cafe-group-meeting", 15, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-24.jpeg", "/gallery/cafe-group-meeting.webp", "visits"),
+  item("group-at-transit-terminal", 16, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-40.jpeg", "/gallery/group-at-transit-terminal.webp", "visits"),
+  item("office-group-meeting", 17, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-44.jpeg", "/gallery/office-group-meeting.webp", "meetings"),
+  item("office-presentation-meeting", 18, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-47.jpeg", "/gallery/office-presentation-meeting.webp", "meetings"),
+  item("dakshinkali-municipality-office-group", 19, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-50.jpeg", "/gallery/dakshinkali-municipality-office-group.webp", "visits"),
+  item("oxbridge-foundation-welcome-ceremony", 20, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 001.jpeg", "/gallery/oxbridge-foundation-welcome-ceremony.webp", "visits"),
+  item("ceremonial-office-group", 21, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 002.jpeg", "/gallery/ceremonial-office-group.webp", "visits"),
+  item("stakeholder-meeting-presentation", 22, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 003.jpeg", "/gallery/stakeholder-meeting-presentation.webp", "meetings"),
+  item("campus-programme-display", 23, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 004.jpeg", "/gallery/campus-programme-display.webp", "facilities"),
+  item("caregiver-training-programme-display", 24, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 005.jpeg", "/gallery/caregiver-training-programme-display.webp", "facilities"),
+  item("kathmandu-technical-school-friday-fusion", 25, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 006.jpeg", "/gallery/kathmandu-technical-school-friday-fusion.webp", "facilities"),
+  item("healthcare-training-classroom", 26, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-01 007.jpeg", "/gallery/healthcare-training-classroom.webp", "training"),
+  item("municipal-office-ceremonial-visit", 27, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-05.jpeg", "/gallery/municipal-office-ceremonial-visit.webp", "visits"),
+  item("interview-session-panel", 28, "images/20260902/IMG_5727.JPG", "/gallery/interview-session-panel.webp", "interviews"),
+  item("interview-candidate-conversation", 29, "images/20260902/IMG_5725.JPG", "/gallery/interview-candidate-conversation.webp", "interviews"),
+  item("interview-room-overview", 30, "images/20260902/IMG_5734.JPG", "/gallery/interview-room-overview.webp", "interviews"),
+  item("interview-waiting-candidates", 31, "images/20260902/IMG_5738.JPG", "/gallery/interview-waiting-candidates.webp", "interviews"),
+  item("caregiver-simulation-ward-beds", 32, "images/20260902/IMG_5686.HEIC", "/gallery/caregiver-simulation-ward-beds.webp", "facilities"),
+  item("caregiver-practice-room-patient-hoist", 33, "images/20260902/IMG_5682.HEIC", "/gallery/caregiver-practice-room-patient-hoist.webp", "facilities"),
+  item("caregiver-training-supply-cabinets", 34, "images/20260902/IMG_5679.HEIC", "/gallery/caregiver-training-supply-cabinets.webp", "facilities"),
+  item("everest-multi-skills-training-hall", 35, "images/20260902/IMG_5760.HEIC", "/gallery/everest-multi-skills-training-hall.webp", "facilities"),
+  item("suyan-education-institute-visit", 36, "images/20260902/IMG_5705.HEIC", "/gallery/suyan-education-institute-visit.webp", "visits"),
+  item("oxon-japanese-language-school-entrance", 37, "images/20260902/IMG_5759.HEIC", "/gallery/oxon-japanese-language-school-entrance.webp", "visits"),
 ] as const;
 
 /** Returns UI-ready entries with the selected copy flattened onto each item. */

@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "Nhóm khách sạn chuẩn bị vị trí SSW lưu trú và kế hoạch hỗ trợ", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "Khu thực hành dịch vụ nhà hàng tại cơ sở đào tạo dịch vụ lưu trú ở Nepal"
+  caption: "Không gian thực hành dịch vụ lưu trú tại một cơ sở đào tạo ở Nepal."
+  width: 2200
+  height: 1650
 sources:
   - { label: "Cơ quan xuất nhập cảnh - lĩnh vực lưu trú", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "Phạm vi công việc và yêu cầu vận hành chính thức của SSW lĩnh vực lưu trú.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "Cơ quan xuất nhập cảnh - hệ thống SSW", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "Thông tin chung chính thức về tuyển dụng, hỗ trợ, hồ sơ và báo cáo SSW1.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

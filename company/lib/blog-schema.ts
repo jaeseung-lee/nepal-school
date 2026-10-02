@@ -35,7 +35,7 @@ export const blogFrontmatterSchema = z
     asOf: isoDate,
     effectiveAt: isoDate.nullable(),
     effectiveStatus: z.enum(["in_force", "scheduled"]).nullable(),
-    publishedAt: isoDate,
+    publishedAt: isoDate.nullable(),
     modifiedAt: isoDate,
     generationMethod: z.enum(["human", "ai-assisted"]),
     sourceVerification: z.object({
@@ -54,7 +54,11 @@ export const blogFrontmatterSchema = z
       })
       .nullable()
       .optional(),
-    status: z.enum(["review", "published"]),
+    status: z.enum(["review", "scheduled", "published"]),
+    publication: z.object({
+      scheduledAt: z.string().datetime({ offset: true }),
+      approvedAt: z.string().datetime({ offset: true }),
+    }).optional(),
     heroImage: blogImageSchema,
     sources: z.array(blogSourceSchema).min(2),
     relatedPosts: z
@@ -68,6 +72,15 @@ export const blogFrontmatterSchema = z
       .max(5),
   })
   .superRefine((post, context) => {
+    if (post.status === "published" && post.publishedAt === null) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ["publishedAt"], message: "공개 글은 실제 게시일이 필요합니다." });
+    }
+    if (post.status === "scheduled" && (!post.publication || post.publishedAt !== null)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ["publication"], message: "예약 글은 승인·예약 시각과 null 게시일이 필요합니다." });
+    }
+    if (post.publication && (post.status !== "scheduled" || Date.parse(post.publication.approvedAt) > Date.parse(post.publication.scheduledAt))) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ["publication"], message: "예약 정보는 scheduled 글에만 허용되며 승인 후 공개해야 합니다." });
+    }
     if (post.reviewer && post.reviewer.reviewedAt > post.modifiedAt) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
@@ -106,6 +119,8 @@ export const imageManifestSchema = z.array(
   z.object({
     id: z.string().regex(/^[a-z0-9-]+$/),
     path: localWebpPath,
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
     topics: z.array(z.string().min(2)).min(1),
     provenance: z.enum(["existing-site-asset", "commissioned", "licensed", "generated-and-approved"]),
     rights: z.string().min(8),

@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "Care provider preparing workplace and life support for an SSW1 worker", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "Patient hoist and practice bed in a Nepalese care training room"
+  caption: "A care training room at an educational facility in Nepal."
+  width: 2200
+  height: 1650
 sources:
   - { label: "MHLW foreign care worker guidance", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "Official overview and employer resources for the systems accepting foreign care workers.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "Immigration Services Agency nursing care field", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "Official nursing-care work scope and field-specific operating standards for SSW.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

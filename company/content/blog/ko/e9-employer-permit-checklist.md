@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "정우인재개발원", role: "글로벌 인재 채용 운영팀" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "E-9 고용허가 신청 일정과 사업주 서류를 점검하는 장면", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "E-9 고용허가 신청 일정과 사업주 서류를 점검하는 장면", width: 1568, height: 1003 }
 sources:
   - { label: "한국산업인력공단 사업주 지원", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "고용허가제 사업주 지원과 외국인력 고용 절차를 확인하는 공식 안내입니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "EPS 일반고용허가제 절차", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "내국인 구인부터 고용허가와 근로계약으로 이어지는 절차를 확인합니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

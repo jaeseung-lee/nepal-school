@@ -58,3 +58,38 @@ The dashboard reads the wiki markdown from its **parent directory** (`lib/conten
 - **`.claude/launch.json`** starts `company` on port 3007 via a relative `--prefix company` (resolved from the repo root), so browser-preview works from any checkout. It needs `company/node_modules` present first (`cd company && npm install`).
 - `.gitignore` ignores `.claude/` broadly, but `.claude/launch.json` is force-tracked.
 - `AGENTS.md` is an empty Cowork stub — no real instructions there.
+
+## Skill routing
+
+When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
+
+Key routing rules:
+- Product ideas/brainstorming → invoke /office-hours
+- Strategy/scope → invoke /plan-ceo-review
+- Architecture → invoke /plan-eng-review
+- Design system/plan review → invoke /design-consultation or /plan-design-review
+- Full review pipeline → invoke /autoplan
+- Bugs/errors → invoke /investigate
+- QA/testing site behavior → invoke /qa or /qa-only
+- Code review/diff check → invoke /review
+- Visual polish → invoke /design-review
+- Ship/deploy/PR → invoke /ship or /land-and-deploy
+- Save progress → invoke /context-save
+- Resume context → invoke /context-restore
+- Author a backlog-ready spec/issue → invoke /spec
+
+## Deploy Configuration (configured by /setup-deploy)
+- Platform: Vercel (`jaeseungs-projects-afaa059f/nepal-school`; application root: `company/`)
+- Production URL: https://www.jeongwoohrd.com
+- Deploy workflow: automatic on push to `main`
+- Deploy status: https://vercel.com/jaeseungs-projects-afaa059f/nepal-school
+- Local note: `company/.vercel` is linked to an obsolete project; do not use it for production deploys until it is explicitly relinked
+- Merge method: direct commit to `main`
+- Project type: Next.js web app
+- Post-deploy health check: https://www.jeongwoohrd.com
+
+### Custom deploy hooks
+- Pre-merge: `cd company && npm run test:seo && npm run typecheck && npm run build`
+- Deploy trigger: `git push origin main`
+- Deploy status: open https://vercel.com/jaeseungs-projects-afaa059f/nepal-school
+- Health check: `curl -fsS -o /dev/null -w "%{http_code}" https://www.jeongwoohrd.com`

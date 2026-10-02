@@ -14,6 +14,7 @@ type BlogCopy = {
   published: string;
   minutes: string;
   reviewBadge: string;
+  scheduledBadge: string;
   home: string;
   indexName: string;
   asOf: string;
@@ -49,6 +50,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "게시일",
     minutes: "분",
     reviewBadge: "검토 중",
+    scheduledBadge: "예약됨",
     home: "홈",
     indexName: "인사이트",
     asOf: "기준일",
@@ -82,6 +84,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "Published",
     minutes: " min",
     reviewBadge: "Under review",
+    scheduledBadge: "Scheduled",
     home: "Home",
     indexName: "Insights",
     asOf: "As of",
@@ -115,6 +118,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "公開日",
     minutes: "分",
     reviewBadge: "確認中",
+    scheduledBadge: "公開予約",
     home: "ホーム",
     indexName: "インサイト",
     asOf: "基準日",
@@ -148,6 +152,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "प्रकाशन मिति",
     minutes: "मिनेट",
     reviewBadge: "समीक्षामा",
+    scheduledBadge: "प्रकाशन निर्धारित",
     home: "गृहपृष्ठ",
     indexName: "जानकारी",
     asOf: "आधार मिति",
@@ -181,6 +186,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "Đăng",
     minutes: " phút",
     reviewBadge: "Đang rà soát",
+    scheduledBadge: "Đã lên lịch",
     home: "Trang chủ",
     indexName: "Kiến thức",
     asOf: "Cơ sở ngày",
@@ -214,6 +220,7 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
     published: "ເຜີຍແຜ່",
     minutes: " ນາທີ",
     reviewBadge: "ກຳລັງກວດ",
+    scheduledBadge: "ກຳນົດເວລາແລ້ວ",
     home: "ໜ້າຫຼັກ",
     indexName: "ບົດຄວາມ",
     asOf: "ອ້າງອີງວັນທີ",

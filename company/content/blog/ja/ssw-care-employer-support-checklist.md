@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "特定技能介護人材の受入れと生活支援を準備する事業者", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "ネパールの介護実習室にある患者用リフトと実習ベッド"
+  caption: "ネパール現地の教育施設にある介護実習室です。"
+  width: 2200
+  height: 1650
 sources:
   - { label: "厚生労働省・外国人介護人材の受入れ", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "外国人介護人材の制度概要と事業者向け資料を提供する公式案内です。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "出入国在留管理庁・介護分野", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "特定技能介護の業務範囲と分野別運用基準を掲載した公式ページです。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

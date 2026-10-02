@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "SSW हेरचाह कामदारका लागि कार्यस्थल र जीवन सहयोग तयारी", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "नेपालको हेरचाह अभ्यास कक्षमा बिरामी उठाउने उपकरण र अभ्यास शय्या"
+  caption: "यो नेपालको शैक्षिक संस्थामा रहेको हेरचाह अभ्यास कक्ष हो।"
+  width: 2200
+  height: 1650
 sources:
   - { label: "जापान स्वास्थ्य मन्त्रालय विदेशी हेरचाह मार्गदर्शन", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "विदेशी हेरचाह जनशक्ति प्रणाली र संस्थाका सामग्रीको आधिकारिक जानकारी।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "जापान अध्यागमन सेवा हेरचाह क्षेत्र", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "SSW हेरचाह काम र क्षेत्रगत सञ्चालन मापदण्डको आधिकारिक पृष्ठ।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

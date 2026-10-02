@@ -1,0 +1,233 @@
+{
+  "checkedAt": "2026-10-01",
+  "method": "official-primary-sources",
+  "note": "Direct pages were read where accessible. ISA pages and the DoFE guidance were verified using official-domain search excerpts when direct access failed. Unknown source publication dates are null. Training schedules, score sheets and review workflows are original editorial examples, not official statutory templates. No fees, admission guarantees or visa guarantees are inferred.",
+  "sources": {
+    "careTests": {
+      "url": "https://www.mhlw.go.jp/stf/newpage_000117702.html",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "MHLW: care SSW assessments",
+      "verifiedScope": "Explains care skills and Japanese tests, general Japanese requirements and exemption routes."
+    },
+    "careField": {
+      "url": "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "ISA: nursing care field",
+      "verifiedScope": "Describes care duties, associated support activities and field acceptance requirements."
+    },
+    "careTraining": {
+      "url": "https://www.mhlw.go.jp/stf/newpage_28131.html",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "MHLW: accepting foreign care personnel",
+      "verifiedScope": "Collects information on foreign care worker routes, training and support resources."
+    },
+    "careQualification": {
+      "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000150881.html",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "MHLW: care qualification and residence",
+      "verifiedScope": "Explains care worker qualification routes and the Nursing Care residence status."
+    },
+    "careResidence": {
+      "url": "https://www.moj.go.jp/isa/applications/status/nursingcare",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "ISA: Nursing Care residence status",
+      "verifiedScope": "Sets out qualifying activities, qualification requirements and application documents."
+    },
+    "hotel": {
+      "url": "https://www.moj.go.jp/isa/policies/ssw/accommodation.html",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "ISA: accommodation field",
+      "verifiedScope": "Defines accommodation activities including reception, promotion, guest and restaurant services."
+    },
+    "sswFaq": {
+      "url": "https://www.moj.go.jp/isa/policies/ssw/faq.html",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "ISA: SSW frequently asked questions",
+      "verifiedScope": "Answers questions about SSW activities, employment and support requirements."
+    },
+    "support": {
+      "url": "https://www.moj.go.jp/isa/policies/ssw/supportssw.html",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "ISA: support for SSW1 workers",
+      "verifiedScope": "Explains SSW1 support plans and outsourcing to registered support organizations."
+    },
+    "epsEntry": {
+      "url": "https://www.eps.go.kr/eo/process.eo",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "EPS: procedures after entry",
+      "verifiedScope": "Explains employment education, foreigner registration and post-entry employment steps."
+    },
+    "epsContract": {
+      "url": "https://www.eps.go.kr/eo/EmployJobProc.eo",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "EPS: hiring and employment contracts",
+      "verifiedScope": "Describes standard EPS employment contracts, entry and employment education."
+    },
+    "weldingSafety": {
+      "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19131",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "MOEL: safety for work with fire risks",
+      "verifiedScope": "Provides safety guidance for welding and other fire-risk work; the article rubric is an original example."
+    },
+    "weldingEducation": {
+      "url": "https://moel.go.kr/local/busan/news/notice/noticeView.do?bbs_seq=20240700196",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "Busan MOEL: safety education resources",
+      "verifiedScope": "Multilingual worker safety education resources, including welding fire prevention."
+    },
+    "studyVisa": {
+      "url": "https://www.studyinkorea.go.kr/ko/plan/visaAndStay.do",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "Study in Korea: visa and stay",
+      "verifiedScope": "Explains D-2 degree study, D-4 training and preparation for admission and visa applications."
+    },
+    "studyAdmission": {
+      "url": "https://www.studyinkorea.go.kr/ko/receipt/OnlineReceipt11.do",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "Study in Korea: institution admission notices",
+      "verifiedScope": "Provides intake-specific admission notices and document instructions by institution and programme."
+    },
+    "dofeAgency": {
+      "url": "https://foreignjob.dofe.gov.np/Home/RecruitmentAgency",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "DoFE: recruitment agency search",
+      "verifiedScope": "Official Nepal recruitment agency search by licence number, name and status."
+    },
+    "dofeGuidance": {
+      "url": "https://dofe.gov.np/pages/public-important/",
+      "accessMethod": "official-search-index",
+      "checkedAt": "2026-10-01",
+      "label": "DoFE: important foreign employment guidance",
+      "verifiedScope": "Official guidance on licensed agencies, checking employment terms and departure preparation."
+    },
+    "dofeJob": {
+      "url": "https://foreignjob.dofe.gov.np/",
+      "accessMethod": "direct-page",
+      "checkedAt": "2026-10-01",
+      "label": "DoFE: jobs and approval lookup",
+      "verifiedScope": "Official service for job pre-permission and individual labour approval records."
+    }
+  },
+  "topics": {
+    "ssw-care-exam-evidence": {
+      "sourceIds": [
+        "careTests",
+        "careField"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "ssw-care-job-description": {
+      "sourceIds": [
+        "careField",
+        "careTests"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "care-first-90-days": {
+      "sourceIds": [
+        "careTraining",
+        "careField"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "care-worker-qualification-residence": {
+      "sourceIds": [
+        "careQualification",
+        "careResidence"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "hotel-ssw-duty-matrix": {
+      "sourceIds": [
+        "hotel",
+        "sswFaq"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "hotel-japanese-roleplay": {
+      "sourceIds": [
+        "hotel",
+        "sswFaq"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "hotel-first-30-days": {
+      "sourceIds": [
+        "hotel",
+        "support"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "registered-support-contract-review": {
+      "sourceIds": [
+        "support",
+        "sswFaq"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "e9-first-90-days": {
+      "sourceIds": [
+        "epsEntry",
+        "epsContract"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "foreign-worker-contract-housing": {
+      "sourceIds": [
+        "epsContract",
+        "epsEntry"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "welding-skills-assessment-sheet": {
+      "sourceIds": [
+        "weldingSafety",
+        "weldingEducation"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "korea-d2-d4-study-route": {
+      "sourceIds": [
+        "studyVisa",
+        "studyAdmission"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "nepal-student-document-review": {
+      "sourceIds": [
+        "studyAdmission",
+        "studyVisa"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "nepal-recruitment-agency-check": {
+      "sourceIds": [
+        "dofeAgency",
+        "dofeGuidance"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    },
+    "nepal-predeparture-contract-check": {
+      "sourceIds": [
+        "dofeGuidance",
+        "dofeJob"
+      ],
+      "template": "Original editorial checklist; adapt to the workplace or institution."
+    }
+  }
+}

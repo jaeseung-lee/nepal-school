@@ -9,16 +9,18 @@ import { BLOG_LOCALES, getBlogLocaleSwitchPath, getBlogPostPath } from "../lib/b
 import { extractMarkdownImages, validateBlogContent, validateTemporalState } from "../scripts/validate-blog";
 
 const PUBLIC_BRAND = "Jeongwoo Human Resource Development Institute";
-const EXPECTED_PROVENANCE_MANIFEST_SHA256 = "78398cb95d327b5d4ce2ae3e7e851bdef22d4166114cef8982fca604169a7f1a";
+const EXPECTED_PROVENANCE_MANIFEST_SHA256 = "ec3e5c027109dabfe24c5f6272d9dadbdb58d230aedf361739c64f8d69e54897";
 
-test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 이력을 보존한다", () => {
+const NEW_TOPICS: string[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content/blog/release-plan.json"), "utf8")).topics;
+
+test("144개 글의 브랜드와 기존 54개 글의 출처 이력을 보존한다", () => {
   const counts = { nonKorean: 0, korean: 0, total: 0 };
   const provenanceEntries: Array<[string, unknown]> = [];
 
   for (const locale of BLOG_LOCALES) {
     const directory = path.join(process.cwd(), "content/blog", locale);
     const files = fs.readdirSync(directory).filter((file) => file.endsWith(".md")).sort();
-    assert.equal(files.length, 6);
+    assert.equal(files.length, 24);
 
     for (const file of files) {
       const { data } = matter(fs.readFileSync(path.join(directory, file), "utf8"));
@@ -30,7 +32,7 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
       assert.equal(data.sourceVerification.method, "official-primary-sources");
       assert.match(data.sourceVerification.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
       assert.equal(data.reviewer, null);
-      for (const field of ["asOf", "publishedAt", "modifiedAt"] as const) {
+      for (const field of ["asOf", "modifiedAt"] as const) {
         assert.match(data[field], /^\d{4}-\d{2}-\d{2}$/);
       }
       assert.ok(Array.isArray(data.sources));
@@ -55,7 +57,7 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
           const rightCanonical = JSON.stringify(right);
           return leftCanonical < rightCanonical ? -1 : leftCanonical > rightCanonical ? 1 : 0;
         });
-      provenanceEntries.push([
+      if (!NEW_TOPICS.includes(data.translationKey)) provenanceEntries.push([
         `${locale}:${data.translationKey}`,
         {
           post: {
@@ -80,11 +82,11 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
     }
   }
 
-  assert.deepEqual(counts, { nonKorean: 30, korean: 6, total: 36 });
+  assert.deepEqual(counts, { nonKorean: 120, korean: 24, total: 144 });
   const provenanceManifest = Object.fromEntries(
     provenanceEntries.sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0),
   );
-  assert.equal(Object.keys(provenanceManifest).length, 36);
+  assert.equal(Object.keys(provenanceManifest).length, 54);
   const provenanceHash = createHash("sha256")
     .update(JSON.stringify(provenanceManifest))
     .digest("hex");
@@ -92,7 +94,7 @@ test("36개 글은 30개 영문 브랜드·6개 한국어 브랜드와 출처 �
 });
 
 test("현재 블로그 콘텐츠가 이미지, 출처, 상태 규칙을 통과한다", () => {
-  assert.deepEqual(validateBlogContent("2026-07-19"), []);
+  assert.deepEqual(validateBlogContent(), []);
 });
 
 test("published 상태는 검토자 없이 공식 출처 대조 기록으로 공개할 수 있다", () => {
