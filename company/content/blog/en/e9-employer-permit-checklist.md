@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "Employer checking the E-9 permit schedule and required records", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "Employer checking the E-9 permit schedule and required records", width: 1568, height: 1003 }
 sources:
   - { label: "HRDKorea employer support", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "Official employer support information for the Employment Permit System process.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "EPS employment procedure", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "Official sequence from domestic recruitment through permit and labor contract.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

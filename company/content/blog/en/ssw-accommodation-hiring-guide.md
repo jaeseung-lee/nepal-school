@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Global hiring operations" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "Hotel team preparing an SSW accommodation role and support plan", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "Restaurant service practice area at a hospitality training site in Nepal"
+  caption: "A hospitality practice area at an educational facility in Nepal."
+  width: 2200
+  height: 1650
 sources:
   - { label: "Immigration Services Agency accommodation field", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "Official accommodation-field work scope and field-specific operating requirements.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "Immigration Services Agency SSW system", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "Official common SSW1 employment, support, application and notification information.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

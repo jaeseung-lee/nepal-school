@@ -4,14 +4,15 @@ import { pathToFileURL } from "node:url";
 import matter from "gray-matter";
 import { blogFrontmatterSchema, imageManifestSchema, type BlogFrontmatter } from "../lib/blog-schema";
 import { BLOG_LOCALES, type BlogLocale } from "../lib/blog-routing";
+import { japanDate } from "../lib/blog-publication";
 
 const root = process.cwd();
 const contentRoot = path.join(root, "content", "blog");
 const publicRoot = path.join(root, "public");
 
 const OFFICIAL_SOURCE_HOSTS: Record<BlogFrontmatter["jurisdiction"], string[]> = {
-  KR: ["moj.go.kr", "mojhome.moj.go.kr", "hikorea.go.kr", "law.go.kr", "eps.hrdkorea.or.kr", "hrdkorea.or.kr", "moel.go.kr"],
-  JP: ["moj.go.jp", "mofa.go.jp", "mhlw.go.jp", "ssw.go.jp"],
+  KR: ["moj.go.kr", "mojhome.moj.go.kr", "hikorea.go.kr", "law.go.kr", "eps.hrdkorea.or.kr", "hrdkorea.or.kr", "moel.go.kr", "eps.go.kr", "studyinkorea.go.kr"],
+  JP: ["moj.go.jp", "mofa.go.jp", "mhlw.go.jp", "ssw.go.jp", "mlit.go.jp"],
   NP: ["dofe.gov.np", "nepal.gov.np", "mofa.gov.np", "kr.nepalembassy.gov.np", "jp.nepalembassy.gov.np"],
 };
 
@@ -29,9 +30,9 @@ export function extractMarkdownImages(content: string): MarkdownImage[] {
 export function validateTemporalState(post: BlogFrontmatter, today: string): string[] {
   const errors: string[] = [];
   if (post.asOf > today) errors.push("기준일은 미래일 수 없습니다.");
-  if (post.publishedAt > today) errors.push("게시일은 미래일 수 없습니다.");
+  if (post.publishedAt && post.publishedAt > today) errors.push("게시일은 미래일 수 없습니다.");
   if (post.modifiedAt > today) errors.push("수정일은 미래일 수 없습니다.");
-  if (post.publishedAt > post.modifiedAt) errors.push("수정일은 게시일보다 빠를 수 없습니다.");
+  if (post.publishedAt && post.publishedAt > post.modifiedAt) errors.push("수정일은 게시일보다 빠를 수 없습니다.");
 
   if (post.effectiveAt && post.effectiveStatus === "scheduled" && post.effectiveAt <= today) {
     errors.push("시행일이 지났으므로 scheduled 상태를 사용할 수 없습니다.");
@@ -55,7 +56,7 @@ function fail(errors: string[]): never {
   process.exit(1);
 }
 
-export function validateBlogContent(today = new Date().toISOString().slice(0, 10)): string[] {
+export function validateBlogContent(today = japanDate(new Date())): string[] {
   const errors: string[] = [];
   const manifestPath = path.join(contentRoot, "image-library.json");
   const manifestResult = imageManifestSchema.safeParse(JSON.parse(fs.readFileSync(manifestPath, "utf8")));
@@ -67,6 +68,7 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
   const identifiers = new Set<string>();
   const translationIdentifiers = new Set<string>();
   const translationLocales = new Map<string, Set<BlogLocale>>();
+  const publicationStates = new Map<string, string>();
   const seoTitles = new Set<string>();
   const summaries = new Set<string>();
 
@@ -109,6 +111,10 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
       const locales = translationLocales.get(post.translationKey) ?? new Set<BlogLocale>();
       locales.add(locale);
       translationLocales.set(post.translationKey, locales);
+      const publicationState = JSON.stringify([post.status, post.publication ?? null]);
+      const priorState = publicationStates.get(post.translationKey);
+      if (priorState && priorState !== publicationState) errors.push(`${relativePath}: 번역별 공개 상태·승인 및 예약 시각이 다릅니다.`);
+      publicationStates.set(post.translationKey, publicationState);
 
       if (seoTitles.has(post.seoTitle)) errors.push(`${relativePath}: seoTitle이 다른 글과 중복됩니다.`);
       if (summaries.has(post.summary)) errors.push(`${relativePath}: summary가 다른 글과 중복됩니다.`);
@@ -127,6 +133,9 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
       const hero = manifest.get(post.heroImage.src);
       if (!hero) errors.push(`${relativePath}: 대표 이미지가 이미지 라이브러리에 없습니다: ${post.heroImage.src}`);
       else if (!hero.allowedUses.includes("hero")) errors.push(`${relativePath}: 대표 이미지로 허용되지 않은 이미지입니다.`);
+      if (hero && (hero.width !== post.heroImage.width || hero.height !== post.heroImage.height)) {
+        errors.push(`${relativePath}: 대표 이미지 크기가 이미지 목록과 다릅니다.`);
+      }
 
       for (const source of post.sources) {
         if (!hostIsAllowed(source.url, post.jurisdiction)) {
@@ -154,8 +163,8 @@ export function validateBlogContent(today = new Date().toISOString().slice(0, 10
     const missing = BLOG_LOCALES.filter((locale) => !locales.has(locale));
     if (missing.length) errors.push(`${translationKey}: 번역 묶음에 누락된 언어가 있습니다: ${missing.join(", ")}`);
   }
-  if (translationLocales.size !== 8) errors.push(`핵심 주제는 8개여야 합니다: 현재 ${translationLocales.size}개`);
-  if (identifiers.size !== 48) errors.push(`공개 준비 글은 48개여야 합니다: 현재 ${identifiers.size}개`);
+  if (translationLocales.size !== 24) errors.push(`핵심 주제는 24개여야 합니다: 현재 ${translationLocales.size}개`);
+  if (identifiers.size !== 144) errors.push(`공개 준비 글은 144개여야 합니다: 현재 ${identifiers.size}개`);
 
   return errors;
 }

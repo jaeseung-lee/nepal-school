@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "होटल टोलीले SSW आवास पद र सहयोग योजना तयार गर्दै", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "नेपालको आतिथ्य प्रशिक्षण केन्द्रमा रेस्टुरेन्ट सेवाको अभ्यास कक्ष"
+  caption: "यो नेपालको शैक्षिक संस्थामा रहेको आतिथ्य अभ्यास कक्ष हो।"
+  width: 2200
+  height: 1650
 sources:
   - { label: "जापान अध्यागमन सेवा आवास क्षेत्र", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "SSW आवास कामको दायरा र क्षेत्रगत सञ्चालन सर्तको आधिकारिक पृष्ठ।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "जापान अध्यागमन सेवा SSW प्रणाली", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "SSW1 रोजगार, सहयोग, आवेदन र सूचनाका साझा आधिकारिक विवरण।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

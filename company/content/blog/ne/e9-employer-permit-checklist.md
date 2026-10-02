@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "अन्तर्राष्ट्रिय भर्ती सञ्चालन" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "E-9 अनुमति तालिका र रोजगारदाता कागजात जाँच्दै गरेको दृश्य", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "E-9 अनुमति तालिका र रोजगारदाता कागजात जाँच्दै गरेको दृश्य", width: 1568, height: 1003 }
 sources:
   - { label: "HRDKorea रोजगारदाता सहायता", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "रोजगार अनुमति प्रणालीको रोजगारदाता सहायता र तयारीसम्बन्धी आधिकारिक सूचना।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "EPS रोजगार प्रक्रिया", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "स्वदेशी भर्ती प्रयासदेखि अनुमति र श्रम करारसम्मको आधिकारिक क्रम।", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

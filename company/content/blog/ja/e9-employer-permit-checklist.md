@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "グローバル採用運営チーム" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "E-9雇用許可の申請日程と事業主書類を確認する場面", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "E-9雇用許可の申請日程と事業主書類を確認する場面", width: 1568, height: 1003 }
 sources:
   - { label: "韓国産業人力公団・事業主支援", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "雇用許可制での事業主支援と雇用準備を説明した公式案内です。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "EPS一般雇用許可制の手順", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "国内求人努力から雇用許可・契約までを説明した公式ページです。", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

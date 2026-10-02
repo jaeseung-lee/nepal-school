@@ -5,7 +5,7 @@
 ## 배포 순서
 
 1. 기술 기반 배포: 서버 `lang`, 정적 다국어 URL, canonical/hreflang, sitemap, robots, 스키마, 구 도메인 리디렉션, 로컬 폰트, 동의형 GA4·PostHog.
-2. 콘텐츠 배포: 6개 주제 × 6개 언어의 36개 글과 `llms.txt`, `llms-full.txt`.
+2. 콘텐츠 준비: 24개 주제 × 6개 언어의 144개 글(기존 54개 공개 상태, 신규 90개 검토 상태)과 `llms.txt`, `llms-full.txt`.
 3. 각 배포에서 `test:i18n`, `validate:blog`, `test:blog`, `test:seo`, `typecheck`, `build`를 실행한다.
 4. 빌드 후 로컬 또는 프리뷰 URL에 `SEO_BASE_URL=https://preview.example.com npm run test:seo:live`를 실행한다.
 
@@ -38,7 +38,7 @@
 5. 라이브 URL 테스트가 정상일 때만 색인 생성을 요청한다.
 6. `페이지 색인 생성`, `HTTPS`, `코어 웹 바이탈`, `리치 결과` 보고서를 주 1회 확인한다.
 
-우선 검사 글은 한국어 6개와 각 언어 인덱스다. 대표 URL은 `/blog/e9-vs-e7-hiring-guide`, `/blog/foreign-worker-hiring-checklist`, `/blog/japan-ssw-nepal-hiring-guide`, `/blog/e9-employer-permit-checklist`, `/blog/ssw-care-employer-support-checklist`, `/blog/ssw-accommodation-hiring-guide`다.
+우선 검사 글은 한국어 9개와 각 언어 인덱스다. 대표 URL은 `/blog/ikusei-shuro-transition-guide`, `/blog/e9-vs-e7-hiring-guide`, `/blog/foreign-worker-hiring-checklist`, `/blog/japan-ssw-nepal-hiring-guide`, `/blog/e9-employer-permit-checklist`, `/blog/ssw-care-employer-support-checklist`, `/blog/ssw-accommodation-hiring-guide`다.
 
 ## 네이버·Bing 등록
 
@@ -68,3 +68,7 @@
 - Google, ChatGPT, Perplexity의 인용 여부
 
 특정 순위 상승은 보장 지표가 아니다. 정확한 색인 신호, 공식 출처 인용, 측정의 일관성을 성공 기준으로 사용한다.
+
+## 2026년 10월 신규 원고와 예약 공개
+
+[15개 주제 검토 목록](blog/2026-10-review.md)과 [예약 공개 운영 안내](blog/scheduled-publication.md)를 따릅니다. 새 원고는 승인 전 공개하지 않으며, 게시일은 실제 공개 시작일을 사용합니다. 예약 시각이 지나야 여섯 언어의 목록·직접 URL·홈 최신 글·사이트맵에 함께 반영됩니다.

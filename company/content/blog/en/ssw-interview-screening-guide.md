@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "A consultation representing interview preparation and settlement support in Japan"
-  caption: "What you ask in the interview shapes how well the placement holds up later."
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "An interviewer speaking with candidates during a recruitment session in Nepal"
+  caption: "A candidate interview conducted on site in Nepal."
+  width: 1200
+  height: 900
 sources:
   - label: "Immigration Services Agency of Japan - Points to note on employment"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"

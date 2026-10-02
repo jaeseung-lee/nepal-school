@@ -9,12 +9,14 @@ export function getBlogIndexMetadata(locale: BlogLocale): Metadata {
   const copy = BLOG_COPY[locale];
   const path = getBlogIndexPath(locale);
   const languages = Object.fromEntries(BLOG_LOCALES.map((language) => [language, SITE_URL + getBlogIndexPath(language)]));
-  const firstPost = getBlogPosts(locale)[0];
+  const posts = getBlogPosts(locale);
+  const firstPost = posts[0];
 
   return {
     metadataBase: new URL(SITE_URL),
     title: copy.indexSeoTitle,
     description: copy.indexSeoDescription,
+    robots: posts.some((post) => post.status !== "published") ? { index: false, follow: false } : undefined,
     alternates: { canonical: path, languages: { ...languages, "x-default": SITE_URL + "/blog" } },
     openGraph: {
       type: "website",
@@ -45,7 +47,7 @@ export function getBlogPostMetadata(post: BlogPost): Metadata {
     title: post.seoTitle,
     description: post.summary,
     keywords: post.keywords,
-    robots: post.status === "review" ? { index: false, follow: false, noarchive: true } : undefined,
+    robots: post.status !== "published" ? { index: false, follow: false, noarchive: true } : undefined,
     alternates: {
       canonical: path,
       languages: post.status === "published"
@@ -59,7 +61,7 @@ export function getBlogPostMetadata(post: BlogPost): Metadata {
       url: SITE_URL + path,
       title: fullTitle,
       description: post.summary,
-      publishedTime: post.publishedAt,
+      publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.modifiedAt,
       authors: [post.author.name],
       images: [{ url: SITE_URL + post.heroImage.src, width: post.heroImage.width, height: post.heroImage.height, alt: post.heroImage.alt }],

@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "일본 취업 준비와 현지 정착 지원을 상징하는 면접 상담 장면"
-  caption: "면접에서 무엇을 묻느냐가 이후의 정착 결과를 좌우합니다."
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "네팔 현지에서 면접 담당자와 지원자들이 대화하는 모습"
+  caption: "네팔 현지에서 진행된 지원자 면접 장면입니다."
+  width: 1200
+  height: 900
 sources:
   - label: "일본 출입국재류관리청 - 고용상 주의점"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"

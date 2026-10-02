@@ -68,7 +68,8 @@ export default function IkuseiShuroPage() {
                   폐지하고, <strong className="font-semibold text-ink">인력 확보와 인재 육성을 목적으로
                   명시한 육성취로(育成就労)</strong>를 신설했습니다. 시행일은{" "}
                   <strong className="font-semibold text-ink">2027년 4월 1일</strong>이고, 1호 기능실습계획의
-                  신규 인정신청은 2027년 2월까지만 받습니다. 육성취로는 육성 기간을 거쳐{" "}
+                  인정신청은 OTIT가 2027년 2월까지 하도록 안내합니다. 기존 실습생과 시행 전 신청된
+                  계획에는 별도의 경과조치가 있습니다. 육성취로는 육성 기간을 거쳐{" "}
                   <Link href="/visa/tokutei-ginou" className="font-medium text-cobalt underline underline-offset-2">
                     특정기능 1호
                   </Link>

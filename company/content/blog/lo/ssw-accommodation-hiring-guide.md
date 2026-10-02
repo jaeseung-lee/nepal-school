@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "ດຳເນີນງານຮັບສະໝັກສາກົນ" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "ທີມໂຮງແຮມກຽມຕຳແໜ່ງ SSW ແລະ ແຜນຊ່ວຍ", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "ຫ້ອງຝຶກບໍລິການຮ້ານອາຫານໃນສະຖານທີ່ຝຶກວຽກຕ້ອນຮັບທີ່ເນປານ"
+  caption: "ນີ້ແມ່ນຫ້ອງຝຶກວຽກຕ້ອນຮັບໃນສະຖານສຶກສາທີ່ເນປານ."
+  width: 2200
+  height: 1650
 sources:
   - { label: "ສຳນັກງານເຂົ້າເມືອງ ຂະແໜງທີ່ພັກ", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "ຂອບເຂດວຽກແລະເງື່ອນໄຂ SSW ທີ່ພັກທາງການ.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "ສຳນັກງານເຂົ້າເມືອງ ລະບົບ SSW", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "ຂໍ້ມູນຮ່ວມທາງການກ່ຽວກັບຈ້າງ, ຊ່ວຍ, ຍື່ນ ແລະ ແຈ້ງ SSW1.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

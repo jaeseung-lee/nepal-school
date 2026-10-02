@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "日本での就職準備と定着支援を表す面接相談の風景"
-  caption: "面接で何を尋ねるかが、その後の定着の結果を左右します。"
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "ネパール現地の面接会場で担当者と応募者が対話する様子"
+  caption: "ネパール現地で行われた応募者面接の記録です。"
+  width: 1200
+  height: 900
 sources:
   - label: "出入国在留管理庁 - 雇用における注意点"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"

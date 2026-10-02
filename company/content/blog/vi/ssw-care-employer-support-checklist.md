@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "Cơ sở chăm sóc chuẩn bị nơi làm việc và hỗ trợ cho lao động SSW1", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/caregiver-practice-room-patient-hoist.webp"
+  alt: "Thiết bị nâng bệnh nhân và giường thực hành trong phòng đào tạo chăm sóc tại Nepal"
+  caption: "Phòng thực hành chăm sóc tại một cơ sở đào tạo ở Nepal."
+  width: 2200
+  height: 1650
 sources:
   - { label: "Bộ Y tế Lao động Nhật - nhân lực chăm sóc nước ngoài", url: "https://www.mhlw.go.jp/stf/newpage_28131.html", description: "Tổng quan chính thức và tài liệu cho cơ sở tiếp nhận nhân lực chăm sóc nước ngoài.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "Cơ quan xuất nhập cảnh - lĩnh vực điều dưỡng", url: "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html", description: "Phạm vi công việc và tiêu chuẩn vận hành SSW điều dưỡng chính thức.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

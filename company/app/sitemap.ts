@@ -12,6 +12,8 @@ import { CONTENT_LAST_MODIFIED, languageAlternates } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { VISAS } from "@/lib/visas";
 
+export const dynamic = "force-dynamic";
+
 const routes: { path: string; priority: number; changeFrequency?: "weekly" | "monthly" }[] = [
   { path: "/", priority: 1 },
   { path: "/services", priority: 0.9 },

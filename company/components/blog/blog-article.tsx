@@ -36,12 +36,12 @@ export default function BlogArticle({ post, locale }: { post: BlogPost; locale: 
             </nav>
             <div className="mt-9 flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold text-cobalt">{post.category}</span>
-              {post.status === "review" ? <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">{copy.reviewBadge}</span> : null}
+              {post.status !== "published" ? <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">{post.status === "scheduled" ? copy.scheduledBadge : copy.reviewBadge}</span> : null}
             </div>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.14] tracking-[-0.035em] text-ink text-balance sm:text-5xl lg:text-6xl">{post.title}</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-muted">{post.summary}</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
-              <span className="inline-flex items-center gap-2"><CalendarBlank size={17} aria-hidden="true" /> {copy.published} {formatBlogDate(locale, post.publishedAt)}</span>
+              {post.publishedAt ? <span className="inline-flex items-center gap-2"><CalendarBlank size={17} aria-hidden="true" /> {copy.published} {formatBlogDate(locale, post.publishedAt)}</span> : null}
               <span className="inline-flex items-center gap-2"><Clock size={17} aria-hidden="true" /> {post.readingMinutes}{copy.minutes}</span>
               <span>{copy.updated} {formatBlogDate(locale, post.modifiedAt)}</span>
             </div>

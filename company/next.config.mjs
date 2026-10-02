@@ -6,6 +6,7 @@ const nextConfig = {
   // The repository root has a small package only for Husky. Keep Next's file
   // tracing rooted at this application so the two lockfiles are unambiguous.
   outputFileTracingRoot: fileURLToPath(new URL("./", import.meta.url)),
+  outputFileTracingIncludes: { "/*": ["./content/blog/**/*.md", "./content/blog/image-library.json"] },
   async redirects() {
     return [
       {

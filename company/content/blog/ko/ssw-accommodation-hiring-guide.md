@@ -18,7 +18,12 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "정우인재개발원", role: "글로벌 인재 채용 운영팀" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/japan.webp", alt: "일본 호텔과 료칸의 특정기능 인재 채용을 준비하는 장면", width: 1586, height: 992 }
+heroImage:
+  src: "/gallery/hospitality-training-restaurant-lab.webp"
+  alt: "네팔 호스피탈리티 교육장의 레스토랑 서비스 실습 공간"
+  caption: "네팔 현지 교육시설의 호스피탈리티 실습 공간입니다."
+  width: 2200
+  height: 1650
 sources:
   - { label: "일본 출입국재류관리청 숙박 분야", url: "https://www.moj.go.jp/isa/policies/ssw/accommodation.html", description: "특정기능 숙박 분야의 업무 범위와 분야별 운용 기준을 확인하는 공식 페이지입니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "일본 출입국재류관리청 특정기능 제도", url: "https://www.moj.go.jp/isa/applications/ssw/index.html", description: "특정기능 1호의 공통 고용과 지원, 신청 자료를 확인하는 공식 안내입니다.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

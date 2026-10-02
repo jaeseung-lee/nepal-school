@@ -19,7 +19,7 @@ function ArticleCard({ post, locale, compact = false }: { post: BlogPost; locale
         <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-cobalt-soft px-3 py-1.5 text-cobalt"><Tag size={13} weight="bold" aria-hidden="true" /> {post.category}</span>
           <span className="inline-flex items-center gap-1.5 text-muted"><Clock size={14} aria-hidden="true" /> {post.readingMinutes}{copy.minutes}</span>
-          {post.status === "review" ? <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-amber-800">{copy.reviewBadge}</span> : null}
+          {post.status !== "published" ? <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-amber-800">{post.status === "scheduled" ? copy.scheduledBadge : copy.reviewBadge}</span> : null}
         </div>
         <h2 className={`mt-5 font-display font-semibold leading-tight text-ink ${compact ? "text-2xl" : "text-3xl lg:text-4xl"}`}>
           <Link href={href} className="transition hover:text-cobalt">{post.title}</Link>

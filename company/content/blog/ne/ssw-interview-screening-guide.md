@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "जापानमा रोजगारी तयारी र बसोबास सहयोगसम्बन्धी अन्तर्वार्ता परामर्श"
-  caption: "अन्तर्वार्तामा के सोध्नुहुन्छ भन्ने कुराले पछिको टिकाउ नतिजा निर्धारण गर्छ।"
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "नेपालमा अन्तर्वार्ताकर्ता र उम्मेदवारहरूबीच भएको कुराकानी"
+  caption: "यो नेपालमा सञ्चालन गरिएको उम्मेदवार अन्तर्वार्ताको दृश्य हो।"
+  width: 1200
+  height: 900
 sources:
   - label: "जापान आप्रवासन सेवा एजेन्सी - रोजगारीमा ध्यान दिनुपर्ने कुरा"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"

@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "ການສຳພາດທີ່ສະແດງການກຽມເຮັດວຽກແລະການສະໜັບສະໜູນການຕັ້ງຖິ່ນຖານໃນຍີ່ປຸ່ນ"
-  caption: "ສິ່ງທີ່ທ່ານຖາມໃນການສຳພາດຈະກຳນົດຜົນການຕັ້ງຫຼັກໃນພາຍຫຼັງ."
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "ຜູ້ສຳພາດສົນທະນາກັບຜູ້ສະໝັກໃນການຄັດເລືອກທີ່ເນປານ"
+  caption: "ນີ້ແມ່ນພາບການສຳພາດຜູ້ສະໝັກທີ່ດຳເນີນໃນເນປານ."
+  width: 1200
+  height: 900
 sources:
   - label: "ອົງການບໍລິຫານຄົນເຂົ້າເມືອງຍີ່ປຸ່ນ - ຂໍ້ຄວນລະວັງໃນການຈ້າງງານ"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"

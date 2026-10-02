@@ -18,7 +18,7 @@ sourceVerification: { method: official-primary-sources, checkedAt: "2026-07-16" 
 author: { name: "Jeongwoo Human Resource Development Institute", role: "Vận hành tuyển dụng quốc tế" }
 reviewer: null
 status: published
-heroImage: { src: "/kv/redesign/process.webp", alt: "Doanh nghiệp kiểm tra lịch cấp phép E-9 và hồ sơ bắt buộc", width: 1587, height: 991 }
+heroImage: { src: "/kv/redesign/process.webp", alt: "Doanh nghiệp kiểm tra lịch cấp phép E-9 và hồ sơ bắt buộc", width: 1568, height: 1003 }
 sources:
   - { label: "HRDKorea hỗ trợ doanh nghiệp", url: "https://www.hrdkorea.or.kr/1/3/2/1", description: "Thông tin chính thức về hỗ trợ doanh nghiệp trong Hệ thống cấp phép việc làm.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }
   - { label: "Trình tự việc làm EPS", url: "https://eps.hrdkorea.or.kr/h2/h2empl/empPermComp.do", description: "Trình tự chính thức từ tuyển trong nước đến giấy phép và hợp đồng lao động.", publishedAt: null, effectiveAt: null, accessedAt: "2026-07-16" }

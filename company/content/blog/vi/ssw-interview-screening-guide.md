@@ -28,11 +28,11 @@ author:
 reviewer: null
 status: published
 heroImage:
-  src: "/kv/redesign/japan.webp"
-  alt: "Buổi phỏng vấn thể hiện việc chuẩn bị làm việc và hỗ trợ ổn định tại Nhật Bản"
-  caption: "Điều bạn hỏi trong phỏng vấn quyết định kết quả ổn định về sau."
-  width: 1586
-  height: 992
+  src: "/gallery/interview-candidate-conversation.webp"
+  alt: "Người phỏng vấn trao đổi với các ứng viên tại buổi tuyển chọn ở Nepal"
+  caption: "Buổi phỏng vấn ứng viên được thực hiện tại Nepal."
+  width: 1200
+  height: 900
 sources:
   - label: "Cục Quản lý Xuất nhập cảnh và Lưu trú Nhật Bản - Lưu ý khi tuyển dụng"
     url: "https://www.moj.go.jp/isa/policies/ssw/chuui.html"
