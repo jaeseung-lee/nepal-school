@@ -31,49 +31,7 @@
       "title": "Japanese work systems",
       "description": "Japan centers on Specified Skilled Worker No. 1. Requirements vary by field, including nursing care and accommodation, and Technical Intern Training transitions to Employment for Skill Development from April 2027."
     },
-    "comparison": {
-      "title": "Comparing E-9, Specified Skilled Worker No. 1, and Employment for Skill Development",
-      "description": "All three support the hiring of foreign workers in labor-shortage industries, but their legal nature and structure differ. They are the three systems most often compared when considering hiring in Korea and Japan together.",
-      "table": {
-        "header": "Category",
-        "koreaE9": "Korea E-9",
-        "japanSpecifiedSkilledWorker": "Japan Specified Skilled Worker No. 1",
-        "japanEmploymentForSkillDevelopment": "Japan Employment for Skill Development (from Apr. 2027)",
-        "rows": {
-          "legalNature": {
-            "label": "Legal nature",
-            "koreaE9": "Work visa for non-professional foreign workers",
-            "japanSpecifiedSkilledWorker": "Employment status for immediately productive workers in labor-shortage fields",
-            "japanEmploymentForSkillDevelopment": "A development system premised on transition to Specified Skilled Worker status"
-          },
-          "stayDuration": {
-            "label": "Length of stay",
-            "koreaE9": "Three years initially, plus a re-employment extension",
-            "japanSpecifiedSkilledWorker": "Five years in total",
-            "japanEmploymentForSkillDevelopment": "Transition to Specified Skilled Worker No. 1 after the development period"
-          },
-          "preEntryExamination": {
-            "label": "Pre-entry examination",
-            "koreaE9": "Employment Permit System procedures such as EPS-TOPIK",
-            "japanSpecifiedSkilledWorker": "Japanese-language test plus field-specific skills test",
-            "japanEmploymentForSkillDevelopment": "Development is integral to the system's purpose (requirements are set by field)"
-          },
-          "intermediary": {
-            "label": "Intermediary",
-            "koreaE9": "Government-to-government G2G referral",
-            "japanSpecifiedSkilledWorker": "None (direct company employment; support may be outsourced)",
-            "japanEmploymentForSkillDevelopment": "Supervising and support organization structure remains"
-          },
-          "jobChange": {
-            "label": "Workplace/job change",
-            "koreaE9": "Workplace changes are restricted",
-            "japanSpecifiedSkilledWorker": "Job changes are possible within the same field",
-            "japanEmploymentForSkillDevelopment": "Restricted"
-          }
-        }
-      },
-      "itemListName": "Foreign-worker visa and system guide"
-    }
+    "itemListName": "Foreign-worker visa and system guide"
   },
   "visas": {
     "e-9": {

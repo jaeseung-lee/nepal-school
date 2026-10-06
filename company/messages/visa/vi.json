@@ -31,24 +31,7 @@
       "title": "Chương trình làm việc tại Nhật Bản",
       "description": "Nhật Bản lấy Kỹ năng đặc định số 1 làm trọng tâm. Yêu cầu khác nhau theo từng lĩnh vực như chăm sóc điều dưỡng và lưu trú; chương trình Thực tập kỹ năng sẽ chuyển sang Đào tạo và làm việc từ tháng 4 năm 2027."
     },
-    "comparison": {
-      "title": "So sánh E-9, Kỹ năng đặc định số 1 và Đào tạo và làm việc",
-      "description": "Cả ba đều phục vụ việc tuyển dụng người nước ngoài trong các ngành thiếu lao động, nhưng bản chất pháp lý và cơ cấu khác nhau. Đây là ba chương trình thường được so sánh nhất khi xem xét tuyển dụng đồng thời tại Hàn Quốc và Nhật Bản.",
-      "table": {
-        "header": "Hạng mục",
-        "koreaE9": "E-9 Hàn Quốc",
-        "japanSpecifiedSkilledWorker": "Kỹ năng đặc định số 1 của Nhật Bản",
-        "japanEmploymentForSkillDevelopment": "Đào tạo và làm việc của Nhật Bản (từ 4/2027)",
-        "rows": {
-          "legalNature": {"label": "Bản chất pháp lý", "koreaE9": "Thị thực làm việc dành cho lao động nước ngoài không chuyên môn", "japanSpecifiedSkilledWorker": "Tư cách làm việc cho nhân lực có thể làm việc ngay trong các lĩnh vực thiếu lao động", "japanEmploymentForSkillDevelopment": "Chương trình đào tạo với tiền đề chuyển sang Kỹ năng đặc định"},
-          "stayDuration": {"label": "Thời hạn lưu trú", "koreaE9": "Cơ bản 3 năm, cộng gia hạn khi tái tuyển dụng", "japanSpecifiedSkilledWorker": "Tổng cộng 5 năm", "japanEmploymentForSkillDevelopment": "Chuyển sang Kỹ năng đặc định số 1 sau thời gian đào tạo"},
-          "preEntryExamination": {"label": "Thi trước khi nhập cảnh", "koreaE9": "Thủ tục Hệ thống cấp phép lao động như EPS-TOPIK", "japanSpecifiedSkilledWorker": "Thi tiếng Nhật và thi kỹ năng theo từng lĩnh vực", "japanEmploymentForSkillDevelopment": "Đào tạo là tiền đề của chương trình (yêu cầu được xác định theo từng lĩnh vực)"},
-          "intermediary": {"label": "Tổ chức trung gian", "koreaE9": "Giới thiệu G2G giữa các chính phủ", "japanSpecifiedSkilledWorker": "Không có (doanh nghiệp trực tiếp tuyển dụng, có thể thuê ngoài hỗ trợ)", "japanEmploymentForSkillDevelopment": "Duy trì cơ cấu tổ chức giám sát và hỗ trợ"},
-          "jobChange": {"label": "Đổi nơi làm việc/chuyển việc", "koreaE9": "Hạn chế thay đổi nơi làm việc", "japanSpecifiedSkilledWorker": "Có thể chuyển việc trong cùng lĩnh vực", "japanEmploymentForSkillDevelopment": "Hạn chế"}
-        }
-      },
-      "itemListName": "Hướng dẫn thị thực và chương trình tuyển dụng lao động nước ngoài"
-    }
+    "itemListName": "Hướng dẫn thị thực và chương trình tuyển dụng lao động nước ngoài"
   },
   "visas": {
     "e-9": {

@@ -31,24 +31,7 @@
       "title": "日本の就労制度",
       "description": "日本では特定技能1号が中心です。介護・宿泊など分野ごとに要件が異なり、技能実習は2027年4月から育成就労制度に移行します。"
     },
-    "comparison": {
-      "title": "E-9・特定技能1号・育成就労の比較",
-      "description": "人手不足業種で外国人を採用するための3制度について、法的性格、在留期間、試験、仲介、転職・転籍の違いを比べます。",
-      "table": {
-        "header": "区分",
-        "koreaE9": "韓国 E-9",
-        "japanSpecifiedSkilledWorker": "日本 特定技能1号",
-        "japanEmploymentForSkillDevelopment": "日本 育成就労（2027年4月～）",
-        "rows": {
-          "legalNature": {"label": "法的性格", "koreaE9": "非専門外国人材の就労ビザ", "japanSpecifiedSkilledWorker": "人手不足分野における即戦力の就労資格", "japanEmploymentForSkillDevelopment": "特定技能への移行を前提とする育成制度"},
-          "stayDuration": {"label": "在留期間", "koreaE9": "原則3年＋再雇用による延長", "japanSpecifiedSkilledWorker": "通算5年", "japanEmploymentForSkillDevelopment": "育成期間後に特定技能1号へ移行"},
-          "preEntryExamination": {"label": "入国前試験", "koreaE9": "EPS-TOPIKなど雇用許可制の手続き", "japanSpecifiedSkilledWorker": "日本語試験＋分野別技能試験", "japanEmploymentForSkillDevelopment": "制度趣旨として育成を前提（要件は分野別に確定）"},
-          "intermediary": {"label": "仲介機関", "koreaE9": "政府間G2Gあっせん", "japanSpecifiedSkilledWorker": "なし（企業が直接雇用、支援は委託可能）", "japanEmploymentForSkillDevelopment": "監理・支援機関の仕組みを維持"},
-          "jobChange": {"label": "転職・転籍", "koreaE9": "事業場変更に制限", "japanSpecifiedSkilledWorker": "同一分野内で転職可能", "japanEmploymentForSkillDevelopment": "限定的"}
-        }
-      },
-      "itemListName": "外国人採用ビザ・制度ガイド"
-    }
+    "itemListName": "外国人採用ビザ・制度ガイド"
   },
   "visas": {
     "e-9": {

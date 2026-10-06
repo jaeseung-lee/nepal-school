@@ -10,8 +10,6 @@ import { getLocalizedVisa, getVisaMessages, localizedVisasByCountry } from "@/li
 import { VISAS, type Visa } from "@/lib/visas";
 import { SITE_URL } from "@/lib/site";
 
-const COMPARISON_ROW_KEYS = ["legalNature", "stayDuration", "preEntryExamination", "intermediary", "jobChange"] as const;
-
 function VisaCard({ visa, locale }: { visa: Visa; locale: Locale }) {
   const messages = getVisaMessages(locale);
 
@@ -53,7 +51,7 @@ export default function VisaHubContent({ locale = DEFAULT_LOCALE }: { locale?: L
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: hub.comparison.itemListName,
+    name: hub.itemListName,
     itemListElement: localizedVisas.map((visa, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -112,40 +110,6 @@ export default function VisaHubContent({ locale = DEFAULT_LOCALE }: { locale?: L
           </Reveal>
           <Reveal delay={0.08} className="mt-10 grid gap-5 sm:grid-cols-2">
             {japanVisas.map((visa) => <VisaCard key={visa.slug} visa={visa} locale={locale} />)}
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">{hub.comparison.title}</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{hub.comparison.description}</p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 overflow-x-auto rounded-[24px] border border-line bg-surface shadow-sm shadow-ink/5">
-            <table className="w-full min-w-[720px] text-left text-[15px]">
-              <thead>
-                <tr className="border-b border-line bg-paper-soft">
-                  <th scope="col" className="px-5 py-4 font-semibold text-muted">{hub.comparison.table.header}</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">{hub.comparison.table.koreaE9}</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">{hub.comparison.table.japanSpecifiedSkilledWorker}</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">{hub.comparison.table.japanEmploymentForSkillDevelopment}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {COMPARISON_ROW_KEYS.map((key) => {
-                  const row = hub.comparison.table.rows[key];
-                  return (
-                    <tr key={key}>
-                      <th scope="row" className="px-5 py-4 align-top font-semibold text-cobalt">{row.label}</th>
-                      <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.koreaE9}</td>
-                      <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.japanSpecifiedSkilledWorker}</td>
-                      <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.japanEmploymentForSkillDevelopment}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
           </Reveal>
           <Reveal delay={0.12} className="mt-8">
             <VisaDisclaimer locale={locale} />

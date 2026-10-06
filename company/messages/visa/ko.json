@@ -31,49 +31,7 @@
       "title": "일본 취업 제도",
       "description": "일본은 특정기능 1호가 중심입니다. 개호·숙박 등 분야별 요건이 다르고, 기능실습은 2027년 4월부터 육성취로 제도로 전환됩니다."
     },
-    "comparison": {
-      "title": "E-9 · 특정기능 1호 · 육성취로 비교",
-      "description": "인력부족 업종에서 외국인을 채용한다는 점은 비슷하지만 법적 성격과 운영 방식은 다릅니다. 한·일 채용을 함께 검토할 때 가장 자주 비교되는 세 제도입니다.",
-      "table": {
-        "header": "구분",
-        "koreaE9": "한국 E-9",
-        "japanSpecifiedSkilledWorker": "일본 특정기능 1호",
-        "japanEmploymentForSkillDevelopment": "일본 육성취로 (2027.4~)",
-        "rows": {
-          "legalNature": {
-            "label": "법적 성격",
-            "koreaE9": "비전문 외국인력 취업 비자",
-            "japanSpecifiedSkilledWorker": "인력부족 분야에서 바로 일할 인력을 위한 취업 자격",
-            "japanEmploymentForSkillDevelopment": "특정기능 이행을 전제로 한 육성 제도"
-          },
-          "stayDuration": {
-            "label": "체류기간",
-            "koreaE9": "기본 3년 + 재고용 연장",
-            "japanSpecifiedSkilledWorker": "통산 5년",
-            "japanEmploymentForSkillDevelopment": "육성 기간 후 특정기능 1호 이행"
-          },
-          "preEntryExamination": {
-            "label": "입국 전 시험",
-            "koreaE9": "EPS-TOPIK 등 고용허가제 절차",
-            "japanSpecifiedSkilledWorker": "일본어시험 + 분야별 기능시험",
-            "japanEmploymentForSkillDevelopment": "제도 취지상 육성 전제 (요건은 분야별 확정)"
-          },
-          "intermediary": {
-            "label": "중간기관",
-            "koreaE9": "정부 간 G2G 알선",
-            "japanSpecifiedSkilledWorker": "없음 (기업 직접고용, 지원은 위탁 가능)",
-            "japanEmploymentForSkillDevelopment": "감독·지원기관 체계 유지"
-          },
-          "jobChange": {
-            "label": "이직·전직",
-            "koreaE9": "사업장 변경 제한",
-            "japanSpecifiedSkilledWorker": "같은 분야 안에서 전직 가능",
-            "japanEmploymentForSkillDevelopment": "제한적"
-          }
-        }
-      },
-      "itemListName": "외국인 채용 비자·제도 안내"
-    }
+    "itemListName": "외국인 채용 비자·제도 안내"
   },
   "visas": {
     "e-9": {
