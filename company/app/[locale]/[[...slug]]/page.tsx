@@ -51,7 +51,7 @@ function getJapaneseBusinessArea(route: readonly string[]) {
 
 function routeMetadata(locale: Locale, route: string) {
   const messages = getMessages(locale);
-  if (route === "") return { title: messages.site.seoTitle, description: messages.site.description };
+  if (route === "") return { title: messages.site.seoTitle, description: `${messages.site.description} ${messages.network.description}` };
   if (route === "about") return messages.pages.about.metadata;
   if (route === "services") return messages.pages.services.metadata;
   if (route === "gallery") return messages.pages.gallery.metadata;

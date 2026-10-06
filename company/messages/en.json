@@ -123,9 +123,9 @@
       "description": "Each service area may appear separate, but in practice selection, training, examinations, visas, and settlement are connected."
     },
     "partners": {
-      "title": "A partner’s role matters more than its name",
-      "description": "Rather than decorating the site with organizations whose logos are not ready, we first show the responsibilities each partner actually carries.",
-      "detailsCta": "Explore our partnerships"
+      "title": "Nationwide activities and partner network",
+      "description": "We provide seasonal-worker consulting for local governments, university application support, and cooperation with domestic and international institutions.",
+      "detailsCta": "Explore activities and partners"
     },
     "faq": {
       "title": "Questions companies should answer first",
@@ -350,14 +350,14 @@
     },
     "partners": {
       "metadata": {
-        "title": "Partnerships",
-        "description": "International business MOUs were signed with six organizations in Nepal in July 2026. Three sending agencies and three vocational skills and education organizations share selection, verification, training, and immigration administration."
+        "title": "Nationwide activities and partner network",
+        "description": "We provide seasonal-worker consulting for local governments, university application support, and cooperation with domestic and international institutions."
       },
       "banner": {
         "eyebrow": "Cooperation network",
-        "context": "Partnerships with verified roles",
-        "title": "Partnerships",
-        "description": "We build a flow of selection, training, sending, and matching by dividing roles with organizations in Nepal and Korea.",
+        "context": "Based on pages 12–13 of the company presentation. University application support does not mean an agreement has been signed or admission completed.",
+        "title": "Nationwide activities and partner network",
+        "description": "We provide seasonal-worker consulting for local governments, university application support, and cooperation with domestic and international institutions.",
         "crumb": "Partnerships",
         "alt": "Field image illustrating Partnerships"
       },
@@ -518,6 +518,149 @@
         "notice": "To help us respond faster, please include the role and headcount, preferred arrival date, visa under consideration and work location.",
         "status": "Send an email inquiry",
         "reassurance": "Even if you are not yet sure how to frame your inquiry, please feel free to contact us. Through a professional consultation, we will guide you toward the approach best suited to your circumstances."
+      }
+    }
+  },
+  "network": {
+    "homeTitle": "Nationwide activities and partner network",
+    "pageTitle": "Nationwide activities and partner network",
+    "description": "We provide seasonal-worker consulting for local governments, university application support, and cooperation with domestic and international institutions.",
+    "detailsCta": "Explore activities and partners",
+    "mapLabel": "Activity map: select a region to jump to its list.",
+    "logosTitle": "Our partner network",
+    "sourceNote": "Based on pages 12–13 of the company presentation. University application support does not mean an agreement has been signed or admission completed.",
+    "plannedLabel": "Planned application date",
+    "regions": {
+      "capital": "Capital region",
+      "gwangju": "Gwangju · Jeonnam",
+      "chungcheong": "Chungcheong",
+      "jeonbuk": "Jeonbuk",
+      "gyeongsang": "Gyeongbuk · Gyeongnam",
+      "jeju": "Jeju"
+    },
+    "groups": {
+      "municipality": "Local-government consulting",
+      "university": "University application support",
+      "partner": "Domestic and international partners"
+    },
+    "statuses": {
+      "completed": "Completed",
+      "ongoing": "In progress",
+      "supported": "Application support",
+      "planned": "Application support planned"
+    },
+    "institutions": {
+      "ganghwa": {
+        "name": "Ganghwa County",
+        "description": "Laos · Seasonal-worker consulting"
+      },
+      "yeoju": {
+        "name": "Yeoju City",
+        "description": "Lai Châu Province, Vietnam · Seasonal-worker consulting"
+      },
+      "anseong": {
+        "name": "Anseong City",
+        "description": "Lai Châu Province, Vietnam · Seasonal-worker consulting"
+      },
+      "pyeongtaek-city": {
+        "name": "Pyeongtaek City",
+        "description": "Nepal and Sơn La Province, Vietnam · Seasonal-worker consulting"
+      },
+      "damyang": {
+        "name": "Damyang County",
+        "description": "Laos · Seasonal-worker consulting"
+      },
+      "boseong": {
+        "name": "Boseong County",
+        "description": "Nepal · Seasonal-worker consulting"
+      },
+      "jangheung": {
+        "name": "Jangheung County",
+        "description": "Laos and Nepal · Seasonal-worker consulting"
+      },
+      "suncheon": {
+        "name": "Suncheon City",
+        "description": "Nepal · Seasonal-worker consulting"
+      },
+      "namhae": {
+        "name": "Namhae County",
+        "description": "Laos · Seasonal-worker consulting"
+      },
+      "kyonggi": {
+        "name": "Kyonggi University",
+        "description": "Graduate programs"
+      },
+      "pyeongtaek-university": {
+        "name": "Pyeongtaek University",
+        "description": "Undergraduate programs"
+      },
+      "kimpo": {
+        "name": "Kimpo University",
+        "description": "Undergraduate programs"
+      },
+      "honam": {
+        "name": "Honam University",
+        "description": "Undergraduate and graduate programs"
+      },
+      "hanyeong": {
+        "name": "Hanyeong University",
+        "description": "Undergraduate programs"
+      },
+      "cheongju": {
+        "name": "Cheongju University",
+        "description": "Graduate programs"
+      },
+      "woosuk": {
+        "name": "Woosuk University",
+        "description": "Graduate programs"
+      },
+      "kijeon": {
+        "name": "Jeonju Kijeon College",
+        "description": "Undergraduate programs"
+      },
+      "jeonbuk": {
+        "name": "Jeonbuk National University",
+        "description": "Undergraduate programs"
+      },
+      "uiduk": {
+        "name": "Uiduk University",
+        "description": "Undergraduate programs"
+      },
+      "cheju-halla": {
+        "name": "Cheju Halla University",
+        "description": "Undergraduate programs"
+      },
+      "jeju-tourism": {
+        "name": "Jeju Tourism University",
+        "description": "Undergraduate programs"
+      },
+      "richhood": {
+        "name": "Richhood Overseas Inc. (P) Ltd.",
+        "description": "Worker selection, qualification verification and immigration administration support"
+      },
+      "sunkoshi": {
+        "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+        "description": "Cooperation in overseas worker deployment"
+      },
+      "satyawati": {
+        "name": "Satyawati Overseas Concern Pvt. Ltd.",
+        "description": "Candidate selection and deployment for employment in Korea and Japan"
+      },
+      "bhairav": {
+        "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+        "description": "Vocational training specializing in welding"
+      },
+      "engate": {
+        "name": "ENgate",
+        "description": "Partner listed in the company presentation"
+      },
+      "ocean": {
+        "name": "Ocean Technical Institute Pvt. Ltd.",
+        "description": "Job, language and pre-departure training"
+      },
+      "korea-housing": {
+        "name": "Korea Housing Builders Association",
+        "description": "Industry cooperation in housing construction"
       }
     }
   }

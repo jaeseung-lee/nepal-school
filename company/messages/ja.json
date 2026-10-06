@@ -123,9 +123,9 @@
       "description": "ネパールでの選抜・教育から、日本での就労、韓国での留学・採用まで、分野ごとの手順を示します。"
     },
     "partners": {
-      "title": "協力機関ごとに、担当する役割を示します",
-      "description": "各パートナーの担当範囲を掲載します。ロゴの使用許可がない機関には、仮のロゴを使いません。",
-      "detailsCta": "パートナーシップを詳しく見る"
+      "title": "全国の主な活動と協力ネットワーク",
+      "description": "自治体の季節労働者に関するコンサルティング、大学への出願支援、国内外の機関との協力を進めています。",
+      "detailsCta": "活動状況・協力機関を詳しく見る"
     },
     "faq": {
       "title": "採用前によくある質問",
@@ -350,14 +350,14 @@
     },
     "partners": {
       "metadata": {
-        "title": "パートナーシップ",
-        "description": "2026年7月、ネパール現地の6機関と国際事業MOUを締結しました。人材送り出し3社と職業技術・教育3機関が、選抜、資格確認、教育、出入国行政を分担します。"
+        "title": "全国の活動状況と協力ネットワーク",
+        "description": "自治体の季節労働者に関するコンサルティング、大学への出願支援、国内外の機関との協力を進めています。"
       },
       "banner": {
         "eyebrow": "協力ネットワーク",
-        "context": "役割が確認された機関との協力",
-        "title": "パートナーシップ",
-        "description": "ネパールと韓国の機関が、選抜、教育、送り出し、企業とのマッチングを分担します。",
+        "context": "会社紹介資料12・13ページに基づきます。大学への出願支援は、協定締結や入学完了を意味しません。",
+        "title": "全国の活動状況と協力ネットワーク",
+        "description": "自治体の季節労働者に関するコンサルティング、大学への出願支援、国内外の機関との協力を進めています。",
         "crumb": "パートナーシップ",
         "alt": "パートナーシップを説明する現場写真"
       },
@@ -518,6 +518,149 @@
         "notice": "より早くご案内するため、希望職種・人数、希望入国時期、検討中のビザ、勤務地域をお知らせください。",
         "status": "メールで問い合わせる",
         "reassurance": "お問い合わせ内容がまだ明確でなくても、どうぞお気軽にご連絡ください。専門の担当者がお話を伺い、お客様の状況に最適な方法をご案内いたします。"
+      }
+    }
+  },
+  "network": {
+    "homeTitle": "全国の主な活動と協力ネットワーク",
+    "pageTitle": "全国の活動状況と協力ネットワーク",
+    "description": "自治体の季節労働者に関するコンサルティング、大学への出願支援、国内外の機関との協力を進めています。",
+    "detailsCta": "活動状況・協力機関を詳しく見る",
+    "mapLabel": "全国活動マップ：地域を選ぶと一覧へ移動します。",
+    "logosTitle": "協力機関",
+    "sourceNote": "会社紹介資料12・13ページに基づきます。大学への出願支援は、協定締結や入学完了を意味しません。",
+    "plannedLabel": "出願支援予定時期",
+    "regions": {
+      "capital": "首都圏",
+      "gwangju": "光州・全羅南道",
+      "chungcheong": "忠清",
+      "jeonbuk": "全北",
+      "gyeongsang": "慶北・慶南",
+      "jeju": "済州"
+    },
+    "groups": {
+      "municipality": "自治体コンサルティング",
+      "university": "大学への出願支援",
+      "partner": "国内外の協力機関"
+    },
+    "statuses": {
+      "completed": "完了",
+      "ongoing": "進行中",
+      "supported": "出願支援",
+      "planned": "出願支援予定"
+    },
+    "institutions": {
+      "ganghwa": {
+        "name": "江華郡",
+        "description": "ラオス · 季節労働者に関するコンサルティング"
+      },
+      "yeoju": {
+        "name": "驪州市",
+        "description": "ベトナム・ライチャウ省 · 季節労働者に関するコンサルティング"
+      },
+      "anseong": {
+        "name": "安城市",
+        "description": "ベトナム・ライチャウ省 · 季節労働者に関するコンサルティング"
+      },
+      "pyeongtaek-city": {
+        "name": "平沢市",
+        "description": "ネパールおよびベトナム・ソンラ省 · 季節労働者に関するコンサルティング"
+      },
+      "damyang": {
+        "name": "潭陽郡",
+        "description": "ラオス · 季節労働者に関するコンサルティング"
+      },
+      "boseong": {
+        "name": "宝城郡",
+        "description": "ネパール · 季節労働者に関するコンサルティング"
+      },
+      "jangheung": {
+        "name": "長興郡",
+        "description": "ラオスおよびネパール · 季節労働者に関するコンサルティング"
+      },
+      "suncheon": {
+        "name": "順天市",
+        "description": "ネパール · 季節労働者に関するコンサルティング"
+      },
+      "namhae": {
+        "name": "南海郡",
+        "description": "ラオス · 季節労働者に関するコンサルティング"
+      },
+      "kyonggi": {
+        "name": "Kyonggi University",
+        "description": "大学院"
+      },
+      "pyeongtaek-university": {
+        "name": "Pyeongtaek University",
+        "description": "学部"
+      },
+      "kimpo": {
+        "name": "Kimpo University",
+        "description": "学部"
+      },
+      "honam": {
+        "name": "Honam University",
+        "description": "学部・大学院"
+      },
+      "hanyeong": {
+        "name": "Hanyeong University",
+        "description": "学部"
+      },
+      "cheongju": {
+        "name": "Cheongju University",
+        "description": "大学院"
+      },
+      "woosuk": {
+        "name": "Woosuk University",
+        "description": "大学院"
+      },
+      "kijeon": {
+        "name": "Jeonju Kijeon College",
+        "description": "学部"
+      },
+      "jeonbuk": {
+        "name": "Jeonbuk National University",
+        "description": "学部"
+      },
+      "uiduk": {
+        "name": "Uiduk University",
+        "description": "学部"
+      },
+      "cheju-halla": {
+        "name": "Cheju Halla University",
+        "description": "学部"
+      },
+      "jeju-tourism": {
+        "name": "Jeju Tourism University",
+        "description": "学部"
+      },
+      "richhood": {
+        "name": "Richhood Overseas Inc. (P) Ltd.",
+        "description": "労働者の選考、資格要件の確認、出入国関連の行政支援"
+      },
+      "sunkoshi": {
+        "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+        "description": "海外への人材送出における協力"
+      },
+      "satyawati": {
+        "name": "Satyawati Overseas Concern Pvt. Ltd.",
+        "description": "韓国・日本での就労候補者の選考・送出協力"
+      },
+      "bhairav": {
+        "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+        "description": "溶接に特化した職業技術教育"
+      },
+      "engate": {
+        "name": "ENgate",
+        "description": "会社紹介資料に掲載された協力機関"
+      },
+      "ocean": {
+        "name": "Ocean Technical Institute Pvt. Ltd.",
+        "description": "職務・語学および出国前教育"
+      },
+      "korea-housing": {
+        "name": "Korea Housing Builders Association",
+        "description": "住宅建設分野の産業協力"
       }
     }
   }

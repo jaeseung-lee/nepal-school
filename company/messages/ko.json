@@ -123,9 +123,9 @@
       "description": "네팔 현지 선발과 교육부터 일본 취업, 한국 유학·채용까지 분야별로 필요한 절차를 이어서 관리합니다."
     },
     "partners": {
-      "title": "협력 기관은 이름보다 역할이 중요합니다",
-      "description": "사용 허락을 받지 않은 기관 로고는 쓰지 않고, 각 파트너가 실제로 맡는 책임을 먼저 보여줍니다.",
-      "detailsCta": "파트너십 자세히 보기"
+      "title": "전국 주요 활동과 협력 네트워크",
+      "description": "지자체 계절근로 컨설팅과 대학 지원, 국내외 기관 협력을 이어갑니다.",
+      "detailsCta": "활동 현황·협력기관 자세히 보기"
     },
     "faq": {
       "title": "기업이 먼저 확인해야 할 질문",
@@ -350,14 +350,14 @@
     },
     "partners": {
       "metadata": {
-        "title": "파트너십",
-        "description": "2026년 7월 네팔 현지 6개 기관과 국제사업 MOU를 체결했습니다. 인력송출 3개사와 직업기술·교육 3개 기관이 선발·검증·교육·출입국 행정을 분담합니다."
+        "title": "전국 활동 현황과 협력 네트워크",
+        "description": "지자체 계절근로 컨설팅과 대학 지원, 국내외 기관 협력을 이어갑니다."
       },
       "banner": {
         "eyebrow": "협력 네트워크",
-        "context": "역할이 확인된 기관 협력",
-        "title": "파트너십",
-        "description": "네팔과 한국의 기관들이 역할을 나눠 선발·교육·송출·매칭을 맡습니다.",
+        "context": "회사소개서 12·13페이지 기준. 대학 지원은 협약 체결이나 입학 완료를 의미하지 않습니다.",
+        "title": "전국 활동 현황과 협력 네트워크",
+        "description": "지자체 계절근로 컨설팅과 대학 지원, 국내외 기관 협력을 이어갑니다.",
         "crumb": "파트너십",
         "alt": "파트너십을 설명하는 현장 이미지"
       },
@@ -518,6 +518,149 @@
         "notice": "문의 시 채용 희망 직무·인원, 희망 입국 시기, 검토 중인 비자와 근무 지역을 함께 알려주시면 더 빠르게 안내할 수 있습니다.",
         "status": "이메일 문의 보내기",
         "reassurance": "문의 내용이 명확하지 않더라도 부담 없이 연락해 주세요. 전문 상담을 통해 고객님의 상황에 맞는 최적의 방안을 안내해 드리겠습니다."
+      }
+    }
+  },
+  "network": {
+    "homeTitle": "전국 주요 활동과 협력 네트워크",
+    "pageTitle": "전국 활동 현황과 협력 네트워크",
+    "description": "지자체 계절근로 컨설팅과 대학 지원, 국내외 기관 협력을 이어갑니다.",
+    "detailsCta": "활동 현황·협력기관 자세히 보기",
+    "mapLabel": "전국 활동 지도: 지역을 선택하면 해당 목록으로 이동합니다.",
+    "logosTitle": "함께하는 협력기관",
+    "sourceNote": "회사소개서 12·13페이지 기준. 대학 지원은 협약 체결이나 입학 완료를 의미하지 않습니다.",
+    "plannedLabel": "지원 예정 시기",
+    "regions": {
+      "capital": "수도권",
+      "gwangju": "광주·전남",
+      "chungcheong": "충청",
+      "jeonbuk": "전북",
+      "gyeongsang": "경북·경남",
+      "jeju": "제주"
+    },
+    "groups": {
+      "municipality": "지자체 컨설팅",
+      "university": "대학교 지원",
+      "partner": "국내외 협력기관"
+    },
+    "statuses": {
+      "completed": "완료",
+      "ongoing": "진행 중",
+      "supported": "지원",
+      "planned": "지원 예정"
+    },
+    "institutions": {
+      "ganghwa": {
+        "name": "강화군",
+        "description": "라오스 · 계절근로 컨설팅"
+      },
+      "yeoju": {
+        "name": "여주시",
+        "description": "베트남 라이쩌우성 · 계절근로 컨설팅"
+      },
+      "anseong": {
+        "name": "안성시",
+        "description": "베트남 라이쩌우성 · 계절근로 컨설팅"
+      },
+      "pyeongtaek-city": {
+        "name": "평택시",
+        "description": "네팔 및 베트남 선라성 · 계절근로 컨설팅"
+      },
+      "damyang": {
+        "name": "담양군",
+        "description": "라오스 · 계절근로 컨설팅"
+      },
+      "boseong": {
+        "name": "보성군",
+        "description": "네팔 · 계절근로 컨설팅"
+      },
+      "jangheung": {
+        "name": "장흥군",
+        "description": "라오스 및 네팔 · 계절근로 컨설팅"
+      },
+      "suncheon": {
+        "name": "순천시",
+        "description": "네팔 · 계절근로 컨설팅"
+      },
+      "namhae": {
+        "name": "남해군",
+        "description": "라오스 · 계절근로 컨설팅"
+      },
+      "kyonggi": {
+        "name": "경기대학교",
+        "description": "대학원"
+      },
+      "pyeongtaek-university": {
+        "name": "평택대학교",
+        "description": "학부"
+      },
+      "kimpo": {
+        "name": "김포대학교",
+        "description": "학부"
+      },
+      "honam": {
+        "name": "호남대학교",
+        "description": "학부·대학원"
+      },
+      "hanyeong": {
+        "name": "한영대학교",
+        "description": "학부"
+      },
+      "cheongju": {
+        "name": "청주대학교",
+        "description": "대학원"
+      },
+      "woosuk": {
+        "name": "우석대학교",
+        "description": "대학원"
+      },
+      "kijeon": {
+        "name": "전주기전대학",
+        "description": "학부"
+      },
+      "jeonbuk": {
+        "name": "전북대학교",
+        "description": "학부"
+      },
+      "uiduk": {
+        "name": "위덕대학교",
+        "description": "학부"
+      },
+      "cheju-halla": {
+        "name": "제주한라대학교",
+        "description": "학부"
+      },
+      "jeju-tourism": {
+        "name": "제주관광대학교",
+        "description": "학부"
+      },
+      "richhood": {
+        "name": "Richhood Overseas Inc. (P) Ltd.",
+        "description": "근로자 선발, 자격 요건 검증, 출입국 관련 행정 지원"
+      },
+      "sunkoshi": {
+        "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+        "description": "해외 인력 송출 협력"
+      },
+      "satyawati": {
+        "name": "Satyawati Overseas Concern Pvt. Ltd.",
+        "description": "한국·일본 취업 후보자 선발과 송출 협력"
+      },
+      "bhairav": {
+        "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+        "description": "용접 특화 직업 기술 교육"
+      },
+      "engate": {
+        "name": "ENgate",
+        "description": "회사소개서에 등재된 협력기관"
+      },
+      "ocean": {
+        "name": "Ocean Technical Institute Pvt. Ltd.",
+        "description": "직무·어학 및 출국 전 교육"
+      },
+      "korea-housing": {
+        "name": "대한주택건설협회",
+        "description": "주택건설 분야 산업 협력"
       }
     }
   }

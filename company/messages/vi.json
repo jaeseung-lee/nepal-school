@@ -123,9 +123,9 @@
       "description": "Mỗi lĩnh vực hoạt động có thể trông riêng biệt, nhưng trên thực tế tuyển chọn, đào tạo, thi cử, thị thực và ổn định cuộc sống đều được liên kết."
     },
     "partners": {
-      "title": "Vai trò của tổ chức hợp tác quan trọng hơn tên gọi",
-      "description": "Thay vì trang trí bằng những tổ chức chưa sẵn sàng logo, chúng tôi ưu tiên cho thấy trách nhiệm thực tế mà từng đối tác đảm nhận.",
-      "detailsCta": "Xem chi tiết đối tác"
+      "title": "Hoạt động toàn quốc và mạng lưới đối tác",
+      "description": "Chúng tôi tư vấn lao động thời vụ cho chính quyền địa phương, hỗ trợ hồ sơ đại học và hợp tác với các tổ chức trong và ngoài nước.",
+      "detailsCta": "Xem chi tiết hoạt động và đối tác"
     },
     "faq": {
       "title": "Những câu hỏi doanh nghiệp cần xác nhận trước",
@@ -350,14 +350,14 @@
     },
     "partners": {
       "metadata": {
-        "title": "Đối tác",
-        "description": "Ký MOU kinh doanh quốc tế với sáu tổ chức tại Nepal vào tháng 7 năm 2026. Ba công ty phái cử và ba tổ chức đào tạo kỹ năng, giáo dục phân chia tuyển chọn, xác minh, đào tạo và hành chính xuất nhập cảnh."
+        "title": "Tình hình hoạt động toàn quốc và mạng lưới đối tác",
+        "description": "Chúng tôi tư vấn lao động thời vụ cho chính quyền địa phương, hỗ trợ hồ sơ đại học và hợp tác với các tổ chức trong và ngoài nước."
       },
       "banner": {
         "eyebrow": "Mạng lưới hợp tác",
-        "context": "Hợp tác với các tổ chức có vai trò được xác minh",
-        "title": "Đối tác",
-        "description": "Chúng tôi xây dựng dòng tuyển chọn, đào tạo, phái cử và kết nối bằng cách phân chia vai trò với các tổ chức tại Nepal và Hàn Quốc.",
+        "context": "Theo trang 12–13 của hồ sơ công ty. Hỗ trợ hồ sơ đại học không đồng nghĩa với ký kết thỏa thuận hay hoàn tất nhập học.",
+        "title": "Tình hình hoạt động toàn quốc và mạng lưới đối tác",
+        "description": "Chúng tôi tư vấn lao động thời vụ cho chính quyền địa phương, hỗ trợ hồ sơ đại học và hợp tác với các tổ chức trong và ngoài nước.",
         "crumb": "Đối tác",
         "alt": "Hình ảnh thực tế minh họa cho Đối tác"
       },
@@ -518,6 +518,149 @@
         "notice": "Để được phản hồi nhanh hơn, vui lòng nêu vị trí và số lượng cần tuyển, thời điểm nhập cảnh mong muốn, loại thị thực đang xem xét và khu vực làm việc.",
         "status": "Gửi yêu cầu qua email",
         "reassurance": "Ngay cả khi nội dung cần trao đổi chưa thật rõ ràng, quý khách cũng đừng ngần ngại liên hệ. Qua tư vấn chuyên môn, chúng tôi sẽ đề xuất phương án phù hợp nhất với tình hình của quý khách."
+      }
+    }
+  },
+  "network": {
+    "homeTitle": "Hoạt động toàn quốc và mạng lưới đối tác",
+    "pageTitle": "Tình hình hoạt động toàn quốc và mạng lưới đối tác",
+    "description": "Chúng tôi tư vấn lao động thời vụ cho chính quyền địa phương, hỗ trợ hồ sơ đại học và hợp tác với các tổ chức trong và ngoài nước.",
+    "detailsCta": "Xem chi tiết hoạt động và đối tác",
+    "mapLabel": "Bản đồ hoạt động: chọn khu vực để đến danh sách tương ứng.",
+    "logosTitle": "Mạng lưới đối tác",
+    "sourceNote": "Theo trang 12–13 của hồ sơ công ty. Hỗ trợ hồ sơ đại học không đồng nghĩa với ký kết thỏa thuận hay hoàn tất nhập học.",
+    "plannedLabel": "Thời gian dự kiến hỗ trợ",
+    "regions": {
+      "capital": "Vùng thủ đô",
+      "gwangju": "Gwangju · Jeonnam",
+      "chungcheong": "Chungcheong",
+      "jeonbuk": "Jeonbuk",
+      "gyeongsang": "Gyeongbuk · Gyeongnam",
+      "jeju": "Jeju"
+    },
+    "groups": {
+      "municipality": "Tư vấn chính quyền địa phương",
+      "university": "Hỗ trợ hồ sơ đại học",
+      "partner": "Đối tác trong và ngoài nước"
+    },
+    "statuses": {
+      "completed": "Hoàn thành",
+      "ongoing": "Đang tiến hành",
+      "supported": "Hỗ trợ hồ sơ",
+      "planned": "Dự kiến hỗ trợ hồ sơ"
+    },
+    "institutions": {
+      "ganghwa": {
+        "name": "Ganghwa County",
+        "description": "Lào · Tư vấn lao động thời vụ"
+      },
+      "yeoju": {
+        "name": "Yeoju City",
+        "description": "Tỉnh Lai Châu, Việt Nam · Tư vấn lao động thời vụ"
+      },
+      "anseong": {
+        "name": "Anseong City",
+        "description": "Tỉnh Lai Châu, Việt Nam · Tư vấn lao động thời vụ"
+      },
+      "pyeongtaek-city": {
+        "name": "Pyeongtaek City",
+        "description": "Nepal và tỉnh Sơn La, Việt Nam · Tư vấn lao động thời vụ"
+      },
+      "damyang": {
+        "name": "Damyang County",
+        "description": "Lào · Tư vấn lao động thời vụ"
+      },
+      "boseong": {
+        "name": "Boseong County",
+        "description": "Nepal · Tư vấn lao động thời vụ"
+      },
+      "jangheung": {
+        "name": "Jangheung County",
+        "description": "Lào và Nepal · Tư vấn lao động thời vụ"
+      },
+      "suncheon": {
+        "name": "Suncheon City",
+        "description": "Nepal · Tư vấn lao động thời vụ"
+      },
+      "namhae": {
+        "name": "Namhae County",
+        "description": "Lào · Tư vấn lao động thời vụ"
+      },
+      "kyonggi": {
+        "name": "Kyonggi University",
+        "description": "Bậc sau đại học"
+      },
+      "pyeongtaek-university": {
+        "name": "Pyeongtaek University",
+        "description": "Bậc đại học"
+      },
+      "kimpo": {
+        "name": "Kimpo University",
+        "description": "Bậc đại học"
+      },
+      "honam": {
+        "name": "Honam University",
+        "description": "Bậc đại học và sau đại học"
+      },
+      "hanyeong": {
+        "name": "Hanyeong University",
+        "description": "Bậc đại học"
+      },
+      "cheongju": {
+        "name": "Cheongju University",
+        "description": "Bậc sau đại học"
+      },
+      "woosuk": {
+        "name": "Woosuk University",
+        "description": "Bậc sau đại học"
+      },
+      "kijeon": {
+        "name": "Jeonju Kijeon College",
+        "description": "Bậc đại học"
+      },
+      "jeonbuk": {
+        "name": "Jeonbuk National University",
+        "description": "Bậc đại học"
+      },
+      "uiduk": {
+        "name": "Uiduk University",
+        "description": "Bậc đại học"
+      },
+      "cheju-halla": {
+        "name": "Cheju Halla University",
+        "description": "Bậc đại học"
+      },
+      "jeju-tourism": {
+        "name": "Jeju Tourism University",
+        "description": "Bậc đại học"
+      },
+      "richhood": {
+        "name": "Richhood Overseas Inc. (P) Ltd.",
+        "description": "Tuyển chọn lao động, xác minh điều kiện và hỗ trợ thủ tục xuất nhập cảnh"
+      },
+      "sunkoshi": {
+        "name": "Sunkoshi Manpower Service Pvt. Ltd.",
+        "description": "Hợp tác phái cử lao động ra nước ngoài"
+      },
+      "satyawati": {
+        "name": "Satyawati Overseas Concern Pvt. Ltd.",
+        "description": "Hợp tác tuyển chọn và phái cử ứng viên làm việc tại Hàn Quốc và Nhật Bản"
+      },
+      "bhairav": {
+        "name": "Bhairav Industrial Skills Hub Pvt. Ltd.",
+        "description": "Đào tạo nghề chuyên về hàn"
+      },
+      "engate": {
+        "name": "ENgate",
+        "description": "Đối tác được liệt kê trong hồ sơ công ty"
+      },
+      "ocean": {
+        "name": "Ocean Technical Institute Pvt. Ltd.",
+        "description": "Đào tạo nghiệp vụ, ngôn ngữ và trước khi xuất cảnh"
+      },
+      "korea-housing": {
+        "name": "Korea Housing Builders Association",
+        "description": "Hợp tác ngành xây dựng nhà ở"
       }
     }
   }

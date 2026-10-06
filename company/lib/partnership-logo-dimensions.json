@@ -1,0 +1,114 @@
+{
+  "anseong": {
+    "width": 250,
+    "height": 55
+  },
+  "bhairav": {
+    "width": 240,
+    "height": 90
+  },
+  "boseong": {
+    "width": 127,
+    "height": 54
+  },
+  "cheju-halla": {
+    "width": 161,
+    "height": 33
+  },
+  "cheongju": {
+    "width": 175,
+    "height": 54
+  },
+  "damyang": {
+    "width": 103,
+    "height": 96
+  },
+  "engate": {
+    "width": 254,
+    "height": 74
+  },
+  "ganghwa": {
+    "width": 213,
+    "height": 83
+  },
+  "hanyeong": {
+    "width": 122,
+    "height": 34
+  },
+  "honam": {
+    "width": 103,
+    "height": 99
+  },
+  "jangheung": {
+    "width": 300,
+    "height": 211
+  },
+  "jeju-tourism": {
+    "width": 200,
+    "height": 38
+  },
+  "jeonbuk": {
+    "width": 310,
+    "height": 75
+  },
+  "kijeon": {
+    "width": 175,
+    "height": 54
+  },
+  "kimpo": {
+    "width": 334,
+    "height": 89
+  },
+  "korea-housing": {
+    "width": 260,
+    "height": 33
+  },
+  "kyonggi": {
+    "width": 185,
+    "height": 55
+  },
+  "namhae": {
+    "width": 154,
+    "height": 132
+  },
+  "ocean": {
+    "width": 88,
+    "height": 88
+  },
+  "pyeongtaek-city": {
+    "width": 150,
+    "height": 100
+  },
+  "pyeongtaek-university": {
+    "width": 232,
+    "height": 60
+  },
+  "richhood": {
+    "width": 246,
+    "height": 40
+  },
+  "satyawati": {
+    "width": 279,
+    "height": 84
+  },
+  "suncheon": {
+    "width": 113,
+    "height": 60
+  },
+  "sunkoshi": {
+    "width": 124,
+    "height": 124
+  },
+  "uiduk": {
+    "width": 96,
+    "height": 86
+  },
+  "woosuk": {
+    "width": 179,
+    "height": 50
+  },
+  "yeoju": {
+    "width": 181,
+    "height": 100
+  }
+}

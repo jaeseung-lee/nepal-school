@@ -4,7 +4,7 @@ import HeroSlideshow from "@/components/hero-slideshow";
 import MetricsStrip from "@/components/metrics-strip";
 import Collage from "@/components/collage";
 import ServiceCards from "@/components/service-cards";
-import PartnerCards from "@/components/partner-cards";
+import { NetworkActivityOverview, NetworkLogoWall } from "@/components/partnership-network";
 import ProcessSteps from "@/components/process-steps";
 import FaqSection from "@/components/faq-section";
 import CtaBanner from "@/components/cta-banner";
@@ -68,16 +68,21 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
       <section className="bg-paper">
         <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
           <Reveal className="mb-10 max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+            <h2 id="network-title" className="scroll-mt-28 font-display text-3xl font-semibold text-ink lg:text-5xl">
               {messages.home.partners.title}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted">
               {messages.home.partners.description}
             </p>
           </Reveal>
-          <Reveal delay={0.08}>
-            <PartnerCards locale={locale} />
-          </Reveal>
+          <div>
+            <NetworkActivityOverview locale={locale} />
+            <div className="mt-16">
+              <h2 className="mb-8 font-display text-2xl font-semibold text-ink">{messages.network.logosTitle}</h2>
+              <NetworkLogoWall locale={locale} />
+            </div>
+            <p className="mt-6 text-xs leading-relaxed text-muted">{messages.network.sourceNote}</p>
+          </div>
           <div className="mt-8">
             <Link href={localizedHref(locale, "/partners")} className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">
               {messages.home.partners.detailsCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
