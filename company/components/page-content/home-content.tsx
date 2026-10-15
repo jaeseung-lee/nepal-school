@@ -77,7 +77,6 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
             <div>
               <h3 className="mb-8 text-title text-ink">{messages.network.logosTitle}</h3>
               <NetworkLogoWall locale={locale} />
-              <p className="mt-6 text-xs leading-relaxed text-muted">{messages.network.sourceNote}</p>
             </div>
           </div>
         </div>

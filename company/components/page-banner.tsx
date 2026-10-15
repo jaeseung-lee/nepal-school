@@ -6,7 +6,7 @@ import { getMessages, localizedHref, type Locale } from "@/lib/i18n";
 interface PageBannerProps {
   locale?: Locale;
   eyebrow: string;
-  context: string;
+  context?: string;
   /** `titleKo` remains temporarily accepted for legacy Korean-only visa pages. */
   title?: string;
   titleKo?: string;

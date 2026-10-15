@@ -352,7 +352,6 @@
       },
       "banner": {
         "eyebrow": "Mạng lưới hợp tác",
-        "context": "Theo trang 12–13 của hồ sơ công ty. Hỗ trợ hồ sơ đại học không đồng nghĩa với ký kết thỏa thuận hay hoàn tất nhập học.",
         "title": "Tình hình hoạt động toàn quốc và mạng lưới đối tác",
         "description": "Chúng tôi tư vấn lao động thời vụ cho chính quyền địa phương, hỗ trợ hồ sơ đại học và hợp tác với các tổ chức trong và ngoài nước.",
         "crumb": "Đối tác",
@@ -525,7 +524,6 @@
     "detailsCta": "Xem chi tiết hoạt động và đối tác",
     "mapLabel": "Bản đồ hoạt động: chọn khu vực để đến danh sách tương ứng.",
     "logosTitle": "Mạng lưới đối tác",
-    "sourceNote": "Theo trang 12–13 của hồ sơ công ty. Hỗ trợ hồ sơ đại học không đồng nghĩa với ký kết thỏa thuận hay hoàn tất nhập học.",
     "plannedLabel": "Thời gian dự kiến hỗ trợ",
     "regions": {
       "capital": "Vùng thủ đô",

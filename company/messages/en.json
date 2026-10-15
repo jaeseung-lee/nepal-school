@@ -352,7 +352,6 @@
       },
       "banner": {
         "eyebrow": "Cooperation network",
-        "context": "Based on pages 12–13 of the company presentation. University application support does not mean an agreement has been signed or admission completed.",
         "title": "Nationwide activities and partner network",
         "description": "We provide seasonal-worker consulting for local governments, university application support, and cooperation with domestic and international institutions.",
         "crumb": "Partnerships",
@@ -525,7 +524,6 @@
     "detailsCta": "Explore activities and partners",
     "mapLabel": "Activity map: select a region to jump to its list.",
     "logosTitle": "Our partner network",
-    "sourceNote": "Based on pages 12–13 of the company presentation. University application support does not mean an agreement has been signed or admission completed.",
     "plannedLabel": "Planned application date",
     "regions": {
       "capital": "Capital region",
