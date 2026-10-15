@@ -133,6 +133,21 @@ test("사이트맵은 명시적 수정일과 언어 대체 링크를 사용한�
   assert.match(source, /\/privacy/);
 });
 
+test("블로그 글의 x-default는 사이트맵과 같은 한국어 원문을 가리킨다", () => {
+  assert.match(read("lib/blog-metadata.ts"), /"x-default": languages\.ko \?\?/);
+  assert.match(read("app/sitemap.ts"), /"x-default": languages\.ko \}/);
+});
+
+test("메타데이터는 모든 요청에서 <head>에 렌더하고 x-powered-by를 숨긴다", async () => {
+  const config = (await import("../next.config.mjs")).default;
+  assert.equal(config.poweredByHeader, false);
+  for (const userAgent of [
+    "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
+  ]) assert.ok(config.htmlLimitedBots?.test(userAgent), userAgent);
+});
+
 test("사업영역 상세 8개 URL은 한국어·일본어 hreflang만 제공한다", () => {
   const source = read("app/sitemap.ts");
   const detailUrls = new Set(

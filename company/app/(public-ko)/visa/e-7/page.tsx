@@ -1,7 +1,8 @@
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import VisaSchema from "@/components/visa/visa-schema";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaProcess from "@/components/visa/visa-process";
@@ -80,128 +81,129 @@ export default function E7Page() {
         titleKo="특정활동 E-7 (전문·숙련인력)"
         desc="기업이 특정 직종의 외국인 전문·숙련 인력을 지정해 채용하는 비자입니다. 직종 해당 여부와 개인별 요건 심사가 핵심입니다."
         crumb="비자 정보"
-        bgImage="/kv/redesign/korea.webp"
+        photo={KEY_VISUALS.visas["e-7"]}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <div>
             <VisaGlance visa={visa} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">네 가지 유형</h2>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">네 가지 유형</h2>
+            <p className="mt-6 max-w-3xl text-description text-muted">
               E-7은 하나의 비자가 아니라 전문성 수준에 따라 네 유형으로 나뉩니다. 어느 유형에
               해당하는지에 따라 요건과 절차가 달라집니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 grid gap-4 sm:grid-cols-2">
+          </div>
+          <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2">
             {TYPES.map((type) => (
-              <article key={type.code} className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-                <span className="inline-flex rounded-full bg-cobalt-soft px-3 py-1 text-xs font-semibold text-cobalt">
+              <article key={type.code} className="border-t border-ink pt-6">
+                <span className="inline-flex text-meta font-semibold text-muted">
                   {type.code}
                 </span>
-                <h3 className="mt-3 font-display text-xl font-semibold text-ink">{type.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{type.desc}</p>
+                <h3 className="mt-3 text-lg font-bold tracking-[-0.02em] text-ink">{type.title}</h3>
+                <p className="mt-3 text-description text-muted">{type.desc}</p>
               </article>
             ))}
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.12} className="mt-8 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">요건의 뼈대</h3>
-            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-muted">
+          <div className="mt-8 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">요건의 뼈대</h3>
+            <p className="mt-3 max-w-3xl text-description text-muted">
               공통적으로 ① 직종별 학력·경력 조합 요건(일반적으로 관련 전공 학사 이상, 또는
               전문학사·상당 경력의 조합), ② 일정 수준 이상의 임금 요건, ③ 업종별 내국인 고용 대비
               외국인 고용비율 제한이 적용됩니다. 구체 기준은 법무부의 연도별 지침으로 바뀌므로 채용
               시점에 반드시 최신 기준을 확인해야 합니다.
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">E-9와의 차이</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 overflow-x-auto rounded-[24px] border border-line bg-surface shadow-sm shadow-ink/5">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">E-9와의 차이</h2>
+          </div>
+          <div className="mt-10 overflow-x-auto border-t border-ink">
             <table className="w-full min-w-[640px] text-left text-[15px]">
               <thead>
-                <tr className="border-b border-line bg-paper-soft">
-                  <th scope="col" className="px-5 py-4 font-semibold text-muted">구분</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">E-7</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">E-9</th>
+                <tr className="border-b border-ink">
+                  <th scope="col" className="py-4 pr-6 font-semibold text-muted">구분</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">E-7</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">E-9</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {E9_DIFF.map((row) => (
                   <tr key={row.label}>
-                    <th scope="row" className="px-5 py-4 align-top font-semibold text-cobalt">{row.label}</th>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.e7}</td>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.e9}</td>
+                    <th scope="row" className="py-4 pr-6 align-top font-semibold text-ink">{row.label}</th>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.e7}</td>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.e9}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">채용 절차</h2>
+            <p className="mt-6 max-w-2xl text-description text-muted">
               국내 대학을 졸업한 유학생(
-              <Link href="/visa/d-2-d-4" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/visa/d-2-d-4" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 D-2
               </Link>
               )을 채용하는 경우에는 해외 초청 없이 체류자격 변경으로 진행할 수 있어 절차가 단축됩니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+          </div>
+          <div className="mt-10">
             <VisaProcess steps={PROCESS_STEPS} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">자주 묻는 질문</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">자주 묻는 질문</h2>
+          </div>
+          <div className="mt-10">
             <FaqList faqs={visa.faqs} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-4xl">관련 비자·제도</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-8">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-subhead text-balance text-ink">관련 비자·제도</h2>
+          </div>
+          <div className="mt-8">
             <RelatedVisas slugs={visa.related} />
-          </Reveal>
-          <Reveal delay={0.12} className="mt-10 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">정우인재개발원의 역할</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">
+          </div>
+          <div className="mt-10 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">정우인재개발원의 역할</h3>
+            <p className="mt-3 text-description text-muted">
               직종 해당 여부와 기업·인재 요건의 사전 검토부터 해외 인재 발굴, 절차 진행까지 E-7 채용의
               실무를 지원합니다.{" "}
-              <Link href="/services" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/services" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 사업영역 보기
               </Link>
             </p>
-          </Reveal>
-          <Reveal delay={0.16} className="mt-8">
+          </div>
+          <div className="mt-8">
             <VisaDisclaimer />
-          </Reveal>
+          </div>
         </div>
       </section>
 

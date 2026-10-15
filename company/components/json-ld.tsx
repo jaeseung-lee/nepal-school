@@ -1,10 +1,15 @@
 // 범용 JSON-LD 스크립트 렌더러.
-// organization-schema.tsx와 동일한 패턴 - 신뢰 소스(내부 상수)에서만 생성하므로 XSS 위험 없음.
+// 블로그 제목·요약 같은 콘텐츠 문자열도 들어오므로 `<`를 유니코드 이스케이프로 바꿔
+// 본문에 `</script>`가 섞여도 스크립트 블록을 닫지 못하게 한다(JSON 값은 그대로).
+export function serializeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
 export default function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
     />
   );
 }

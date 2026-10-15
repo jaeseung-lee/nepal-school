@@ -67,6 +67,10 @@ const CARD_LAYOUTS = [
   },
 ] as const;
 
+/** 레퍼런스의 텍스트 탭처럼, 선택된 분류만 굵은 밑줄로 표시한다. */
+const FILTER_CLASS =
+  "inline-flex min-h-11 shrink-0 items-center text-sm font-semibold text-muted decoration-2 underline-offset-[10px] transition hover:text-ink aria-pressed:text-ink aria-pressed:underline motion-reduce:transition-none";
+
 function sequence(value: number) {
   return String(value).padStart(2, "0");
 }
@@ -105,21 +109,17 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
 
   return (
     <>
-      <div className="border-y border-line bg-paper-soft">
-        <div className="max-w-content mx-auto flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+      <div className="border-b border-line bg-paper">
+        <div className="page-wrap flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-meta text-muted">
             {labels.filterLabel}
           </p>
-          <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:justify-end" role="toolbar" aria-label={labels.filterLabel}>
+          <div className="-mx-1 flex max-w-full gap-x-5 overflow-x-auto px-1 sm:justify-end" role="group" aria-label={labels.filterLabel}>
             <button
               type="button"
               aria-pressed={activeCategory === "all"}
               onClick={() => setActiveCategory("all")}
-              className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition motion-reduce:transition-none ${
-                activeCategory === "all"
-                  ? "border-cobalt bg-cobalt text-white"
-                  : "border-line bg-white text-ink hover:border-cobalt hover:text-cobalt"
-              }`}
+              className={FILTER_CLASS}
             >
               {labels.allCategories}
             </button>
@@ -129,11 +129,7 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
                 type="button"
                 aria-pressed={activeCategory === category}
                 onClick={() => setActiveCategory(category)}
-                className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition motion-reduce:transition-none ${
-                  activeCategory === category
-                    ? "border-cobalt bg-cobalt text-white"
-                    : "border-line bg-white text-ink hover:border-cobalt hover:text-cobalt"
-                }`}
+                className={FILTER_CLASS}
               >
                 {labels.categories[category]}
               </button>
@@ -143,7 +139,7 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
       </div>
 
       <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-12 sm:py-16 lg:px-8 lg:py-20">
+        <div className="page-wrap py-12 sm:py-16 lg:py-20">
           {filteredItems.length ? (
             <div className="grid grid-cols-2 items-start gap-x-3 gap-y-9 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-11 lg:grid-cols-12 lg:gap-x-5 lg:gap-y-14">
               {filteredItems.map((item, index) => {
@@ -157,9 +153,9 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
                       type="button"
                       onClick={(event) => openLightbox(item, event.currentTarget)}
                       aria-label={`${labels.viewImage}: ${categoryLabel}, ${position}. ${item.caption}`}
-                      className="group block w-full text-left"
+                      className="group block w-full text-left focus-visible:outline-offset-4"
                     >
-                      <div className={`relative overflow-hidden bg-gray-200 ${layout.ratio}`}>
+                      <div className={`relative overflow-hidden bg-image ${layout.ratio}`}>
                         <Image
                           src={item.src}
                           alt={item.alt}
@@ -167,25 +163,23 @@ export default function GalleryExplorer({ items, labels }: GalleryExplorerProps)
                           sizes={layout.sizes}
                           className="object-cover transition duration-500 ease-out group-hover:scale-[1.025] motion-reduce:transition-none"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary-deepest/68 via-primary-deepest/0 to-transparent opacity-75 transition duration-300 group-hover:opacity-100 motion-reduce:transition-none" aria-hidden="true" />
-                        <span className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-3 p-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-white sm:p-4">
-                          <span>{categoryLabel}</span>
-                          <span>{position}</span>
-                        </span>
-                        <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-paper/92 text-cobalt opacity-0 shadow-sm transition duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none sm:right-4 sm:top-4" aria-hidden="true">
-                          <ArrowsOutSimple size={17} weight="bold" />
+                        <span className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-surface text-ink opacity-0 transition duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none sm:right-4 sm:top-4" aria-hidden="true">
+                          <ArrowsOutSimple size={16} />
                         </span>
                       </div>
-                      <span className="mt-3 block max-w-[46rem] text-sm leading-relaxed text-muted sm:text-[0.95rem]">
-                        {item.caption}
+                      <span className="mt-3 flex items-center justify-between gap-3 text-meta text-muted" aria-hidden="true">
+                        <span className="font-semibold text-ink">{categoryLabel}</span>
+                        <span className="tabular-nums">{position}</span>
                       </span>
+                      {/* 캡션은 사진의 맥락을 알려 주는 본문이라 HTML에 그대로 두고 화면에서만 두 줄로 줄인다 */}
+                      <span className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink">{item.caption}</span>
                     </button>
                   </article>
                 );
               })}
             </div>
           ) : (
-            <p className="border-l-4 border-cobalt bg-white px-5 py-6 text-base leading-relaxed text-muted">
+            <p className="border-l-2 border-ink py-2 pl-5 text-description text-muted">
               {labels.empty}
             </p>
           )}

@@ -1,92 +1,84 @@
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import HeroSlideshow from "@/components/hero-slideshow";
 import MetricsStrip from "@/components/metrics-strip";
-import Collage from "@/components/collage";
 import ServiceCards from "@/components/service-cards";
-import { NetworkActivityOverview, NetworkLogoWall } from "@/components/partnership-network";
+import SectionHead from "@/components/section-head";
+import { NetworkLogoWall, NetworkMap } from "@/components/partnership-network";
 import ProcessSteps from "@/components/process-steps";
 import FaqSection from "@/components/faq-section";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import LatestInsights from "@/components/blog/latest-insights";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
+import { partnersRegionAnchor } from "@/lib/partnership-network";
+import { SECTION_LABELS } from "@/lib/section-labels";
+
+const TEXT_LINK =
+  "inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline decoration-white/40 underline-offset-[6px] transition hover:decoration-white";
 
 export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
   const messages = getMessages(locale);
+  const intro = messages.home.intro;
 
   return (
     <main>
       <HeroSlideshow locale={locale} />
-      <MetricsStrip locale={locale} />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto grid gap-12 px-5 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 lg:py-28">
-          <Reveal>
-            <Collage locale={locale} />
-            <Link href={localizedHref(locale, "/gallery")} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">
-              {messages.nav.gallery} <ArrowRight size={16} weight="bold" aria-hidden="true" />
+      <section id="intro" aria-labelledby="intro-title" className="surface-dark bg-night text-white">
+        <div className="page-wrap py-[clamp(7.5rem,14vw,12.5rem)] text-center">
+          <p className="eyebrow" lang="en">
+            {SECTION_LABELS.intro}
+          </p>
+          <h2 id="intro-title" className="mx-auto mt-8 max-w-[28em] text-statement text-balance">
+            {intro.title}
+          </h2>
+          <p className="mx-auto mt-9 max-w-[600px] text-description text-night-muted">{intro.description}</p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            <Link href={localizedHref(locale, "/about")} className={TEXT_LINK}>
+              {intro.aboutCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
             </Link>
-          </Reveal>
-          <Reveal delay={0.08} className="flex flex-col justify-center">
-            <h2 className="font-display text-3xl font-semibold text-ink text-balance lg:text-5xl">
-              {messages.home.intro.title}
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              {messages.home.intro.description}
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href={localizedHref(locale, "/about")} className="inline-flex items-center justify-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-ink active:translate-y-px">
-                {messages.home.intro.aboutCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-              </Link>
-              <Link href={localizedHref(locale, "/why")} className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:border-cobalt hover:text-cobalt active:translate-y-px">
-                {messages.home.intro.whyCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-              </Link>
-            </div>
-          </Reveal>
+            <Link href={localizedHref(locale, "/why")} className={TEXT_LINK}>
+              {intro.whyCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+            </Link>
+          </div>
+          <MetricsStrip locale={locale} tone="dark" />
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
-              {messages.home.services.title}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-muted">
-              {messages.home.services.description}
-            </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-12">
-            <ServiceCards locale={locale} />
-          </Reveal>
+      <section aria-labelledby="services-title" className="bg-paper py-section">
+        <div className="page-wrap">
+          <SectionHead
+            label={SECTION_LABELS.services}
+            title={messages.home.services.title}
+            titleId="services-title"
+            description={messages.home.services.description}
+          />
+          <ServiceCards locale={locale} />
         </div>
       </section>
 
       <ProcessSteps locale={locale} />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal className="mb-10 max-w-2xl">
-            <h2 id="network-title" className="scroll-mt-28 font-display text-3xl font-semibold text-ink lg:text-5xl">
-              {messages.home.partners.title}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-muted">
-              {messages.home.partners.description}
-            </p>
-          </Reveal>
-          <div>
-            <NetworkActivityOverview locale={locale} />
-            <div className="mt-16">
-              <h2 className="mb-8 font-display text-2xl font-semibold text-ink">{messages.network.logosTitle}</h2>
+      <section aria-labelledby="network-title" className="bg-paper py-section">
+        <div className="page-wrap">
+          <SectionHead
+            label={SECTION_LABELS.network}
+            title={messages.home.partners.title}
+            titleId="network-title"
+            description={messages.home.partners.description}
+            action={
+              <Link href={localizedHref(locale, "/partners")} className="pill pill-outline">
+                {messages.home.partners.detailsCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+              </Link>
+            }
+          />
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+            <NetworkMap locale={locale} target={partnersRegionAnchor} basePath={localizedHref(locale, "/partners")} />
+            <div>
+              <h3 className="mb-8 text-title text-ink">{messages.network.logosTitle}</h3>
               <NetworkLogoWall locale={locale} />
+              <p className="mt-6 text-xs leading-relaxed text-muted">{messages.network.sourceNote}</p>
             </div>
-            <p className="mt-6 text-xs leading-relaxed text-muted">{messages.network.sourceNote}</p>
-          </div>
-          <div className="mt-8">
-            <Link href={localizedHref(locale, "/partners")} className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">
-              {messages.home.partners.detailsCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-            </Link>
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ Claude Design로 만든 정적 6페이지 디자인을 **Next.js(App Router) + T
 
 - **Next.js 15** (App Router) · **React 19** · **TypeScript**
 - **Tailwind CSS v4** — 설정은 `app/globals.css`의 `@theme` 블록(CSS-in-config, `tailwind.config` 파일 없음)
-- 폰트: **Outfit**(영문 디스플레이, `next/font/google`) + **Pretendard**(국문 본문, jsDelivr CDN)
+- 폰트: **Pretendard Variable** 단일 서체(`app/fonts.ts`, `next/font/local`로 자체 호스팅)
 
 ## 실행
 
@@ -18,7 +18,10 @@ npm run build    # 프로덕션 빌드
 npm run start    # 빌드 결과 실행
 npm run typecheck # tsc --noEmit
 npm run test:i18n # 번역 키 일관성 검사
+npm run test:design # 모노톤 디자인 가드 (삭제된 색 토큰·유채색 클래스 금지)
 ```
+
+> `npm run lint`(`next lint`)는 ESLint 설정이 없어 동작하지 않습니다. 미사용 코드는 `npx tsc --noEmit --noUnusedLocals`로 확인합니다.
 
 > 이 저장소에는 별도의 `dashboard/`(Next 14) 앱이 있습니다. `company/`는 그와 독립된 앱입니다.
 > 로컬 프리뷰용 `.claude/launch.json`에 `company`(포트 3007) 설정이 등록돼 있습니다.
@@ -44,27 +47,37 @@ app/
   page.tsx              # 홈 (/)
   about|services|partners|why|contact/page.tsx   # 내부 5개 페이지
 components/
-  site-header.tsx       # (client) 스크롤 solid 전환 + 모바일 메뉴 + 활성 메뉴
-  site-footer.tsx       # 공용 푸터
-  hero-slideshow.tsx    # (client) 홈 히어로 3슬라이드 자동재생
-  contact-form.tsx      # (client) 문의 양식 (현재 백엔드 미연동)
-  page-banner.tsx       # 내부 페이지 상단 배너 (props)
+  site-header.tsx       # (client) 투명 오버레이 ↔ 다크 글래스 전환 + 메뉴·언어 패널
+  site-footer.tsx       # 공용 다크 푸터
+  hero-slideshow.tsx    # 홈 풀블리드 히어로 (사진 전환은 hero-image-carousel.tsx)
+  contact-form.tsx      # 문의 준비 안내 패널 (전화·메일, 백엔드 미연동)
+  page-banner.tsx       # 서브페이지 풀블리드 다크 히어로 (photo·label props)
+  section-head.tsx / status-marker.tsx           # 섹션 머리 · 모양으로 구분하는 상태 표시
   metrics-strip.tsx / process-steps.tsx / cta-banner.tsx / collage.tsx
-  service-cards.tsx / partner-cards.tsx           # 홈·상세 공용 카드
+  service-cards.tsx                              # 홈·사업영역 공용 카드
 lib/
   nav.ts                # 메뉴·언어 스위처 단일 출처
 ```
 
-## 디자인 토큰 (요약)
+## 디자인 시스템 (요약)
+
+모노톤 에디토리얼 스타일(레퍼런스: OFFMORA). 브랜드 블루는 로고 아트워크 안에만 남기고, 화면 색은 무채색만 씁니다.
+`npm run test:design`(prebuild 포함)이 삭제된 색 토큰·유채색 클래스·유채색 hex를 막습니다.
 
 | 역할 | 토큰 | 값 |
 |---|---|---|
-| Primary | `primary-main` / `-light` / `-dark` / `-deepest` | `#1B79F2` / `#4A97F7` / `#0B4F9E` / `#062E63` |
-| 포인트(코랄) | `gold-light` / `gold-deep` | `#FF8A5B` / `#D9542A` |
-| Blue accent | `blue-accent` | `#2700FF` |
-| 콘텐츠 최대폭 | `max-w-content` | `1160px` |
+| 바탕 / 흰 면 | `paper` / `paper-soft`·`surface` | `#FAFAFA` / `#FFFFFF` |
+| 글자 / 보조 글자 | `ink` / `muted` | `#232323` / `#6B6B6B` (AA 5.1:1) |
+| 헤어라인 / 이미지 자리 | `line` / `image` | `#D7D7D7` / `#E5E5E5` |
+| 다크 밴드 / 메뉴 / 푸터 | `night` / `night-soft` / `night-deep` / `night-muted` | `#202020` / `#242424` / `#111111` / `#AAAAAA` |
+| 콘텐츠 최대폭 | `max-w-content`, `page-wrap` | `90rem`(1440px) + 좌우 `--spacing-gutter` |
+| 섹션 여백 | `py-section` | `clamp(4.5rem, 9vw, 9rem)` |
 
-Tailwind 유틸(`bg-primary-main`, `text-gold-deep`, `font-display`, `max-w-content` 등)은 원본 standalone 번들과 동일하게 동작합니다.
+- 타입: `text-display` · `text-headline` · `text-statement` · `text-subhead` · `text-title` · `text-description` · `text-meta`, 라벨은 `eyebrow`.
+- 버튼: `pill` + `pill-light` / `pill-dark` / `pill-outline` / `pill-outline-light`(+ `pill-lg`), 원형 아이콘 버튼은 `round-btn`.
+- 어두운 면에는 `surface-dark`를 달아 포커스 링을 흰색으로 바꿉니다.
+- 첫 섹션이 어두운 풀블리드 히어로면 `data-hero-overlay`를 달아 헤더를 투명 오버레이로 띄웁니다(`.site-header`, `body:has()` 기준).
+- 크게 쓰는 사진은 `lib/key-visuals.ts`가 단일 출처이며 모두 `public/gallery` 실사입니다. 영문 장식 라벨은 `lib/section-labels.ts`.
 
 ---
 

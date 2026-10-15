@@ -1,3 +1,4 @@
+import { serializeJsonLd } from "@/components/json-ld";
 import { BRAND_ASSETS } from "@/lib/brand";
 import { SITE, SITE_URL } from "@/lib/site";
 
@@ -12,7 +13,8 @@ export default function OrganizationSchema() {
     "@id": `${SITE_URL}/#organization`,
     name: SITE.brandName.ko,
     legalName: SITE.legalName.ko,
-    alternateName: [SITE.brandName.en, SITE.legalName.en],
+    // 브랜드 영문명과 법인 영문명이 같으면 한 번만 넣는다
+    alternateName: [...new Set([SITE.brandName.en, SITE.legalName.en])],
     url: SITE_URL,
     logo: `${SITE_URL}${BRAND_ASSETS.lockup.color}`,
     image: `${SITE_URL}${BRAND_ASSETS.social}`,
@@ -53,8 +55,8 @@ export default function OrganizationSchema() {
   return (
     <script
       type="application/ld+json"
-      // 구조화 데이터는 신뢰 소스(내부 상수)에서만 생성 - XSS 위험 없음
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      // 구조화 데이터는 신뢰 소스(내부 상수)에서만 생성하고, json-ld.tsx와 같은 방식으로 직렬화한다
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
     />
   );
 }

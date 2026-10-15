@@ -1,10 +1,12 @@
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
+import SectionHead from "@/components/section-head";
 import ServiceCards from "@/components/service-cards";
 import ProcessSteps from "@/components/process-steps";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import JsonLd from "@/components/json-ld";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
@@ -35,27 +37,27 @@ export function ServicesContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }
         title={copy.banner.title}
         desc={copy.banner.description}
         crumb={copy.banner.crumb}
-        imageAlt={copy.banner.alt}
-        bgImage="/kv/banner-services.webp"
+        photo={KEY_VISUALS.pages.services}
+        label={SECTION_LABELS.pages.services}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
-              {copy.main.title}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-muted">
-              {copy.main.descriptionBeforeVisa}{" "}
-              <Link href={localizedHref(locale, "/visa")} className="font-medium text-cobalt underline underline-offset-2">
-                {copy.main.visaLink}
-              </Link>
-              {copy.main.descriptionAfterVisa}
-            </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-12">
-            <ServiceCards locale={locale} />
-          </Reveal>
+      <section aria-labelledby="services-title" className="bg-paper py-section">
+        <div className="page-wrap">
+          <SectionHead
+            index="01"
+            title={copy.main.title}
+            titleId="services-title"
+            description={
+              <>
+                {copy.main.descriptionBeforeVisa}{" "}
+                <Link href={localizedHref(locale, "/visa")} className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+                  {copy.main.visaLink}
+                </Link>
+                {copy.main.descriptionAfterVisa}
+              </>
+            }
+          />
+          <ServiceCards locale={locale} />
         </div>
       </section>
 

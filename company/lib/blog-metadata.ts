@@ -51,7 +51,7 @@ export function getBlogPostMetadata(post: BlogPost): Metadata {
     alternates: {
       canonical: path,
       languages: post.status === "published"
-        ? { ...languages, "x-default": SITE_URL + getBlogPostPath(post.language, post.slug) }
+        ? { ...languages, "x-default": languages.ko ?? SITE_URL + path }
         : undefined,
     },
     openGraph: {

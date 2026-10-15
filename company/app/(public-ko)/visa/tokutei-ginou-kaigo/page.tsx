@@ -1,8 +1,8 @@
-import { HandHeart } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import VisaSchema from "@/components/visa/visa-schema";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaProcess from "@/components/visa/visa-process";
@@ -65,66 +65,64 @@ export default function KaigoPage() {
         titleKo="특정기능 개호(介護)"
         desc="일본 요양 현장의 인력 부족을 메우는 특정기능 분야로, 2026년 1월 운용방침 기준 수용상한은 126,900명입니다. 시험 3종 합격과 시설의 직접고용이 요건이며, 介護福祉士에 합격하면 장기 체류로 이어질 수 있습니다."
         crumb="비자 정보"
-        bgImage="/kv/redesign/japan.webp"
+        photo={KEY_VISUALS.visas["tokutei-ginou-kaigo"]}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <div>
             <VisaGlance visa={visa} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">
               개호 분야에서 치르는 세 가지 시험
             </h2>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+            <p className="mt-6 max-w-3xl text-description text-muted">
               대부분의 특정기능 분야는 일본어시험과 기능시험 2개를 요구하지만, 개호는 이용자와의
               의사소통이 업무의 본질이라{" "}
               <strong className="font-semibold text-ink">개호일본어평가시험도 추가</strong>됩니다.
               세 시험에 모두 합격해야 채용 절차를 시작할 수 있습니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 grid gap-4 lg:grid-cols-3">
+          </div>
+          <div className="mt-10 grid gap-x-8 gap-y-10 lg:grid-cols-3">
             {EXAMS.map((exam) => (
-              <article key={exam.name} className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-                <span className="inline-flex rounded-full bg-cobalt-soft px-3 py-1 text-xs font-semibold text-cobalt">
+              <article key={exam.name} className="border-t border-ink pt-6">
+                <span className="inline-flex text-meta font-semibold text-muted">
                   {exam.note}
                 </span>
-                <h3 className="mt-3 font-display text-lg font-semibold text-ink">{exam.name}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{exam.detail}</p>
+                <h3 className="mt-3 text-lg font-bold tracking-[-0.02em] text-ink">{exam.name}</h3>
+                <p className="mt-3 text-description text-muted">{exam.detail}</p>
               </article>
             ))}
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.12} className="mt-8 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">수용상한과 재류 현황</h3>
-            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-muted">
+          <div className="mt-8 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">수용상한과 재류 현황</h3>
+            <p className="mt-3 max-w-3xl text-description text-muted">
               개호 분야의 특정기능 1호 수용상한은 <strong className="font-semibold text-ink">126,900명</strong>
               (2026년 1월 각의결정 운용방침)입니다. 2025년 12월 말 기준 실제 재류자는 67,871명으로
               상한 대비 절반 수준입니다. 수용상한만 놓고 보면 추가 수용 여지가 있습니다. 네팔
               국적 재류자도 6,013명(같은 시점 ISA 통계)으로 주요 송출국 중 하나입니다.
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal className="rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
-            <div className="flex max-w-3xl flex-col gap-4 sm:flex-row">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                <HandHeart size={26} weight="duotone" aria-hidden="true" />
-              </span>
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div className="bg-paper-soft p-8 lg:p-12">
+            <div className="max-w-3xl">
               <div>
-                <h2 className="font-display text-2xl font-semibold text-ink">
+                <h2 className="text-title text-ink">
                   5년 이후: 介護福祉士와 재류자격 「介護」
                 </h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                <p className="mt-3 text-description text-muted">
                   개호에는 특정기능 2호가 없습니다. 대신 특정기능 1호로 근무하면서{" "}
                   <strong className="font-semibold text-ink">介護福祉士(개호복지사) 국가시험</strong>에
                   합격하면 별도 재류자격 「介護」로 이행할 수 있고, 이 경우 장기 체류와 가족동반이
@@ -132,60 +130,60 @@ export default function KaigoPage() {
                 </p>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">채용 절차</h2>
+            <p className="mt-6 max-w-2xl text-description text-muted">
               전체 절차는{" "}
-              <Link href="/visa/tokutei-ginou" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/visa/tokutei-ginou" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 특정기능 1호 공통 절차
               </Link>
               와 같고, 시험 단계가 3종이라는 점이 다릅니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+          </div>
+          <div className="mt-10">
             <VisaProcess steps={PROCESS_STEPS} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">자주 묻는 질문</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">자주 묻는 질문</h2>
+          </div>
+          <div className="mt-10">
             <FaqList faqs={visa.faqs} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-4xl">관련 비자·제도</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-8">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-subhead text-balance text-ink">관련 비자·제도</h2>
+          </div>
+          <div className="mt-8">
             <RelatedVisas slugs={visa.related} />
-          </Reveal>
-          <Reveal delay={0.12} className="mt-10 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">정우인재개발원의 역할</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">
+          </div>
+          <div className="mt-10 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">정우인재개발원의 역할</h3>
+            <p className="mt-3 text-description text-muted">
               네팔 현지에서 개호 직업훈련과 일본어·개호일본어 시험 준비를 함께 진행하고, 일본
               요양시설과의 매칭부터 입국·정착까지 지원합니다.{" "}
-              <Link href="/services" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/services" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 사업영역 보기
               </Link>
             </p>
-          </Reveal>
-          <Reveal delay={0.16} className="mt-8">
+          </div>
+          <div className="mt-8">
             <VisaDisclaimer />
-          </Reveal>
+          </div>
         </div>
       </section>
 

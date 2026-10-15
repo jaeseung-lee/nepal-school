@@ -1,33 +1,51 @@
-import { ArrowRight, BookOpen, Clock, Tag } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
+import PageBanner from "@/components/page-banner";
 import { getBlogPosts, type BlogPost } from "@/lib/blog";
 import { BLOG_COPY, formatBlogDate } from "@/lib/blog-copy";
 import { getBlogIndexPath, getBlogPostPath, type BlogLocale } from "@/lib/blog-routing";
 import { localizedHref } from "@/lib/i18n";
+import { SECTION_LABELS } from "@/lib/section-labels";
 
-function ArticleCard({ post, locale, compact = false }: { post: BlogPost; locale: BlogLocale; compact?: boolean }) {
+/** 제목 링크가 카드 전체를 덮는다. 포커스 링도 카드 영역에 그린다. */
+const STRETCHED_LINK =
+  "decoration-1 underline-offset-4 after:absolute after:inset-0 group-hover:underline focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-ink";
+
+function ArticleCard({ post, locale, featured = false }: { post: BlogPost; locale: BlogLocale; featured?: boolean }) {
   const copy = BLOG_COPY[locale];
   const href = getBlogPostPath(locale, post.slug);
 
   return (
-    <article className={`group overflow-hidden rounded-[28px] border border-line bg-surface shadow-sm shadow-ink/5 ${compact ? "" : "lg:grid lg:grid-cols-[1.08fr_0.92fr]"}`}>
-      <Link href={href} className={`relative block overflow-hidden bg-paper-soft ${compact ? "aspect-[8/5]" : "aspect-[8/5] lg:aspect-auto lg:min-h-[390px]"}`} tabIndex={-1} aria-hidden="true">
-        <Image src={post.heroImage.src} alt="" fill sizes={compact ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 100vw, 55vw"} className="object-cover transition duration-500 group-hover:scale-[1.025]" />
-      </Link>
-      <div className={`flex flex-col ${compact ? "p-6 lg:p-7" : "p-7 lg:justify-center lg:p-12"}`}>
-        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-cobalt-soft px-3 py-1.5 text-cobalt"><Tag size={13} weight="bold" aria-hidden="true" /> {post.category}</span>
-          <span className="inline-flex items-center gap-1.5 text-muted"><Clock size={14} aria-hidden="true" /> {post.readingMinutes}{copy.minutes}</span>
-          {post.status !== "published" ? <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-amber-800">{post.status === "scheduled" ? copy.scheduledBadge : copy.reviewBadge}</span> : null}
-        </div>
-        <h2 className={`mt-5 font-display font-semibold leading-tight text-ink ${compact ? "text-2xl" : "text-3xl lg:text-4xl"}`}>
-          <Link href={href} className="transition hover:text-cobalt">{post.title}</Link>
+    <article className={`group relative ${featured ? "grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-8" : "border-t border-line pt-6"}`}>
+      <div className={`relative aspect-[8/5] overflow-hidden bg-image ${featured ? "lg:col-span-7" : ""}`}>
+        <Image
+          src={post.heroImage.src}
+          alt=""
+          fill
+          sizes={featured ? "(min-width: 1440px) 770px, (min-width: 1024px) 55vw, 100vw" : "(min-width: 1440px) 660px, (min-width: 1024px) 50vw, 100vw"}
+          className="object-cover transition duration-500 group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
+        />
+      </div>
+      <div className={featured ? "lg:col-span-5 lg:pl-4" : "mt-6"}>
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-meta text-muted">
+          <span className="font-semibold text-ink">{post.category}</span>
+          <span>{post.readingMinutes}{copy.minutes}</span>
+          {post.status !== "published" ? (
+            <span className="border border-ink px-2 py-0.5 font-semibold text-ink">{post.status === "scheduled" ? copy.scheduledBadge : copy.reviewBadge}</span>
+          ) : null}
+        </p>
+        <h2
+          className={`mt-4 text-balance text-ink ${featured ? "text-[clamp(1.75rem,1.2rem+1.6vw,2.75rem)] font-[750] leading-[1.3] tracking-[-0.045em]" : "text-xl font-bold leading-snug tracking-[-0.03em]"}`}
+        >
+          <Link href={href} className={STRETCHED_LINK}>{post.title}</Link>
         </h2>
-        <p className="mt-4 text-[15px] leading-7 text-muted">{post.excerpt}</p>
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5">
-          <p className="text-xs text-gray-500">{copy.updated} {formatBlogDate(locale, post.modifiedAt)}</p>
-          <Link href={href} className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">{copy.readArticle} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+        <p className="mt-4 text-description text-muted">{post.excerpt}</p>
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-4 text-meta text-muted">
+          <p>{copy.updated} {formatBlogDate(locale, post.modifiedAt)}</p>
+          <span aria-hidden="true" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
+            {copy.readArticle} <ArrowUpRight size={14} weight="bold" />
+          </span>
         </div>
       </div>
     </article>
@@ -41,36 +59,45 @@ export default function BlogIndex({ locale }: { locale: BlogLocale }) {
 
   return (
     <main>
-      <section className="border-b border-line bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-16 lg:px-8 lg:py-24">
-          <p className="flex items-center gap-2 text-sm font-semibold text-cobalt"><BookOpen size={18} weight="duotone" aria-hidden="true" /> {copy.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl font-display text-4xl font-semibold tracking-[-0.035em] text-ink text-balance sm:text-5xl lg:text-6xl">{copy.indexTitle}</h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-muted lg:text-lg">{copy.indexDescription}</p>
-          <p className="mt-5 max-w-2xl text-sm leading-6 text-muted">{copy.policyNotice}</p>
-        </div>
-      </section>
+      <PageBanner
+        locale={locale}
+        label={SECTION_LABELS.pages.insights}
+        title={copy.indexTitle}
+        eyebrow={copy.indexName}
+        context={copy.policyNotice}
+        desc={copy.indexDescription}
+        crumb={copy.indexName}
+      />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-16 lg:px-8 lg:py-24">
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
           {featured ? (
             <>
-              <ArticleCard post={featured} locale={locale} />
-              {rest.length ? <div className="mt-7 grid gap-7 lg:grid-cols-2">{rest.map((post) => <ArticleCard key={post.slug} post={post} locale={locale} compact />)}</div> : null}
+              <ArticleCard post={featured} locale={locale} featured />
+              {rest.length ? (
+                <div className="mt-20 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:mt-28">
+                  {rest.map((post) => <ArticleCard key={post.slug} post={post} locale={locale} />)}
+                </div>
+              ) : null}
             </>
           ) : (
-            <div className="rounded-[28px] border border-line bg-paper-soft px-6 py-14 text-center lg:px-12">
-              <h2 className="font-display text-2xl font-semibold text-ink">{copy.emptyTitle}</h2>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-muted">{copy.emptyDescription}</p>
-              <Link href={localizedHref(locale, "/contact")} className="mt-7 inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-ink">{copy.contactCta} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+            <div className="border-t border-ink py-14 text-center">
+              <h2 className="text-title text-ink">{copy.emptyTitle}</h2>
+              <p className="mx-auto mt-3 max-w-lg text-description text-muted">{copy.emptyDescription}</p>
+              <Link href={localizedHref(locale, "/contact")} className="pill pill-dark mt-8">
+                {copy.contactCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+              </Link>
             </div>
           )}
         </div>
       </section>
 
       <section className="border-t border-line bg-paper-soft">
-        <div className="max-w-content mx-auto flex flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p className="max-w-2xl text-sm leading-7 text-muted">{copy.contactDescription}</p>
-          <Link href={localizedHref(locale, "/services")} className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">{copy.contactTitle} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+        <div className="page-wrap flex flex-col gap-6 py-12 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-2xl text-description text-muted">{copy.contactDescription}</p>
+          <Link href={localizedHref(locale, "/services")} className="pill pill-outline shrink-0">
+            {copy.contactTitle} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+          </Link>
         </div>
       </section>
     </main>

@@ -19,13 +19,12 @@ export default function robots(): MetadataRoute.Robots {
           "ChatGPT-User", // ChatGPT 브라우징
           "ClaudeBot", // Anthropic
           "PerplexityBot", // Perplexity
-          "Google-Extended", // Google Gemini / AI Overviews
+          "Google-Extended", // Google Gemini 활용 여부 (AI Overviews는 Googlebot 기준)
         ],
         allow: "/",
         disallow: ["/sales", "/login", "/auth", "/unauthorized"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

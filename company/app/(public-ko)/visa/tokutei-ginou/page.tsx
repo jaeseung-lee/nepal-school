@@ -1,8 +1,8 @@
-import { Exam, Handshake, Translate } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import VisaSchema from "@/components/visa/visa-schema";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaProcess from "@/components/visa/visa-process";
@@ -86,198 +86,190 @@ export default function TokuteiGinouPage() {
         titleKo="일본 특정기능 1호"
         desc="인력부족 분야에서 바로 일할 인력을 일본 기업이 직접 고용하는 취업 재류자격입니다. 16개 분야, 통산 5년, 시험을 거친 선발이 핵심입니다."
         crumb="비자 정보"
-        bgImage="/kv/redesign/japan.webp"
+        photo={KEY_VISUALS.visas["tokutei-ginou"]}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <div>
             <VisaGlance visa={visa} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">제도 개요</h2>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">제도 개요</h2>
+            <p className="mt-6 max-w-3xl text-description text-muted">
               특정기능(特定技能)은 일본이 인력부족 분야에 한해 외국인의 취업을 허용하는
               재류자격입니다. 1호는 <strong className="font-semibold text-ink">16개 분야</strong>
               (2024년 각의결정으로 자동차운송·철도·임업·목재산업 추가)에서 통산 5년까지 일할 수 있고,
               기능실습과 달리 <strong className="font-semibold text-ink">기업이 감리단체를 거치지 않고 직접 고용</strong>합니다.
               개호·숙박 분야는 파견이 허용되지 않아 직접고용이 유일한 형태입니다.
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.08} className="mt-10 overflow-x-auto rounded-[24px] border border-line bg-surface shadow-sm shadow-ink/5">
+          <div className="mt-10 overflow-x-auto border-t border-ink">
             <table className="w-full min-w-[560px] text-left text-[15px]">
-              <caption className="px-5 pt-5 text-left font-display text-lg font-semibold text-ink">
+              <caption className="pt-5 text-left text-lg font-bold text-ink">
                 특정기능 1호 vs 2호
               </caption>
               <thead>
                 <tr className="border-b border-line">
-                  <th scope="col" className="px-5 py-4 font-semibold text-muted">구분</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">1호</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">2호</th>
+                  <th scope="col" className="py-4 pr-6 font-semibold text-muted">구분</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">1호</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">2호</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {GRADE_COMPARISON.map((row) => (
                   <tr key={row.label}>
-                    <th scope="row" className="px-5 py-4 align-top font-semibold text-cobalt">{row.label}</th>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.first}</td>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.second}</td>
+                    <th scope="row" className="py-4 pr-6 align-top font-semibold text-ink">{row.label}</th>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.first}</td>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.second}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.12} className="mt-8 grid gap-4 lg:grid-cols-2">
-            <article className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                <Translate size={22} weight="duotone" aria-hidden="true" />
-              </span>
-              <h3 className="mt-4 font-display text-xl font-semibold text-ink">일본어 요건</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-muted">
+          <div className="mt-10 grid gap-x-8 gap-y-10 lg:grid-cols-2">
+            <article className="border-t border-ink pt-6">
+              <h3 className="mt-4 text-lg font-bold tracking-[-0.02em] text-ink">일본어 요건</h3>
+              <p className="mt-3 text-description text-muted">
                 JFT-Basic(国際交流基金日本語基礎テスト) 250점 만점 중 200점 이상(CEFR A2 상당) 또는
                 JLPT N4 이상 중 하나를 충족하면 됩니다. JFT-Basic은 CBT 방식으로 네팔어 안내를
                 지원하며 네팔 현지에서 응시할 수 있습니다.
               </p>
             </article>
-            <article className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                <Exam size={22} weight="duotone" aria-hidden="true" />
-              </span>
-              <h3 className="mt-4 font-display text-xl font-semibold text-ink">분야별 기능시험</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-muted">
+            <article className="border-t border-ink pt-6">
+              <h3 className="mt-4 text-lg font-bold tracking-[-0.02em] text-ink">분야별 기능시험</h3>
+              <p className="mt-3 text-description text-muted">
                 분야마다 별도의 기능평가시험이 있습니다. 개호는{" "}
-                <Link href="/visa/tokutei-ginou-kaigo" className="font-medium text-cobalt underline underline-offset-2">
+                <Link href="/visa/tokutei-ginou-kaigo" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                   개호기능·개호일본어 시험
                 </Link>
                 , 숙박은{" "}
-                <Link href="/visa/tokutei-ginou-shukuhaku" className="font-medium text-cobalt underline underline-offset-2">
+                <Link href="/visa/tokutei-ginou-shukuhaku" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                   숙박업기능측정시험
                 </Link>
                 을 통과해야 합니다.
               </p>
             </article>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">
               기능실습과 무엇이 다른가
             </h2>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+            <p className="mt-6 max-w-3xl text-description text-muted">
               두 제도 모두 외국인이 일본에서 일하는 경로이지만 법적 성격은 다릅니다. 기능실습은 기술이전
               명목의 실습 제도이고, 특정기능 1호는 처음부터 취업 자격입니다. 기능실습은 2027년 4월
               1일부터{" "}
-              <Link href="/visa/ikusei-shuro" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/visa/ikusei-shuro" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 육성취로 제도
               </Link>
               로 전환됩니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 overflow-x-auto rounded-[24px] border border-line bg-surface shadow-sm shadow-ink/5">
+          </div>
+          <div className="mt-10 overflow-x-auto border-t border-ink">
             <table className="w-full min-w-[640px] text-left text-[15px]">
               <thead>
-                <tr className="border-b border-line bg-paper-soft">
-                  <th scope="col" className="px-5 py-4 font-semibold text-muted">구분</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">기능실습 (→ 육성취로)</th>
-                  <th scope="col" className="px-5 py-4 font-display font-semibold text-ink">특정기능 1호</th>
+                <tr className="border-b border-ink">
+                  <th scope="col" className="py-4 pr-6 font-semibold text-muted">구분</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">기능실습 (→ 육성취로)</th>
+                  <th scope="col" className="py-4 pr-6 font-bold text-ink">특정기능 1호</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {SYSTEM_COMPARISON.map((row) => (
                   <tr key={row.label}>
-                    <th scope="row" className="px-5 py-4 align-top font-semibold text-cobalt">{row.label}</th>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.old}</td>
-                    <td className="px-5 py-4 align-top leading-relaxed text-ink">{row.ssw}</td>
+                    <th scope="row" className="py-4 pr-6 align-top font-semibold text-ink">{row.label}</th>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.old}</td>
+                    <td className="py-4 pr-6 align-top leading-relaxed text-ink">{row.ssw}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.12} className="mt-8 rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
-            <div className="flex max-w-3xl flex-col gap-4 sm:flex-row">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                <Handshake size={26} weight="duotone" aria-hidden="true" />
-              </span>
+          <div className="mt-8 bg-paper-soft p-8 lg:p-12">
+            <div className="max-w-3xl">
               <div>
-                <h3 className="font-display text-2xl font-semibold text-ink">수용기관의 의무적 지원 10항목</h3>
+                <h3 className="text-title text-ink">수용기관의 의무적 지원 10항목</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted">
                   특정기능 1호 인력을 고용하는 기업은 아래 지원을 직접 수행하거나 등록지원기관에
                   위탁해야 합니다. 지원 비용은 기업 부담이며 근로자에게 전가할 수 없습니다.
                 </p>
               </div>
             </div>
-            <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-8 grid border-t border-line sm:grid-cols-2 sm:gap-x-8">
               {SUPPORT_ITEMS.map((item, index) => (
-                <li key={item} className="flex gap-3 rounded-[18px] border border-line bg-paper p-4 text-sm leading-relaxed text-ink">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cobalt-soft text-xs font-semibold text-cobalt">
+                <li key={item} className="flex gap-3 border-b border-line py-4 text-sm leading-relaxed text-ink">
+                  <span className="w-6 shrink-0 pt-0.5 text-meta tabular-nums text-muted">
                     {index + 1}
                   </span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">채용 절차</h2>
+            <p className="mt-6 max-w-2xl text-description text-muted">
               해외에서 새로 입국할 때 거치는 주요 절차입니다. 네팔은 일본과 특정기능 협력각서(MOC)가
               체결되어 있어(2024년 4월 1일부터 5년간 갱신) 이 경로가 공식적으로 열려 있습니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+          </div>
+          <div className="mt-10">
             <VisaProcess steps={PROCESS_STEPS} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">자주 묻는 질문</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">자주 묻는 질문</h2>
+          </div>
+          <div className="mt-10">
             <FaqList faqs={visa.faqs} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-4xl">관련 비자·제도</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-8">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-subhead text-balance text-ink">관련 비자·제도</h2>
+          </div>
+          <div className="mt-8">
             <RelatedVisas slugs={visa.related} />
-          </Reveal>
-          <Reveal delay={0.12} className="mt-10 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">정우인재개발원의 역할</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">
+          </div>
+          <div className="mt-10 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">정우인재개발원의 역할</h3>
+            <p className="mt-3 text-description text-muted">
               네팔 현지 직업훈련·일본어 교육부터 시험 준비, 일본 수용기관과의 매칭, COE·사증과 송출
               절차까지 특정기능 채용의 전 과정을 현지 파트너와 함께 지원합니다.{" "}
-              <Link href="/services" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/services" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 사업영역 보기
               </Link>
             </p>
-          </Reveal>
-          <Reveal delay={0.16} className="mt-8">
+          </div>
+          <div className="mt-8">
             <VisaDisclaimer />
-          </Reveal>
+          </div>
         </div>
       </section>
 

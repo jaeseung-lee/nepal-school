@@ -1,7 +1,15 @@
 import assert from "node:assert/strict";
 import { load } from "cheerio";
 import { LOCALES } from "../lib/i18n";
-import { SITE_URL } from "../lib/site";
+import { SITE, SITE_URL } from "../lib/site";
+import { BUSINESS_AREA_LOCALES, BUSINESS_AREA_SLUGS } from "../lib/business-areas";
+import { businessAreaLanguageAlternates, businessAreaPath } from "../lib/business-area-seo";
+
+const BUSINESS_AREA_ALTERNATES = new Map(
+  BUSINESS_AREA_SLUGS.flatMap((slug) =>
+    BUSINESS_AREA_LOCALES.map((locale) => [businessAreaPath(locale, slug), businessAreaLanguageAlternates(slug)] as const),
+  ),
+);
 
 async function main() {
 const baseUrl = process.env.SEO_BASE_URL;
@@ -41,17 +49,30 @@ for (const productionUrl of sitemapUrls) {
   const title = $("title").text().trim();
   const description = $('meta[name="description"]').attr("content")?.trim() ?? "";
   assert.ok(title, `${pathname} needs title`);
+  assert.ok([SITE.brandName.ko, SITE.brandName.en].some((brand) => title.includes(brand)), `${pathname} title needs the company name: ${title}`);
   assert.ok(description, `${pathname} needs description`);
   assert.equal(seenTitles.has(title), false, `duplicate title: ${title} (${seenTitles.get(title)}, ${pathname})`);
   assert.equal(seenDescriptions.has(description), false, `duplicate description: ${description} (${seenDescriptions.get(description)}, ${pathname})`);
   seenTitles.set(title, pathname);
   seenDescriptions.set(description, pathname);
 
+  for (const selector of ["title", 'link[rel="canonical"]', 'link[rel="alternate"][hreflang="x-default"]']) {
+    assert.equal($(`head ${selector}`).length, 1, `${pathname} needs ${selector} in <head>`);
+  }
   const canonical = new URL($('link[rel="canonical"]').attr("href") ?? "", SITE_URL);
   const expectedCanonical = new URL(productionUrl);
   assert.equal(canonical.origin + canonical.pathname.replace(/\/$/, ""), expectedCanonical.origin + expectedCanonical.pathname.replace(/\/$/, ""), `${pathname} canonical mismatch`);
-  for (const locale of [...LOCALES, "x-default"]) {
-    assert.ok($(`link[rel="alternate"][hreflang="${locale}"]`).attr("href"), `${pathname} missing hreflang ${locale}`);
+  const declaredAlternates = Object.fromEntries(
+    $('link[rel="alternate"][hreflang]').map((_, link) => [[$(link).attr("hreflang"), $(link).attr("href")]]).get(),
+  );
+  const businessAreaAlternates = BUSINESS_AREA_ALTERNATES.get(pathname);
+  if (businessAreaAlternates) {
+    // 사업영역 상세는 한국어·일본어 원문만 있으므로 ko·ja·x-default 세 개만 정확히 선언해야 한다.
+    assert.deepEqual(declaredAlternates, businessAreaAlternates, `${pathname} hreflang must be ko·ja·x-default only`);
+  } else {
+    for (const locale of [...LOCALES, "x-default"]) {
+      assert.ok(declaredAlternates[locale], `${pathname} missing hreflang ${locale}`);
+    }
   }
   $("img").each((_, image) => assert.notEqual($(image).attr("alt"), undefined, `${pathname} has image without alt attribute`));
   $('script[type="application/ld+json"]').each((_, script) => JSON.parse($(script).text()));

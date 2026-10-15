@@ -15,8 +15,8 @@ export default function Collage({ locale }: { locale?: Locale }) {
   return (
     <div className="collage" aria-hidden="true">
       {CELLS.map((cell) => (
-        <div key={cell.cls} className={`${cell.cls} relative bg-gray-100`}>
-          <Image src={cell.img} alt={messages.home.collage[cell.key].label} fill sizes="(min-width: 1024px) 46vw, 100vw" className="object-cover" />
+        <div key={cell.cls} className={`${cell.cls} relative bg-image`}>
+          <Image src={cell.img} alt={messages.home.collage[cell.key].label} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
         </div>
       ))}
     </div>

@@ -521,7 +521,7 @@ const BUSINESS_AREA_REGISTRY = {
             caption: "레스토랑 서비스 실습 공간",
             width: 2200,
             height: 1650,
-            objectPosition: "50% 50%",
+            objectPosition: "100% 50%",
             kind: "field-record",
           },
           {
@@ -643,7 +643,7 @@ const BUSINESS_AREA_REGISTRY = {
             caption: "レストランサービス実習空間",
             width: 2200,
             height: 1650,
-            objectPosition: "50% 50%",
+            objectPosition: "100% 50%",
             kind: "field-record",
           },
           {

@@ -7,45 +7,64 @@ const METRIC_KEYS = [
   { key: "partners" },
 ] as const;
 
-export default function MetricsStrip({ locale }: { locale?: Locale }) {
-  const messages = getMessages(locale);
-  const metrics = messages.metrics;
+/**
+ * 검증 가능한 수치 3개. 홈에서는 다크 인트로 안에 들어가는 `dark`, 회사소개에서는 독립 섹션인 `light`.
+ */
+export default function MetricsStrip({ locale = "ko", tone = "light" }: { locale?: Locale; tone?: "light" | "dark" }) {
+  const metrics = getMessages(locale).metrics;
+  const dark = tone === "dark";
+  const subtle = dark ? "text-night-muted" : "text-muted";
+
+  const list = (
+    <dl className={`grid gap-y-10 sm:grid-cols-3 sm:divide-x ${dark ? "sm:divide-white/15" : "sm:divide-line"}`}>
+      {METRIC_KEYS.map((item) => {
+        const metric = metrics.items[item.key];
+        const href = "href" in item ? item.href : undefined;
+        return (
+          <div key={metric.label} className="flex flex-col sm:px-8 sm:first:pl-0 sm:last:pr-0">
+            <dt className={`text-meta ${subtle}`}>{metric.label}</dt>
+            <dd className="mt-3 text-[clamp(2.5rem,1.6rem+2.4vw,4rem)] font-[750] leading-none tracking-[-0.04em] tabular-nums">
+              {metric.value}
+              <span className={`ml-1 align-top text-lg font-semibold tracking-normal ${subtle}`}>{metric.unit}</span>
+            </dd>
+            <dd className={`mt-4 text-[13px] leading-relaxed ${subtle}`}>
+              {href ? (
+                <Link
+                  href={localizedHref(locale, href)}
+                  className={`underline underline-offset-4 transition ${dark ? "decoration-white/35 hover:text-white hover:decoration-white" : "decoration-ink/35 hover:text-ink hover:decoration-ink"}`}
+                >
+                  {metric.sub}
+                </Link>
+              ) : (
+                metric.sub
+              )}
+            </dd>
+          </div>
+        );
+      })}
+    </dl>
+  );
+
+  if (dark) {
+    return (
+      <section aria-label={metrics.ariaLabel} className="mx-auto mt-24 max-w-5xl border-t border-white/15 pt-12 text-left">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-12">
+          <h3 className="text-[15px] font-bold text-white">{metrics.title}</h3>
+          <p className="text-[13px] leading-relaxed text-night-muted">{metrics.description}</p>
+        </div>
+        <div className="mt-12">{list}</div>
+      </section>
+    );
+  }
 
   return (
-    <section aria-label={metrics.ariaLabel} className="border-b border-line bg-paper-soft">
-      <div className="max-w-content mx-auto grid gap-8 px-5 py-12 lg:grid-cols-[0.95fr_1.6fr] lg:px-8 lg:py-14">
+    <section aria-label={metrics.ariaLabel} className="border-t border-line bg-surface">
+      <div className="page-wrap grid gap-12 py-section lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <div>
-          <h2 className="font-display text-2xl font-semibold text-ink lg:text-3xl">
-            {metrics.title}
-          </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
-            {metrics.description}
-          </p>
+          <h2 className="text-subhead text-balance text-ink">{metrics.title}</h2>
+          <p className="mt-5 max-w-md text-description text-muted">{metrics.description}</p>
         </div>
-        <dl className="grid gap-4 sm:grid-cols-3">
-          {METRIC_KEYS.map((item) => {
-            const metric = metrics.items[item.key];
-            const href = "href" in item ? item.href : undefined;
-            return (
-              <div key={metric.label} className="border-l border-line pl-5">
-                <dt className="text-sm font-semibold text-ink">{metric.label}</dt>
-                <dd className="mt-3 font-display text-5xl font-semibold text-cobalt">
-                  {metric.value}
-                  <span className="ml-1 align-top text-xl text-clay">{metric.unit}</span>
-                </dd>
-                <dd className="mt-2 text-sm leading-relaxed text-muted">
-                  {href ? (
-                    <Link href={localizedHref(locale ?? "ko", href)} className="underline underline-offset-2 transition hover:text-cobalt">
-                      {metric.sub}
-                    </Link>
-                  ) : (
-                    metric.sub
-                  )}
-                </dd>
-              </div>
-            );
-          })}
-        </dl>
+        {list}
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { GALLERY_ITEMS, GALLERY_LOCALES, getGalleryItems } from "../lib/gallery";
+import { GALLERY_ITEMS, GALLERY_LOCALES, getGalleryItems, hasGalleryItem } from "../lib/gallery";
+import { listKeyVisualIds } from "../lib/key-visuals";
 import { validateGalleryAssets } from "../scripts/validate-gallery-assets";
 
 test("gallery originals, manifest, and WebP derivatives remain one-to-one", async () => {
@@ -23,5 +24,14 @@ test("gallery exposes nonempty localized UI copy for every supported locale", ()
       assert.ok(item.alt.trim());
       assert.equal(item.copy[locale].alt, item.alt);
     }
+  }
+});
+
+test("key visuals use only photos from the public gallery inventory", () => {
+  const ids = listKeyVisualIds();
+
+  assert.ok(ids.length > 0);
+  for (const id of ids) {
+    assert.ok(hasGalleryItem(id), `unknown gallery photo in key visuals: ${id}`);
   }
 });

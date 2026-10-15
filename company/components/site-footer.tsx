@@ -28,71 +28,75 @@ export default function SiteFooter() {
   if (isInternalPath(pathname)) return null;
 
   return (
-    <footer className="border-t border-line bg-paper-soft text-muted">
-      <div className="max-w-content mx-auto px-5 py-14 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_0.7fr_1fr_0.9fr]">
-          <div>
-            <BrandLogo
-              kind="lockup"
-              className="h-11 w-auto max-w-[174px]"
-              screenReaderLabel={`${messages.site.name} — ${messages.site.alternateName}`}
-            />
-            <p className="mt-5 max-w-md text-sm leading-relaxed">{messages.footer.description}</p>
-          </div>
+    <footer className="surface-dark bg-night-deep text-white">
+      <div className="page-wrap grid gap-12 pb-7 pt-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16 lg:pt-20">
+        <div>
+          <BrandLogo
+            kind="lockup"
+            tone="white"
+            className="h-10 w-auto max-w-[170px]"
+            screenReaderLabel={`${messages.site.name} — ${messages.site.alternateName}`}
+          />
+          <p className="mt-6 max-w-sm text-[13px] leading-relaxed text-night-muted">{messages.footer.description}</p>
+        </div>
 
-          <div>
-            <h3 className="text-sm font-semibold text-ink">{messages.common.menu}</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
+        <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
+          <nav aria-label={messages.common.menu}>
+            <h2 className="text-meta text-night-muted">{messages.common.menu}</h2>
+            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2.5 text-[13px] sm:grid-cols-1">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <Link href={resolveHref(item.href)} className="transition hover:text-cobalt">
+                  <Link href={resolveHref(item.href)} className="text-white/85 underline-offset-4 transition hover:text-white hover:underline">
                     {messages.nav[item.key]}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">{messages.common.companyInfo}</h3>
-            <dl className="mt-4 space-y-2.5 text-sm">
-              <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">{messages.common.representative}</dt>
-                <dd className="text-ink">{messages.site.founder}</dd>
+            <h2 className="text-meta text-night-muted">{messages.common.companyInfo}</h2>
+            <dl className="mt-4 space-y-3 text-[13px]">
+              <div>
+                <dt className="text-night-muted">{messages.common.representative}</dt>
+                <dd className="mt-0.5 text-white/85">{messages.site.founder}</dd>
               </div>
-              <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">{messages.common.businessNumber}</dt>
-                <dd className="text-ink">{messages.site.businessRegistrationNumber}</dd>
+              <div>
+                <dt className="text-night-muted">{messages.common.businessNumber}</dt>
+                <dd className="mt-0.5 tabular-nums text-white/85">{messages.site.businessRegistrationNumber}</dd>
               </div>
-              <div className="grid grid-cols-[76px_1fr] gap-2">
-                <dt className="text-gray-500">{messages.common.address}</dt>
-                <dd className="text-ink">{messages.site.streetAddress}</dd>
+              <div>
+                <dt className="text-night-muted">{messages.common.address}</dt>
+                <dd className="mt-0.5 max-w-[16rem] text-white/85">{messages.site.streetAddress}</dd>
               </div>
             </dl>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">{messages.common.contact}</h3>
+            <h2 className="text-meta text-night-muted">{messages.common.contact}</h2>
             {contacts.length ? (
-              <dl className="mt-4 space-y-2.5 text-sm">
+              <dl className="mt-4 space-y-3 text-[13px]">
                 {contacts.map((item) => (
-                  <div key={item.label} className="grid grid-cols-[96px_1fr] gap-2">
-                    <dt className="text-gray-500">{item.label}</dt>
-                    <dd className="text-ink">
-                      {item.href ? <a href={item.href} className="hover:text-cobalt">{item.value}</a> : item.value}
+                  <div key={item.label}>
+                    <dt className="text-night-muted">{item.label}</dt>
+                    <dd className="mt-0.5 tabular-nums text-white/85">
+                      {item.href ? <a href={item.href} className="underline-offset-4 transition hover:text-white hover:underline">{item.value}</a> : item.value}
                     </dd>
                   </div>
                 ))}
               </dl>
             ) : (
-              <p className="mt-4 text-sm leading-relaxed">{messages.footer.contactNotice}</p>
+              <p className="mt-4 text-[13px] leading-relaxed text-night-muted">{messages.footer.contactNotice}</p>
             )}
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
-          <p>© 2026 {SITE.legalName.ko}. {messages.common.allRightsReserved}</p>
-          <div className="flex flex-wrap gap-4"><Link href={localizedHref(locale, "/privacy")} className="hover:text-cobalt">{PRIVACY_COPY[locale].title}</Link><span>{messages.footer.countries}</span></div>
+        <div className="flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-night-muted sm:flex-row sm:items-center sm:justify-between lg:col-span-2">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <p>© 2026 {SITE.legalName.ko}. {messages.common.allRightsReserved}</p>
+            <Link href={localizedHref(locale, "/privacy")} className="underline-offset-4 transition hover:text-white hover:underline">{PRIVACY_COPY[locale].title}</Link>
+          </div>
+          <p>{messages.footer.countries}</p>
         </div>
       </div>
     </footer>

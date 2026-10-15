@@ -1,11 +1,13 @@
-import Image from "next/image";
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
+import PageBanner from "@/components/page-banner";
 import GalleryExplorer, {
   type GalleryDisplayItem,
   type GalleryLabels,
 } from "@/components/gallery/gallery-explorer";
 import { GALLERY_ITEMS, getGalleryItems, type GalleryItem } from "@/lib/gallery";
 import { DEFAULT_LOCALE, getMessages, type Locale } from "@/lib/i18n";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 
 type GallerySourceItem = GalleryItem & {
   alt?: string;
@@ -43,7 +45,6 @@ export function GalleryContent({ locale = DEFAULT_LOCALE }: { locale?: Locale })
     ? localizedSourceItems
     : GALLERY_ITEMS;
   const items = sourceItems.map((item) => localizeItem(item, locale));
-  const heroItem = items.find((item) => item.src === "/gallery/healthcare-training-simulation-ward.webp") ?? items[0];
   const labels: GalleryLabels = {
     allCategories: copy.allCategories,
     categories: copy.categories,
@@ -60,36 +61,16 @@ export function GalleryContent({ locale = DEFAULT_LOCALE }: { locale?: Locale })
     <main>
       <BreadcrumbSchema name={copy.title} path="/gallery" locale={locale} />
 
-      <section className="border-b border-line bg-paper-soft">
-        <div className="max-w-content mx-auto grid gap-8 px-5 py-14 lg:grid-cols-[0.88fr_1.12fr] lg:gap-12 lg:px-8 lg:py-20">
-          <div className="flex flex-col justify-end">
-            <p className="text-sm font-semibold text-cobalt">{copy.eyebrow}</p>
-            <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.06] text-ink text-balance lg:text-6xl">
-              {copy.title}
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted lg:text-lg">
-              {copy.description}
-            </p>
-            <p className="mt-8 border-l-2 border-cobalt pl-3 text-xs font-semibold uppercase tracking-[0.15em] text-cobalt">
-              {formatImageCount(copy.imageCount, items.length)}
-            </p>
-          </div>
-
-          <div className="relative min-h-[260px] overflow-hidden bg-gray-200 sm:min-h-[340px] lg:min-h-[400px]">
-            {heroItem ? (
-              <Image
-                src={heroItem.src}
-                alt={heroItem.alt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                className="object-cover"
-              />
-            ) : null}
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,29,65,0.32),transparent_58%)]" aria-hidden="true" />
-          </div>
-        </div>
-      </section>
+      <PageBanner
+        locale={locale}
+        label={SECTION_LABELS.pages.gallery}
+        eyebrow={copy.eyebrow}
+        context={formatImageCount(copy.imageCount, items.length)}
+        title={copy.title}
+        desc={copy.description}
+        crumb={copy.title}
+        photo={KEY_VISUALS.pages.gallery}
+      />
 
       <GalleryExplorer items={items} labels={labels} />
     </main>

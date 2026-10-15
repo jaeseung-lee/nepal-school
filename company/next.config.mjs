@@ -3,6 +3,11 @@ import { fileURLToPath } from "node:url";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
+  // Next 15 streams metadata on dynamic routes (home, blog), which puts title,
+  // canonical and hreflang at the end of <body> for most user agents. Render it
+  // in <head> for every request so crawlers that read raw HTML see it.
+  htmlLimitedBots: /.*/,
   // The repository root has a small package only for Husky. Keep Next's file
   // tracing rooted at this application so the two lockfiles are unambiguous.
   outputFileTracingRoot: fileURLToPath(new URL("./", import.meta.url)),

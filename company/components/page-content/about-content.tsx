@@ -1,18 +1,21 @@
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
 import Collage from "@/components/collage";
 import MetricsStrip from "@/components/metrics-strip";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
-
-const chip =
-  "inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink transition hover:border-cobalt hover:text-cobalt";
 
 export function AboutContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
   const copy = getMessages(locale).pages.about;
+  const links = [
+    { href: "/services", label: copy.main.servicesCta },
+    { href: "/partners", label: copy.main.partnersCta },
+    { href: "/why", label: copy.main.whyCta },
+  ];
 
   return (
     <main>
@@ -24,37 +27,36 @@ export function AboutContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
         title={copy.banner.title}
         desc={copy.banner.description}
         crumb={copy.banner.crumb}
-        imageAlt={copy.banner.alt}
-        bgImage="/kv/banner-about.webp"
+        photo={KEY_VISUALS.pages.about}
+        label={SECTION_LABELS.pages.about}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto grid gap-12 px-5 py-20 lg:grid-cols-[1fr_1.05fr] lg:px-8 lg:py-28">
-          <Reveal className="flex flex-col justify-center">
-            <h2 className="font-display text-3xl font-semibold text-ink text-balance lg:text-5xl">
+      <section aria-labelledby="about-title" className="bg-paper py-section">
+        <div className="page-wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="flex flex-col justify-center lg:col-span-5">
+            <p className="text-meta tabular-nums text-muted" aria-hidden="true">01</p>
+            <h2 id="about-title" className="mt-4 text-headline text-balance text-ink">
               {copy.main.title}
             </h2>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              {copy.main.paragraphs.first}
-            </p>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-              {copy.main.paragraphs.second}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={localizedHref(locale, "/services")} className={chip}>
-                {copy.main.servicesCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-              </Link>
-              <Link href={localizedHref(locale, "/partners")} className={chip}>
-                {copy.main.partnersCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-              </Link>
-              <Link href={localizedHref(locale, "/why")} className={chip}>
-                {copy.main.whyCta} <ArrowRight size={16} weight="bold" aria-hidden="true" />
-              </Link>
-            </div>
-          </Reveal>
-          <Reveal delay={0.08}>
+            <p className="mt-8 max-w-xl text-description text-muted">{copy.main.paragraphs.first}</p>
+            <p className="mt-4 max-w-xl text-description text-muted">{copy.main.paragraphs.second}</p>
+            <ul className="mt-10 border-t border-line">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={localizedHref(locale, link.href)}
+                    className="group flex min-h-14 items-center justify-between gap-4 border-b border-line py-4 text-[15px] font-semibold text-ink"
+                  >
+                    <span className="underline-offset-4 group-hover:underline">{link.label}</span>
+                    <ArrowUpRight size={16} weight="bold" aria-hidden="true" className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="lg:col-span-6 lg:col-start-7">
             <Collage locale={locale} />
-          </Reveal>
+          </div>
         </div>
       </section>
 

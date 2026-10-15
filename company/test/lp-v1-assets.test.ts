@@ -33,7 +33,7 @@ const APPROVED_GALLERY_IDS = [
   "campus-partnership-meeting",
   "campus-visit-outdoor-group",
   "dakshinkali-municipality-partnership-visit",
-  "municipal-office-meeting",
+  "municipal-office-ceremonial-visit",
   "office-presentation-meeting",
   "stakeholder-meeting-presentation",
   "institutional-visit-group-wide",
@@ -41,8 +41,8 @@ const APPROVED_GALLERY_IDS = [
   "visiting-group-building-entrance",
 ] as const;
 const APPROVED_PDF_SHA256: Readonly<Partial<Record<LpV1Locale, string>>> = {
-  ko: "c0fa65d5cab62a8b8c724fdaeb6bbe4194e63ececcc12d3b06c278ca6988b8b0",
-  ja: "9992e92985ed74f845f13e75238f0e846fb244c6f9bbbed43bd87bccf98ea85d",
+  ko: "80108a0cab9a701380ea3595b1d22df141b7f3811e9b6a735776434cf89e70ea",
+  ja: "bbc3f50b0e064d53ea5c1d9546fb4f692f55a64adb240fcc24407a4e13718d2a",
 };
 const REJECTED_PDF_SHA256: Readonly<Partial<Record<LpV1Locale, string>>> = {
   ja: "266d53593fa2dc163e79450fa890273a7debd5c4c4a70af7b74457b0c6d254c5",

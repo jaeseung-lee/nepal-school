@@ -3,21 +3,18 @@ export interface VisaProcessStep {
   desc: string;
 }
 
-// 절차 타임라인 - 번호가 매겨진 세로 단계 목록
+// 절차 타임라인 - 번호가 매겨진 헤어라인 행 목록
 export default function VisaProcess({ steps }: { steps: VisaProcessStep[] }) {
   return (
-    <ol className="grid gap-4">
+    <ol className="border-t border-line">
       {steps.map((step, index) => (
-        <li
-          key={step.title}
-          className="flex gap-4 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5"
-        >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft font-display text-lg font-semibold text-cobalt">
-            {index + 1}
+        <li key={step.title} className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-3 border-b border-line py-6">
+          <span className="pt-1 text-meta tabular-nums text-muted" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
           </span>
           <div>
-            <h3 className="font-display text-lg font-semibold text-ink">{step.title}</h3>
-            <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{step.desc}</p>
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">{step.title}</h3>
+            <p className="mt-2 text-description text-muted">{step.desc}</p>
           </div>
         </li>
       ))}

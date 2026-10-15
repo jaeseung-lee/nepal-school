@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowRight, CaretDown, Globe, List, X } from "@phosphor-icons/react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type FocusEvent } from "react";
 import { BrandLogo } from "@/components/brand-logo";
-import { getNavItems } from "@/lib/nav";
+import { getNavItems, getPrimaryNavItems } from "@/lib/nav";
 import {
   BLOG_LOCALES,
   getBlogIndexPath,
@@ -24,6 +24,8 @@ import { isInternalPath } from "@/lib/internal-routes";
 
 const BUSINESS_AREA_LANGUAGES = ["ko", "ja"] as const;
 const BUSINESS_AREA_PATH = /^\/(?:ja\/)?services\/(?:japan-caregiver|japan-hospitality|korea-study|korea-welding)\/?$/;
+/** 이만큼 내려가면 투명 헤더를 다크 글래스로 바꾼다. */
+const SCROLL_THRESHOLD = 24;
 
 export default function SiteHeader() {
   const pathname = usePathname() || "/";
@@ -31,7 +33,12 @@ export default function SiteHeader() {
   const messages = getMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const languageButtonRef = useRef<HTMLButtonElement>(null);
   const navItems = getNavItems(locale);
+  const primaryNavItems = getPrimaryNavItems(locale);
   const onBlog = isBlogPath(pathname);
   const onBilingualBusinessArea = BUSINESS_AREA_PATH.test(pathname);
   const languageOptions = onBlog
@@ -46,6 +53,10 @@ export default function SiteHeader() {
   };
   const localeHref = (language: (typeof LOCALES)[number]) =>
     onBlog && isBlogLocale(language) ? getBlogLocaleSwitchPath(language) : changeLocalePathname(pathname, language);
+  const closeAll = () => {
+    setMenuOpen(false);
+    setLanguageOpen(false);
+  };
 
   useEffect(() => {
     setMenuOpen(false);
@@ -53,18 +64,37 @@ export default function SiteHeader() {
   }, [pathname]);
 
   useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrolled);
+  }, []);
+
+  useEffect(() => {
     if (!menuOpen && !languageOpen) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
 
+      // 닫은 뒤에는 열었던 버튼으로 포커스를 돌려준다.
+      if (menuOpen) menuButtonRef.current?.focus();
+      else languageButtonRef.current?.focus();
+      setMenuOpen(false);
+      setLanguageOpen(false);
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (headerRef.current?.contains(event.target as Node)) return;
+
       setMenuOpen(false);
       setLanguageOpen(false);
     };
     document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
     };
   }, [languageOpen, menuOpen]);
 
@@ -81,156 +111,183 @@ export default function SiteHeader() {
 
   if (isInternalPath(pathname)) return null;
 
+  // 키보드 포커스가 헤더 밖으로 나가면 펼친 패널을 닫는다. (빈 곳 클릭처럼 대상이 없을 때는 유지)
+  const handleBlur = (event: FocusEvent<HTMLElement>) => {
+    const next = event.relatedTarget as Node | null;
+    if (next && !event.currentTarget.contains(next)) closeAll();
+  };
+
   return (
-    <header id="siteHeader" className="sticky top-0 z-50 border-b border-line/80 bg-paper-soft/92 backdrop-blur-xl">
-      <div className="max-w-content mx-auto px-5 lg:px-8">
-        <div className="flex h-[72px] items-center justify-between gap-3">
-          <Link href={localizedHref(locale, "/")} className="flex min-w-0 shrink items-center gap-2.5" aria-label={messages.header.homeAria}>
-            <BrandLogo kind="lockup" className="h-10 w-auto max-w-[158px] sm:max-w-[176px]" priority />
-          </Link>
-
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <div className="relative hidden sm:block">
-                <button
-                  id="languageToggle"
-                  type="button"
-                  onClick={() => setLanguageOpen((open) => !open)}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-full border border-line bg-white/65 px-3 text-xs font-semibold text-ink transition hover:border-cobalt hover:text-cobalt"
-                  aria-label={`${messages.header.languageSelector}: ${messages.header.languages[locale]}`}
-                  aria-expanded={languageOpen}
-                  aria-controls="languageMenu"
-                  aria-haspopup="menu"
-                >
-                  <Globe size={15} weight="bold" aria-hidden="true" />
-                  <span className="font-display">{locale.toUpperCase()}</span>
-                  <CaretDown size={12} weight="bold" aria-hidden="true" />
-                </button>
-
-                {languageOpen ? (
-                  <div id="languageMenu" role="menu" aria-label={messages.header.languageSelector} className="absolute right-0 top-[calc(100%+0.5rem)] z-10 w-40 rounded-2xl border border-line bg-paper-soft p-1.5 shadow-xl shadow-ink/10">
-                    {languageOptions.map((language) => (
-                      <Link
-                        key={language}
-                        href={localeHref(language)}
-                        data-seo-event="language_changed"
-                        data-content-id={language}
-                        data-locale={language}
-                        onClick={() => setLanguageOpen(false)}
-                        role="menuitem"
-                        aria-current={language === locale ? "true" : undefined}
-                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm transition ${language === locale ? "bg-cobalt text-white" : "text-ink hover:bg-cobalt-soft hover:text-cobalt"}`}
-                      >
-                        <span>{messages.header.languages[language]}</span>
-                        <span className={`text-[10px] font-display ${language === locale ? "text-white/80" : "text-muted"}`}>{language.toUpperCase()}</span>
-                      </Link>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-
-            {isBlogLocale(locale) ? (
-              <Link
-                href={getBlogIndexPath(locale)}
-                aria-current={onBlog ? "page" : undefined}
-                className={`hidden rounded-full px-3 py-2 text-sm font-semibold transition lg:inline-flex ${onBlog ? "bg-cobalt-soft text-cobalt" : "text-ink hover:bg-white hover:text-cobalt"}`}
-              >
-                {messages.nav.blog}
-              </Link>
-            ) : null}
-
+    <header
+      id="siteHeader"
+      ref={headerRef}
+      className="site-header surface-dark"
+      data-scrolled={scrolled ? "" : undefined}
+      data-menu-open={menuOpen ? "" : undefined}
+      onBlur={handleBlur}
+    >
+      <div className="page-wrap grid h-header grid-cols-[minmax(0,1fr)_auto] items-center gap-3 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] xl:gap-8">
+        <nav
+          aria-label={messages.header.primaryNav}
+          className={`${locale === "vi" ? "hidden min-[90rem]:flex" : "hidden xl:flex"} items-center gap-[clamp(1rem,2vw,2.5rem)]`}
+        >
+          {primaryNavItems.map((item) => (
             <Link
-              href={localizedHref(locale, "/gallery")}
-              aria-current={isActive("/gallery") ? "page" : undefined}
-              className={`hidden rounded-full px-3 py-2 text-sm font-semibold transition lg:inline-flex ${isActive("/gallery") ? "bg-cobalt-soft text-cobalt" : "text-ink hover:bg-white hover:text-cobalt"}`}
+              key={item.href}
+              href={resolveHref(item.href)}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className="inline-flex min-h-11 items-center whitespace-nowrap text-sm font-semibold underline-offset-[6px] hover:underline aria-[current=page]:underline"
             >
-              {messages.nav.gallery}
+              {messages.nav[item.key]}
             </Link>
+          ))}
+        </nav>
 
-            <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} className="hidden items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-cobalt-ink active:translate-y-px sm:inline-flex">
-              {messages.common.contact} <ArrowRight size={15} weight="bold" aria-hidden="true" />
-            </Link>
+        <Link
+          href={localizedHref(locale, "/")}
+          className="flex min-w-0 items-center xl:col-start-2 xl:justify-self-center"
+          aria-label={messages.header.homeAria}
+        >
+          <BrandLogo kind="lockup" tone="white" className="h-8 w-auto lg:h-10" priority />
+        </Link>
 
+        <div className="flex items-center gap-2 justify-self-end sm:gap-3 xl:col-start-3">
+          <div className="relative">
             <button
-              id="navToggle"
+              id="languageToggle"
+              ref={languageButtonRef}
               type="button"
               onClick={() => {
-                setMenuOpen((open) => !open);
-                setLanguageOpen(false);
+                setLanguageOpen((open) => !open);
+                setMenuOpen(false);
               }}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white/65 px-3 text-ink transition hover:border-cobalt hover:text-cobalt"
-              aria-label={menuOpen ? messages.header.closeMenu : messages.header.openMenu}
-              aria-expanded={menuOpen}
-              aria-controls="siteMenu"
+              className="round-btn text-[11px] font-bold tracking-[0.06em]"
+              aria-label={`${messages.header.languageSelector}: ${messages.header.languages[locale]}`}
+              aria-expanded={languageOpen}
+              aria-controls="languageMenu"
             >
-              {menuOpen ? <X size={20} aria-hidden="true" /> : <List size={20} aria-hidden="true" />}
-              <span className="hidden text-sm font-semibold lg:inline">{messages.common.menu}</span>
+              {locale.toUpperCase()}
             </button>
+
+            <ul
+              id="languageMenu"
+              hidden={!languageOpen}
+              aria-label={messages.header.languageSelector}
+              className="absolute right-0 top-[calc(100%+0.75rem)] z-10 w-52 border border-white/15 bg-night-soft py-2"
+            >
+              {languageOptions.map((language) => (
+                <li key={language}>
+                  <Link
+                    href={localeHref(language)}
+                    lang={language}
+                    hrefLang={language}
+                    data-seo-event="language_changed"
+                    data-content-id={language}
+                    data-locale={language}
+                    onClick={() => setLanguageOpen(false)}
+                    aria-current={language === locale ? "true" : undefined}
+                    className="flex min-h-11 items-center justify-between gap-4 px-4 text-sm text-white/80 transition hover:bg-white/10 hover:text-white aria-[current=true]:font-semibold aria-[current=true]:text-white"
+                  >
+                    <span>{messages.header.languages[language]}</span>
+                    <span className="text-[11px] tracking-[0.08em] text-white/50" aria-hidden="true">{language.toUpperCase()}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+
+          <Link
+            href={localizedHref(locale, "/contact")}
+            data-seo-event="cta_clicked"
+            data-content-id="hiring-preparation"
+            data-locale={locale}
+            className="pill pill-light hidden sm:inline-flex"
+          >
+            {messages.nav.contact} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+          </Link>
+
+          <button
+            id="navToggle"
+            ref={menuButtonRef}
+            type="button"
+            onClick={() => {
+              setMenuOpen((open) => !open);
+              setLanguageOpen(false);
+            }}
+            className="round-btn"
+            aria-label={menuOpen ? messages.header.closeMenu : messages.header.openMenu}
+            aria-expanded={menuOpen}
+            aria-controls="siteMenu"
+          >
+            <span aria-hidden="true" className="relative block h-3 w-4">
+              <span className={`absolute left-0 top-[3px] h-px w-4 bg-current transition-transform duration-200 ${menuOpen ? "translate-y-[2.5px] rotate-45" : ""}`} />
+              <span className={`absolute bottom-[3px] left-0 h-px w-4 bg-current transition-transform duration-200 ${menuOpen ? "-translate-y-[2.5px] -rotate-45" : ""}`} />
+            </span>
+          </button>
         </div>
       </div>
 
-      {menuOpen ? (
-        <div className="absolute inset-x-0 top-0 z-[60] flex h-[100dvh] justify-end">
-          <button
-            type="button"
-            onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 cursor-default bg-ink/30 backdrop-blur-[2px]"
-            aria-label={messages.header.closeMenu}
-          />
-          <aside id="siteMenu" role="dialog" aria-modal="true" aria-label={messages.header.primaryNav} className="relative flex h-[100dvh] w-full max-w-md flex-col overflow-y-auto bg-paper-soft shadow-2xl shadow-ink/25">
-            <div className="flex items-center justify-between border-b border-line px-6 py-5 sm:px-8">
-              <p className="text-sm font-semibold text-ink">{messages.common.menu}</p>
-              <button type="button" onClick={() => setMenuOpen(false)} className="rounded-full p-2 text-ink transition hover:bg-gray-100" aria-label={messages.header.closeMenu}>
-                <X size={24} aria-hidden="true" />
-              </button>
-            </div>
-
-            <nav className="px-6 py-4 sm:px-8" aria-label={messages.header.primaryNav}>
+      <div
+        id="siteMenu"
+        hidden={!menuOpen}
+        className="absolute inset-x-0 top-full max-h-[calc(100svh_-_var(--spacing-header))] overflow-y-auto overscroll-contain border-t border-white/15 bg-night-soft"
+      >
+        <div className="page-wrap grid gap-10 py-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 lg:py-12">
+          <nav aria-label={messages.common.menu}>
+            <ul className="grid lg:grid-cols-2 lg:gap-x-12">
               {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={resolveHref(item.href)}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className="flex min-h-14 items-center justify-between gap-4 border-b border-white/15 py-4 text-lg font-medium text-white/85 transition hover:text-white aria-[current=page]:font-bold aria-[current=page]:text-white"
+                  >
+                    {messages.nav[item.key]}
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <p className="text-meta text-night-muted">{messages.header.languageSelector}</p>
+            <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label={messages.header.languageSelector}>
+              {languageOptions.map((language) => (
                 <Link
-                  key={item.href}
-                  href={resolveHref(item.href)}
+                  key={language}
+                  href={localeHref(language)}
+                  lang={language}
+                  hrefLang={language}
+                  data-seo-event="language_changed"
+                  data-content-id={language}
+                  data-locale={language}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center justify-between border-b border-line/70 py-4 text-lg transition ${isActive(item.href) ? "font-bold text-cobalt" : "font-medium text-ink hover:text-cobalt"}`}
-                  aria-current={isActive(item.href) ? "page" : undefined}
+                  aria-current={language === locale ? "true" : undefined}
+                  className={`inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition ${language === locale ? "border-white bg-white text-ink" : "border-white/25 text-white/80 hover:border-white/60 hover:text-white"}`}
                 >
-                  {messages.nav[item.key]}
-                  <ArrowRight size={17} weight="bold" aria-hidden="true" />
+                  {messages.header.languages[language]}
                 </Link>
               ))}
-            </nav>
-
-            <div className="mt-auto border-t border-line px-6 py-6 sm:px-8">
-              <>
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{messages.header.languageSelector}</p>
-                  <div className="mt-3 grid grid-cols-2 gap-2" role="group" aria-label={messages.header.languageSelector}>
-                    {languageOptions.map((language) => (
-                      <Link
-                        key={language}
-                        href={localeHref(language)}
-                        data-seo-event="language_changed"
-                        data-content-id={language}
-                        data-locale={language}
-                        onClick={() => setMenuOpen(false)}
-                        aria-current={language === locale ? "true" : undefined}
-                        className={`rounded-xl border px-3 py-2.5 text-center text-sm font-semibold transition ${language === locale ? "border-cobalt bg-cobalt text-white" : "border-line bg-white text-muted hover:border-cobalt hover:text-cobalt"}`}
-                      >
-                        {messages.header.languages[language]}
-                      </Link>
-                    ))}
-                  </div>
-                  {!onBlog && !onBilingualBusinessArea ? (
-                    <p className="mt-3 text-xs leading-5 text-muted">{messages.header.mobileNotice}</p>
-                  ) : null}
-                </>
-
-              <Link href={localizedHref(locale, "/contact")} data-seo-event="cta_clicked" data-content-id="hiring-preparation" data-locale={locale} onClick={() => setMenuOpen(false)} className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-cobalt px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-cobalt-ink">
-                {messages.common.contact} <ArrowRight size={14} weight="bold" aria-hidden="true" />
-              </Link>
             </div>
-          </aside>
+            {!onBlog && !onBilingualBusinessArea ? (
+              <p className="mt-4 text-xs leading-5 text-night-muted">{messages.header.mobileNotice}</p>
+            ) : null}
+
+            <Link
+              href={localizedHref(locale, "/contact")}
+              data-seo-event="cta_clicked"
+              data-content-id="hiring-preparation"
+              data-locale={locale}
+              onClick={() => setMenuOpen(false)}
+              className="pill pill-light mt-8"
+            >
+              {messages.common.contact} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
-      ) : null}
+      </div>
     </header>
   );
 }

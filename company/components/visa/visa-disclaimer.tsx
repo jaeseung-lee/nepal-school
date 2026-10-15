@@ -7,8 +7,8 @@ export default function VisaDisclaimer({ locale = DEFAULT_LOCALE }: { locale?: L
   const messages = getVisaMessages(locale);
 
   return (
-    <div className="flex gap-3 rounded-[18px] border border-line bg-paper p-5 text-sm leading-relaxed text-muted">
-      <Info size={20} className="mt-0.5 shrink-0 text-cobalt" weight="duotone" aria-hidden="true" />
+    <div className="flex gap-3 border-t border-line pt-6 text-[13px] leading-relaxed text-muted">
+      <Info size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
       <p>{messages.ui.disclaimer}</p>
     </div>
   );

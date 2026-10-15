@@ -1,0 +1,548 @@
+{
+  "audited_at": "2026-10-14",
+  "targets": {
+    "live": "https://www.jeongwoohrd.com (리디자인 전, main 6be0bc8)",
+    "local": "리디자인 로컬 프로덕션 빌드 (브랜치 worktree-design+offmora-monochrome, 미커밋·미배포)"
+  },
+  "summary": {
+    "health_score": 72,
+    "health_score_live_estimate": 70,
+    "business_type": "B2B 인력 양성·한국·일본 취업 연계 서비스 (6개 언어, 2026-06 설립)",
+    "redesign_regressions": "색인·메타 신호 회귀 없음. 갤러리 캡션 누락 1건은 수정. 사진 배너 서브페이지 실험실 LCP +0.2~0.5초(양호 기준 안)",
+    "top_findings": [
+      "신뢰 페이지 분량 부족: /about 139어절, /why 166어절, /contact 126어절",
+      "외부 신뢰 신호 없음: 공식 계정·지도 등록 없음, Organization sameAs 비어 있음",
+      "제목 164개 중 104개가 표시 폭 60칸 초과, 설명 55개가 160자 초과",
+      "홈·블로그 66개 URL이 no-store 동적 렌더링이라 CDN 캐시를 못 씀",
+      "폰트 파일 2.06MB를 모든 페이지에서 미리 로드 (페이지당 전송량 약 2.5MB의 대부분)"
+    ],
+    "quick_wins": [
+      "리디자인 브랜치 배포로 메타데이터 <head> 고정·홈 제목·블로그 x-default 수정 반영",
+      "영문 짧은 회사명 꼬리표 결정",
+      "설명 50자 미만 5개 페이지 보강",
+      "Organization에 설립일·대표·주소 분리 반영",
+      "사업영역 상세 Breadcrumb 3단계·짧은 사업명"
+    ]
+  },
+  "fixed_in_branch": [
+    {
+      "title": "동적 페이지 66개의 메타데이터가 <body>에 렌더됨",
+      "severity": "High",
+      "scope": "live",
+      "fix": "next.config.mjs htmlLimitedBots: /.*/"
+    },
+    {
+      "title": "한국어 홈 <title>에 회사명 없음",
+      "severity": "Medium",
+      "scope": "live",
+      "fix": "app/(public-ko)/page.tsx title.absolute"
+    },
+    {
+      "title": "비한국어 블로그 글 45개 x-default가 HTML과 사이트맵에서 다름",
+      "severity": "Medium",
+      "scope": "live",
+      "fix": "lib/blog-metadata.ts x-default = 한국어 원문"
+    },
+    {
+      "title": "갤러리 캡션 누락",
+      "severity": "Medium",
+      "scope": "redesign regression",
+      "fix": "gallery-explorer.tsx 두 줄 캡션"
+    },
+    {
+      "title": "제목 단계 건너뛰기 12개 페이지(/gallery·/partners × 6개 언어)",
+      "severity": "Low",
+      "scope": "live",
+      "fix": "갤러리는 리디자인 구조로 해소, 협력기관 이름 h3/h4"
+    },
+    {
+      "title": "Organization alternateName 중복",
+      "severity": "Low",
+      "scope": "live",
+      "fix": "중복 제거"
+    },
+    {
+      "title": "JSON-LD의 < 미이스케이프",
+      "severity": "Low",
+      "scope": "live",
+      "fix": "serializeJsonLd"
+    },
+    {
+      "title": "x-powered-by 노출, robots.txt Host 줄, Google-Extended 주석",
+      "severity": "Low",
+      "scope": "live",
+      "fix": "poweredByHeader false, host 제거, 주석 정정"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 84,
+      "score_before_fixes": 79,
+      "what_works": [
+        "http→https, apex→www, 구 도메인이 경로·쿼리 유지하며 308 한 번에 이동",
+        "robots.txt가 내부 화면만 차단하고 사이트맵·AI 크롤러 허용",
+        "사이트맵 164개 URL 모두 200, hreflang 포함",
+        "canonical 1개·절대 https·자기 참조, noindex 없음",
+        "본문 서버 렌더링, 없는 주소는 진짜 404"
+      ],
+      "findings": [
+        {
+          "title": "홈·블로그 66개 URL no-store 동적 렌더링",
+          "severity": "Medium",
+          "description": "운영 / 응답 x-vercel-cache: MISS. 원인은 예약 발행용 lib/blog.ts noStore()와 블로그 상세 force-dynamic",
+          "recommendation": "ISR + 예약 글 공개 시 revalidatePath (예약 글 지연 허용 범위 결정 필요)"
+        },
+        {
+          "title": "Content-Security-Policy 없음",
+          "severity": "Medium",
+          "description": "운영 응답 헤더에 없음",
+          "recommendation": "Report-Only로 시작"
+        },
+        {
+          "title": "정적 페이지 104개 lastmod 고정(2026-07-19)",
+          "severity": "Low",
+          "description": "CONTENT_LAST_MODIFIED 상수",
+          "recommendation": "내용이 바뀐 페이지만 갱신"
+        },
+        {
+          "title": "HSTS includeSubDomains·preload 없음",
+          "severity": "Low",
+          "description": "max-age=63072000만 있음",
+          "recommendation": "서브도메인 HTTPS 확인 후"
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 55,
+      "provisional": true,
+      "what_works": [
+        "비자·사업영역 상세 558~690어절, 제목 18~26개",
+        "공식 출처 인용",
+        "확인되지 않은 실적·평점 없음",
+        "문의는 전화·메일 직접 연결"
+      ],
+      "findings": [
+        {
+          "title": "신뢰 페이지 분량 부족",
+          "severity": "High",
+          "description": "/about 139어절, /why 166어절, /contact 126어절 (리디자인 전과 같은 수준)",
+          "recommendation": "사실만으로 400~600어절"
+        },
+        {
+          "title": "사람 저자·검토자 없음",
+          "severity": "Medium",
+          "description": "구조화 데이터에 Person 없음",
+          "recommendation": "실제 검토 담당자 이름·검토일"
+        },
+        {
+          "title": "/partners 기관별 설명 부족",
+          "severity": "Medium",
+          "description": "제목 45개에 본문 253어절",
+          "recommendation": "역할·상태·날짜·기관 링크"
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 73,
+      "score_before_fixes": 70,
+      "what_works": [
+        "title·description 164개 모두 고유",
+        "H1 페이지당 1개, 제목 단계 건너뛰기 0",
+        "모든 title에 회사명(수정 후)",
+        "내부 링크 166개 정상"
+      ],
+      "findings": [
+        {
+          "title": "제목 과다 길이",
+          "severity": "Medium",
+          "description": "104/164개가 표시 폭 60칸 초과, 최장 /en/visa/tokutei-ginou 166자, 영문 꼬리표 48자",
+          "recommendation": "영문 짧은 꼬리표, 핵심어 먼저"
+        },
+        {
+          "title": "설명 과다 길이",
+          "severity": "Medium",
+          "description": "55개가 160자 초과 (/en 369자)",
+          "recommendation": "영문 150~155자, 한글 80자 안팎"
+        },
+        {
+          "title": "설명 과소 길이",
+          "severity": "Low",
+          "description": "/partners 38, /ja/gallery 32, /gallery 46, /ja/blog 48, /ja/partners 49자",
+          "recommendation": "한 문장 보강"
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 80,
+      "score_before_fixes": 78,
+      "what_works": [
+        "164개 페이지 파싱 오류 0",
+        "@id 참조 모두 해결",
+        "FAQ 문구 화면과 일치 9/9",
+        "지어낸 리뷰·평점 없음"
+      ],
+      "findings": [
+        {
+          "title": "WebSite name이 언어별로 한글/영문으로 바뀜",
+          "severity": "Medium",
+          "description": "/en·/vi·/lo 영문, 나머지 한글, 같은 @id",
+          "recommendation": "한글 고정 + 영문 alternateName"
+        },
+        {
+          "title": "사업영역 상세 Breadcrumb",
+          "severity": "Medium",
+          "description": "화면 경로 없음, 이름이 히어로 문구, /services 단계 누락",
+          "recommendation": "화면 경로 표시 + 3단계"
+        },
+        {
+          "title": "돌봄 상세에 Service 없음",
+          "severity": "Medium",
+          "description": "WebPage만 있음",
+          "recommendation": "Service + mainEntity"
+        },
+        {
+          "title": "Organization 정보 부족",
+          "severity": "Medium",
+          "description": "sameAs·foundingDate·founder 없음, 주소 한 줄",
+          "recommendation": "lib/site.ts의 설립일·대표 반영, 주소 분리"
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 82,
+      "method": "실험실 측정: 모바일 412x915 DPR2, 150ms RTT·1.6Mbps, CPU 4배 감속, 캐시 없음, 페이지당 3회 중앙값, 로컬 next start",
+      "lab_rows": [
+        {
+          "page": "/",
+          "lcp_ms": {
+            "before": 1188,
+            "after": 980
+          },
+          "fcp_ms": {
+            "before": 1184,
+            "after": 980
+          },
+          "cls": {
+            "before": 0.001,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 29,
+            "after": 30
+          },
+          "transfer_kb": {
+            "before": 2601,
+            "after": 2517
+          }
+        },
+        {
+          "page": "/about",
+          "lcp_ms": {
+            "before": 1032,
+            "after": 1508
+          },
+          "fcp_ms": {
+            "before": 1032,
+            "after": 904
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 3,
+            "after": 4
+          },
+          "transfer_kb": {
+            "before": 2500,
+            "after": 2511
+          }
+        },
+        {
+          "page": "/services",
+          "lcp_ms": {
+            "before": 1092,
+            "after": 1268
+          },
+          "fcp_ms": {
+            "before": 1088,
+            "after": 924
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 4,
+            "after": 9
+          },
+          "transfer_kb": {
+            "before": 2491,
+            "after": 2515
+          }
+        },
+        {
+          "page": "/visa/e-9",
+          "lcp_ms": {
+            "before": 1088,
+            "after": 1432
+          },
+          "fcp_ms": {
+            "before": 1084,
+            "after": 948
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 102,
+            "after": 106
+          },
+          "transfer_kb": {
+            "before": 2296,
+            "after": 2272
+          }
+        },
+        {
+          "page": "/gallery",
+          "lcp_ms": {
+            "before": 1248,
+            "after": 1236
+          },
+          "fcp_ms": {
+            "before": 1024,
+            "after": 988
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 4,
+            "after": 8
+          },
+          "transfer_kb": {
+            "before": 2784,
+            "after": 2781
+          }
+        },
+        {
+          "page": "/services/japan-caregiver",
+          "lcp_ms": {
+            "before": 1148,
+            "after": 1124
+          },
+          "fcp_ms": {
+            "before": 1084,
+            "after": 1048
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 17,
+            "after": 18
+          },
+          "transfer_kb": {
+            "before": 2343,
+            "after": 2281
+          }
+        },
+        {
+          "page": "/blog/e9-vs-e7-hiring-guide",
+          "lcp_ms": {
+            "before": 1084,
+            "after": 1020
+          },
+          "fcp_ms": {
+            "before": 1080,
+            "after": 1016
+          },
+          "cls": {
+            "before": 0,
+            "after": 0
+          },
+          "tbt_ms": {
+            "before": 21,
+            "after": 22
+          },
+          "transfer_kb": {
+            "before": 2291,
+            "after": 2287
+          }
+        },
+        {
+          "page": "/en",
+          "lcp_ms": {
+            "before": 1104,
+            "after": 880
+          },
+          "fcp_ms": {
+            "before": 1016,
+            "after": 880
+          },
+          "cls": {
+            "before": 0.036,
+            "after": 0.042
+          },
+          "tbt_ms": {
+            "before": 14,
+            "after": 24
+          },
+          "transfer_kb": {
+            "before": 2640,
+            "after": 2529
+          }
+        }
+      ],
+      "what_works": [
+        "전 페이지 LCP 2.5초·CLS 0.1 이하(실험실)",
+        "TBT 최대 106ms",
+        "홈·/en LCP 개선(1,188→980ms, 1,104→880ms)",
+        "첫 화면 이미지 preload"
+      ],
+      "findings": [
+        {
+          "title": "폰트 파일 2.06MB",
+          "severity": "Medium",
+          "description": "PretendardVariable.woff2를 모든 페이지에서 preload, 페이지당 전송량 약 2.5MB의 대부분 (리디자인 전부터)",
+          "recommendation": "Pretendard 글자 묶음별 분할 파일 로컬 호스팅 + unicode-range"
+        },
+        {
+          "title": "사진 배너 서브페이지 LCP 증가",
+          "severity": "Low",
+          "description": "/about +476ms, /visa/e-9 +344ms, /services +176ms (실사 사진 828px 18~24KB → 38~47KB, 폰트와 대역폭 경쟁)",
+          "recommendation": "폰트 경량화가 우선, 필요 시 배너 사진 품질 하향"
+        },
+        {
+          "title": "홈·블로그 HTML 캐시 안 됨",
+          "severity": "Medium",
+          "description": "no-store 동적 렌더링이라 운영 TTFB가 서버 렌더링에 좌우",
+          "recommendation": "ISR"
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 59,
+      "score_before_fixes": 57,
+      "provisional": true,
+      "what_works": [
+        "robots.txt가 주요 AI 크롤러 명시 허용",
+        "llms.txt·llms-full.txt 존재",
+        "서버 렌더링",
+        "AI 크롤러도 <head>에서 메타데이터를 읽음(수정 후)"
+      ],
+      "findings": [
+        {
+          "title": "외부 신뢰 신호 없음",
+          "severity": "High",
+          "description": "공식 계정·지도 등록·제3자 언급 없음",
+          "recommendation": "실제 계정 생성 후 sameAs"
+        },
+        {
+          "title": "llms.txt 오래됨",
+          "severity": "Medium",
+          "description": "36편 기재, 실제 54편, 주제 3개 누락",
+          "recommendation": "블로그 데이터로 생성하는 라우트 + 테스트"
+        },
+        {
+          "title": "사업영역 상세가 한·일어만",
+          "severity": "Medium",
+          "description": "영어 검색·AI 인용 불가",
+          "recommendation": "돌봄·숙박 영어판"
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 80,
+      "what_works": [
+        "1,357개 모두 alt 속성",
+        "WebP + srcset",
+        "첫 화면 이미지 preload",
+        "장식 이미지 alt=\"\" (협력기관 로고는 바로 아래 기관명 텍스트)"
+      ],
+      "findings": [
+        {
+          "title": "핵심 페이지 OG 이미지 공유",
+          "severity": "Low",
+          "description": "브랜드 OG 하나",
+          "recommendation": "실사 기반 페이지별 OG"
+        },
+        {
+          "title": "AVIF 미사용",
+          "severity": "Low",
+          "description": "next.config images.formats 없음",
+          "recommendation": "AVIF 추가"
+        },
+        {
+          "title": "홈 히어로 실사 alt=\"\"",
+          "severity": "Low",
+          "description": "리디자인 전에도 같음",
+          "recommendation": "갤러리 지역화 alt 사용"
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "1단계: 배포",
+        "timeframe": "이번 주",
+        "items": [
+          "리디자인 브랜치 병합·배포",
+          "배포 후 <head> 메타데이터·x-powered-by 확인",
+          "Search Console·서치어드바이저·Bing에 사이트맵 제출"
+        ]
+      },
+      {
+        "name": "2단계: 결정이 필요한 빠른 수정",
+        "timeframe": "1~2주",
+        "items": [
+          "영문 짧은 꼬리표",
+          "비자 제목·설명 정리",
+          "짧은 설명 5개 보강",
+          "WebSite 이름 통일",
+          "Organization 사실 반영",
+          "사업영역 Breadcrumb·돌봄 Service",
+          "llms.txt 자동 생성",
+          "ISR 전환 결정"
+        ]
+      },
+      {
+        "name": "3단계: 콘텐츠와 신뢰",
+        "timeframe": "1~2개월",
+        "items": [
+          "/about·/why·/contact 보강",
+          "실제 계정·지도 등록 후 sameAs",
+          "검토 담당자 표기",
+          "돌봄·숙박 영어판",
+          "/partners 보강",
+          "페이지별 OG 이미지"
+        ]
+      },
+      {
+        "name": "4단계: 운영과 모니터링",
+        "timeframe": "지속",
+        "items": [
+          "월 1회 Search Console·CrUX",
+          "lastmod 원칙",
+          "CSP·HSTS",
+          "새 글의 사이트맵·llms.txt 반영 확인"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "report": "FULL-AUDIT-REPORT.md",
+    "action_plan": "ACTION-PLAN.md"
+  }
+}

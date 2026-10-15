@@ -1,60 +1,59 @@
-import { ArrowRight, CalendarBlank } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import { getBlogPosts, type BlogPost } from "@/lib/blog";
+import SectionHead from "@/components/section-head";
+import { getBlogPosts } from "@/lib/blog";
 import { BLOG_COPY, formatBlogDate } from "@/lib/blog-copy";
-import { getBlogIndexPath, getBlogPostPath, isBlogLocale, type BlogLocale } from "@/lib/blog-routing";
+import { getBlogIndexPath, getBlogPostPath, isBlogLocale } from "@/lib/blog-routing";
 import type { Locale } from "@/lib/i18n";
 
-function InsightLink({ post, locale }: { post: BlogPost; locale: BlogLocale }) {
-  const copy = BLOG_COPY[locale];
-  return (
-    <article className="group grid grid-cols-[112px_1fr] gap-4 border-b border-line pb-5 last:border-b-0 last:pb-0 sm:grid-cols-[150px_1fr]">
-      <Link href={getBlogPostPath(locale, post.slug)} className="relative aspect-[8/5] overflow-hidden rounded-2xl bg-paper-soft" tabIndex={-1} aria-hidden="true">
-        <Image src={post.heroImage.src} alt="" fill sizes="150px" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
-      </Link>
-      <div className="min-w-0 py-0.5">
-        <p className="text-xs font-semibold text-cobalt">{post.category}</p>
-        <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-ink"><Link href={getBlogPostPath(locale, post.slug)} className="transition hover:text-cobalt">{post.title}</Link></h3>
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-muted"><CalendarBlank size={14} aria-hidden="true" /> {copy.updated} {formatBlogDate(locale, post.modifiedAt)}</p>
-      </div>
-    </article>
-  );
-}
-
+/** 홈의 최신 글 3개. 사진 없이 글자만 쓰는 에디토리얼 목록. */
 export default function LatestInsights({ locale }: { locale: Locale }) {
   const blogLocale = isBlogLocale(locale) ? locale : null;
   if (!blogLocale) return null;
   const posts = getBlogPosts(blogLocale).slice(0, 3);
   if (!posts.length) return null;
-  const [featured, ...rest] = posts;
   const copy = BLOG_COPY[blogLocale];
 
   return (
-    <section className="border-y border-line bg-paper-soft">
-      <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold tracking-[0.12em] text-cobalt">{copy.eyebrow}</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold text-ink lg:text-5xl">{copy.latestTitle}</h2>
-            <p className="mt-4 text-base leading-7 text-muted">{copy.latestDescription}</p>
-          </div>
-          <Link href={getBlogIndexPath(blogLocale)} className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-cobalt transition hover:text-cobalt-ink">{copy.latestCta} <ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
-        </div>
-
-        <div className={`mt-10 grid gap-8 ${rest.length ? "lg:grid-cols-[1.12fr_0.88fr]" : ""}`}>
-          <article className="group overflow-hidden rounded-[28px] border border-line bg-white shadow-sm shadow-ink/5">
-            <Link href={getBlogPostPath(blogLocale, featured.slug)} className="relative block aspect-[16/8.5] overflow-hidden bg-paper" tabIndex={-1} aria-hidden="true">
-              <Image src={featured.heroImage.src} alt="" fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" />
+    <section aria-labelledby="insights-title" className="border-t border-line bg-surface py-section">
+      <div className="page-wrap">
+        <SectionHead
+          label={copy.eyebrow}
+          labelLang={/^[A-Z ]+$/.test(copy.eyebrow) ? "en" : undefined}
+          title={copy.latestTitle}
+          titleId="insights-title"
+          description={copy.latestDescription}
+          action={
+            <Link href={getBlogIndexPath(blogLocale)} className="pill pill-outline">
+              {copy.latestCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
             </Link>
-            <div className="p-6 lg:p-8">
-              <p className="text-sm font-semibold text-cobalt">{featured.category}</p>
-              <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-ink lg:text-3xl"><Link href={getBlogPostPath(blogLocale, featured.slug)} className="transition hover:text-cobalt">{featured.title}</Link></h3>
-              <p className="mt-3 text-sm leading-7 text-muted">{featured.excerpt}</p>
-            </div>
-          </article>
-          {rest.length ? <div className="flex flex-col justify-center gap-5">{rest.map((post) => <InsightLink key={post.slug} post={post} locale={blogLocale} />)}</div> : null}
-        </div>
+          }
+        />
+
+        <ol className="grid border-t border-line md:grid-cols-3">
+          {posts.map((post) => (
+            <li
+              key={post.slug}
+              className="group relative border-b border-line py-8 md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0 md:[&:not(:first-child)]:border-l"
+            >
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-muted">
+                <span className="font-semibold text-ink">{post.category}</span>
+                <time dateTime={post.modifiedAt}>
+                  {copy.updated} {formatBlogDate(blogLocale, post.modifiedAt)}
+                </time>
+              </p>
+              <h3 className="mt-4 text-xl font-bold leading-snug tracking-[-0.03em] text-balance text-ink">
+                <Link
+                  href={getBlogPostPath(blogLocale, post.slug)}
+                  className="decoration-1 underline-offset-4 after:absolute after:inset-0 group-hover:underline focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-ink"
+                >
+                  {post.title}
+                </Link>
+              </h3>
+              <p className="mt-3 line-clamp-3 text-description text-muted">{post.excerpt}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

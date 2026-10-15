@@ -1,4 +1,4 @@
-import { ArrowRight, ClipboardText, EnvelopeSimple, Phone, WarningCircle } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight, EnvelopeSimple, Phone } from "@phosphor-icons/react/dist/ssr";
 import { getMessages, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
@@ -10,60 +10,52 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
   const emailHref = `mailto:${SITE.email}`;
 
   return (
-    <div className="rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-        <ClipboardText size={26} weight="duotone" aria-hidden="true" />
-      </div>
-      <h3 className="mt-6 font-display text-2xl font-semibold text-ink">{form.title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted">
-        {form.description}
-      </p>
+    <div className="bg-paper-soft p-7 sm:p-10 lg:p-12">
+      <p className="text-meta tabular-nums text-muted" aria-hidden="true">02</p>
+      <h3 className="mt-4 text-title text-ink">{form.title}</h3>
+      <p className="mt-3 text-description text-muted">{form.description}</p>
 
-      <div className="mt-7 rounded-[22px] border border-line bg-paper p-5">
-        <h4 className="text-sm font-semibold text-ink">{form.preparationTitle}</h4>
-        <ul className="mt-4 grid gap-3 text-sm text-muted">
-          {REQUEST_ITEM_KEYS.map((key) => (
-            <li key={key} className="flex items-start gap-3">
-              <ArrowRight size={16} className="mt-0.5 shrink-0 text-cobalt" aria-hidden="true" />
-              <span>{form.preparationItems[key]}</span>
+      <div className="mt-8 border-t border-line pt-6">
+        <h4 className="text-sm font-bold text-ink">{form.preparationTitle}</h4>
+        <ol className="mt-4 grid gap-3 text-sm leading-relaxed">
+          {REQUEST_ITEM_KEYS.map((key, index) => (
+            <li key={key} className="grid grid-cols-[2rem_minmax(0,1fr)] gap-2">
+              <span className="pt-px text-meta tabular-nums text-muted" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <span className="text-ink">{form.preparationItems[key]}</span>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
 
-      <div className="mt-6 flex items-start gap-3 rounded-[18px] border border-cobalt/20 bg-cobalt-soft p-4 text-sm text-cobalt-ink">
-        <WarningCircle size={20} className="mt-0.5 shrink-0" aria-hidden="true" />
-        <div>
-          <p>{form.notice}</p>
-          <p className="mt-2">{form.reassurance}</p>
-        </div>
+      <div className="mt-8 border-l-2 border-ink pl-5 text-sm leading-relaxed text-ink">
+        <p>{form.notice}</p>
+        <p className="mt-2 text-muted">{form.reassurance}</p>
       </div>
 
-      <div className="mt-7 grid gap-3 sm:grid-cols-2">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {SITE.phones.map((phone) => (
           <a
             key={phone.countryCode}
             href={phone.href}
-            className="inline-flex items-center gap-3 rounded-[18px] border border-cobalt/20 bg-white px-4 py-3 text-cobalt transition hover:border-cobalt/45 hover:bg-cobalt-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
+            className="flex min-h-16 items-center justify-between gap-3 border border-line bg-surface px-4 py-3 text-ink transition hover:border-ink"
           >
-            <Phone size={20} weight="duotone" aria-hidden="true" />
             <span>
               <span className="block text-xs font-medium text-muted">{messages.common.mobile}</span>
-              <span className="mt-0.5 block text-sm font-semibold">{phone.national}</span>
+              <span className="mt-0.5 block text-sm font-semibold tabular-nums">{phone.national}</span>
             </span>
+            <Phone size={18} aria-hidden="true" />
           </a>
         ))}
       </div>
 
-      <a
-        href={emailHref}
-        className="mt-4 inline-flex items-center gap-2 rounded-full bg-cobalt px-5 py-3 text-sm font-semibold text-white transition hover:bg-cobalt-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt focus-visible:ring-offset-2"
-      >
-        <EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />
-        {form.status}
-        <ArrowRight size={16} aria-hidden="true" />
+      <a href={emailHref} className="pill pill-lg pill-dark mt-6 w-full sm:w-auto sm:min-w-72">
+        <span className="inline-flex items-center gap-2">
+          <EnvelopeSimple size={18} aria-hidden="true" />
+          {form.status}
+        </span>
+        <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
       </a>
-      <a href={emailHref} className="mt-4 block text-sm font-semibold text-cobalt underline decoration-cobalt/30 underline-offset-4 hover:decoration-cobalt">
+      <a href={emailHref} className="mt-4 block text-sm font-semibold text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
         {SITE.email}
       </a>
     </div>

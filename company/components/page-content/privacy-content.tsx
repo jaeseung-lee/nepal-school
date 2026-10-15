@@ -1,31 +1,42 @@
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
-import { localizedHref, type Locale } from "@/lib/i18n";
+import PageBanner from "@/components/page-banner";
+import { type Locale } from "@/lib/i18n";
 import { PRIVACY_COPY } from "@/lib/privacy-copy";
+import { SECTION_LABELS } from "@/lib/section-labels";
 
 export default function PrivacyContent({ locale = "ko" }: { locale?: Locale }) {
   const copy = PRIVACY_COPY[locale];
+  const sections = [
+    [copy.analyticsTitle, copy.analyticsBody],
+    [copy.storageTitle, copy.storageBody],
+    [copy.rightsTitle, copy.rightsBody],
+  ];
+
   return (
     <main>
       <BreadcrumbSchema locale={locale} name={copy.title} path="/privacy" />
-      <section className="border-b border-line bg-paper-soft">
-        <div className="max-w-[920px] mx-auto px-5 py-16 lg:px-8 lg:py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cobalt">PRIVACY</p>
-          <h1 className="mt-4 font-display text-4xl font-semibold tracking-[-0.035em] text-ink sm:text-5xl">{copy.title}</h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-muted">{copy.description}</p>
-          <p className="mt-5 text-sm text-gray-500">{copy.updated}</p>
+      <PageBanner
+        locale={locale}
+        label={SECTION_LABELS.pages.privacy}
+        title={copy.title}
+        eyebrow={copy.updated}
+        context=""
+        desc={copy.description}
+        crumb={copy.title}
+      />
+
+      <div className="bg-paper py-section">
+        <div className="page-wrap border-t border-line">
+          {sections.map(([title, body], index) => (
+            <section key={title} className="grid gap-4 border-b border-line py-10 lg:grid-cols-12 lg:gap-8 lg:py-14">
+              <div className="lg:col-span-4">
+                <p className="text-meta tabular-nums text-muted" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+                <h2 className="mt-3 text-title text-balance text-ink">{title}</h2>
+              </div>
+              <p className="max-w-[44rem] text-[1.0625rem] leading-[1.9] text-gray-700 lg:col-span-7 lg:col-start-6">{body}</p>
+            </section>
+          ))}
         </div>
-      </section>
-      <div className="max-w-[920px] mx-auto grid gap-6 px-5 py-14 lg:px-8 lg:py-20">
-        {[
-          [copy.analyticsTitle, copy.analyticsBody],
-          [copy.storageTitle, copy.storageBody],
-          [copy.rightsTitle, copy.rightsBody],
-        ].map(([title, body]) => (
-          <section key={title} className="rounded-[24px] border border-line bg-white p-6 lg:p-8">
-            <h2 className="font-display text-2xl font-semibold text-ink">{title}</h2>
-            <p className="mt-4 text-base leading-8 text-muted">{body}</p>
-          </section>
-        ))}
       </div>
     </main>
   );

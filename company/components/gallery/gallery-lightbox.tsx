@@ -191,7 +191,7 @@ export default function GalleryLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-[80] bg-primary-deepest/95 p-3 text-white backdrop-blur-sm sm:p-6"
+      className="surface-dark fixed inset-0 z-[80] bg-night-deep/97 p-3 text-white sm:p-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) closeLightbox();
       }}
@@ -208,14 +208,14 @@ export default function GalleryLightbox({
       >
         <span id={dialogLabelId} className="sr-only">{labels.dialogLabel}</span>
         <div className="flex shrink-0 items-center justify-between gap-4 pb-3 sm:pb-4">
-          <p id={dialogMetaId} className="text-xs font-semibold uppercase tracking-[0.16em] text-white/72">
+          <p id={dialogMetaId} className="text-meta tabular-nums text-white/70">
             {meta}
           </p>
           <button
             ref={closeButtonRef}
             type="button"
             onClick={closeLightbox}
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/35 bg-white/8 px-4 text-sm font-semibold text-white transition hover:bg-white/16 motion-reduce:transition-none"
+            className="pill pill-outline-light"
           >
             <X size={18} weight="bold" aria-hidden="true" />
             {labels.close}
@@ -241,22 +241,22 @@ export default function GalleryLightbox({
             onClick={() => moveLightbox(-1)}
             disabled={activeIndex <= 0}
             aria-label={labels.previous}
-            className="absolute left-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/35 bg-primary-deepest/55 text-white transition hover:bg-white/16 disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:left-3 sm:h-14 sm:w-14"
+            className="absolute left-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-night-deep/60 text-white transition hover:bg-white hover:text-ink disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:left-3 sm:h-14 sm:w-14"
           >
-            <ArrowLeft size={23} weight="bold" aria-hidden="true" />
+            <ArrowLeft size={22} aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={() => moveLightbox(1)}
             disabled={activeIndex >= items.length - 1}
             aria-label={labels.next}
-            className="absolute right-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/35 bg-primary-deepest/55 text-white transition hover:bg-white/16 disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:right-3 sm:h-14 sm:w-14"
+            className="absolute right-0 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-night-deep/60 text-white transition hover:bg-white hover:text-ink disabled:pointer-events-none disabled:opacity-35 motion-reduce:transition-none sm:right-3 sm:h-14 sm:w-14"
           >
-            <ArrowRight size={23} weight="bold" aria-hidden="true" />
+            <ArrowRight size={22} aria-hidden="true" />
           </button>
         </div>
 
-        <div className="shrink-0 pt-4 sm:pt-5">
+        <div className="shrink-0 border-t border-white/15 pt-4 sm:pt-5">
           <h2 id={dialogTitleId} className="max-w-4xl text-base font-medium leading-relaxed text-white sm:text-lg">
             {activeItem.caption}
           </h2>

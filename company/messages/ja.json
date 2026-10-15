@@ -5,8 +5,8 @@
     "legalName": "정우인재개발원",
     "legalNameEnglish": "Jeongwoo Human Resource Development Institute",
     "alternateName": "Jeongwoo Human Resource Development Institute",
-    "slogan": "ネパールで育成した人材と、韓国・日本の採用企業をつなぐ",
-    "seoTitle": "ネパール人材育成・韓国・日本への就職連携",
+    "slogan": "ネパール・ベトナム・ミャンマー・ラオス・スリランカの人材と、韓国・日本の採用企業をつなぐ",
+    "seoTitle": "ネパール・ベトナムなどアジア5か国の人材と韓国・日本への就職連携",
     "description": "ネパールでは人材を直接育成・紹介し、ベトナム・ミャンマー・ラオス・スリランカでは現地パートナーを通じて候補者を紹介します。韓国・日本は就業先・採用市場です。",
     "founder": "오제환",
     "foundingDate": "2026年6月10日",
@@ -52,6 +52,7 @@
   },
   "header": {
     "homeAria": "정우인재개발원ホーム",
+    "skipToContent": "本文へスキップ",
     "primaryNav": "メインメニュー",
     "languageSelector": "言語を選択",
     "openMenu": "メニューを開く",
@@ -120,7 +121,7 @@
     },
     "services": {
       "title": "介護・宿泊・留学・溶接で、必要な準備は異なります",
-      "description": "ネパールでの選抜・教育から、日本での就労、韓国での留学・採用まで、分野ごとの手順を示します。"
+      "description": "現地での選抜・教育から、日本での就労、韓国での留学・採用まで、分野ごとの手順を示します。"
     },
     "partners": {
       "title": "全国の主な活動と協力ネットワーク",
@@ -134,7 +135,7 @@
       "items": {
         "company": {
           "q": "Jeongwoo Human Resource Development Instituteはどのような会社ですか？",
-          "a": "Jeongwoo Human Resource Development Instituteは、ネパールで人材を育成し、適法な手続で韓国・日本企業へ紹介する会社です。"
+          "a": "Jeongwoo Human Resource Development Instituteは、ネパール・ベトナム・ミャンマー・ラオス・スリランカの人材を、適法な手続で韓国・日本企業へ紹介する会社です。ネパールでは現地の職業訓練で人材を直接育成しています。"
         },
         "visa": {
           "q": "どの就労ビザと制度を支援していますか？",
@@ -148,10 +149,6 @@
         "countries": {
           "q": "どの国の人材をつなぎますか？",
           "a": "ネパールでは人材を直接育成・紹介し、ベトナム・ミャンマー・ラオス・スリランカでは現地パートナーを通じて候補者を紹介します。韓国・日本は就業先・採用市場です。"
-        },
-        "trust": {
-          "q": "新設企業でも信頼できますか？",
-          "a": "確認できる数値だけを公開し、裏付けのない就職者数や順位は記載しません。ネパールの6機関とのMOUに基づく協力体制で運営しています。"
         }
       }
     },
@@ -272,7 +269,7 @@
     }
   },
   "cta": {
-    "title": "採用条件をお聞かせください",
+    "title": "採用条件のご連絡をお待ちしています",
     "description": "職種、人数、希望時期、検討中のビザを伺い、必要な準備と手順をお伝えします。",
     "contactCta": "採用準備案内",
     "processCta": "手順を見る",
@@ -282,20 +279,20 @@
     "about": {
       "metadata": {
         "title": "会社紹介",
-        "description": "ネパールで育成した人材を、適法な手続で韓国・日本企業へ紹介するJeongwoo Human Resource Development Instituteの会社概要。"
+        "description": "ネパール・ベトナム・ミャンマー・ラオス・スリランカの人材を、適法な手続で韓国・日本企業へ紹介するJeongwoo Human Resource Development Instituteの会社概要。"
       },
       "banner": {
         "eyebrow": "会社概要",
         "context": "現地教育から定着支援まで",
         "title": "会社紹介",
-        "description": "ネパールで人材を育成し、適法な手続で韓国・日本企業へ紹介する会社です。",
+        "description": "ネパール・ベトナム・ミャンマー・ラオス・スリランカの人材を、適法な手続で韓国・日本企業へ紹介する会社です。",
         "crumb": "会社紹介",
         "alt": "会社紹介を説明する現場写真"
       },
       "main": {
         "title": "現地で準備を重ねた人材を、企業の要件につなぎます",
         "paragraphs": {
-          "first": "Jeongwoo Human Resource Development Instituteは、ネパールでの職業訓練から取り組みます。職種、言語、文化を学んだ人材を、韓国・日本企業の要件に合わせ、適法な手続で紹介します。",
+          "first": "Jeongwoo Human Resource Development Instituteは、ネパール・ベトナム・ミャンマー・ラオス・スリランカの人材を韓国・日本企業へ紹介します。ネパールでは職業訓練を直接行い、ほかの国では現地パートナーとともに人材を選抜します。職種、言語、文化を学んだ人材を、企業の要件に合わせ、適法な手続で紹介します。",
           "second": "2026年7月にネパール現地の6機関とMOUを締結し、労働者の選抜、資格確認、教育、出入国行政で連携しています。"
         },
         "servicesCta": "事業領域",
@@ -651,7 +648,7 @@
         "description": "溶接に特化した職業技術教育"
       },
       "engate": {
-        "name": "ENgate",
+        "name": "Engatesoft",
         "description": "会社紹介資料に掲載された協力機関"
       },
       "ocean": {

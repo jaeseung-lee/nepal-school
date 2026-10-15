@@ -1,10 +1,11 @@
-import { CheckCircle, ShieldCheck, WarningCircle } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { getKeyVisualPhoto, KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import BreadcrumbSchema from "@/components/breadcrumb-schema";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
 
 const PRINCIPLES = [
@@ -16,8 +17,13 @@ const PRINCIPLES = [
 
 const REFUSAL_KEYS = ["fees", "abuse", "misinformation"] as const;
 
+function twoDigits(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 export default function WhyContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
   const copy = getMessages(locale).pages.why;
+  const detailPhoto = getKeyVisualPhoto(KEY_VISUALS.pages.whyDetail, locale);
 
   return (
     <main>
@@ -29,69 +35,75 @@ export default function WhyContent({ locale = DEFAULT_LOCALE }: { locale?: Local
         title={copy.banner.title}
         desc={copy.banner.description}
         crumb={copy.banner.crumb}
-        imageAlt={copy.banner.alt}
-        bgImage="/kv/banner-why.webp"
+        photo={KEY_VISUALS.pages.why}
+        label={SECTION_LABELS.pages.why}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto grid gap-10 px-5 py-20 lg:grid-cols-[0.9fr_1.15fr] lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">{copy.main.title}</h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted">{copy.main.description}</p>
-            <div className="relative mt-8 min-h-[320px] overflow-hidden rounded-[28px] border border-line bg-gray-100">
-              <Image src="/kv/redesign/principles.webp" alt={copy.main.alt} fill sizes="(min-width: 1024px) 430px, 100vw" className="object-cover" />
+      <section aria-labelledby="why-title" className="bg-paper py-section">
+        <div className="page-wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:sticky lg:top-32 lg:col-span-5 lg:self-start">
+            <p className="text-meta tabular-nums text-muted" aria-hidden="true">01</p>
+            <h2 id="why-title" className="mt-4 text-headline text-balance text-ink">{copy.main.title}</h2>
+            <p className="mt-6 max-w-xl text-description text-muted">{copy.main.description}</p>
+            <div className="relative mt-10 aspect-[4/3] overflow-hidden bg-image">
+              <Image
+                src={detailPhoto.src}
+                alt={detailPhoto.alt}
+                fill
+                sizes="(min-width: 1440px) 560px, (min-width: 1024px) 40vw, 100vw"
+                style={{ objectPosition: detailPhoto.position }}
+                className="object-cover"
+              />
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.08} className="grid gap-4">
-            {PRINCIPLES.map((item) => {
+          <ol className="border-t border-line lg:col-span-6 lg:col-start-7">
+            {PRINCIPLES.map((item, index) => {
               const principle = copy.main.principles[item.key];
               const href = "href" in item ? item.href : undefined;
               const linkLabel = item.key === "regulation" ? copy.main.principles.regulation.linkLabel : undefined;
               return (
-                <article key={item.key} className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-                  <div className="flex gap-4">
-                    <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                      <CheckCircle size={22} weight="duotone" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <h3 className="font-display text-xl font-semibold text-ink">{principle.title}</h3>
-                      <p className="mt-2 text-[15px] leading-relaxed text-muted">{principle.description}</p>
-                      {href ? (
-                        <Link href={localizedHref(locale, href)} className="mt-2 inline-block text-sm font-medium text-cobalt underline underline-offset-2">
-                          {linkLabel}
-                        </Link>
-                      ) : null}
-                    </div>
+                <li key={item.key} className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-3 border-b border-line py-8">
+                  <span className="pt-1 text-meta tabular-nums text-muted" aria-hidden="true">{twoDigits(index + 1)}</span>
+                  <div>
+                    <h3 className="text-title text-ink">{principle.title}</h3>
+                    <p className="mt-3 text-description text-muted">{principle.description}</p>
+                    {href ? (
+                      <Link
+                        href={localizedHref(locale, href)}
+                        className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink"
+                      >
+                        {linkLabel} <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
+                      </Link>
+                    ) : null}
                   </div>
-                </article>
+                </li>
               );
             })}
-          </Reveal>
+          </ol>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-16 lg:px-8 lg:py-20">
-          <Reveal className="rounded-[28px] border border-line bg-surface p-7 shadow-sm shadow-ink/5 lg:p-9">
-            <div className="flex max-w-3xl flex-col gap-4 sm:flex-row">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                <ShieldCheck size={26} weight="duotone" aria-hidden="true" />
-              </span>
-              <div>
-                <h2 className="font-display text-2xl font-semibold text-ink">{copy.refusals.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{copy.refusals.description}</p>
-              </div>
+      <section aria-labelledby="refusals-title" className="border-t border-line bg-paper-soft py-section">
+        <div className="page-wrap">
+          <div className="grid gap-6 border-t-2 border-ink pt-10 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-5">
+              <p className="text-meta tabular-nums text-muted" aria-hidden="true">02</p>
+              <h2 id="refusals-title" className="mt-4 text-subhead text-balance text-ink">{copy.refusals.title}</h2>
             </div>
-            <ul className="mt-7 grid gap-3 lg:grid-cols-3">
-              {REFUSAL_KEYS.map((key) => (
-                <li key={key} className="flex gap-3 rounded-[18px] border border-line bg-paper p-4 text-sm leading-relaxed text-ink">
-                  <WarningCircle size={20} className="mt-0.5 shrink-0 text-clay" weight="duotone" aria-hidden="true" />
-                  <span>{copy.refusals.items[key]}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+            <p className="text-description text-muted lg:col-span-6 lg:col-start-7 lg:pt-8">{copy.refusals.description}</p>
+          </div>
+          <ul className="mt-12 grid border-t border-line md:grid-cols-3">
+            {REFUSAL_KEYS.map((key, index) => (
+              <li
+                key={key}
+                className="border-b border-line py-7 text-[15px] font-semibold leading-relaxed text-ink md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0 md:[&:not(:first-child)]:border-l"
+              >
+                <span className="mb-3 block text-meta font-medium tabular-nums text-muted" aria-hidden="true">{twoDigits(index + 1)}</span>
+                {copy.refusals.items[key]}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -37,7 +37,7 @@ export default function BlogMarkdown({ content, images }: BlogMarkdownProps) {
             if (typeof src !== "string" || !imagePaths.has(src)) return null;
             return (
               <figure>
-                <div className="relative aspect-[8/5] overflow-hidden rounded-[24px] bg-paper-soft">
+                <div className="relative aspect-[8/5] overflow-hidden bg-image">
                   <Image src={src} alt={alt} fill sizes="(max-width: 900px) 100vw, 800px" className="object-cover" />
                 </div>
                 {title ? <figcaption>{title}</figcaption> : null}

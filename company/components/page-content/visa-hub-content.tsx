@@ -1,33 +1,55 @@
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
 import JsonLd from "@/components/json-ld";
-import Reveal from "@/components/reveal";
 import VisaDisclaimer from "@/components/visa/visa-disclaimer";
 import { DEFAULT_LOCALE, getMessages, localizedHref, type Locale } from "@/lib/i18n";
 import { getLocalizedVisa, getVisaMessages, localizedVisasByCountry } from "@/lib/visa-i18n";
 import { VISAS, type Visa } from "@/lib/visas";
 import { SITE_URL } from "@/lib/site";
 
-function VisaCard({ visa, locale }: { visa: Visa; locale: Locale }) {
+function VisaRow({ visa, locale, index }: { visa: Visa; locale: Locale; index: number }) {
   const messages = getVisaMessages(locale);
 
   return (
-    <Link
-      href={localizedHref(locale, `/visa/${visa.slug}`)}
-      className="group flex flex-col rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 transition hover:border-cobalt"
-    >
-      <span className="inline-flex self-start rounded-full bg-cobalt-soft px-3 py-1 text-xs font-semibold text-cobalt">
-        {visa.code}
-      </span>
-      <h3 className="mt-3 font-display text-xl font-semibold text-ink">{visa.nameKo}</h3>
-      <p className="mt-2 flex-1 text-[15px] leading-relaxed text-muted">{visa.summary}</p>
-      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-cobalt">
-        {messages.ui.viewDetails}
-        <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-      </span>
-    </Link>
+    <li>
+      <Link
+        href={localizedHref(locale, `/visa/${visa.slug}`)}
+        className="group grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-start gap-x-3 border-b border-line py-7 sm:grid-cols-[2.25rem_8rem_minmax(0,1fr)_auto] sm:gap-x-6"
+      >
+        <span className="pt-1 text-meta tabular-nums text-muted" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+        <span className="hidden pt-0.5 text-sm font-bold text-ink sm:block">{visa.code}</span>
+        <div>
+          <h3 className="text-lg font-bold tracking-[-0.02em] text-ink underline-offset-4 group-hover:underline">
+            <span className="sm:hidden">{visa.code} · </span>
+            {visa.nameKo}
+          </h3>
+          <p className="mt-2 text-description text-muted">{visa.summary}</p>
+        </div>
+        <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
+          <span className="sr-only">{messages.ui.viewDetails}</span>
+          <ArrowUpRight size={16} weight="bold" className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden="true" />
+        </span>
+      </Link>
+    </li>
+  );
+}
+
+function VisaGroup({ index, title, description, visas, locale }: { index: string; title: string; description: string; visas: Visa[]; locale: Locale }) {
+  return (
+    <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div className="lg:col-span-4">
+        <p className="text-meta tabular-nums text-muted" aria-hidden="true">{index}</p>
+        <h2 className="mt-4 text-headline text-balance text-ink">{title}</h2>
+        <p className="mt-6 max-w-md text-description text-muted">{description}</p>
+      </div>
+      <ul className="border-t border-ink lg:col-span-8">
+        {visas.map((visa, visaIndex) => <VisaRow key={visa.slug} visa={visa} locale={locale} index={visaIndex} />)}
+      </ul>
+    </div>
   );
 }
 
@@ -86,34 +108,22 @@ export default function VisaHubContent({ locale = DEFAULT_LOCALE }: { locale?: L
         title={hub.banner.title}
         desc={hub.banner.description}
         crumb={hub.banner.crumb}
-        imageAlt={hub.banner.alt}
-        bgImage="/kv/redesign/process.webp"
+        photo={KEY_VISUALS.pages.visa}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">{hub.koreaSection.title}</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{hub.koreaSection.description}</p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 grid gap-5 sm:grid-cols-2">
-            {koreaVisas.map((visa) => <VisaCard key={visa.slug} visa={visa} locale={locale} />)}
-          </Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <VisaGroup index="01" title={hub.koreaSection.title} description={hub.koreaSection.description} visas={koreaVisas} locale={locale} />
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">{hub.japanSection.title}</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">{hub.japanSection.description}</p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 grid gap-5 sm:grid-cols-2">
-            {japanVisas.map((visa) => <VisaCard key={visa.slug} visa={visa} locale={locale} />)}
-          </Reveal>
-          <Reveal delay={0.12} className="mt-8">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <VisaGroup index="02" title={hub.japanSection.title} description={hub.japanSection.description} visas={japanVisas} locale={locale} />
+          <div className="mt-16">
             <VisaDisclaimer locale={locale} />
-          </Reveal>
+          </div>
         </div>
       </section>
 

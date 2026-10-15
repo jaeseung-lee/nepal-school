@@ -127,12 +127,12 @@ export default function AnalyticsConsent({ locale }: { locale: Locale }) {
       ) : null}
       {analyticsReady ? <WebVitals /> : null}
       {choice === null ? (
-        <aside className="fixed inset-x-4 bottom-4 z-[70] mx-auto max-w-3xl rounded-2xl border border-line bg-paper-soft p-5 shadow-2xl shadow-ink/20" aria-label={copy.bannerTitle}>
-          <p className="font-display text-lg font-semibold text-ink">{copy.bannerTitle}</p>
-          <p className="mt-2 text-sm leading-6 text-muted">{copy.bannerBody} <Link href={localizedHref(locale, "/privacy")} className="font-semibold text-cobalt underline underline-offset-4">{copy.policy}</Link></p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" onClick={() => choose("accepted")} className="rounded-full bg-cobalt px-5 py-2.5 text-sm font-semibold text-white">{copy.accept}</button>
-            <button type="button" onClick={() => choose("declined")} className="rounded-full border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink">{copy.decline}</button>
+        <aside className="fixed inset-x-4 bottom-4 z-[70] mx-auto max-w-3xl border border-ink bg-surface p-5 shadow-[0_12px_40px_rgb(0_0_0/0.14)] sm:p-6" aria-label={copy.bannerTitle}>
+          <p className="text-lg font-bold tracking-[-0.02em] text-ink">{copy.bannerTitle}</p>
+          <p className="mt-2 text-sm leading-6 text-muted">{copy.bannerBody} <Link href={localizedHref(locale, "/privacy")} className="font-semibold text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">{copy.policy}</Link></p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <button type="button" onClick={() => choose("accepted")} className="pill pill-dark min-w-28">{copy.accept}</button>
+            <button type="button" onClick={() => choose("declined")} className="pill pill-outline min-w-28">{copy.decline}</button>
           </div>
         </aside>
       ) : null}

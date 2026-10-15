@@ -1,8 +1,8 @@
-import { Buildings, ClipboardText, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import PageBanner from "@/components/page-banner";
+import { KEY_VISUALS } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
-import Reveal from "@/components/reveal";
 import VisaSchema from "@/components/visa/visa-schema";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaProcess from "@/components/visa/visa-process";
@@ -19,17 +19,14 @@ const visa = getVisa("e-9");
 
 const EMPLOYER_POINTS = [
   {
-    icon: ClipboardText,
     title: "내국인 구인노력이 먼저",
     desc: "고용허가를 신청하기 전에 워크넷 구인 등 정해진 기간의 내국인 구인노력을 거쳐야 합니다. 이 절차 없이는 신청 자체가 성립하지 않습니다.",
   },
   {
-    icon: Buildings,
     title: "업종·규모별 허용 인원",
     desc: "고용허가제 적용 업종과 사업장 규모에 따라 고용 가능한 외국인 수가 정해집니다. 연도별 쿼터와 업종 기준은 고시로 변동되므로 관할 고용센터에서 확인합니다.",
   },
   {
-    icon: UsersThree,
     title: "정부 간 알선 방식",
     desc: "기업이 해외에서 직접 모집하는 것이 아니라 송출국 정부가 선발한 외국인 구직자 명부(EPS-TOPIK 통과자)에서 정부 간 알선으로 채용합니다. 네팔을 포함한 16개 송출국이 참여합니다.",
   },
@@ -73,104 +70,102 @@ export default function E9Page() {
         titleKo="비전문취업 E-9 (고용허가제)"
         desc="제조·농축산·어업·건설 등 인력부족 업종에서 외국인 근로자를 합법적으로 고용하는 대표 제도입니다. 정부 간 알선으로 후보자를 배정받아 사업장이 직접 고용합니다."
         crumb="비자 정보"
-        bgImage="/kv/redesign/korea.webp"
+        photo={KEY_VISUALS.visas["e-9"]}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <div>
             <VisaGlance visa={visa} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">
               기업이 먼저 확인할 것
             </h2>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted">
+            <p className="mt-6 max-w-3xl text-description text-muted">
               고용허가제는 &ldquo;기업이 원하는 사람을 데려오는&rdquo; 제도가 아니라, 정부가 선발한 외국인
               구직자 명부에서 <strong className="font-semibold text-ink">알선받는</strong> 제도입니다. 따라서 기업
               요건과 신청 절차를 먼저 확인해야 합니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10 grid gap-4 lg:grid-cols-3">
+          </div>
+          <div className="mt-10 grid gap-x-8 gap-y-10 lg:grid-cols-3">
             {EMPLOYER_POINTS.map((point) => (
-              <article key={point.title} className="rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cobalt-soft text-cobalt">
-                  <point.icon size={22} weight="duotone" aria-hidden="true" />
-                </span>
-                <h3 className="mt-4 font-display text-xl font-semibold text-ink">{point.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{point.desc}</p>
+              <article key={point.title} className="border-t border-ink pt-6">
+                <h3 className="mt-4 text-lg font-bold tracking-[-0.02em] text-ink">{point.title}</h3>
+                <p className="mt-3 text-description text-muted">{point.desc}</p>
               </article>
             ))}
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.12} className="mt-8 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">체류기간과 재고용</h3>
-            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-muted">
+          <div className="mt-8 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">체류기간과 재고용</h3>
+            <p className="mt-3 max-w-3xl text-description text-muted">
               E-9의 기본 체류·취업활동 기간은 3년이고, 사업주가 재고용을 신청하면 최대 1년 10개월을
               연장할 수 있습니다. 일정 요건을 갖춘 성실근로자는 출국 후 재입국해 다시 근무하는 제도도
               운영됩니다. 따라서 일정 요건을 갖춘 근로자를 장기 고용할 수 있습니다. 장기 고용 전환이
               필요하다면{" "}
-              <Link href="/visa/e-7" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/visa/e-7" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 E-7-4 숙련기능인력
               </Link>{" "}
               경로도 함께 검토할 수 있습니다.
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">채용 절차</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">채용 절차</h2>
+            <p className="mt-6 max-w-2xl text-description text-muted">
               구인노력부터 사업장 배치까지의 일반적인 절차입니다. 시기별 쿼터와 송출국 사정에 따라 전체
               기간은 달라지므로 수개월 단위로 계획하는 것이 안전합니다.
             </p>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+          </div>
+          <div className="mt-10">
             <VisaProcess steps={PROCESS_STEPS} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper-soft">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">자주 묻는 질문</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-10">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-headline text-balance text-ink">자주 묻는 질문</h2>
+          </div>
+          <div className="mt-10">
             <FaqList faqs={visa.faqs} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-4xl">관련 비자·제도</h2>
-          </Reveal>
-          <Reveal delay={0.08} className="mt-8">
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <div>
+            <h2 className="text-subhead text-balance text-ink">관련 비자·제도</h2>
+          </div>
+          <div className="mt-8">
             <RelatedVisas slugs={visa.related} />
-          </Reveal>
-          <Reveal delay={0.12} className="mt-10 rounded-[24px] border border-line bg-surface p-6 shadow-sm shadow-ink/5 lg:p-8">
-            <h3 className="font-display text-xl font-semibold text-ink">정우인재개발원의 역할</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">
+          </div>
+          <div className="mt-10 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">정우인재개발원의 역할</h3>
+            <p className="mt-3 text-description text-muted">
               송출국 현지의 사전 교육과 한국어 준비부터 기업의 제도 검토, 채용 후 정착 지원까지
               고용허가제 채용의 실무를 단계별로 지원합니다.{" "}
-              <Link href="/services" className="font-medium text-cobalt underline underline-offset-2">
+              <Link href="/services" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
                 사업영역 보기
               </Link>
             </p>
-          </Reveal>
-          <Reveal delay={0.16} className="mt-8">
+          </div>
+          <div className="mt-8">
             <VisaDisclaimer />
-          </Reveal>
+          </div>
         </div>
       </section>
 

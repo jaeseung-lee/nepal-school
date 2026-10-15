@@ -220,30 +220,29 @@ export const GALLERY_ITEMS: readonly GalleryItem[] = [
   item("institutional-visit-group", 11, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-34 011.jpeg", "/gallery/institutional-visit-group.webp", "visits"),
   item("institutional-visit-group-wide", 12, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-34 012.jpeg", "/gallery/institutional-visit-group-wide.webp", "visits"),
   item("dakshinkali-municipality-partnership-visit", 13, "images/etc/KakaoTalk_Photo_2026-07-18-14-45-35 013.jpeg", "/gallery/dakshinkali-municipality-partnership-visit.webp", "visits"),
-  item("municipal-office-meeting", 14, "images/etc/KakaoTalk_Photo_2026-07-18-14-46-29.jpeg", "/gallery/municipal-office-meeting.webp", "meetings"),
-  item("cafe-group-meeting", 15, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-24.jpeg", "/gallery/cafe-group-meeting.webp", "visits"),
-  item("group-at-transit-terminal", 16, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-40.jpeg", "/gallery/group-at-transit-terminal.webp", "visits"),
-  item("office-group-meeting", 17, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-44.jpeg", "/gallery/office-group-meeting.webp", "meetings"),
-  item("office-presentation-meeting", 18, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-47.jpeg", "/gallery/office-presentation-meeting.webp", "meetings"),
-  item("dakshinkali-municipality-office-group", 19, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-50.jpeg", "/gallery/dakshinkali-municipality-office-group.webp", "visits"),
-  item("oxbridge-foundation-welcome-ceremony", 20, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 001.jpeg", "/gallery/oxbridge-foundation-welcome-ceremony.webp", "visits"),
-  item("ceremonial-office-group", 21, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 002.jpeg", "/gallery/ceremonial-office-group.webp", "visits"),
-  item("stakeholder-meeting-presentation", 22, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 003.jpeg", "/gallery/stakeholder-meeting-presentation.webp", "meetings"),
-  item("campus-programme-display", 23, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 004.jpeg", "/gallery/campus-programme-display.webp", "facilities"),
-  item("caregiver-training-programme-display", 24, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 005.jpeg", "/gallery/caregiver-training-programme-display.webp", "facilities"),
-  item("kathmandu-technical-school-friday-fusion", 25, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 006.jpeg", "/gallery/kathmandu-technical-school-friday-fusion.webp", "facilities"),
-  item("healthcare-training-classroom", 26, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-01 007.jpeg", "/gallery/healthcare-training-classroom.webp", "training"),
-  item("municipal-office-ceremonial-visit", 27, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-05.jpeg", "/gallery/municipal-office-ceremonial-visit.webp", "visits"),
-  item("interview-session-panel", 28, "images/20260902/IMG_5727.JPG", "/gallery/interview-session-panel.webp", "interviews"),
-  item("interview-candidate-conversation", 29, "images/20260902/IMG_5725.JPG", "/gallery/interview-candidate-conversation.webp", "interviews"),
-  item("interview-room-overview", 30, "images/20260902/IMG_5734.JPG", "/gallery/interview-room-overview.webp", "interviews"),
-  item("interview-waiting-candidates", 31, "images/20260902/IMG_5738.JPG", "/gallery/interview-waiting-candidates.webp", "interviews"),
-  item("caregiver-simulation-ward-beds", 32, "images/20260902/IMG_5686.HEIC", "/gallery/caregiver-simulation-ward-beds.webp", "facilities"),
-  item("caregiver-practice-room-patient-hoist", 33, "images/20260902/IMG_5682.HEIC", "/gallery/caregiver-practice-room-patient-hoist.webp", "facilities"),
-  item("caregiver-training-supply-cabinets", 34, "images/20260902/IMG_5679.HEIC", "/gallery/caregiver-training-supply-cabinets.webp", "facilities"),
-  item("everest-multi-skills-training-hall", 35, "images/20260902/IMG_5760.HEIC", "/gallery/everest-multi-skills-training-hall.webp", "facilities"),
-  item("suyan-education-institute-visit", 36, "images/20260902/IMG_5705.HEIC", "/gallery/suyan-education-institute-visit.webp", "visits"),
-  item("oxon-japanese-language-school-entrance", 37, "images/20260902/IMG_5759.HEIC", "/gallery/oxon-japanese-language-school-entrance.webp", "visits"),
+  item("cafe-group-meeting", 14, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-24.jpeg", "/gallery/cafe-group-meeting.webp", "visits"),
+  item("group-at-transit-terminal", 15, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-40.jpeg", "/gallery/group-at-transit-terminal.webp", "visits"),
+  item("office-group-meeting", 16, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-44.jpeg", "/gallery/office-group-meeting.webp", "meetings"),
+  item("office-presentation-meeting", 17, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-47.jpeg", "/gallery/office-presentation-meeting.webp", "meetings"),
+  item("dakshinkali-municipality-office-group", 18, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-50.jpeg", "/gallery/dakshinkali-municipality-office-group.webp", "visits"),
+  item("oxbridge-foundation-welcome-ceremony", 19, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 001.jpeg", "/gallery/oxbridge-foundation-welcome-ceremony.webp", "visits"),
+  item("ceremonial-office-group", 20, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-58 002.jpeg", "/gallery/ceremonial-office-group.webp", "visits"),
+  item("stakeholder-meeting-presentation", 21, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 003.jpeg", "/gallery/stakeholder-meeting-presentation.webp", "meetings"),
+  item("campus-programme-display", 22, "images/etc/KakaoTalk_Photo_2026-07-18-15-03-59 004.jpeg", "/gallery/campus-programme-display.webp", "facilities"),
+  item("caregiver-training-programme-display", 23, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 005.jpeg", "/gallery/caregiver-training-programme-display.webp", "facilities"),
+  item("kathmandu-technical-school-friday-fusion", 24, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-00 006.jpeg", "/gallery/kathmandu-technical-school-friday-fusion.webp", "facilities"),
+  item("healthcare-training-classroom", 25, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-01 007.jpeg", "/gallery/healthcare-training-classroom.webp", "training"),
+  item("municipal-office-ceremonial-visit", 26, "images/etc/KakaoTalk_Photo_2026-07-18-15-04-05.jpeg", "/gallery/municipal-office-ceremonial-visit.webp", "visits"),
+  item("interview-session-panel", 27, "images/20260902/IMG_5727.JPG", "/gallery/interview-session-panel.webp", "interviews"),
+  item("interview-candidate-conversation", 28, "images/20260902/IMG_5725.JPG", "/gallery/interview-candidate-conversation.webp", "interviews"),
+  item("interview-room-overview", 29, "images/20260902/IMG_5734.JPG", "/gallery/interview-room-overview.webp", "interviews"),
+  item("interview-waiting-candidates", 30, "images/20260902/IMG_5738.JPG", "/gallery/interview-waiting-candidates.webp", "interviews"),
+  item("caregiver-simulation-ward-beds", 31, "images/20260902/IMG_5686.HEIC", "/gallery/caregiver-simulation-ward-beds.webp", "facilities"),
+  item("caregiver-practice-room-patient-hoist", 32, "images/20260902/IMG_5682.HEIC", "/gallery/caregiver-practice-room-patient-hoist.webp", "facilities"),
+  item("caregiver-training-supply-cabinets", 33, "images/20260902/IMG_5679.HEIC", "/gallery/caregiver-training-supply-cabinets.webp", "facilities"),
+  item("everest-multi-skills-training-hall", 34, "images/20260902/IMG_5760.HEIC", "/gallery/everest-multi-skills-training-hall.webp", "facilities"),
+  item("suyan-education-institute-visit", 35, "images/20260902/IMG_5705.HEIC", "/gallery/suyan-education-institute-visit.webp", "visits"),
+  item("oxon-japanese-language-school-entrance", 36, "images/20260902/IMG_5759.HEIC", "/gallery/oxon-japanese-language-school-entrance.webp", "visits"),
 ] as const;
 
 /** Returns UI-ready entries with the selected copy flattened onto each item. */
@@ -252,4 +251,22 @@ export function getGalleryItems(locale: GalleryLocale): readonly LocalizedGaller
     ...galleryItem,
     ...galleryItem.copy[locale],
   }));
+}
+
+const GALLERY_ITEMS_BY_ID = new Map(GALLERY_ITEMS.map((galleryItem) => [galleryItem.id, galleryItem]));
+
+export function hasGalleryItem(id: string): boolean {
+  return GALLERY_ITEMS_BY_ID.has(id);
+}
+
+/**
+ * 배너·카드처럼 사진 한 장을 크게 쓸 때 경로와 언어별 alt를 함께 돌려준다.
+ * 없는 id는 정적 생성 단계에서 바로 실패하도록 예외를 던진다.
+ */
+export function getGalleryPhoto(id: string, locale: GalleryLocale): { src: GalleryItem["src"]; alt: string; title: string } {
+  const galleryItem = GALLERY_ITEMS_BY_ID.get(id);
+  if (!galleryItem) throw new Error(`등록되지 않은 갤러리 사진 id: ${id}`);
+
+  const copy = galleryItem.copy[locale];
+  return { src: galleryItem.src, alt: copy.alt, title: copy.title };
 }

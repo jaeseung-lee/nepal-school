@@ -1,17 +1,18 @@
-import { Plus } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
+import { ArrowUpRight, Plus } from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
 import JsonLd from "@/components/json-ld";
-import { getMessages, type Locale } from "@/lib/i18n";
+import { getMessages, localizedHref, type Locale } from "@/lib/i18n";
+import { SECTION_LABELS } from "@/lib/section-labels";
 
 // FAQPage JSON-LD와 화면은 같은 카탈로그 값에서 파생해 항상 동기화한다.
-const FAQ_KEYS = ["company", "visa", "process", "countries", "trust"] as const;
+const FAQ_KEYS = ["company", "visa", "process", "countries"] as const;
 
-export default function FaqSection({ locale }: { locale?: Locale }) {
+export default function FaqSection({ locale = "ko" }: { locale?: Locale }) {
   const faqCopy = getMessages(locale).home.faq;
   const faqs = FAQ_KEYS.map((key) => ({ key, ...faqCopy.items[key] }));
 
   return (
-    <section className="border-t border-line bg-paper">
+    <section aria-labelledby="faq-title" className="border-t border-line bg-paper py-section">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -23,27 +24,38 @@ export default function FaqSection({ locale }: { locale?: Locale }) {
           })),
         }}
       />
-      <div className="max-w-content mx-auto grid gap-10 px-5 py-20 lg:grid-cols-[0.85fr_1.15fr] lg:px-8 lg:py-28">
-        <div>
-          <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">
+      <div className="page-wrap grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <p className="eyebrow text-ink" lang="en">
+            {SECTION_LABELS.questions}
+          </p>
+          <h2 id="faq-title" className="mt-5 max-w-[14em] text-headline text-balance text-ink">
             {faqCopy.title}
           </h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted">
-            {faqCopy.description}
-          </p>
-          <div className="relative mt-8 min-h-[260px] overflow-hidden rounded-[28px] border border-line bg-gray-100">
-            <Image src="/kv/redesign/consultation.webp" alt={faqCopy.alt} fill sizes="(min-width: 1024px) 430px, 100vw" className="object-cover" />
-          </div>
+          <p className="mt-6 max-w-[30rem] text-description text-muted">{faqCopy.description}</p>
         </div>
 
-        <div className="divide-y divide-line rounded-[28px] border border-line bg-surface">
+        <div className="border-t border-line">
           {faqs.map((faq, index) => (
-            <details key={faq.key} open={index === 0} className="group">
-              <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-5 text-[17px] font-semibold text-ink marker:content-none sm:px-7 [&::-webkit-details-marker]:hidden">
-                {faq.q}
-                <Plus size={20} className="shrink-0 text-cobalt transition-transform group-open:rotate-45" aria-hidden="true" />
+            <details key={faq.key} open={index === 0} className="group border-b border-line">
+              <summary className="grid min-h-11 cursor-pointer list-none grid-cols-[2.25rem_minmax(0,1fr)_auto] items-start gap-x-3 py-7 marker:content-none [&::-webkit-details-marker]:hidden">
+                <span aria-hidden="true" className="pt-1 text-meta tabular-nums text-muted">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[17px] font-bold leading-snug tracking-[-0.02em] text-ink sm:text-lg">{faq.q}</span>
+                <Plus size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-ink transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none" />
               </summary>
-              <p className="px-5 pb-6 pr-12 text-[15px] leading-relaxed text-muted sm:px-7">{faq.a}</p>
+              <div className="pb-8 pl-12 pr-8">
+                <p className="text-description text-muted">{faq.a}</p>
+                {"linkLabel" in faq ? (
+                  <Link
+                    href={localizedHref(locale, "/visa")}
+                    className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink"
+                  >
+                    {faq.linkLabel} <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
+                  </Link>
+                ) : null}
+              </div>
             </details>
           ))}
         </div>

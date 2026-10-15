@@ -5,8 +5,8 @@
     "legalName": "정우인재개발원",
     "legalNameEnglish": "Jeongwoo Human Resource Development Institute",
     "alternateName": "Jeongwoo Human Resource Development Institute",
-    "slogan": "Đối tác nhân lực toàn cầu đào tạo nhân tài Nepal từ nền tảng giáo dục tại địa phương",
-    "seoTitle": "Đào tạo nhân tài Nepal và kết nối việc làm tại Hàn Quốc, Nhật Bản",
+    "slogan": "Đối tác nhân lực toàn cầu kết nối nhân tài Nepal, Việt Nam, Myanmar, Lào và Sri Lanka với doanh nghiệp Hàn Quốc, Nhật Bản",
+    "seoTitle": "Nhân tài từ Nepal, Việt Nam và các nước châu Á cho việc làm tại Hàn Quốc, Nhật Bản",
     "description": "Chúng tôi trực tiếp đào tạo và cung ứng nhân lực tại Nepal; cung ứng qua đối tác tại Việt Nam, Myanmar, Lào và Sri Lanka; đồng thời kết nối ứng viên với doanh nghiệp tại các thị trường tiếp nhận và tuyển dụng là Hàn Quốc và Nhật Bản.",
     "founder": "Oh Je-hwan",
     "foundingDate": "Ngày 10 tháng 6 năm 2026",
@@ -52,6 +52,7 @@
   },
   "header": {
     "homeAria": "Trang chủ Jeongwoo Human Resource Development Institute",
+    "skipToContent": "Chuyển đến nội dung chính",
     "primaryNav": "Điều hướng chính",
     "languageSelector": "Chọn ngôn ngữ",
     "openMenu": "Mở menu",
@@ -134,7 +135,7 @@
       "items": {
         "company": {
           "q": "Jeongwoo Human Resource Development Institute là công ty như thế nào?",
-          "a": "Jeongwoo Human Resource Development Institute là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ đào tạo nghề tại địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản."
+          "a": "Jeongwoo Human Resource Development Institute là doanh nghiệp phát triển nguồn nhân lực toàn cầu, kết nối hợp pháp nhân tài từ Nepal, Việt Nam, Myanmar, Lào và Sri Lanka với các doanh nghiệp tại Hàn Quốc và Nhật Bản. Tại Nepal, chúng tôi trực tiếp đào tạo nhân tài qua đào tạo nghề tại địa phương."
         },
         "visa": {
           "q": "Công ty hỗ trợ những loại thị thực và chương trình việc làm nào?",
@@ -148,10 +149,6 @@
         "countries": {
           "q": "Công ty kết nối nhân lực từ những quốc gia nào?",
           "a": "Chúng tôi trực tiếp đào tạo và cung ứng nhân lực tại Nepal; cung ứng qua đối tác tại Việt Nam, Myanmar, Lào và Sri Lanka; đồng thời kết nối ứng viên với doanh nghiệp tại các thị trường tiếp nhận và tuyển dụng là Hàn Quốc và Nhật Bản."
-        },
-        "trust": {
-          "q": "Một doanh nghiệp mới có đáng tin cậy không?",
-          "a": "Chúng tôi chỉ công khai các chỉ số khách quan có thể kiểm chứng, không nêu số người đã có việc làm hay thứ hạng không thể xác nhận. Hoạt động của chúng tôi dựa trên hệ thống hợp tác, bao gồm MOU với sáu tổ chức tại Nepal."
         }
       }
     },
@@ -272,7 +269,7 @@
     }
   },
   "cta": {
-    "title": "Trước tiên, hãy xác nhận yêu cầu của doanh nghiệp",
+    "title": "Chúng tôi đang chờ yêu cầu của doanh nghiệp",
     "description": "Hãy cho chúng tôi biết công việc, số lượng nhân sự, lịch mong muốn và định hướng thị thực; chúng tôi sẽ sắp xếp và hướng dẫn quy trình khả thi cùng thứ tự chuẩn bị.",
     "contactCta": "Hướng dẫn chuẩn bị tuyển dụng",
     "processCta": "Xem quy trình",
@@ -282,20 +279,20 @@
     "about": {
       "metadata": {
         "title": "Giới thiệu",
-        "description": "Giới thiệu Jeongwoo Human Resource Development Institute, doanh nghiệp phát triển nguồn nhân lực toàn cầu đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp Hàn Quốc và Nhật Bản."
+        "description": "Giới thiệu Jeongwoo Human Resource Development Institute, doanh nghiệp phát triển nguồn nhân lực toàn cầu kết nối hợp pháp nhân tài từ Nepal, Việt Nam, Myanmar, Lào và Sri Lanka với các doanh nghiệp Hàn Quốc và Nhật Bản."
       },
       "banner": {
         "eyebrow": "Tổng quan công ty",
         "context": "Từ đào tạo tại địa phương đến hỗ trợ ổn định cuộc sống",
         "title": "Giới thiệu",
-        "description": "Chúng tôi là doanh nghiệp phát triển nguồn nhân lực toàn cầu, đào tạo nhân tài Nepal từ địa phương và kết nối họ hợp pháp với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+        "description": "Chúng tôi là doanh nghiệp phát triển nguồn nhân lực toàn cầu, kết nối hợp pháp nhân tài từ Nepal, Việt Nam, Myanmar, Lào và Sri Lanka với các doanh nghiệp tại Hàn Quốc và Nhật Bản.",
         "crumb": "Giới thiệu",
         "alt": "Hình ảnh thực tế minh họa cho Giới thiệu"
       },
       "main": {
         "title": "Nhân tài không chỉ để phái cử mà cần được chuẩn bị",
         "paragraphs": {
-          "first": "Jeongwoo Human Resource Development Institute bắt đầu từ đào tạo nghề tại Nepal. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp tại Hàn Quốc và Nhật Bản.",
+          "first": "Jeongwoo Human Resource Development Institute kết nối nhân tài từ Nepal, Việt Nam, Myanmar, Lào và Sri Lanka với doanh nghiệp tại Hàn Quốc và Nhật Bản. Tại Nepal, chúng tôi trực tiếp vận hành đào tạo nghề; ở các nước khác, chúng tôi tuyển chọn cùng đối tác địa phương. Chúng tôi kết nối hợp pháp nhân tài có năng lực công việc, ngôn ngữ và văn hóa với yêu cầu của doanh nghiệp.",
           "second": "Tháng 7 năm 2026, chúng tôi ký MOU với sáu tổ chức tại Nepal để củng cố hệ thống hợp tác về tuyển chọn lao động, xác minh điều kiện, đào tạo và hành chính xuất nhập cảnh."
         },
         "servicesCta": "Lĩnh vực hoạt động",
@@ -651,7 +648,7 @@
         "description": "Đào tạo nghề chuyên về hàn"
       },
       "engate": {
-        "name": "ENgate",
+        "name": "Engatesoft",
         "description": "Đối tác được liệt kê trong hồ sơ công ty"
       },
       "ocean": {

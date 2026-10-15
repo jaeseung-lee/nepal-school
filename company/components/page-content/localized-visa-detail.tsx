@@ -1,11 +1,12 @@
 import PageBanner from "@/components/page-banner";
+import { getVisaVisual } from "@/lib/key-visuals";
+import { SECTION_LABELS } from "@/lib/section-labels";
 import CtaBanner from "@/components/cta-banner";
 import FaqList from "@/components/visa/faq-list";
 import RelatedVisas from "@/components/visa/related-visas";
 import VisaDisclaimer from "@/components/visa/visa-disclaimer";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaSchema from "@/components/visa/visa-schema";
-import Reveal from "@/components/reveal";
 import { type Locale } from "@/lib/i18n";
 import { getLocalizedVisa, getVisaMessages } from "@/lib/visa-i18n";
 
@@ -28,34 +29,33 @@ export default function LocalizedVisaDetail({ locale, slug }: { locale: Locale; 
         title={visa.nameKo}
         desc={visa.summary}
         crumb={messages.ui.visaInformation}
-        bgImage="/kv/redesign/process.webp"
+        photo={getVisaVisual(visa.slug)}
+        label={SECTION_LABELS.pages.visa}
       />
 
-      <section className="bg-paper">
-        <div className="max-w-content mx-auto px-5 py-20 lg:px-8 lg:py-28">
-          <Reveal>
-            <VisaGlance visa={visa} locale={locale} />
-          </Reveal>
+      <section className="bg-paper py-section">
+        <div className="page-wrap">
+          <VisaGlance visa={visa} locale={locale} />
 
-          <Reveal delay={0.08} className="mt-16">
-            <h2 className="font-display text-3xl font-semibold text-ink lg:text-5xl">{messages.ui.frequentlyAskedQuestions}</h2>
-            <div className="mt-10">
+          <div className="mt-24 grid gap-10 lg:grid-cols-12 lg:gap-8">
+            <h2 className="text-headline text-balance text-ink lg:col-span-4">{messages.ui.frequentlyAskedQuestions}</h2>
+            <div className="lg:col-span-8">
               <FaqList faqs={visa.faqs} />
             </div>
-          </Reveal>
+          </div>
 
           {visa.related.length ? (
-            <Reveal delay={0.08} className="mt-16">
-              <h2 className="font-display text-3xl font-semibold text-ink lg:text-4xl">{messages.ui.relatedVisasAndSystems}</h2>
+            <div className="mt-24">
+              <h2 className="text-subhead text-balance text-ink">{messages.ui.relatedVisasAndSystems}</h2>
               <div className="mt-8">
                 <RelatedVisas slugs={visa.related} locale={locale} />
               </div>
-            </Reveal>
+            </div>
           ) : null}
 
-          <Reveal delay={0.12} className="mt-12">
+          <div className="mt-16">
             <VisaDisclaimer locale={locale} />
-          </Reveal>
+          </div>
         </div>
       </section>
 

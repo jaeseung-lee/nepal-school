@@ -32,10 +32,11 @@ node --test lib/basicAuth.test.mjs             # a single test file
 ```bash
 cd company && npm install
 npm run dev
-npm run build
-npm run lint
+npm run build        # prebuild runs gallery/lp-v1/business/network/i18n/design tests
 npm run typecheck    # tsc --noEmit  (dashboard has no typecheck script)
+npm run test:design  # monochrome design guard
 ```
+`npm run lint` exists in company/ but no ESLint config is checked in, so it does not run; use `npx tsc --noEmit --noUnusedLocals` for unused code.
 
 ## dashboard/ architecture
 
@@ -47,10 +48,13 @@ The dashboard reads the wiki markdown from its **parent directory** (`lib/conten
 
 ## company/ architecture
 
-- **Tailwind CSS v4 with CSS-in-config** — there is **no `tailwind.config` file**. Theme tokens live in the `@theme` block of `app/globals.css` (colors like `primary-main`, `cobalt`, `clay`, `gold-*`; `--container-content`). Add/change design tokens there, not in a config file.
-- Fonts: Outfit (display, via `next/font/google`) + Pretendard (body, jsDelivr CDN in `layout.tsx`).
-- **`lib/site.ts`** = single source for company facts (name, 사업자등록번호, address, `SITE_URL`) consumed by metadata, `sitemap.ts`, `robots.ts`, and `components/organization-schema.tsx` (JSON-LD). **`lib/nav.ts`** = single source for header/footer menu + the language switcher (only KO active; EN/JA/VI/NE are design-only placeholders).
-- Interactive pieces are client components: `site-header.tsx` (scroll transition + mobile menu), `hero-slideshow.tsx`, `contact-form.tsx` (**no backend yet** — `onSubmit` only shows a notice).
+- **Tailwind CSS v4 with CSS-in-config** — there is **no `tailwind.config` file**. Theme tokens live in the `@theme` block of `app/globals.css`. Add/change design tokens there, not in a config file.
+- **Monochrome editorial design system** (reference: OFFMORA). Colors are neutral only (`paper`, `ink`, `muted`, `line`, `image`, `night*`); the old brand tokens (`cobalt`, `clay`, `primary-*`, `gold-*`) were removed and `test/design-system.test.ts` (in prebuild) blocks them plus chromatic Tailwind palettes. Type tokens `text-display|headline|statement|subhead|title|description|meta`, utilities `page-wrap`, `py-section`, `eyebrow`, `pill*`, `round-btn`, `hero-scrim`, `surface-dark` (white focus ring on dark surfaces). Images are square-cornered; buttons are pills.
+- **Header overlay**: a page whose first section is a dark full-bleed hero marks it `data-hero-overlay`; CSS `body:has([data-hero-overlay]) .site-header` then makes the header fixed and transparent until scroll. Every public page currently starts with one (`PageBanner` or a custom night hero).
+- **Photos**: large photos come only from `lib/key-visuals.ts` (real `public/gallery` photos, localized alt via `getGalleryPhoto`). Photos edited with generative AI (they carry a visible "AI-generated content" mark) are not published: move the original into an `images/_archive/` folder (the gallery validator skips `_`-prefixed folders) and drop it from `lib/gallery.ts`. Short decorative English labels live in `lib/section-labels.ts` and render with `lang="en"`.
+- Font: Pretendard Variable, self-hosted via `next/font/local` (`app/fonts.ts`); `test:seo` forbids `next/font/google`/CDN fonts in the Korean layout.
+- **`lib/site.ts`** = single source for company facts (name, 사업자등록번호, address, `SITE_URL`) consumed by metadata, `sitemap.ts`, `robots.ts`, and `components/organization-schema.tsx` (JSON-LD). **`lib/nav.ts`** = single source for header/footer menu items (`primary: true` = inline desktop nav). Copy lives in `messages/{ko,en,ja,ne,vi,lo}.json` (identical keys enforced by `test:i18n`).
+- Interactive pieces are client components: `site-header.tsx` (overlay/dark-glass states, menu + language panels), `hero-image-carousel.tsx`, gallery explorer/lightbox. `contact-form.tsx` is a static phone/mail panel (**no backend yet**).
 - Unconfirmed content is intentionally left as `입력 예정` placeholders — the project rule is **do not invent metrics/credentials** for this newly-founded (2026-06) company. See the "공개 전 확정/연동 TODO" section in `company/README.md` before filling contact info, logos, or images.
 
 ## Gotchas

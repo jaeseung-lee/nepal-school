@@ -67,3 +67,9 @@ export function logoPath(id: string) {
 export function getLogoDimensions(id: string) {
   return logoDimensions[id as NetworkInstitutionId];
 }
+
+/** /partners 페이지의 지역 앵커. 지자체가 있는 지역은 지자체 목록, 없으면 대학 목록으로 보낸다. */
+export function partnersRegionAnchor(region: NetworkRegion) {
+  const hasMunicipality = institutionsByKind("municipality").some((institution) => institution.region === region);
+  return `partners-${hasMunicipality ? "municipality" : "university"}-${region}`;
+}

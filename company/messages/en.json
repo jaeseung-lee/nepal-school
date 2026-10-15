@@ -5,8 +5,8 @@
     "legalName": "Jeongwoo Human Resource Development Institute",
     "legalNameEnglish": "Jeongwoo Human Resource Development Institute",
     "alternateName": "Jeongwoo Human Resource Development Institute",
-    "slogan": "A global human-resources partner developing Nepali talent through local training",
-    "seoTitle": "Nepali Talent Development and Employment Pathways to Korea and Japan",
+    "slogan": "A global human-resources partner connecting talent from Nepal, Vietnam, Myanmar, Laos, and Sri Lanka with companies in Korea and Japan",
+    "seoTitle": "Talent from Nepal, Vietnam and More for Jobs in Korea and Japan",
     "description": "We directly train and source talent in Nepal, source talent through partners in Vietnam, Myanmar, Laos, and Sri Lanka, and connect candidates with employers in the destination and hiring markets of Korea and Japan.",
     "founder": "Oh Je-hwan",
     "foundingDate": "June 10, 2026",
@@ -52,6 +52,7 @@
   },
   "header": {
     "homeAria": "Jeongwoo Human Resource Development Institute home",
+    "skipToContent": "Skip to main content",
     "primaryNav": "Primary navigation",
     "languageSelector": "Select language",
     "openMenu": "Open menu",
@@ -134,7 +135,7 @@
       "items": {
         "company": {
           "q": "What kind of company is Jeongwoo Human Resource Development Institute?",
-          "a": "Jeongwoo Human Resource Development Institute is a global human-resources development company that develops Nepali talent through local vocational training and lawfully connects it with companies in Korea and Japan."
+          "a": "Jeongwoo Human Resource Development Institute is a global human-resources development company that lawfully connects talent from Nepal, Vietnam, Myanmar, Laos, and Sri Lanka with companies in Korea and Japan. In Nepal, we develop talent directly through local vocational training."
         },
         "visa": {
           "q": "Which work visas and systems do you support?",
@@ -148,10 +149,6 @@
         "countries": {
           "q": "Which countries do your candidates come from?",
           "a": "We directly train and source talent in Nepal, source talent through partners in Vietnam, Myanmar, Laos, and Sri Lanka, and connect candidates with employers in the destination and hiring markets of Korea and Japan."
-        },
-        "trust": {
-          "q": "Can a new company be trusted?",
-          "a": "We disclose only verifiable facts rather than unconfirmed placement counts or rankings. Our work is based on a cooperative system that includes MOUs with six organizations in Nepal."
         }
       }
     },
@@ -272,7 +269,7 @@
     }
   },
   "cta": {
-    "title": "Let us first confirm your company’s requirements",
+    "title": "We look forward to hearing your requirements",
     "description": "Tell us the role, headcount, preferred timeline, and visa direction, and we will outline the available process and preparation order.",
     "contactCta": "Hiring preparation",
     "processCta": "View process",
@@ -282,20 +279,20 @@
     "about": {
       "metadata": {
         "title": "About us",
-        "description": "Learn about Jeongwoo Human Resource Development Institute, a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan."
+        "description": "Learn about Jeongwoo Human Resource Development Institute, a global human-resources development company that lawfully connects talent from Nepal, Vietnam, Myanmar, Laos, and Sri Lanka with companies in Korea and Japan."
       },
       "banner": {
         "eyebrow": "Company overview",
         "context": "From local training to settlement support",
         "title": "About us",
-        "description": "We are a global human-resources development company that develops Nepali talent through local training and lawfully connects it with companies in Korea and Japan.",
+        "description": "We are a global human-resources development company that lawfully connects talent from Nepal, Vietnam, Myanmar, Laos, and Sri Lanka with companies in Korea and Japan.",
         "crumb": "About us",
         "alt": "Field image illustrating About us"
       },
       "main": {
         "title": "Talent should not simply be sent; it should be prepared",
         "paragraphs": {
-          "first": "Jeongwoo Human Resource Development Institute begins with vocational training in Nepal. We lawfully connect talent equipped with job, language, and cultural skills to the requirements of companies in Korea and Japan.",
+          "first": "Jeongwoo Human Resource Development Institute connects talent from Nepal, Vietnam, Myanmar, Laos, and Sri Lanka with companies in Korea and Japan. In Nepal we run vocational training directly; in the other countries we select candidates with local partners. We lawfully connect talent equipped with job, language, and cultural skills to each company’s requirements.",
           "second": "In July 2026, we signed MOUs with six organizations in Nepal to strengthen cooperation for worker selection, qualification verification, education, and immigration administration."
         },
         "servicesCta": "Services",
@@ -651,7 +648,7 @@
         "description": "Vocational training specializing in welding"
       },
       "engate": {
-        "name": "ENgate",
+        "name": "Engatesoft",
         "description": "Partner listed in the company presentation"
       },
       "ocean": {

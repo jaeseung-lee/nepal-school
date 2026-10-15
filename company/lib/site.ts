@@ -11,7 +11,7 @@ export const SITE = {
     en: "Jeongwoo Human Resource Development Institute",
   },
   shortName: "정우인재개발원",
-  slogan: "네팔 인재를 현지 직업교육으로 양성하는 글로벌 인적자원 파트너",
+  slogan: "네팔·베트남·미얀마·라오스·스리랑카 인재를 한국·일본 기업에 연결하는 글로벌 인적자원 파트너",
   seoTitle: "네팔 인재 양성·한국·일본 취업 연계",
   description:
     "네팔에서 인재를 직접 교육·공급하고, 베트남·미얀마·라오스·스리랑카에서는 현지 파트너를 통해 인재를 공급합니다. 한국과 일본은 채용·취업 연계 시장입니다.",
