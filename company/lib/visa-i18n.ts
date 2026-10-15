@@ -18,6 +18,7 @@ type VisaTranslation = {
   keywords: string;
   glance: Record<string, { label: string; value: string }>;
   faqs: Record<string, { question: string; answer: string }>;
+  sources?: Record<string, string>;
 };
 
 const CATALOGS: Record<Locale, VisaMessages> = {
@@ -63,6 +64,11 @@ export function getLocalizedVisa(locale: Locale, slug: string): Visa {
     keywords: translation.keywords.split(",").map((keyword) => keyword.trim()).filter(Boolean),
     glance,
     faqs,
+    sources: base.sources?.map((source) => {
+      const label = translation.sources?.[source.key];
+      if (!label) throw new Error(`No localized source label for ${slug}.${source.key} (${locale})`);
+      return { ...source, label };
+    }),
   };
 }
 

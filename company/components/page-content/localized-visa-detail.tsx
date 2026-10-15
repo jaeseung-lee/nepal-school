@@ -7,6 +7,7 @@ import RelatedVisas from "@/components/visa/related-visas";
 import VisaDisclaimer from "@/components/visa/visa-disclaimer";
 import VisaGlance from "@/components/visa/visa-glance";
 import VisaSchema from "@/components/visa/visa-schema";
+import VisaSources from "@/components/visa/visa-sources";
 import { type Locale } from "@/lib/i18n";
 import { getLocalizedVisa, getVisaMessages } from "@/lib/visa-i18n";
 
@@ -53,7 +54,13 @@ export default function LocalizedVisaDetail({ locale, slug }: { locale: Locale; 
             </div>
           ) : null}
 
-          <div className="mt-16">
+          {visa.sources?.length ? (
+            <div className="mt-16">
+              <VisaSources heading={messages.ui.officialSources} sources={visa.sources} />
+            </div>
+          ) : null}
+
+          <div className={visa.sources?.length ? "mt-8" : "mt-16"}>
             <VisaDisclaimer locale={locale} />
           </div>
         </div>

@@ -41,15 +41,16 @@ export default function OrganizationSchema() {
       })),
     ],
     ...(SITE.bizRegNo ? { taxID: SITE.bizRegNo } : {}),
-    ...(SITE.streetAddress
-      ? {
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: SITE.streetAddress,
-            addressCountry: "KR",
-          },
-        }
-      : {}),
+    foundingDate: SITE.foundingDate,
+    // 대표자(개인사업자). 푸터·문의 페이지에 이미 공개된 이름만 쓴다
+    founder: { "@type": "Person", name: SITE.founder },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE.address.street,
+      addressLocality: SITE.address.locality,
+      addressRegion: SITE.address.region,
+      addressCountry: SITE.address.country,
+    },
   };
 
   return (

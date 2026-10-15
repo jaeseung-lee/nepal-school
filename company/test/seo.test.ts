@@ -12,7 +12,10 @@ import {
   businessAreaPath,
 } from "../lib/business-area-seo";
 import { LOCALES } from "../lib/i18n";
+import { buildLlmsFullTxt, buildLlmsTxt, type LlmsPost } from "../lib/llms";
 import { languageAlternates } from "../lib/seo";
+import { getLocalizedVisa } from "../lib/visa-i18n";
+import { VISAS } from "../lib/visas";
 import { SITE, SITE_URL } from "../lib/site";
 
 const root = process.cwd();
@@ -323,4 +326,63 @@ test("GA4와 PostHog는 선택 환경변수와 동의 상태 뒤에만 렌더된
   assert.match(read("components/web-vitals.tsx"), /LCP.*INP.*CLS/);
   assert.match(read(".env.example"), /NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN/);
   assert.match(read("lib/privacy-copy.ts"), /PostHog/);
+});
+
+test("llms.txt·llms-full.txt는 공개 글·비자 데이터에서 생성되고 정적 사본을 두지 않는다", () => {
+  assert.equal(fs.existsSync(path.join(root, "public/llms.txt")), false);
+  assert.equal(fs.existsSync(path.join(root, "public/llms-full.txt")), false);
+  assert.match(read("app/llms.txt/route.ts"), /getAllBlogPosts\(\{ includeReview: false \}\)/);
+  assert.match(read("app/llms-full.txt/route.ts"), /getAllBlogPosts\(\{ includeReview: false \}\)/);
+
+  const posts: LlmsPost[] = [
+    { language: "ko", slug: "a-ko", title: "가 주제 한국어 제목", translationKey: "topic-a" },
+    { language: "en", slug: "a-en", title: "Topic A English title", translationKey: "topic-a" },
+    { language: "ja", slug: "b-ja", title: "トピックBの日本語タイトル", translationKey: "topic-b" },
+  ];
+  const summary = buildLlmsTxt(posts);
+  const full = buildLlmsFullTxt(posts);
+  assert.match(summary, /It currently has 3 published articles on 2 topics:/);
+  assert.match(summary, /Topic A English title \(available in Korean, English\)/);
+  assert.doesNotMatch(summary, /36 published articles/);
+  for (const visa of VISAS) {
+    assert.ok(summary.includes(`${SITE_URL}/visa/${visa.slug})`), `llms.txt에 /visa/${visa.slug} 누락`);
+    assert.ok(full.includes(`${SITE_URL}/visa/${visa.slug})`), `llms-full.txt에 /visa/${visa.slug} 누락`);
+  }
+  for (const post of posts) assert.ok(full.includes(post.slug), `llms-full.txt에 ${post.slug} 누락`);
+  assert.match(full, new RegExp(`Founded: ${SITE.foundingDate}`));
+});
+
+test("요청마다 렌더되는 공개 라우트는 서울 리전(icn1)에서 실행한다", () => {
+  for (const file of ["app/(public-ko)/layout.tsx", "app/[locale]/layout.tsx", "app/llms.txt/route.ts", "app/llms-full.txt/route.ts"]) {
+    assert.match(read(file), /export const preferredRegion = "icn1";/, file);
+  }
+});
+
+test("사이트맵 lastmod는 비자별 수정일을 쓰고, 수정일은 미래가 아닌 유효한 날짜다", () => {
+  assert.match(read("app/sitemap.ts"), /lastModified: visa\.updatedAt/);
+  const today = new Date().toISOString().slice(0, 10);
+  for (const visa of VISAS) {
+    assert.match(visa.updatedAt, /^\d{4}-\d{2}-\d{2}$/, visa.slug);
+    assert.ok(visa.updatedAt <= today, `${visa.slug} updatedAt이 미래 날짜`);
+  }
+});
+
+test("공식 기준 자료가 있는 비자는 모든 언어에 라벨이 있다", () => {
+  for (const locale of LOCALES) {
+    for (const visa of VISAS.filter((item) => item.sources?.length)) {
+      const localized = getLocalizedVisa(locale, visa.slug);
+      assert.equal(localized.sources?.length, visa.sources?.length, `${locale} ${visa.slug}`);
+      for (const source of localized.sources ?? []) assert.ok(source.label?.trim(), `${locale} ${visa.slug} ${source.key}`);
+    }
+  }
+});
+
+test("Organization 구조화 데이터는 설립일·대표자와 나눈 주소를 쓰고, 나눈 주소는 표시 주소와 같다", () => {
+  const { region, locality, street } = SITE.address;
+  assert.equal(`${region} ${locality} ${street}`, SITE.streetAddress);
+  const schema = read("components/organization-schema.tsx");
+  assert.match(schema, /foundingDate: SITE\.foundingDate/);
+  assert.match(schema, /founder: \{ "@type": "Person", name: SITE\.founder \}/);
+  assert.match(schema, /addressLocality: SITE\.address\.locality/);
+  assert.match(schema, /addressRegion: SITE\.address\.region/);
 });

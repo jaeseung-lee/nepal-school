@@ -19,6 +19,14 @@ export const SITE = {
   foundingDate: "2026-06-10",
   bizRegNo: "684-13-02918",
   streetAddress: "경기도 용인시 기흥구 구갈로28번길 21-6, 금보빌딩 6층 6034호",
+  // 구조화 데이터(PostalAddress)용으로 나눈 주소. 이어 붙이면 streetAddress와 같아야 한다(test/seo.test.ts).
+  // 우편번호는 사업자등록증에서 확인되면 추가한다.
+  address: {
+    region: "경기도",
+    locality: "용인시 기흥구",
+    street: "구갈로28번길 21-6, 금보빌딩 6층 6034호",
+    country: "KR",
+  },
   locale: "ko_KR",
   trainingCountries: [{ code: "NP", nameKo: "네팔", nameEn: "Nepal" }],
   sourcingCountries: [

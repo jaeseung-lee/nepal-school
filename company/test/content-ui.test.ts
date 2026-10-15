@@ -43,3 +43,18 @@ test("blog articles omit drafting disclosure UI and dead copy while preserving s
   assert.match(article, /post\.sources\.map/);
   assert.match(article, /post\.relatedPosts\.map/);
 });
+
+test("blog dates render the Korean calendar day regardless of the server time zone", async () => {
+  const { formatBlogDate } = await import("../lib/blog-copy");
+  const original = process.env.TZ;
+  try {
+    for (const zone of ["UTC", "America/Los_Angeles", "Asia/Seoul"]) {
+      process.env.TZ = zone;
+      assert.equal(formatBlogDate("ko", "2026-07-15"), "2026년 7월 15일", zone);
+      assert.equal(formatBlogDate("en", "2026-07-15"), "July 15, 2026", zone);
+      assert.equal(formatBlogDate("ja", "2026-07-15"), "2026年7月15日", zone);
+    }
+  } finally {
+    process.env.TZ = original;
+  }
+});

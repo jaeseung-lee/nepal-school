@@ -244,7 +244,11 @@ export const BLOG_COPY: Record<BlogLocale, BlogCopy> = {
 
 export function formatBlogDate(locale: BlogLocale, date: string): string {
   const languageTag = { ko: "ko-KR", en: "en-US", ja: "ja-JP", ne: "ne-NP", vi: "vi-VN", lo: "lo-LA" }[locale];
-  return new Intl.DateTimeFormat(languageTag, { year: "numeric", month: "long", day: "numeric" }).format(
-    new Date(`${date}T00:00:00+09:00`),
-  );
+  // 날짜는 한국 기준 자정으로 만든다. 서버(Vercel) 시간대는 UTC라 timeZone을 지정하지 않으면 하루 전 날짜로 표시된다.
+  return new Intl.DateTimeFormat(languageTag, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "Asia/Seoul",
+  }).format(new Date(`${date}T00:00:00+09:00`));
 }

@@ -37,6 +37,12 @@ export interface Visa {
   /** 관련 비자 slug 목록 */
   related: string[];
   sitemapPriority: number;
+  /** 마지막 내용 변경일(YYYY-MM-DD). 사이트맵 lastmod로 쓰이므로 요건·문구를 고치면 함께 올린다 */
+  updatedAt: string;  /**
+   * 공식 기준 자료. 라벨은 언어별 카탈로그 `visas.<slug>.sources.<key>`에 두고,
+   * href가 없는 항목(예: 첨부파일로만 공개된 공고)은 링크 없이 표시한다.
+   */
+  sources?: { key: string; href?: string; label?: string }[];
 }
 
 export const VISAS: Visa[] = [
@@ -82,6 +88,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["e-7", "tokutei-ginou"],
     sitemapPriority: 0.8,
+    updatedAt: "2026-10-15",
   },
   {
     slug: "e-7",
@@ -124,6 +131,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["e-7-m", "d-2-d-4", "e-9"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
   },
   {
     slug: "e-7-m",
@@ -131,7 +139,7 @@ export const VISAS: Visa[] = [
     nameKo: "육성형 전문기술인력 E-7-M (K-CORE)",
     country: "korea",
     countryLabel: "한국",
-    seoTitle: "E-7-M 비자(K-CORE) 요건과 지정 학과 - 전문대 유학생 제조업 취업 가이드",
+    seoTitle: "E-7-M 비자(K-CORE) 요건과 지정 전문대 학과",
     summary:
       "법무부가 2026년 시범 신설한 E-7-M(K-CORE) 비자의 16개 지정 학과, 입학·취업 단계 한국어 요건, 연봉 2,600만원 기준, 채용 기업 혜택과 거주(F-2) 전환 경로를 정리했습니다.",
     keywords: ["E-7-M 비자", "K-CORE 비자", "육성형 전문기술학과", "육성형 전문기술인력", "전문대 유학생 취업", "제조업 외국인 채용"],
@@ -170,6 +178,13 @@ export const VISAS: Visa[] = [
     ],
     related: ["d-2-d-4", "e-7"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
+    sources: [
+      { key: "notice" },
+      { key: "designation", href: "https://www.moj.go.kr/bbs/moj/182/603241/artclView.do" },
+      { key: "launch", href: "https://www.moj.go.kr/bbs/moj/182/604754/artclView.do" },
+      { key: "results", href: "https://www.immigration.go.kr/bbs/immigration/214/607306/artclView.do" },
+    ],
   },
   {
     slug: "d-2-d-4",
@@ -208,6 +223,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["e-7", "e-7-m"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
   },
   // ── 일본 ──────────────────────────────────────────────
   {
@@ -255,6 +271,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["tokutei-ginou-kaigo", "tokutei-ginou-shukuhaku", "ikusei-shuro"],
     sitemapPriority: 0.8,
+    updatedAt: "2026-10-15",
   },
   {
     slug: "tokutei-ginou-kaigo",
@@ -293,6 +310,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["tokutei-ginou", "tokutei-ginou-shukuhaku"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
   },
   {
     slug: "tokutei-ginou-shukuhaku",
@@ -331,6 +349,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["tokutei-ginou", "tokutei-ginou-kaigo"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
   },
   {
     slug: "ikusei-shuro",
@@ -373,6 +392,7 @@ export const VISAS: Visa[] = [
     ],
     related: ["tokutei-ginou"],
     sitemapPriority: 0.7,
+    updatedAt: "2026-10-15",
   },
 ];
 

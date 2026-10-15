@@ -5,7 +5,8 @@ import { SITE_URL } from "@/lib/site";
 
 export type BusinessAreaSeoLocale = BusinessAreaLocale;
 
-export const BUSINESS_AREA_LAST_MODIFIED = "2026-07-19";
+// 사업영역 상세의 마지막 내용 변경일(사이트맵 lastmod). 상세 문구·구성을 바꾸면 함께 올린다.
+export const BUSINESS_AREA_LAST_MODIFIED = "2026-10-15";
 
 export function businessAreaPath(locale: BusinessAreaSeoLocale, slug: BusinessAreaSlug): string {
   const path = `/services/${slug}`;

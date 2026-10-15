@@ -7,7 +7,8 @@
     "relatedVisasAndSystems": "Related visas and systems",
     "countryKorea": "South Korea",
     "countryJapan": "Japan",
-    "disclaimer": "Visa schemes and figures may change in line with government notices and Cabinet decisions. This page provides general information as of the date of writing; please contact us to confirm the requirements that apply to your company and the latest criteria."
+    "disclaimer": "Visa schemes and figures may change in line with government notices and Cabinet decisions. This page provides general information as of the date of writing; please contact us to confirm the requirements that apply to your company and the latest criteria.",
+    "officialSources": "Official sources"
   },
   "hub": {
     "metadata": {
@@ -82,9 +83,10 @@
       "code": "E-7-M",
       "name": "Development-Track Technical Personnel E-7-M (K-CORE)",
       "countryLabel": "South Korea",
-      "seoTitle": "E-7-M (K-CORE) visa requirements and designated departments — guide to manufacturing jobs for junior-college graduates",
-      "summary": "This guide covers the E-7-M (K-CORE) visa piloted by Korea's Ministry of Justice from 2026: the 16 designated junior-college departments, Korean-language requirements at admission and employment, the KRW 26 million salary threshold, employer benefits, and the path to residence (F-2).",
+      "seoTitle": "E-7-M (K-CORE) visa requirements and designated departments",
+      "summary": "Korea's E-7-M (K-CORE) pilot visa from 2026: 16 designated junior-college departments, Korean and KRW 26M salary requirements, employer benefits, F-2 path.",
       "keywords": "E-7-M visa, K-CORE visa, development-track technical departments, junior college international students, Korea manufacturing jobs, hiring foreign graduates",
+      "sources": {"notice": "Ministry of Justice Notice No. 2025-379 (December 8, 2025)", "designation": "Designation announcement (February 5, 2026)", "launch": "Launch announcement (March 26, 2026)", "results": "Implementation results (June 8, 2026)"},
       "glance": {
         "target": {"label": "Eligible students", "value": "International students graduating, or due to graduate, from 16 manufacturing-related junior-college departments designated by the Ministry of Justice"},
         "koreanRequirement": {"label": "Korean language", "value": "TOPIK Level 3 or higher at admission · completion of Social Integration Program (KIIP) Level 4 at employment (TOPIK Level 5 accepted)"},

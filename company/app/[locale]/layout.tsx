@@ -8,6 +8,9 @@ import "../globals.css";
 
 export const dynamicParams = false;
 
+// (public-ko) 레이아웃과 같은 이유로 서울 리전에서 실행한다.
+export const preferredRegion = "icn1";
+
 export function generateStaticParams() {
   return LOCALES.filter((locale) => locale !== "ko").map((locale) => ({ locale }));
 }

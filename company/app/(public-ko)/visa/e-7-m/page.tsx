@@ -9,6 +9,8 @@ import VisaProcess from "@/components/visa/visa-process";
 import FaqList from "@/components/visa/faq-list";
 import RelatedVisas from "@/components/visa/related-visas";
 import VisaDisclaimer from "@/components/visa/visa-disclaimer";
+import VisaSources from "@/components/visa/visa-sources";
+import { getLocalizedVisa, getVisaMessages } from "@/lib/visa-i18n";
 import { buildVisaMetadata, getVisa } from "@/lib/visas";
 
 // 법무부 공고 제2025-379호(2025-12-08)와 보도자료(2026-02-05·03-26·06-08) 기준.
@@ -16,6 +18,8 @@ import { buildVisaMetadata, getVisa } from "@/lib/visas";
 export const metadata = buildVisaMetadata("e-7-m");
 
 const visa = getVisa("e-7-m");
+// 기준 자료 라벨은 다른 언어판과 같은 카탈로그에서 읽는다
+const koreanVisa = getLocalizedVisa("ko", "e-7-m");
 
 const STAGES = [
   {
@@ -240,20 +244,11 @@ export default function E7MPage() {
               </Link>
             </p>
           </div>
-          <p className="mt-8 max-w-3xl text-meta text-muted">
-            기준 자료: 법무부 공고 제2025-379호(2025년 12월 8일),{" "}
-            <a href="https://www.moj.go.kr/bbs/moj/182/603241/artclView.do" className={linkClass} target="_blank" rel="noopener noreferrer">
-              지정 발표(2026년 2월 5일)
-            </a>
-            ,{" "}
-            <a href="https://www.moj.go.kr/bbs/moj/182/604754/artclView.do" className={linkClass} target="_blank" rel="noopener noreferrer">
-              출범 발표(2026년 3월 26일)
-            </a>
-            ,{" "}
-            <a href="https://www.immigration.go.kr/bbs/immigration/214/607306/artclView.do" className={linkClass} target="_blank" rel="noopener noreferrer">
-              시행 성과 발표(2026년 6월 8일)
-            </a>
-          </p>
+          {koreanVisa.sources?.length ? (
+            <div className="mt-8">
+              <VisaSources heading={getVisaMessages("ko").ui.officialSources} sources={koreanVisa.sources} />
+            </div>
+          ) : null}
           <div className="mt-8">
             <VisaDisclaimer />
           </div>

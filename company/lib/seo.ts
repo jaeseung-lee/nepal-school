@@ -3,7 +3,9 @@ import { BRAND_SOCIAL_IMAGE } from "./brand";
 import { getMessages, LOCALES, LOCALE_DETAILS, localizedHref, type Locale } from "./i18n";
 import { SITE, SITE_URL } from "./site";
 
-export const CONTENT_LAST_MODIFIED = "2026-07-19";
+// 공개 고정 페이지(홈·회사·사업영역 목록·비자 허브 등)의 마지막 내용 변경일. 사이트맵 lastmod로 쓰이므로
+// 이 페이지들의 문구·구성을 바꾸면 함께 올린다. 비자 상세는 lib/visas.ts의 updatedAt을 쓴다.
+export const CONTENT_LAST_MODIFIED = "2026-10-15";
 
 export function languageAlternates(path: string): Record<string, string> {
   const languages = Object.fromEntries(

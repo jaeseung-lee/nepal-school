@@ -7,7 +7,8 @@
     "relatedVisasAndSystems": "Thị thực và chương trình liên quan",
     "countryKorea": "Hàn Quốc",
     "countryJapan": "Nhật Bản",
-    "disclaimer": "Chế độ thị thực và các số liệu có thể thay đổi theo thông báo của chính phủ và quyết định của Nội các. Nội dung này là thông tin chung tại thời điểm biên soạn; vui lòng liên hệ tư vấn để xác nhận điều kiện áp dụng cho từng doanh nghiệp và tiêu chí mới nhất."
+    "disclaimer": "Chế độ thị thực và các số liệu có thể thay đổi theo thông báo của chính phủ và quyết định của Nội các. Nội dung này là thông tin chung tại thời điểm biên soạn; vui lòng liên hệ tư vấn để xác nhận điều kiện áp dụng cho từng doanh nghiệp và tiêu chí mới nhất.",
+    "officialSources": "Nguồn chính thức"
   },
   "hub": {
     "metadata": {
@@ -82,9 +83,10 @@
       "code": "E-7-M",
       "name": "Nhân lực kỹ thuật chuyên môn theo diện đào tạo E-7-M (K-CORE)",
       "countryLabel": "Hàn Quốc",
-      "seoTitle": "Điều kiện thị thực E-7-M (K-CORE) và các khoa được chỉ định — hướng dẫn việc làm ngành sản xuất cho du học sinh cao đẳng",
-      "summary": "Tổng hợp về thị thực E-7-M (K-CORE) do Bộ Tư pháp Hàn Quốc thí điểm từ năm 2026: 16 khoa được chỉ định tại các trường cao đẳng, yêu cầu tiếng Hàn khi nhập học và khi đi làm, mức lương 26 triệu won/năm, ưu đãi cho doanh nghiệp tuyển dụng và lộ trình chuyển sang tư cách cư trú (F-2).",
+      "seoTitle": "Thị thực E-7-M (K-CORE): điều kiện và các khoa được chỉ định",
+      "summary": "Thị thực E-7-M (K-CORE) thí điểm từ 2026: 16 khoa cao đẳng được chỉ định, yêu cầu tiếng Hàn và lương 26 triệu won/năm, ưu đãi doanh nghiệp và lộ trình F-2.",
       "keywords": "thị thực E-7-M, visa K-CORE, khoa kỹ thuật chuyên môn theo diện đào tạo, du học sinh cao đẳng Hàn Quốc, việc làm ngành sản xuất Hàn Quốc",
+      "sources": {"notice": "Thông báo số 2025-379 của Bộ Tư pháp (8/12/2025)", "designation": "Thông báo chỉ định khoa (5/2/2026)", "launch": "Thông báo khởi động (26/3/2026)", "results": "Thông báo kết quả triển khai (8/6/2026)"},
       "glance": {
         "target": {"label": "Đối tượng", "value": "Du học sinh đã tốt nghiệp hoặc sắp tốt nghiệp 16 khoa thuộc lĩnh vực sản xuất tại các trường cao đẳng do Bộ Tư pháp chỉ định"},
         "koreanRequirement": {"label": "Yêu cầu tiếng Hàn", "value": "Khi nhập học: TOPIK cấp 3 trở lên · Khi đi làm: hoàn thành cấp 4 Chương trình Hội nhập Xã hội (KIIP) (chấp nhận TOPIK cấp 5)"},
