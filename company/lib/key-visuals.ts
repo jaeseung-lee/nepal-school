@@ -42,6 +42,7 @@ export const KEY_VISUALS = {
   visas: {
     "e-9": { id: "everest-multi-skills-training-hall", position: "50% 55%" },
     "e-7": { id: "interview-room-overview", position: "50% 50%" },
+    "e-7-m": { id: "everest-multi-skills-training-hall", position: "35% 60%" },
     "d-2-d-4": { id: "healthcare-training-classroom", position: "50% 50%" },
     "tokutei-ginou": { id: "suyan-education-institute-visit", position: "50% 35%" },
     "tokutei-ginou-kaigo": { id: "caregiver-practice-room-patient-hoist", position: "50% 50%" },

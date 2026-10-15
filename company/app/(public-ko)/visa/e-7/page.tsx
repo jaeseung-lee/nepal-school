@@ -123,6 +123,18 @@ export default function E7Page() {
               시점에 반드시 최신 기준을 확인해야 합니다.
             </p>
           </div>
+
+          <div className="mt-8 border-l-2 border-ink py-1 pl-6">
+            <h3 className="text-lg font-bold tracking-[-0.02em] text-ink">전문대 유학생을 위한 E-7-M(K-CORE)</h3>
+            <p className="mt-3 max-w-3xl text-description text-muted">
+              2026년에는 법무부 지정 전문대 학과를 졸업한 유학생이 지역 제조업체에 취업할 때 받는
+              E-7-M이 시범 신설됐습니다. 지정 학과 졸업, 한국어, 연봉 요건을 갖추면 고용 필요성이
+              인정됩니다.{" "}
+              <Link href="/visa/e-7-m" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+                E-7-M 안내 보기
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 

@@ -12,7 +12,7 @@
   "hub": {
     "metadata": {
       "title": "Thông tin thị thực tuyển dụng lao động nước ngoài — E-9, E-7, D-2/D-4 của Hàn Quốc và Kỹ năng đặc định của Nhật Bản",
-      "description": "Tổng hợp thị thực và chương trình dùng để tuyển dụng lao động nước ngoài tại một nơi. Nội dung gồm Hệ thống cấp phép lao động E-9, nhân lực chuyên môn E-7, du học D-2/D-4 của Hàn Quốc, cùng Kỹ năng đặc định số 1, lĩnh vực chăm sóc điều dưỡng/lưu trú và chương trình Đào tạo và làm việc của Nhật Bản.",
+      "description": "Tổng hợp thị thực và chương trình dùng để tuyển dụng lao động nước ngoài tại một nơi. Nội dung gồm Hệ thống cấp phép lao động E-9, nhân lực chuyên môn E-7, lộ trình E-7-M cho du học sinh tốt nghiệp cao đẳng, du học D-2/D-4 của Hàn Quốc, cùng Kỹ năng đặc định số 1, lĩnh vực chăm sóc điều dưỡng/lưu trú và chương trình Đào tạo và làm việc của Nhật Bản.",
       "keywords": "thị thực tuyển dụng lao động nước ngoài, thị thực lao động nước ngoài, các loại thị thực làm việc, Hệ thống cấp phép lao động, Kỹ năng đặc định"
     },
     "banner": {
@@ -25,7 +25,7 @@
     },
     "koreaSection": {
       "title": "Thị thực làm việc tại Hàn Quốc",
-      "description": "Tùy theo đặc điểm nhân lực cần tuyển mà áp dụng chương trình khác nhau, như Hệ thống cấp phép lao động (E-9), nhân lực chuyên môn (E-7) hoặc lộ trình sinh viên quốc tế (D-2/D-4)."
+      "description": "Tùy theo đặc điểm nhân lực cần tuyển mà áp dụng chương trình khác nhau, như Hệ thống cấp phép lao động (E-9), nhân lực chuyên môn (E-7), lộ trình cho du học sinh tốt nghiệp cao đẳng (E-7-M) hoặc lộ trình sinh viên quốc tế (D-2/D-4)."
     },
     "japanSection": {
       "title": "Chương trình làm việc tại Nhật Bản",
@@ -76,6 +76,29 @@
         "e74": {"question": "E-7-4 (nhân lực kỹ năng lành nghề) là gì?", "answer": "Đây là loại hình đánh giá theo thang điểm và chuyển đổi những lao động nước ngoài có lịch sử lưu trú dài hạn tại Hàn Quốc thành nhân lực kỹ năng lành nghề. Đây là con đường tiêu biểu để tiếp tục tuyển dụng dài hạn lao động đã làm việc theo E-9 hoặc diện tương tự."},
         "studentHiring": {"question": "Có thể tuyển sinh viên quốc tế theo E-7 không?", "answer": "Với sinh viên quốc tế tốt nghiệp đại học tại Hàn Quốc (D-2), chuyển sang E-7 khi đáp ứng điều kiện là một lộ trình phổ biến. Cần xem xét đồng thời sự liên quan giữa chuyên ngành và công việc, cùng điều kiện của doanh nghiệp."},
         "employerRequirements": {"question": "Có điều kiện nào đối với doanh nghiệp không?", "answer": "Theo từng ngành có giới hạn tỷ lệ lao động nước ngoài so với lao động Hàn Quốc và điều kiện đối với cơ sở. Trước khi tuyển, cần xác nhận doanh nghiệp mình được tuyển bao nhiêu lao động nước ngoài cho nghề đó."}
+      }
+    },
+    "e-7-m": {
+      "code": "E-7-M",
+      "name": "Nhân lực kỹ thuật chuyên môn theo diện đào tạo E-7-M (K-CORE)",
+      "countryLabel": "Hàn Quốc",
+      "seoTitle": "Điều kiện thị thực E-7-M (K-CORE) và các khoa được chỉ định — hướng dẫn việc làm ngành sản xuất cho du học sinh cao đẳng",
+      "summary": "Tổng hợp về thị thực E-7-M (K-CORE) do Bộ Tư pháp Hàn Quốc thí điểm từ năm 2026: 16 khoa được chỉ định tại các trường cao đẳng, yêu cầu tiếng Hàn khi nhập học và khi đi làm, mức lương 26 triệu won/năm, ưu đãi cho doanh nghiệp tuyển dụng và lộ trình chuyển sang tư cách cư trú (F-2).",
+      "keywords": "thị thực E-7-M, visa K-CORE, khoa kỹ thuật chuyên môn theo diện đào tạo, du học sinh cao đẳng Hàn Quốc, việc làm ngành sản xuất Hàn Quốc",
+      "glance": {
+        "target": {"label": "Đối tượng", "value": "Du học sinh đã tốt nghiệp hoặc sắp tốt nghiệp 16 khoa thuộc lĩnh vực sản xuất tại các trường cao đẳng do Bộ Tư pháp chỉ định"},
+        "koreanRequirement": {"label": "Yêu cầu tiếng Hàn", "value": "Khi nhập học: TOPIK cấp 3 trở lên · Khi đi làm: hoàn thành cấp 4 Chương trình Hội nhập Xã hội (KIIP) (chấp nhận TOPIK cấp 5)"},
+        "employmentContract": {"label": "Hợp đồng lao động", "value": "Doanh nghiệp liên quan đến chuyên ngành, lương khởi điểm từ 26 triệu won/năm, thời hạn từ 1 năm (áp dụng mức E-7-4 năm 2025)"},
+        "longTermPath": {"label": "Lộ trình định cư", "value": "Làm việc liên tục 5 năm với E-7-M, hoặc 3 năm cho cùng một doanh nghiệp tại khu vực suy giảm dân số, có thể xin tư cách cư trú (F-2)"},
+        "pilotPeriod": {"label": "Thời gian thí điểm", "value": "Từ tháng 1/2026 đến ngày 31/12/2027 (Thông báo số 2025-379 của Bộ Tư pháp)"}
+      },
+      "faqs": {
+        "whatIsIt": {"question": "Thị thực E-7-M (K-CORE) là gì?", "answer": "Đây là loại mới thuộc thị thực Hoạt động đặc định (E-7), dành cho du học sinh đã học tiếng Hàn và kỹ thuật tại trường cao đẳng ở Hàn Quốc khi vào làm việc tại doanh nghiệp sản xuất ở địa phương. K-CORE là viết tắt của 'K-College to Regional Employment', còn M chỉ trình độ trung gian (middle-skill) giữa nhân lực chuyên môn và nhân lực phổ thông. Bộ Tư pháp cho biết thị thực này được thiết lập vào tháng 3/2026."},
+        "designatedDepartments": {"question": "Phải tốt nghiệp trường nào mới được cấp E-7-M?", "answer": "Chỉ áp dụng cho người tốt nghiệp hoặc sắp tốt nghiệp 'khoa kỹ thuật chuyên môn theo diện đào tạo' do Bộ Tư pháp chỉ định vào tháng 2/2026 tại 16 trường cao đẳng (mỗi trường 1 khoa). Đây là các khoa thuộc lĩnh vực sản xuất như cơ khí, ô tô, điện, dệt may và nông sản thực phẩm; không áp dụng cho các khoa khác trong cùng trường hay người tốt nghiệp các trường cao đẳng khác."},
+        "koreanLevel": {"question": "Cần trình độ tiếng Hàn như thế nào?", "answer": "Khi nhập học, cần đáp ứng một trong các điều kiện: TOPIK cấp 3 trở lên, hoàn thành cấp 3 Chương trình Hội nhập Xã hội (hoặc đạt từ 61 điểm bài đánh giá đầu vào), hoặc trình độ Trung cấp 1 của Viện King Sejong trở lên. Để được cấp E-7-M sau khi tốt nghiệp, cần hoàn thành cấp 4 Chương trình Hội nhập Xã hội trở lên; TOPIK cấp 5 cũng được chấp nhận."},
+        "employerBenefits": {"question": "Doanh nghiệp tuyển dụng có gì thay đổi?", "answer": "Khi đáp ứng đủ ba điều kiện — tốt nghiệp khoa được chỉ định, yêu cầu tiếng Hàn và hợp đồng với doanh nghiệp liên quan đến chuyên ngành có lương khởi điểm từ 26 triệu won/năm, thời hạn từ 1 năm — người lao động được coi là đã đáp ứng yêu cầu 'sự cần thiết tuyển dụng' của E-7. Doanh nghiệp tuyển sinh viên tốt nghiệp diện này cũng được nới hạn mức tỷ lệ lao động nước ngoài so với lao động Hàn Quốc (20%). Trong học kỳ cuối, sinh viên có thể thực tập tại doanh nghiệp liên quan đến chuyên ngành nếu được người đứng đầu cơ quan xuất nhập cảnh cho phép trước."},
+        "longTermStay": {"question": "Thị thực này có dẫn đến lưu trú dài hạn không?", "answer": "Người làm việc liên tục từ 5 năm trở lên với E-7-M, hoặc làm việc từ 3 năm trở lên cho cùng một doanh nghiệp tại khu vực suy giảm dân số, có thể xin tư cách cư trú (F-2)."},
+        "guarantee": {"question": "Nếu nhập học khoa được chỉ định ngay bây giờ, có chắc chắn được cấp E-7-M sau khi tốt nghiệp không?", "answer": "Không được bảo đảm. Hiện đây là chương trình thí điểm đến ngày 31/12/2027; trước khi kết thúc, Bộ Tư pháp sẽ đánh giá kết quả để quyết định gia hạn hoặc chính thức hóa. Mức lương tiêu chuẩn cũng có thể được điều chỉnh, vì vậy cần kiểm tra thông báo mới nhất tại thời điểm nhập học và tuyển dụng."}
       }
     },
     "d-2-d-4": {

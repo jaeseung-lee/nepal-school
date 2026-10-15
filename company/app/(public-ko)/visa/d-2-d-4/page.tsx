@@ -122,6 +122,11 @@ export default function D2D4Page() {
             <p className="mt-6 max-w-2xl text-description text-muted">
               재학 중 시간제 근무로 학업과 근무 태도, 한국어 능력을 확인할 수 있습니다. 졸업 후
               채용할 때는 해당 기록과 직무 요건을 함께 검토하고, 알맞은 취업자격으로 변경해야 합니다.
+              법무부 지정 전문대 학과 졸업생은 요건을 갖추면{" "}
+              <Link href="/visa/e-7-m" className="font-medium text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
+                E-7-M
+              </Link>
+              으로 취업할 수 있습니다.
             </p>
           </div>
           <div className="mt-10">

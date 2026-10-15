@@ -12,7 +12,7 @@
   "hub": {
     "metadata": {
       "title": "Foreign-worker visa information — Korea E-9, E-7, D-2/D-4 and Japan Specified Skilled Worker",
-      "description": "A single guide to visas and systems used to hire foreign workers. It covers Korea's Employment Permit System E-9, professional-worker E-7, study D-2/D-4, and Japan's Specified Skilled Worker No. 1, nursing-care and accommodation fields, and Employment for Skill Development.",
+      "description": "A single guide to visas and systems used to hire foreign workers. It covers Korea's Employment Permit System E-9, professional-worker E-7, the junior-college graduate track E-7-M, study D-2/D-4, and Japan's Specified Skilled Worker No. 1, nursing-care and accommodation fields, and Employment for Skill Development.",
       "keywords": "foreign worker hiring visas, foreign worker visas, work visa types, Employment Permit System, Specified Skilled Worker"
     },
     "banner": {
@@ -25,7 +25,7 @@
     },
     "koreaSection": {
       "title": "Korean work visas",
-      "description": "The appropriate system differs according to the workers needed, including the Employment Permit System (E-9), professional personnel (E-7), and the international-student pipeline (D-2/D-4)."
+      "description": "The appropriate system differs according to the workers needed, including the Employment Permit System (E-9), professional personnel (E-7), the junior-college graduate track (E-7-M), and the international-student pipeline (D-2/D-4)."
     },
     "japanSection": {
       "title": "Japanese work systems",
@@ -76,6 +76,29 @@
         "e74": {"question": "What is E-7-4 (skilled-functional personnel)?", "answer": "It is a category that assesses foreign workers with a long domestic residence history through a points system and converts them to skilled-functional personnel. It is a major route for extending into long-term employment workers who have worked under E-9 or similar status."},
         "studentHiring": {"question": "Can international students be hired under E-7?", "answer": "For international students who graduate from a Korean university (D-2), conversion to E-7 upon meeting the requirements is a typical route. The connection between the major and the role, as well as company requirements, must be reviewed together."},
         "employerRequirements": {"question": "Are there employer-side requirements as well?", "answer": "Depending on the industry, limits apply to the ratio of foreign employees to Korean employees, as do workplace requirements. Before hiring, confirm how many foreign workers your company may employ in the relevant occupation."}
+      }
+    },
+    "e-7-m": {
+      "code": "E-7-M",
+      "name": "Development-Track Technical Personnel E-7-M (K-CORE)",
+      "countryLabel": "South Korea",
+      "seoTitle": "E-7-M (K-CORE) visa requirements and designated departments — guide to manufacturing jobs for junior-college graduates",
+      "summary": "This guide covers the E-7-M (K-CORE) visa piloted by Korea's Ministry of Justice from 2026: the 16 designated junior-college departments, Korean-language requirements at admission and employment, the KRW 26 million salary threshold, employer benefits, and the path to residence (F-2).",
+      "keywords": "E-7-M visa, K-CORE visa, development-track technical departments, junior college international students, Korea manufacturing jobs, hiring foreign graduates",
+      "glance": {
+        "target": {"label": "Eligible students", "value": "International students graduating, or due to graduate, from 16 manufacturing-related junior-college departments designated by the Ministry of Justice"},
+        "koreanRequirement": {"label": "Korean language", "value": "TOPIK Level 3 or higher at admission · completion of Social Integration Program (KIIP) Level 4 at employment (TOPIK Level 5 accepted)"},
+        "employmentContract": {"label": "Employment contract", "value": "Major-related employer, starting annual salary of KRW 26 million or more, for at least one year (based on the 2025 E-7-4 standard)"},
+        "longTermPath": {"label": "Path to settlement", "value": "Five years of continuous employment on E-7-M, or three years with the same employer in a depopulation area, allows an application for residence (F-2)"},
+        "pilotPeriod": {"label": "Pilot period", "value": "January 2026 to December 31, 2027 (Ministry of Justice Notice No. 2025-379)"}
+      },
+      "faqs": {
+        "whatIsIt": {"question": "What is the E-7-M (K-CORE) visa?", "answer": "It is a new category of the Specific Activities (E-7) visa for international students who have learned Korean and technical skills at a Korean junior college and take jobs with regional manufacturers. K-CORE stands for 'K-College to Regional Employment', and M refers to the middle-skill level between professional and non-professional workers. The Ministry of Justice states that the visa was created in March 2026."},
+        "designatedDepartments": {"question": "Which schools must students graduate from to obtain E-7-M?", "answer": "Only graduates, or expected graduates, of the 'development-track technical departments' designated by the Ministry of Justice in February 2026 at 16 junior colleges (one department per college) are eligible. These are manufacturing-related departments such as mechanical, automotive, electrical, textile, and agri-food; other departments at the same college and graduates of other junior colleges are not covered."},
+        "koreanLevel": {"question": "What level of Korean is required?", "answer": "At admission, one of the following is required: TOPIK Level 3 or higher, completion of Social Integration Program Level 3 (or a pre-assessment score of 61 or higher), or King Sejong Institute Intermediate 1 or higher. To obtain E-7-M after graduation, the student must complete Social Integration Program Level 4 or higher; TOPIK Level 5 is also accepted."},
+        "employerBenefits": {"question": "What changes for the hiring company?", "answer": "When all three conditions are met — graduation from a designated department, the Korean-language requirement, and a contract with a major-related employer at a starting annual salary of KRW 26 million or more for at least one year — the E-7 'employment necessity' requirement is deemed satisfied. Companies that hire these graduates also receive relief from the 20% quota on foreign employees relative to Korean employees. In the final semester, students may intern at a major-related company with prior permission from the head of the immigration office."},
+        "longTermStay": {"question": "Can it lead to long-term residence?", "answer": "Holders who work continuously on E-7-M for five years or more, or who work for the same company in a depopulation area for three years or more, may apply for residence (F-2) status."},
+        "guarantee": {"question": "If a student enrolls in a designated department now, is E-7-M guaranteed after graduation?", "answer": "No. The scheme is currently a pilot that runs until December 31, 2027, and the Ministry of Justice will decide on an extension or full adoption after a performance review before the period ends. The salary threshold may also be adjusted, so the latest notices should be checked at the time of admission and hiring."}
       }
     },
     "d-2-d-4": {
