@@ -85,10 +85,8 @@ test("공통 대체 링크가 6개 언어와 x-default를 제공한다", () => {
 test("공개 문서는 서버 루트 레이아웃에서 정확한 lang을 렌더한다", () => {
   const korean = read("app/(public-ko)/layout.tsx");
   const localized = read("app/[locale]/layout.tsx");
-  const internal = read("app/(internal)/layout.tsx");
   assert.match(korean, /<html lang="ko"/);
   assert.match(localized, /<html lang=\{locale\}/);
-  assert.match(internal, /<html lang="ko"/);
   assert.doesNotMatch(korean + localized, /LocaleDocumentAttributes/);
 });
 
@@ -120,11 +118,11 @@ test("144개 글이 24개 번역 묶음으로 완성되어 있다", () => {
   for (const locales of groups.values()) assert.deepEqual([...locales].sort(), [...BLOG_LOCALES].sort());
 });
 
-test("robots는 공개·AI 크롤러를 허용하고 내부 화면을 차단한다", () => {
+test("robots는 공개·AI 크롤러를 허용하고, 관리자 화면이 없으므로 차단 경로를 두지 않는다", () => {
   const policy = robots();
   assert.equal(policy.sitemap, `${SITE_URL}/sitemap.xml`);
   const text = JSON.stringify(policy);
-  for (const route of ["/sales", "/login", "/auth"]) assert.match(text, new RegExp(route));
+  assert.doesNotMatch(text, /disallow|\/sales|\/login|\/auth/i);
   for (const bot of ["GPTBot", "OAI-SearchBot", "ClaudeBot", "PerplexityBot", "Google-Extended"]) assert.match(text, new RegExp(bot));
 });
 
@@ -256,8 +254,8 @@ test("구 KTS 랜딩은 돌봄 상세로 영구 이동하고 #ja를 일본어 �
   assert.match(bridge, /window\.location\.replace\(`\/ja\/services\/japan-caregiver/);
 });
 
-test("PDF 다운로드는 미들웨어를 건너뛰고 검색 제외 헤더를 받는다", async () => {
-  assert.match(read("middleware.ts"), /webp\|pdf/);
+test("PDF 다운로드는 검색 제외 헤더를 받는다(미들웨어 없음)", async () => {
+  assert.equal(fs.existsSync(path.join(root, "middleware.ts")), false);
   const config = (await import("../next.config.mjs")).default;
   const headers = await config.headers!();
   const downloads = headers.find((rule) => rule.source === "/downloads/:path*");
@@ -385,4 +383,13 @@ test("Organization 구조화 데이터는 설립일·대표자와 나눈 주소�
   assert.match(schema, /founder: \{ "@type": "Person", name: SITE\.founder \}/);
   assert.match(schema, /addressLocality: SITE\.address\.locality/);
   assert.match(schema, /addressRegion: SITE\.address\.region/);
+});
+
+test("관리자·영업 화면과 인증 코드가 공개 사이트에 남아 있지 않다", () => {
+  for (const removed of ["app/(internal)", "app/auth", "middleware.ts", "lib/sales", "lib/supabase", "components/sales", "lib/internal-routes.ts"]) {
+    assert.equal(fs.existsSync(path.join(root, removed)), false, `${removed}가 남아 있음`);
+  }
+  const pkg = JSON.parse(read("package.json"));
+  for (const dependency of ["@supabase/ssr", "@supabase/supabase-js"]) assert.equal(dependency in pkg.dependencies, false, dependency);
+  assert.equal(Object.keys(pkg.scripts).some((name) => name.startsWith("sales:") || name === "test:sales"), false);
 });

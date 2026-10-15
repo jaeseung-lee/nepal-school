@@ -30,7 +30,7 @@ assert.ok(sitemapUrls.length >= 120, `expected at least 120 sitemap URLs, got ${
 const robotsResponse = await fetchLocal("/robots.txt");
 assert.equal(robotsResponse.status, 200, "robots.txt must return 200");
 const robots = await robotsResponse.text();
-for (const route of ["/sales", "/login", "/auth"]) assert.match(robots, new RegExp(`Disallow: ${route}`));
+assert.doesNotMatch(robots, /Disallow:/, "관리자 화면을 제거했으므로 robots.txt에 차단 경로가 없어야 한다");
 
 const seenTitles = new Map<string, string>();
 const seenDescriptions = new Map<string, string>();
@@ -92,7 +92,6 @@ for (const productionUrl of sitemapUrls) {
 }
 
 for (const href of hrefs) {
-  if (["/sales", "/login", "/auth", "/unauthorized"].some((prefix) => href.startsWith(prefix))) continue;
   const response = await fetchLocal(href);
   assert.notEqual(response.status, 404, `broken internal link: ${href}`);
 }

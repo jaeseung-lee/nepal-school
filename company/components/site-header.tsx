@@ -20,7 +20,6 @@ import {
   LOCALES,
   localizedHref,
 } from "@/lib/i18n";
-import { isInternalPath } from "@/lib/internal-routes";
 
 const BUSINESS_AREA_LANGUAGES = ["ko", "ja"] as const;
 const BUSINESS_AREA_PATH = /^\/(?:ja\/)?services\/(?:japan-caregiver|japan-hospitality|korea-study|korea-welding)\/?$/;
@@ -108,8 +107,6 @@ export default function SiteHeader() {
       document.body.style.overflow = previousOverflow;
     };
   }, [menuOpen]);
-
-  if (isInternalPath(pathname)) return null;
 
   // 키보드 포커스가 헤더 밖으로 나가면 펼친 패널을 닫는다. (빈 곳 클릭처럼 대상이 없을 때는 유지)
   const handleBlur = (event: FocusEvent<HTMLElement>) => {

@@ -7,7 +7,6 @@ import { getNavItems } from "@/lib/nav";
 import { getBlogIndexPath, isBlogLocale } from "@/lib/blog-routing";
 import { SITE } from "@/lib/site";
 import { getLocaleFromPathname, getMessages, localizedHref } from "@/lib/i18n";
-import { isInternalPath } from "@/lib/internal-routes";
 import { PRIVACY_COPY } from "@/lib/privacy-copy";
 
 export default function SiteFooter() {
@@ -24,8 +23,6 @@ export default function SiteFooter() {
     })),
     SITE.email ? { label: messages.common.email, value: SITE.email, href: `mailto:${SITE.email}` } : null,
   ].filter(Boolean) as { label: string; value: string; href?: string }[];
-
-  if (isInternalPath(pathname)) return null;
 
   return (
     <footer className="surface-dark bg-night-deep text-white">

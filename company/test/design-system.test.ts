@@ -7,13 +7,11 @@ import test from "node:test";
 // (클래스가 아무 스타일도 만들지 않음) 소스에서 직접 막는다. 내부 영업툴은 별도 화면이라 제외한다.
 const root = process.cwd();
 const PUBLIC_SOURCE_DIRS = ["app", "components"];
-const EXCLUDED = [path.join("app", "(internal)"), path.join("components", "sales")];
 const UTILITY_PREFIX = "(?:text|bg|border|ring|outline|decoration|from|via|to|fill|stroke|shadow|divide|placeholder|caret|accent)";
 
 function listSourceFiles(directory: string): string[] {
   return fs.readdirSync(path.join(root, directory), { withFileTypes: true }).flatMap((entry) => {
     const relative = path.join(directory, entry.name);
-    if (EXCLUDED.some((excluded) => relative.startsWith(excluded))) return [];
     if (entry.isDirectory()) return listSourceFiles(relative);
     return /\.(tsx?|mjs)$/.test(entry.name) ? [relative] : [];
   });
