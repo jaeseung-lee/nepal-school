@@ -589,6 +589,10 @@
         "name": "평택대학교",
         "description": "학부"
       },
+      "hyupsung": {
+        "name": "협성대학교",
+        "description": "협력 대학"
+      },
       "kimpo": {
         "name": "김포대학교",
         "description": "학부"

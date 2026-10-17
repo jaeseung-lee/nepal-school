@@ -140,6 +140,14 @@
       "id": "yeoju",
       "sourceImage": "image28.png",
       "file": "/partners/logos/yeoju.png"
+    },
+    {
+      "id": "hyupsung",
+      "sourcePage": "https://www.uhs.ac.kr/uhs/index.do",
+      "sourceImage": "https://www.uhs.ac.kr/sites/uhs/images/common/logo.jpg",
+      "file": "/partners/logos/hyupsung.png",
+      "addedOn": "2026-10-17",
+      "note": "사용자가 협력 및 지원 관계를 확인함. 공식 로고의 크기와 비율을 유지해 PNG로 변환함."
     }
   ]
 }

@@ -589,6 +589,10 @@
         "name": "Pyeongtaek University",
         "description": "स्नातक कार्यक्रम"
       },
+      "hyupsung": {
+        "name": "Hyupsung University",
+        "description": "साझेदार विश्वविद्यालय"
+      },
       "kimpo": {
         "name": "Kimpo University",
         "description": "स्नातक कार्यक्रम"

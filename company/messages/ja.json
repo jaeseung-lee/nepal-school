@@ -589,6 +589,10 @@
         "name": "Pyeongtaek University",
         "description": "学部"
       },
+      "hyupsung": {
+        "name": "Hyupsung University",
+        "description": "協力大学"
+      },
       "kimpo": {
         "name": "Kimpo University",
         "description": "学部"

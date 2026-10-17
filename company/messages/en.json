@@ -589,6 +589,10 @@
         "name": "Pyeongtaek University",
         "description": "Undergraduate programs"
       },
+      "hyupsung": {
+        "name": "Hyupsung University",
+        "description": "Partner university"
+      },
       "kimpo": {
         "name": "Kimpo University",
         "description": "Undergraduate programs"

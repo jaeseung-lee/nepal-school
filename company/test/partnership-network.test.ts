@@ -4,13 +4,13 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { NETWORK_INSTITUTIONS, NETWORK_REGIONS, institutionsByKind, logoPath } from "../lib/partnership-network";
 
-test("presentation activities and partner logos are complete", () => {
-  assert.equal(NETWORK_INSTITUTIONS.length, 28);
-  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 28);
+test("presentation activities, confirmed updates, and partner logos are complete", () => {
+  assert.equal(NETWORK_INSTITUTIONS.length, 29);
+  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 29);
   assert.equal(institutionsByKind("municipality").length, 9);
-  assert.equal(institutionsByKind("university").length, 12);
+  assert.equal(institutionsByKind("university").length, 13);
   assert.equal(institutionsByKind("partner").length, 7);
-  for (const [status, count] of [["completed", 5], ["ongoing", 4], ["supported", 10], ["planned", 2]] as const) {
+  for (const [status, count] of [["completed", 5], ["ongoing", 4], ["supported", 11], ["planned", 2]] as const) {
     assert.equal(NETWORK_INSTITUTIONS.filter(item => "status" in item && item.status === status).length, count);
   }
   assert.equal(institutionsByKind("university").find(item => item.id === "kimpo")?.plannedStart, "2027-03");

@@ -1,6 +1,6 @@
 import logoDimensions from "./partnership-logo-dimensions.json";
 
-/** Company presentation, pages 12–13. Statuses describe activities, not MOU or placement results. */
+/** Company presentation, pages 12–13, and confirmed updates. Statuses describe activities, not MOU or placement results. */
 export const NETWORK_REGIONS = [
   { id: "capital", x: 30, y: 28 },
   { id: "gwangju", x: 21, y: 77 },
@@ -33,6 +33,7 @@ export const NETWORK_INSTITUTIONS = [
   { id: "namhae", kind: "municipality", region: "gyeongsang", status: "completed" },
   { id: "kyonggi", kind: "university", region: "capital", status: "supported" },
   { id: "pyeongtaek-university", kind: "university", region: "capital", status: "supported" },
+  { id: "hyupsung", kind: "university", region: "capital", status: "supported" },
   { id: "kimpo", kind: "university", region: "capital", status: "planned", plannedStart: "2027-03" },
   { id: "honam", kind: "university", region: "gwangju", status: "supported" },
   { id: "hanyeong", kind: "university", region: "gwangju", status: "planned", plannedStart: "2027-09" },
