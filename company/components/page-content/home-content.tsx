@@ -14,7 +14,7 @@ import { partnersRegionAnchor } from "@/lib/partnership-network";
 import { SECTION_LABELS } from "@/lib/section-labels";
 
 const TEXT_LINK =
-  "inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline decoration-white/40 underline-offset-[6px] transition hover:decoration-white";
+  "inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline decoration-ink/35 underline-offset-[6px] transition hover:decoration-ink";
 
 export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
   const messages = getMessages(locale);
@@ -24,7 +24,7 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
     <main>
       <HeroSlideshow locale={locale} />
 
-      <section id="intro" aria-labelledby="intro-title" className="surface-dark bg-night text-white">
+      <section id="intro" aria-labelledby="intro-title" className="border-b border-line bg-surface text-ink">
         <div className="page-wrap py-[clamp(7.5rem,14vw,12.5rem)] text-center">
           <p className="eyebrow" lang="en">
             {SECTION_LABELS.intro}
@@ -32,7 +32,7 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
           <h2 id="intro-title" className="mx-auto mt-8 max-w-[28em] text-statement text-balance">
             {intro.title}
           </h2>
-          <p className="mx-auto mt-9 max-w-[600px] text-description text-night-muted">{intro.description}</p>
+          <p className="mx-auto mt-9 max-w-[600px] text-description text-muted">{intro.description}</p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
             <Link href={localizedHref(locale, "/about")} className={TEXT_LINK}>
               {intro.aboutCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
@@ -41,7 +41,7 @@ export function HomeContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
               {intro.whyCta} <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
             </Link>
           </div>
-          <MetricsStrip locale={locale} tone="dark" />
+          <MetricsStrip locale={locale} layout="inline" />
         </div>
       </section>
 
