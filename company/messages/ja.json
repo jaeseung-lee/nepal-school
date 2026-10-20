@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "自治体コンサルティング",
       "university": "大学への出願支援",
-      "partner": "国内外の協力機関"
+      "partner": "国内外の協力機関",
+      "japan": "日本の協力機関"
     },
     "statuses": {
       "completed": "完了",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "会社紹介資料に掲載された協力機関"
+        "description": "工場・介護施設の求人を受け付けて手続きを担う、外国人材の受入れ窓口・登録支援機関"
+      },
+      "osaka-naniwa": {
+        "name": "大阪なにわ日本語学校",
+        "description": "当社が公式エージェントを務める大阪の日本語学校"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

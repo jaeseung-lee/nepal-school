@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "Local-government consulting",
       "university": "University application support",
-      "partner": "Domestic and international partners"
+      "partner": "Domestic and international partners",
+      "japan": "Partners in Japan"
     },
     "statuses": {
       "completed": "Completed",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "Partner listed in the company presentation"
+        "description": "Placement intermediary and registered support organization that receives and processes job openings from factories and caregiving facilities"
+      },
+      "osaka-naniwa": {
+        "name": "Osaka Naniwa Japanese Language School",
+        "description": "Japanese language school in Osaka for which we serve as the official agency"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

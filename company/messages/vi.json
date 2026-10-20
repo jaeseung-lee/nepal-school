@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "Tư vấn chính quyền địa phương",
       "university": "Hỗ trợ hồ sơ đại học",
-      "partner": "Đối tác trong và ngoài nước"
+      "partner": "Đối tác trong và ngoài nước",
+      "japan": "Đối tác tại Nhật Bản"
     },
     "statuses": {
       "completed": "Hoàn thành",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "Đối tác được liệt kê trong hồ sơ công ty"
+        "description": "Tổ chức tiếp nhận nhân lực và tổ chức hỗ trợ đăng ký, tiếp nhận và xử lý đơn tuyển dụng của nhà máy và cơ sở chăm sóc"
+      },
+      "osaka-naniwa": {
+        "name": "Osaka Naniwa Japanese Language School",
+        "description": "Trường Nhật ngữ tại Osaka mà chúng tôi là đại lý chính thức"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

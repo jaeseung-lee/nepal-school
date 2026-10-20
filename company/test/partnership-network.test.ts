@@ -5,11 +5,12 @@ import path from "node:path";
 import { NETWORK_INSTITUTIONS, NETWORK_REGIONS, institutionsByKind, logoPath } from "../lib/partnership-network";
 
 test("presentation activities, confirmed updates, and partner logos are complete", () => {
-  assert.equal(NETWORK_INSTITUTIONS.length, 29);
-  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 29);
+  assert.equal(NETWORK_INSTITUTIONS.length, 30);
+  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 30);
   assert.equal(institutionsByKind("municipality").length, 9);
   assert.equal(institutionsByKind("university").length, 13);
-  assert.equal(institutionsByKind("partner").length, 7);
+  assert.equal(institutionsByKind("partner").length, 6);
+  assert.deepEqual(institutionsByKind("japan").map(item => item.id), ["engate", "osaka-naniwa"]);
   for (const [status, count] of [["completed", 5], ["ongoing", 4], ["supported", 11], ["planned", 2]] as const) {
     assert.equal(NETWORK_INSTITUTIONS.filter(item => "status" in item && item.status === status).length, count);
   }

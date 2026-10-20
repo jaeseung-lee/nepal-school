@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "지자체 컨설팅",
       "university": "대학교 지원",
-      "partner": "국내외 협력기관"
+      "partner": "국내외 협력기관",
+      "japan": "일본 협력기관"
     },
     "statuses": {
       "completed": "완료",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "회사소개서에 등재된 협력기관"
+        "description": "공장·개호시설 취업공고 접수·처리, 송입기관 및 등록지원기관"
+      },
+      "osaka-naniwa": {
+        "name": "오사카 나니와 일본어학교",
+        "description": "당사가 공식 에이전시로 활동하는 오사카 일본어학교"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

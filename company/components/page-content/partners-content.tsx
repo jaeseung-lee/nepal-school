@@ -45,6 +45,12 @@ export function PartnersContent({ locale = DEFAULT_LOCALE }: { locale?: Locale }
           <NetworkDirectory locale={locale} kind="partner" prefix="partners-partner" />
         </div>
       </section>
+      <section className="border-t border-line bg-paper py-section">
+        <div className="page-wrap">
+          <GroupHeading index="04">{network.groups.japan}</GroupHeading>
+          <NetworkDirectory locale={locale} kind="japan" prefix="partners-japan" />
+        </div>
+      </section>
       <CtaBanner locale={locale} />
     </main>
   );

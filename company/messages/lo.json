@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "ການໃຫ້ຄຳປຶກສາແກ່ທ້ອງຖິ່ນ",
       "university": "ການຊ່ວຍສະໝັກມະຫາວິທະຍາໄລ",
-      "partner": "ຄູ່ຮ່ວມງານພາຍໃນ ແລະ ຕ່າງປະເທດ"
+      "partner": "ຄູ່ຮ່ວມງານພາຍໃນ ແລະ ຕ່າງປະເທດ",
+      "japan": "ຄູ່ຮ່ວມງານໃນຍີ່ປຸ່ນ"
     },
     "statuses": {
       "completed": "ສຳເລັດ",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "ຄູ່ຮ່ວມງານທີ່ລະບຸໃນເອກະສານແນະນຳບໍລິສັດ"
+        "description": "ອົງການຮັບແຮງງານ ແລະ ອົງການສະໜັບສະໜູນທີ່ຂຶ້ນທະບຽນ, ຮັບ ແລະ ດຳເນີນການປະກາດຮັບສະໝັກງານຈາກໂຮງງານ ແລະ ສະຖານດູແລ"
+      },
+      "osaka-naniwa": {
+        "name": "Osaka Naniwa Japanese Language School",
+        "description": "ໂຮງຮຽນພາສາຍີ່ປຸ່ນໃນໂອຊາກາ ທີ່ພວກເຮົາເປັນຕົວແທນທາງການ"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

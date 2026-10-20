@@ -3,7 +3,7 @@ import Link from "next/link";
 import StatusMarker, { type StatusTone } from "@/components/status-marker";
 import { getMessages, type Locale } from "@/lib/i18n";
 import {
-  NETWORK_GROUPS, NETWORK_REGIONS, institutionsByKind, logoPath, getLogoDimensions,
+  NETWORK_GROUPS, NETWORK_REGIONS, hasRegions, institutionsByKind, logoPath, getLogoDimensions,
   type NetworkInstitution, type NetworkInstitutionId, type NetworkKind, type NetworkRegion, type NetworkStatus,
 } from "@/lib/partnership-network";
 
@@ -96,15 +96,16 @@ export function NetworkLogoWall({ locale }: { locale: Locale }) {
 export function NetworkDirectory({ locale, kind, prefix }: { locale: Locale; kind: NetworkKind; prefix: string }) {
   const copy = getMessages(locale).network;
   const institutions = institutionsByKind(kind);
-  const groups = kind === "partner" ? [{ id: "partner", items: institutions }] : NETWORK_REGIONS.map((region) => ({ id: region.id, items: institutions.filter((item) => item.region === region.id) })).filter((group) => group.items.length);
+  const regional = hasRegions(kind);
+  const groups = regional ? NETWORK_REGIONS.map((region) => ({ id: region.id, items: institutions.filter((item) => item.region === region.id) })).filter((group) => group.items.length) : [{ id: kind, items: institutions }];
   // 지역 소제목(h3)이 없는 협력기관 묶음은 기관명이 바로 h3가 되어 제목 단계를 건너뛰지 않는다.
-  const NameHeading = kind === "partner" ? "h3" : "h4";
+  const NameHeading = regional ? "h4" : "h3";
   return (
     <div className="space-y-12">
       {groups.map((group) => (
         <section id={`${prefix}-${group.id}`} key={group.id} className={anchorClass}>
-          {kind !== "partner" && <h3 className="border-b border-ink pb-3 text-sm font-bold text-ink">{copy.regions[group.id as NetworkRegion]}</h3>}
-          <ul className={`grid border-l border-line ${kind === "partner" ? "border-t" : ""} ${kind === "municipality" ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
+          {regional && <h3 className="border-b border-ink pb-3 text-sm font-bold text-ink">{copy.regions[group.id as NetworkRegion]}</h3>}
+          <ul className={`grid border-l border-line ${regional ? "" : "border-t"} ${kind === "municipality" ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
             {group.items.map((item) => {
               const institution = copy.institutions[item.id as NetworkInstitutionId];
               return (

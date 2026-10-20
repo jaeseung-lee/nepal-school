@@ -536,7 +536,8 @@
     "groups": {
       "municipality": "स्थानीय सरकार परामर्श",
       "university": "विश्वविद्यालय आवेदन सहयोग",
-      "partner": "स्वदेशी तथा अन्तर्राष्ट्रिय साझेदार"
+      "partner": "स्वदेशी तथा अन्तर्राष्ट्रिय साझेदार",
+      "japan": "जापानका साझेदार"
     },
     "statuses": {
       "completed": "सम्पन्न",
@@ -651,7 +652,11 @@
       },
       "engate": {
         "name": "Engatesoft",
-        "description": "कम्पनी परिचयमा सूचीकृत साझेदार"
+        "description": "कारखाना र हेरचाह संस्थाका रोजगार माग प्राप्त गरी प्रक्रिया गर्ने कामदार भित्र्याउने संस्था तथा दर्तावाल सहयोग संस्था"
+      },
+      "osaka-naniwa": {
+        "name": "Osaka Naniwa Japanese Language School",
+        "description": "हामी आधिकारिक एजेन्सीका रूपमा काम गर्ने ओसाकाको जापानी भाषा विद्यालय"
       },
       "ocean": {
         "name": "Ocean Technical Institute Pvt. Ltd.",

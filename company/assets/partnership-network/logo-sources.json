@@ -148,6 +148,14 @@
       "file": "/partners/logos/hyupsung.png",
       "addedOn": "2026-10-17",
       "note": "사용자가 협력 및 지원 관계를 확인함. 공식 로고의 크기와 비율을 유지해 PNG로 변환함."
+    },
+    {
+      "id": "osaka-naniwa",
+      "sourcePage": "https://onjls.com/",
+      "sourceImage": "https://onjls.com/static/upload/image/20240321/1711000979353309.jpg",
+      "file": "/partners/logos/osaka-naniwa.png",
+      "addedOn": "2026-10-20",
+      "note": "사용자가 일본 협력기관으로 확인함. 공식 사이트 헤더 로고(337×83px)의 크기와 비율을 유지해 PNG로 변환함."
     }
   ]
 }

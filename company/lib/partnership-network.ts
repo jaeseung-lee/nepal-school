@@ -12,7 +12,7 @@ export const NETWORK_REGIONS = [
 
 export type NetworkRegion = (typeof NETWORK_REGIONS)[number]["id"];
 export type NetworkStatus = "completed" | "ongoing" | "supported" | "planned";
-export type NetworkKind = "municipality" | "university" | "partner";
+export type NetworkKind = "municipality" | "university" | "partner" | "japan";
 export type NetworkInstitution = {
   id: string;
   kind: NetworkKind;
@@ -48,14 +48,20 @@ export const NETWORK_INSTITUTIONS = [
   { id: "sunkoshi", kind: "partner" },
   { id: "satyawati", kind: "partner" },
   { id: "bhairav", kind: "partner" },
-  { id: "engate", kind: "partner" },
   { id: "ocean", kind: "partner" },
   { id: "korea-housing", kind: "partner" },
+  { id: "engate", kind: "japan" },
+  { id: "osaka-naniwa", kind: "japan" },
 ] as const satisfies readonly NetworkInstitution[];
 
 export type NetworkInstitutionId = (typeof NETWORK_INSTITUTIONS)[number]["id"];
 
-export const NETWORK_GROUPS = ["municipality", "university", "partner"] as const;
+export const NETWORK_GROUPS = ["municipality", "university", "partner", "japan"] as const;
+
+/** 지역 지도와 연결되는 묶음. 나머지(협력기관)는 지역 구분 없이 한 목록으로 보여 준다. */
+export function hasRegions(kind: NetworkKind) {
+  return kind === "municipality" || kind === "university";
+}
 
 export function institutionsByKind(kind: NetworkKind): NetworkInstitution[] {
   return NETWORK_INSTITUTIONS.filter((institution) => institution.kind === kind);
