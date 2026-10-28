@@ -44,6 +44,25 @@ declare global {
   }
 }
 
+const CAMPAIGN_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+
+// 분석 도구로 보내는 주소는 UTM 캠페인 태그만 남기고 나머지 쿼리와 해시는 지운다.
+export function analyticsUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return value;
+    const campaign = new URLSearchParams();
+    for (const key of CAMPAIGN_PARAMS) {
+      const param = url.searchParams.get(key);
+      if (param) campaign.set(key, param);
+    }
+    const query = campaign.toString();
+    return `${url.origin}${url.pathname}${query ? `?${query}` : ""}`;
+  } catch {
+    return value.split(/[?#]/, 1)[0];
+  }
+}
+
 export function setPostHogClient(client: PostHogClient) {
   postHogClient = client;
 }

@@ -5,13 +5,14 @@ import Script from "next/script";
 import { useEffect, useRef, useState } from "react";
 import type { CaptureResult } from "posthog-js";
 import WebVitals from "@/components/web-vitals";
-import { ANALYTICS_READY_EVENT, setPostHogClient } from "@/lib/analytics";
+import { ANALYTICS_READY_EVENT, analyticsUrl, setPostHogClient } from "@/lib/analytics";
 import { localizedHref, type Locale } from "@/lib/i18n";
 import { PRIVACY_COPY } from "@/lib/privacy-copy";
 
 const STORAGE_KEY = "joongwoo_analytics_consent";
 const DEFAULT_POSTHOG_HOST = "https://us.i.posthog.com";
-const POSTHOG_URL_PROPERTIES = ["$current_url", "$initial_current_url", "$referrer", "$initial_referrer", "$session_entry_url"] as const;
+const POSTHOG_PAGE_URL_PROPERTIES = ["$current_url", "$initial_current_url", "$session_entry_url"] as const;
+const POSTHOG_REFERRER_PROPERTIES = ["$referrer", "$initial_referrer"] as const;
 type Choice = "accepted" | "declined" | null;
 
 function removeSearchAndHash(value: string) {
@@ -27,7 +28,10 @@ function scrubPostHogUrls(capture: CaptureResult | null): CaptureResult | null {
   if (!capture) return null;
 
   const properties = { ...capture.properties };
-  for (const property of POSTHOG_URL_PROPERTIES) {
+  for (const property of POSTHOG_PAGE_URL_PROPERTIES) {
+    if (typeof properties[property] === "string") properties[property] = analyticsUrl(properties[property]);
+  }
+  for (const property of POSTHOG_REFERRER_PROPERTIES) {
     if (typeof properties[property] === "string") properties[property] = removeSearchAndHash(properties[property]);
   }
 

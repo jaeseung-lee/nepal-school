@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { ANALYTICS_READY_EVENT, trackPageView, trackSeoEvent, type SeoEventName } from "@/lib/analytics";
+import { ANALYTICS_READY_EVENT, analyticsUrl, trackPageView, trackSeoEvent, type SeoEventName } from "@/lib/analytics";
 import type { Locale } from "@/lib/i18n";
 
 export default function SeoTracker({ locale }: { locale: Locale }) {
@@ -16,7 +16,7 @@ export default function SeoTracker({ locale }: { locale: Locale }) {
       const sent = trackPageView({
         locale,
         page_path: pathname,
-        page_location: `${window.location.origin}${pathname}`,
+        page_location: analyticsUrl(`${window.location.origin}${pathname}${window.location.search}`),
         page_title: document.title,
       });
       if (sent) pageViewRecorded = true;

@@ -12,6 +12,7 @@ import {
   businessAreaPath,
 } from "../lib/business-area-seo";
 import { LOCALES } from "../lib/i18n";
+import { analyticsUrl } from "../lib/analytics";
 import { buildLlmsFullTxt, buildLlmsTxt, type LlmsPost } from "../lib/llms";
 import { languageAlternates } from "../lib/seo";
 import { getLocalizedVisa } from "../lib/visa-i18n";
@@ -324,6 +325,21 @@ test("GA4와 PostHog는 선택 환경변수와 동의 상태 뒤에만 렌더된
   assert.match(read("components/web-vitals.tsx"), /LCP.*INP.*CLS/);
   assert.match(read(".env.example"), /NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN/);
   assert.match(read("lib/privacy-copy.ts"), /PostHog/);
+});
+
+test("분석 도구로 보내는 페이지 주소는 UTM 태그만 남기고 다른 쿼리와 해시는 지운다", () => {
+  assert.equal(
+    analyticsUrl("https://www.jeongwoohrd.com/en?fbclid=abc&utm_source=facebook&email=a%40b.com&utm_medium=social&utm_campaign=fb_page&utm_content=pinned_post#top"),
+    "https://www.jeongwoohrd.com/en?utm_source=facebook&utm_medium=social&utm_campaign=fb_page&utm_content=pinned_post",
+  );
+  assert.equal(analyticsUrl("https://www.jeongwoohrd.com/ja/blog?page=2#list"), "https://www.jeongwoohrd.com/ja/blog");
+  assert.equal(analyticsUrl("https://www.jeongwoohrd.com/?utm_source="), "https://www.jeongwoohrd.com/");
+  assert.equal(analyticsUrl("not a url?utm_source=facebook"), "not a url");
+
+  const consent = read("components/analytics-consent.tsx");
+  assert.match(consent, /POSTHOG_PAGE_URL_PROPERTIES[\s\S]*analyticsUrl/);
+  assert.match(consent, /POSTHOG_REFERRER_PROPERTIES[\s\S]*removeSearchAndHash/);
+  assert.match(read("components/seo-tracker.tsx"), /page_location: analyticsUrl\(/);
 });
 
 test("llms.txt·llms-full.txt는 공개 글·비자 데이터에서 생성되고 정적 사본을 두지 않는다", () => {
