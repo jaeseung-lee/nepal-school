@@ -4,11 +4,8 @@
 
 - **`requests`는 모듈 수준에서 가져오지 않는다.** 검증 경로와 CLI의 비네트워크 서브커맨드가 `requests` 없이도 돌아야 한다.
   세션은 인자(`session`)로 받고, 진짜 `requests.Session`은 CLI가 만들어 넣는다. 테스트는 가짜 세션을 넣는다.
-- **토큰은 함수 인자로만 받고 `Authorization: Bearer` 헤더에 싣는다.** URL·쿼리·본문에는 넣지 않는다 —
-  `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. **예외가 하나 있다:** `check_token`의 `debug_token` 호출은
-  Meta의 정해진 형식상 토큰을 쿼리(`input_token`, `access_token`)로 보내야 한다. 그 호출이 연결 오류를 내면 `requests`가
-  쿼리 달린 URL을 예외 문자열에 싣는다. 그래서 `_scrub`가 토큰의 원문과 퍼센트 인코딩된 모양을 모두 가리고, 그 호출의
-  실패는 어차피 `check_token` 안에서 삼킨다. 이 모듈이 만드는 모든 `GraphError`는 `_error`를 거쳐
+- **토큰은 함수 인자로만 받고 `Authorization: Bearer` 헤더에만 싣는다.** URL·쿼리·본문에는 절대 넣지 않는다 —
+  `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. 이 규칙에는 예외가 없다. 이 모듈이 만드는 모든 `GraphError`는 `_error`를 거쳐
   메시지에서 토큰 문자열을 `***`로 가리고, 원래 예외(연결 오류 등)를 `__cause__`/`__context__`로 달지 않는다
   (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 메시지는 버그 리포트에 그대로 붙여도 안전해야 한다.
 - **verb는 정해져 있다.** `check_token`은 `session.get`, `schedule_photo_post`는 `session.post`. 바꿀 수 있게 하지 않는다.
@@ -20,16 +17,15 @@
   연결 실패·시간 초과·알아볼 수 없는 응답은 **요청이 나갔는지 모른다** — `schedule_photo_post`는 이때 "예약이 만들어졌을 수
   있다"고 메시지로 알리고, 코드가 가를 수 있게 `GraphError.maybe_created`를 `True`로 한다. 그냥 다시 돌리면 같은
   게시물이 두 번 예약될 수 있기 때문이다. 메시지의 문장은 운영자용, 불리언은 호출하는 코드용이다.
-- **`check_token`이 증명하는 것과 못 하는 것.** 증명하는 것은 하나다: 이 토큰으로 `GET /{page_id}?fields=id,name`이
-  되고, 돌아온 `id`가 `page_id`와 같다 — 토큰이 유효하고 이 페이지를 읽을 수 있다. 그 이상은 증명하지 않는다.
-  (`GET /me`로 토큰의 주인을 물어 `page_id`와 견주면 다른 페이지의 토큰을 더 잘 잡지만, 운영 문서가 정한 토큰인 **시스템
-  사용자 토큰**에서는 `/me`가 시스템 사용자를 돌려주므로 멀쩡한 토큰을 거부하게 된다. 그래서 쓰지 않았다. 다른 페이지의
-  토큰을 붙여 넣은 실수를 이 비교가 얼마나 잡는지는 Graph가 남의 페이지 공개 필드를 어떻게 다루는지에 달려 있고 확인하지
-  못했다.) 권한(scope)은 `GET /debug_token`으로 **최선 노력**으로만 본다 — Meta는 앱 토큰이나 앱 개발자 토큰을 요구하므로 안
-  될 수 있다. 그 호출이 실패하면 `ok`를 바꾸지 않고, `missing_permissions`를 짐작으로 채우지 않고, `message`가 "확인하지
-  못했다"고 말한다. 읽을 수 있다는 것이 쓸 수 있다는 뜻은 아니므로, 진짜 증거는 테스트 글 1건을 예약해 보고 확인한 뒤 지우는
-  것이라고 안내한다. `ok=False`가 되는 것은 거절됐거나, 돌아온 `id`가 다르거나, debug_token이 **분명히** 권한이 빠졌다고
-  답한 경우뿐이다.
+- **`check_token`이 증명하는 것과 못 하는 것.** 증명하는 것은 **하나**다: 이 토큰으로 `GET /{page_id}?fields=id,name`이
+  되고 돌아온 `id`가 `page_id`와 같다 — 토큰이 유효하고 이 페이지를 **읽을 수 있다.** `ok`는 정확히 그 뜻이다. 증명하지
+  못하는 것 둘을 `message`가 **늘** 말한다: (1) 토큰이 글을 올리는 권한을 가졌는지 — 읽을 수 있다고 쓸 수 있는 것이 아니다.
+  (2) 토큰의 주인이 이 페이지에서 역할을 가졌는지 — 다른 페이지의 토큰이 우리 페이지를 읽을 수 있어도 통과한다. 진짜
+  증거는 운영 문서가 정한 것, 즉 테스트 글 1건을 예약해 보고 눈으로 확인한 뒤 지우는 것이다.
+  권한 목록은 조회하지 않는다(`TokenStatus.missing_permissions`가 늘 비어 있는 이유는 그 필드의 문서에). `GET /me`로 토큰의
+  주인을 물어 `page_id`와 견주는 방법도 쓰지 않는다: 운영 문서는 `FB_PAGE_TOKEN`에 **시스템 사용자 토큰**(안 되면 장기
+  사용자 토큰)을 넣으라고 하므로 토큰 종류가 하나로 정해져 있지 않고, 그 둘에서 `/me`는 페이지가 아니라 시스템 사용자나
+  사용자를 돌려줘 멀쩡한 토큰을 거부한다. `/me`에는 이 모듈에서 정해진 뜻이 없다.
 - **`check_token`은 API가 거절한 경우 `ok=False`를 돌려주고, 답을 못 받은 경우는 `GraphError`로 올린다.** 후자를
   `ok=False`로 돌려주면 멀쩡한 토큰을 새로 발급하게 된다. 호출하는 쪽은 `GraphError`도 받아야 한다.
 - 시각은 모두 **타임존이 있는 `datetime`**이어야 한다. 없으면 `timestamp()`가 이 컴퓨터의 시간대로 조용히 해석해 몇 시간
@@ -67,6 +63,8 @@ _PROOF = (
     "실제로 글을 올릴 수 있는지는 테스트 글 하나를 예약해 보고, 페이지의 예약된 게시물에 보이는지 눈으로 확인한 뒤 "
     "지워 보는 것으로만 알 수 있습니다."
 )
+# 권한 목록을 조회하지 않는 이유(운영자가 읽는다). 자세한 이유는 TokenStatus의 문서에.
+_WHY_NO_SCOPES = "이 도구는 토큰의 권한 목록을 조회하지 않습니다. 조회하려면 앱 토큰이 필요하고, 토큰을 주소에 실어 보내야 하기 때문입니다"
 # 요청이 나간 뒤 결과를 알 수 없을 때 덧붙이는 안내.
 _MAYBE_CREATED = (
     " 요청은 이미 나갔으므로 Facebook에 예약이 만들어졌을 수 있습니다. "
@@ -115,7 +113,17 @@ class _Rejected(GraphError):
 
 @dataclass(frozen=True)
 class TokenStatus:
-    """`check_token`의 결과. `message`는 운영자가 터미널에서 읽는 한국어 안내문이다."""
+    """`check_token`의 결과. `message`는 운영자가 터미널에서 읽는 한국어 안내문이다.
+
+    `ok`는 **한 가지**를 뜻한다: 토큰이 유효하고 `GET /{page_id}?fields=id,name`이 이 페이지의 `id`를 돌려줬다.
+    글을 올릴 수 있다는 뜻이 아니다. 그래서 `ok=True`여도 `message`는 늘 그것을 증명하지 못했다고 말한다.
+
+    `missing_permissions`는 **지금은 늘 빈 튜플이다.** 토큰의 권한 목록은 Meta의 `GET /debug_token`으로만 읽을 수 있는데,
+    그 호출은 앱 토큰(또는 앱 개발자 토큰)을 요구하고 — 시스템 사용자 토큰으로는 안 될 수도 있다 — 토큰을 URL 쿼리
+    (`input_token`)로 보내야 한다. 토큰은 `Authorization` 헤더에만 싣는다는 규칙에 예외를 두지 않기로 했고, 얻는 것은
+    있을지 없을지 모르는 권한 목록뿐이라 그 호출을 넣지 않았다. 앱 토큰 경로가 생기면 이 필드가 채워질 자리다.
+    **이 문단과 계획 문서를 다시 읽기 전에는 그 호출을 되살리지 말 것.** (Task 9·10이 네 필드를 전제로 쓰여 있어 필드는 남겼다.)
+    """
 
     ok: bool
     page_name: str | None
@@ -247,64 +255,26 @@ def _wrong_page_message(page_id: str, returned_id: str, returned_name: str | Non
     )
 
 
-def _missing_message(label: str, missing: tuple[str, ...]) -> str:
-    return (
-        f"토큰은 유효하지만 페이지 '{label}'에 글을 예약하는 데 필요한 권한이 빠져 있습니다. 빠진 권한: {_permission_list(missing)}. "
-        f"토큰을 새로 발급받을 때 이 권한을 모두 허용한 뒤, 새 토큰을 {config.ENV_PATH}의 {config.TOKEN_ENV_NAME}에 넣으세요."
-    )
-
-
-def _verified_message(label: str, page_id: str) -> str:
-    return (
-        f"토큰이 이 페이지('{label}', {page_id})의 것이고, 글을 예약하는 데 필요한 권한 {len(REQUIRED_PERMISSIONS)}개를 "
-        f"모두 가지고 있다고 Facebook이 확인했습니다. 다만 권한 목록이 맞아도 그 토큰의 주인이 이 페이지에 글을 올릴 수 있는지는 "
-        f"따로입니다. {_PROOF}"
-    )
-
-
-def _unverified_message(label: str, page_id: str, why: str) -> str:
+def _read_only_message(label: str, page_id: str) -> str:
+    """`ok=True`일 때도 늘 이 글이다: 이 검사는 읽을 수 있음만 증명한다."""
     return (
         f"이 토큰으로 페이지 '{label}'({page_id})에 접근할 수 있습니다. 다만 글을 올리는 데 필요한 권한을 이 토큰이 "
-        f"가졌는지는 확인하지 못했습니다. 확인하려던 권한: {_permission_list(REQUIRED_PERMISSIONS)}. 확인하지 못한 이유: {why}. "
+        f"가졌는지는 확인하지 못했습니다. 확인하려던 권한: {_permission_list(REQUIRED_PERMISSIONS)}. 확인하지 못한 이유: "
+        f"{_WHY_NO_SCOPES}. "
+        f"또 이 검사는 토큰으로 이 페이지를 읽을 수 있다는 것만 알려 줍니다. 이 토큰의 주인이 이 페이지에서 역할을 가졌는지는 "
+        f"알려 주지 못하므로, 다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 통과할 수 있습니다. "
         f"페이지를 읽을 수 있다는 것만으로는 글을 올릴 수 있다는 뜻이 아닙니다. {_PROOF}"
     )
 
 
-def _read_scopes(session: _Session, token: str) -> tuple[set[str] | None, str]:
-    """`GET /debug_token`으로 토큰이 가진 권한을 최선 노력으로 읽는다. `(권한 집합, "")` 또는 `(None, 못 읽은 이유)`.
-
-    Meta는 이 호출에 앱 토큰이나 앱 개발자 토큰을 요구하므로 페이지 토큰으로는 거절될 수 있다. 어떤 실패도 예외로
-    올리지 않는다. 비어 있거나 모양이 이상한 답은 "권한이 없다"가 아니라 "모른다"로 센다 — 권한 목록이 빈 것이 정말로
-    아무 권한이 없다는 뜻인지, 이 토큰 종류가 목록을 안 채워 주는 것인지 구별할 수 없기 때문이다.
-    """
-    try:
-        reply = _send(
-            session.get, _url("debug_token"), token, "권한 조회(debug_token)",
-            params={"input_token": token, "access_token": token},
-        )
-    except _Rejected as rejected:
-        return None, f"권한 조회 기능(debug_token)을 쓰지 못했습니다. Facebook 응답: {rejected.reason}"
-    except GraphError:
-        return None, "권한 조회 기능(debug_token)에 닿지 못했거나 응답을 알아볼 수 없었습니다"
-    data = reply.get("data")
-    if not isinstance(data, dict) or data.get("is_valid") is False:
-        return None, "권한 조회 기능(debug_token)의 응답을 믿을 수 없었습니다"
-    scopes = data.get("scopes")
-    named = {scope for scope in scopes if isinstance(scope, str)} if isinstance(scopes, list) else set()
-    if not named:
-        return None, "권한 조회 기능(debug_token)의 응답에 권한 목록이 없거나 비어 있었습니다"
-    return named, ""
-
-
 def check_token(token: str, page_id: str, *, session: _Session) -> TokenStatus:
-    """토큰으로 이 페이지를 읽을 수 있는지 확인하고, 가능하면 필요한 권한도 확인한다 (`session.get` 최대 두 번).
+    """토큰으로 이 페이지를 읽을 수 있는지 확인한다 (`session.get` 한 번: `GET /{page_id}?fields=id,name`).
 
-    1. `GET /{page_id}?fields=id,name`: 토큰이 유효하고 돌아온 `id`가 `page_id`와 같으면 통과하고 `page_name`을 얻는다.
-       `id`가 다르면 `ok=False`와 실제로 돌아온 페이지를 알려 주는 메시지.
-    2. `GET /debug_token`(최선 노력): 답하면 `missing_permissions`를 채우고 빠진 것이 있으면 `ok=False`. 답하지 않으면
-       `ok`는 1번의 결과 그대로이고 `missing_permissions`는 비며 `message`가 "확인하지 못했다"고 말한다.
+    토큰이 유효하고 돌아온 `id`가 `page_id`와 같으면 `ok=True`이고 `page_name`을 얻는다. `id`가 다르면 `ok=False`와 실제로
+    돌아온 페이지를 알려 주는 메시지. **`ok=True`는 읽을 수 있다는 뜻일 뿐이다** — `message`가 늘 권한과 역할을 증명하지
+    못했다고 말하고 테스트 글 1건 예약을 안내한다. `missing_permissions`는 늘 비어 있다(`TokenStatus` 참고).
 
-    Facebook이 1번을 거절하면(토큰 만료 등) 예외가 아니라 `ok=False`인 상태를 돌려준다. Facebook에 닿지 못했거나 응답을
+    Facebook이 거절하면(토큰 만료 등) 예외가 아니라 `ok=False`인 상태를 돌려준다. Facebook에 닿지 못했거나 응답을
     알아볼 수 없으면 `GraphError`다. 이때 "토큰이 나쁘다"고 단정할 근거가 없기 때문이다.
     """
     try:
@@ -318,15 +288,7 @@ def check_token(token: str, page_id: str, *, session: _Session) -> TokenStatus:
     page_name = _scrub(name, token) if isinstance(name, str) and name else None
     if returned_id != page_id:
         return TokenStatus(ok=False, page_name=page_name, missing_permissions=(), message=_wrong_page_message(page_id, returned_id, page_name))
-
-    label = page_name or page_id
-    scopes, why = _read_scopes(session, token)
-    if scopes is None:
-        return TokenStatus(ok=True, page_name=page_name, missing_permissions=(), message=_unverified_message(label, page_id, why))
-    missing = tuple(permission for permission in REQUIRED_PERMISSIONS if permission not in scopes)
-    if missing:
-        return TokenStatus(ok=False, page_name=page_name, missing_permissions=missing, message=_missing_message(label, missing))
-    return TokenStatus(ok=True, page_name=page_name, missing_permissions=(), message=_verified_message(label, page_id))
+    return TokenStatus(ok=True, page_name=page_name, missing_permissions=(), message=_read_only_message(page_name or page_id, page_id))
 
 
 # ── 예약 ─────────────────────────────────────────────────────────────────────
