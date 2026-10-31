@@ -278,9 +278,12 @@ def test_워크시트는_CTA_뒤의_공백을_본문으로_치지_않는다():
     ids=["CTA없음", "CTA가본문앞에있음", "다른언어CTA", "CTA가끝에서잘림"],
 )
 def test_워크시트는_본문이_CTA로_끝나지_않으면_통째로_내보내지_않고_멈춘다(body_local):
+    # 예외의 **갈래**까지 못박는다: 운영자가 플랜을 고쳐 해결하는 조건이므로 `WorksheetError`여야 한다.
+    # 날 `ValueError`로 나가면 `cli._load_worksheet`의 `except WorksheetError`를 비껴가, 할 일이 적힌 이
+    # 한국어 메시지가 "예상하지 못한 오류 … 개발자에게 보여 주세요"와 종료 코드 2로 포장된다.
     plan = _edit(_plan(), 0, body_local=body_local)
 
-    with pytest.raises(ValueError) as info:
+    with pytest.raises(WorksheetError) as info:
         worksheet(plan, GLOSSARY)
 
     assert "0번" in str(info.value) and "CTA" in str(info.value) and _has_hangul(str(info.value))
@@ -293,7 +296,7 @@ def test_본문이_CTA뿐이면_워크시트가_멈춘다(language, prefix):
     index = LANGUAGES.index(language)  # 첫 소재의 세 게시물은 vi, my, ne 순이다
     plan = _edit(_plan(), index, body_local=prefix + GLOSSARY["cta"][language])
 
-    with pytest.raises(ValueError) as info:
+    with pytest.raises(WorksheetError) as info:  # 갈래까지: 운영자가 고치는 조건이다(위 시험의 주석 참고)
         worksheet(plan, GLOSSARY)
 
     message = str(info.value)

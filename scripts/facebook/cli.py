@@ -809,6 +809,8 @@ def _backtranslate_template(args: _Args) -> int:
     try:
         sheet = backtranslation.worksheet(plan, data.glossary)
     except ValueError as exc:
+        # `backtranslation.WorksheetError`도 `ValueError`의 하위 클래스라 여기로 온다(본문이 CTA뿐인 경우).
+        # 둘 다 운영자가 플랜을 고쳐 해결하는 조건이므로 같은 안내와 종료 코드 1로 끝낸다.
         raise _Stop(f"워크시트를 만들 수 없습니다. {exc}", 1) from None
     paths.worksheet.write_text(json.dumps(sheet, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print()

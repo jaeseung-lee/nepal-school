@@ -495,6 +495,28 @@ def test_네트워크를_타지_않는_서브커맨드는_requests를_임포트�
     assert env.run("review", "--month", MONTH) == 0
 
 
+def test_validate는_본문이_CTA뿐인_게시물을_고칠_수_있는_오류로_말한다(env, capsys):
+    """고칠 수 있는 조건이 「예상하지 못한 오류 … 이 글을 그대로 개발자에게 보여 주세요」로 끝나면 안 된다 —
+    **이 운영에 개발자는 없다(비개발자 한 명이 터미널로만 쓴다).**
+
+    현지어 본문이 승인된 상담 문구뿐이면 되번역할 본문이 남지 않는다. 그때 터지는 예외의 한국어 메시지는
+    이미 무엇을 어떻게 고칠지 정확히 말하고 있었는데, 그것이 `ValueError`라서 `cli._load_worksheet`의
+    `except WorksheetError`를 비껴가고 종료 코드 2의 "예상하지 못한 오류"로 포장됐다. 그 상태에서 문서 §5-6은
+    운영자를 "도구 자체가 고장 난 것 같다"로 보낸다.
+    """
+    fill_worksheet(env)
+    plan = json.loads(env.plan_path.read_text(encoding="utf-8"))
+    post = plan["posts"][0]
+    post["body_local"] = env.glossary["cta"][post["language"]]  # CTA만 남긴다(validate_copy의 CTA 검사는 통과한다)
+    env.plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    assert env.run("validate", "--month", MONTH) == 1
+    text = shown(capsys)
+    assert "본문을 쓰세요" in text  # 할 일이 그대로 운영자에게 닿는다
+    assert "예상하지 못한 오류" not in text
+    assert "개발자" not in text
+
+
 # ── review ───────────────────────────────────────────────────────────────────
 
 

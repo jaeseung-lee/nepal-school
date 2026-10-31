@@ -97,8 +97,15 @@ from .plan_model import Plan, Post
 _HASH_LENGTH = 12  # 16진수 12자(48비트). 보안이 아니라 본문이 바뀌었는지 알아채는 용도다.
 
 
-class WorksheetError(Exception):
-    """역번역 워크시트 파일의 내용이 규칙에 맞지 않을 때."""
+class WorksheetError(ValueError):
+    """역번역 워크시트 파일의 내용이, 또는 그 워크시트로 확인하려는 플랜의 본문이 규칙에 맞지 않을 때.
+
+    **`ValueError`의 하위 클래스다.** 두 가지를 함께 얻으려는 것이다. (1) `cli._load_worksheet`는 이것만
+    잡아서 한국어 안내와 종료 코드 1로 끝낸다 — 그러니 **운영자가 고칠 수 있는 조건은 모두 이 클래스여야**
+    한다. 날 `ValueError`로 나가면 그 except를 비껴가 "예상하지 못한 오류 … 개발자에게 보여 주세요"와
+    종료 코드 2가 되는데, 이 운영에 보여 줄 개발자가 없다. (2) 값이 규칙에 어긋났다는 뜻 자체는
+    `ValueError`이므로, 넓게 `ValueError`를 잡는 쪽(`cli._backtranslate_template`)은 그대로 둔다.
+    """
 
 
 def _require_cta(glossary: dict, language: str) -> str:
@@ -141,16 +148,21 @@ def comparison_source(source_ko: str, cta_ko: str) -> str:
 
 
 def _worksheet_body(post: Post, glossary: dict) -> str:
-    """워크시트에 내보내는, CTA를 뗀 `body_local`. 본문이 CTA로 끝나지 않으면 `ValueError`."""
+    """워크시트에 내보내는, CTA를 뗀 `body_local`. 본문이 CTA로 끝나지 않거나 CTA뿐이면 `WorksheetError`.
+
+    둘 다 **운영자가 플랜을 고쳐서 해결하는 조건**이므로 `WorksheetError`다(`ValueError`의 하위 클래스).
+    날 `ValueError`로 두면 `validate`·`review`의 `except WorksheetError`를 비껴가 "예상하지 못한 오류"로
+    포장된다 — 메시지 안에는 할 일이 한국어로 적혀 있는데 바깥 포장이 "개발자에게 보여 주세요"가 된다.
+    """
     body = _strip_cta(post.body_local, _require_cta(glossary, post.language))
     if body is None:
-        raise ValueError(
+        raise WorksheetError(
             f"게시물 {post.index}번의 현지어 본문(body_local)이 {post.language}의 승인된 상담 문구로 끝나지 않아 "
             f"CTA를 뗄 수 없습니다. 본문을 통째로 내보내면 채우는 쪽이 CTA를 되번역하게 되므로 멈춥니다. "
             f"validate_copy의 CTA없음을 먼저 고치세요."
         )
     if not _comparable(body):
-        raise ValueError(
+        raise WorksheetError(
             f"게시물 {post.index}번의 현지어 본문(body_local)에 승인된 상담 문구(CTA)밖에 없어 되번역할 본문이 남지 "
             f"않습니다(공백이나 문장부호뿐인 것도 없는 것으로 봅니다). 본문이 비어 있는 워크시트를 내면 채우는 쪽이 "
             f"무엇을 되번역해야 하는지 알 수 없으니 멈춥니다. 본문을 쓰세요."
