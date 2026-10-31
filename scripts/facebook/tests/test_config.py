@@ -120,6 +120,49 @@ def test_load_token은_토큰이_없으면_한국어_안내와_함께_RuntimeErr
     assert ".env" in str(e.value) and "환경변수" in str(e.value)
 
 
+def test_load_token은_dotenv가_UTF_8이_아니면_한국어로_멈춘다(isolated_token):
+    # 운영자는 `.env`를 손으로 만든다. 한국어 주석을 EUC-KR로 저장한 편집기가 이 바이트를 낸다.
+    isolated_token.write_bytes("# 포인트\n FB_PAGE_TOKEN=x\n".encode("euc-kr"))
+    with pytest.raises(RuntimeError) as e:
+        config.load_token()
+    message = str(e.value)
+    # 어느 파일인지, 무엇이 문제인지, 무엇을 하면 되는지를 모두 한국어로 말한다.
+    assert str(isolated_token) in message
+    assert "UTF-8" in message
+    # 영어 OS·파이썬 오류 문구가 그대로 새지 않는다.
+    assert "codec" not in message and "decode" not in message.lower()
+    # 원래 예외는 끊지 않는다 — 개발자가 추적할 수 있어야 한다.
+    assert isinstance(e.value.__cause__, UnicodeDecodeError)
+
+
+def test_load_token은_dotenv_자리가_폴더면_한국어로_멈춘다(isolated_token):
+    isolated_token.mkdir()
+    with pytest.raises(RuntimeError) as e:
+        config.load_token()
+    message = str(e.value)
+    assert str(isolated_token) in message
+    # 영어 OS 오류("Is a directory")가 그대로 새지 않는다.
+    assert "Is a directory" not in message and "Errno" not in message
+    assert isinstance(e.value.__cause__, OSError)
+
+
+def test_load_token은_dotenv를_읽을_권한이_없으면_한국어로_멈춘다(isolated_token):
+    isolated_token.write_text("FB_PAGE_TOKEN=unreadable-value\n", encoding="utf-8")
+    isolated_token.chmod(0o000)
+    try:
+        if isolated_token.read_bytes():
+            pytest.skip("이 사용자는 권한 0으로도 읽을 수 있다(root)")
+    except PermissionError:
+        pass
+    with pytest.raises(RuntimeError) as e:
+        config.load_token()
+    message = str(e.value)
+    assert str(isolated_token) in message
+    assert "Permission denied" not in message and "Errno" not in message
+    # 읽지 못한 파일의 값이 메시지에 실릴 길은 없지만, 못박아 둔다.
+    assert "unreadable-value" not in message
+
+
 def test_Graph_API_요청_타임아웃은_연결과_응답_두_값이고_둘_다_양수다():
     # 모든 네트워크 호출이 이 값을 명시적으로 넘긴다(tests/test_graph.py). 값이 None이거나 0이면 timeout이 없는 것과 같다.
     connect, read = config.GRAPH_TIMEOUT

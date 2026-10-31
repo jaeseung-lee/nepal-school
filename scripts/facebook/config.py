@@ -89,6 +89,17 @@ def _read_env_file(path: Path, name: str) -> str:
         text = path.read_text(encoding="utf-8")
     except FileNotFoundError:
         return ""
+    except UnicodeDecodeError as e:
+        # 운영자가 손으로 만드는 파일이다. 한국어 주석을 EUC-KR로 저장한 편집기가 여기로 온다.
+        raise RuntimeError(
+            f"{path} 파일을 UTF-8로 읽을 수 없습니다. 편집기에서 인코딩을 UTF-8로 바꿔 다시 저장하세요. "
+            f"이 파일에는 `{name}=<토큰>` 한 줄만 있으면 되고, 한국어 주석은 넣지 않아도 됩니다."
+        ) from e
+    except OSError as e:
+        # 같은 이름의 폴더, 권한 없음, 깨진 심볼릭 링크 따위. 영어 OS 문구를 그대로 내보내지 않는다.
+        raise RuntimeError(
+            f"{path} 파일을 열 수 없습니다. 같은 이름의 폴더가 있는지, 읽을 권한이 있는지 확인하세요."
+        ) from e
     value = ""
     for line in text.splitlines():
         line = line.strip()
