@@ -7,6 +7,9 @@
 
 `load_banned_phrases`는 `validate_copy`가 받는 금지 표현 사전을 읽는다.
 
+`validate_back_copy`는 같은 사전의 **한국어** 목록을 되번역에 건다. 현지어 목록은 검수를 받지 않았고 한국어 목록만 사람이
+확인했기 때문이다. 되번역은 현지어 본문을 한국어로 되살린 글이므로 그 하나의 사전으로 세 현지어 본문을 기계적으로 본다.
+
 원문과 현지어 본문의 뜻이 같은지(역번역 대조)는 여기서 보지 않고, 글자 유사도도 계산하지 않는다.
 구조·사실 검증(`validate_structure`·`validate_facts`)은 `validate_structure`에 있다.
 
@@ -21,6 +24,7 @@ import re
 import unicodedata
 from pathlib import Path
 
+from .backtranslation import is_blank
 from .config import LANGUAGES
 from .facts import Fact
 from .findings import Finding, _error, _normalize, _ordered, _warning
@@ -155,11 +159,7 @@ def validate_copy(
     입력이 비어 있으면 검사가 조용히 꺼지므로 `ValueError`로 멈춘다: 항목이 빠진 사전, 비어 있거나 빠진
     용어집 값(`endswith("")`는 늘 참), `name_ko`가 없거나 빈 대학 목록 항목(빈 이름은 모든 본문에 들어맞는다).
     """
-    missing = [key for key in _banned_keys() if key not in banned]
-    if missing:
-        raise ValueError(
-            f"금지 표현 사전에 항목이 없습니다: {', '.join(missing)}. load_banned_phrases로 읽은 값을 넘기세요."
-        )
+    _require_banned(banned, _banned_keys())
     _require_glossary(glossary)
     approved = _approved_names(universities)
 
@@ -173,6 +173,16 @@ def validate_copy(
     findings += _check_unsourced_figures(plan, facts)
     findings += _check_tuition_qualifier(plan)
     return _ordered(findings)
+
+
+def _require_banned(banned: dict[str, tuple[str, ...]], keys: tuple[str, ...]) -> None:
+    """검사가 쓰는 사전 항목이 모두 있는지 본다. 빠졌으면 `ValueError`로 멈춰 어느 항목이 빠졌는지 알린다
+    (`KeyError`는 `load_banned_phrases`를 거치지 않은 사전을 넘겼다는 사실을 알려 주지 않는다)."""
+    missing = [key for key in keys if key not in banned]
+    if missing:
+        raise ValueError(
+            f"금지 표현 사전에 항목이 없습니다: {', '.join(missing)}. load_banned_phrases로 읽은 값을 넘기세요."
+        )
 
 
 def _require_glossary(glossary: dict) -> None:
@@ -274,6 +284,76 @@ def _check_banned_phrases(plan: Plan, banned: dict[str, tuple[str, ...]]) -> lis
                     f"합격·취업·비자 보장, 비용 약속, 협력 관계, 상담 이후 절차는 쓰지 않습니다. 이 표현을 빼고 다시 쓰세요.",
                 ))
     return findings
+
+
+def validate_back_copy(plan: Plan, back: dict[int, str], banned: dict[str, tuple[str, ...]]) -> list[Finding]:
+    """되번역(한국어)에 **한국어** 금지 표현이 있는지 본다. 있으면 문구마다 `역번역금지표현`(오류).
+
+    왜 있는가: 베트남어·미얀마어·네팔어 금지 목록은 AI가 썼고 원어민 검수를 받지 않았다. 사람이 확인한 사전은 한국어
+    목록 하나뿐이다. 되번역은 현지어 본문을 한국어로 되살린 글이므로, 거기에 한국어 목록을 걸면 그 하나의 사전으로
+    세 현지어 본문을 기계적으로 본다. 원문에 없는 약속이 아무도 읽지 못하는 말로 나가는 것을 막는 유일한 기계 검사다 —
+    약속 한 문장을 덧붙인 본문은 글자 유사도(`역번역차이`)로도 숫자(`역번역수치`)로도 드러나지 않는다.
+
+    오류인 이유: 되번역에 금지 문구가 보이면 현지어 본문이 정말 그렇게 말하거나(발행할 수 없다) 되번역이 틀렸다(고쳐야
+    한다). 어느 쪽이든 그대로 나갈 수 없다.
+
+    `원문(source_ko)` 검사(`_check_banned_phrases`)와 같게 동작한다: 같은 `_hits`로 대조해 표기 차이(`_compact`)와 영문 약어를
+    같이 다루고, 문구마다 항목 하나를 사전에 적힌 순서로 낸다(같은 문구가 되풀이돼도 한 번). 두 경로가 같은 사전을 다르게
+    읽으면 한쪽이 통과시키는 것을 다른 쪽이 막는다. 문장부호는 지우지 않으므로(`합격, 보장`) 원문 검사가 놓치는 꼴은 여기서도
+    놓친다.
+
+    `banned["ko"]`(모든 게시물 구역)는 언제나, `banned["ko:대학명"]`(대학명이 나오는 게시물 구역)는 그 게시물의
+    `university_names`가 비어 있지 않을 때만 건다 — 모든 게시물 구역이 먼저이고, 두 구역에 같은 문구가 있으면 한 번만
+    보고한다. 현지어 목록(`vi`·`my`·`ne`)은 쓰지 않는다. 되번역은 한국어다.
+
+    **`validate_copy`와 다른 점 둘**(둘 다 이 함수가 `universities`를 받지 않아서다). (1) `대학맥락`의 1인칭 조건을 걸지 않는다:
+    `validate_copy`는 회사가 스스로 말하는 문장(1인칭 + 관계 어휘)만 막고 대학 자신의 이야기(`산학협력단이 …`)는 통과시키지만,
+    되번역 검사는 대학명 구역의 문구가 들어 있으면 막는다. 충실한 되번역도 걸릴 수 있다는 뜻이다. (2) 대학명 게시물인지를
+    `university_names`로만 정한다 — `validate_copy`는 목록에 적지 않았어도 원문·본문에 쓰인 승인된 대학명을 대학명으로 친다.
+    그래서 대학명을 본문에 쓰고 `university_names`를 비운 게시물은 대학명 구역을 거치지 않는다.
+
+    비었거나 없는 되번역은 보지 않는다(`validate_backtranslation`이 `역번역빈칸`·`역번역누락`으로 이미 보고한다). 플랜에 없는
+    번호의 되번역도 그쪽이 `역번역플랜밖`으로 보고한다. `back`의 모양({정수: 문자열})은 `validate_backtranslation`이 확인한다 —
+    여기서는 확인하지 않으므로 키가 문자열이면 아무것도 걸리지 않는다. 결과는 플랜의 게시물 순서이고, 다른 검증기의 결과와
+    합칠 때는 부르는 쪽이 `_ordered`로 정렬한다. 사전에 `ko`·`ko:대학명` 항목이 없으면 `ValueError`로 멈춘다.
+    """
+    university_key = _university_key("ko")
+    _require_banned(banned, ("ko", university_key))
+
+    findings: list[Finding] = []
+    for post in plan.posts:
+        text = back.get(post.index)
+        if text is None or is_blank(text):
+            continue
+        everywhere = _hits(text, banned["ko"])
+        university_only = (
+            [phrase for phrase in _hits(text, banned[university_key]) if phrase not in everywhere]
+            if post.university_names
+            else []
+        )
+        for university, phrases in ((False, everywhere), (True, university_only)):
+            for phrase in phrases:
+                message = _back_banned_message(post.index, phrase, university=university)
+                findings.append(_error("역번역금지표현", post.index, message))
+    return findings
+
+
+def _back_banned_message(index: int, phrase: str, *, university: bool) -> str:
+    """`역번역금지표현` 항목의 문장. 게시물 카드 없이 목록에서 이 줄만 읽어도 무엇을 해야 하는지 알 수 있어야 한다."""
+    why = (
+        " 대학명이 나오는 게시물에서만 금지하는 표현입니다(회사가 대학과 협력·제휴·입학 알선·합격 가능성을 말하는 것처럼 "
+        "읽히기 때문입니다). 원문에 대학 부서 이름(예: 산학협력단)으로 들어 있는 말이라면 원문(과 그에 맞춘 현지어 본문)을 "
+        "다른 말로 바꿔야 이 검사를 통과합니다."
+        if university
+        else ""
+    )
+    return (
+        f"게시물 {index}번의 역번역에 금지 표현 '{phrase}'이(가) 있습니다.{why} 역번역은 현지어 본문(body_local)을 한국어로 "
+        f"되살린 글이라, 현지어 본문이 실제로 그렇게 말하거나 역번역이 본문을 잘못 옮겼다는 뜻입니다 — 어느 쪽이든 그대로 둘 수 "
+        f"없습니다. 어느 쪽인지는 그 게시물의 현지어 본문만, 다른 답을 보여 주지 않는 새 세션에서 다시 되번역해 보면 압니다: "
+        f"같은 표현이 또 나오면 본문을 그 표현 없이 다시 쓰고, 나오지 않으면 이 역번역을 새 되번역으로 바꾸세요. "
+        f"게시물은 무료 상담 안내까지만 말합니다 — 합격·취업·비자 보장, 비용 약속, 협력 관계, 상담 이후 절차는 쓰지 않습니다."
+    )
 
 
 def _check_universities(plan: Plan, approved: tuple[str, ...]) -> list[Finding]:
