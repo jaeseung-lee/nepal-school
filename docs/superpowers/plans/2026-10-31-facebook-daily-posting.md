@@ -377,7 +377,7 @@ git commit -m "feat(facebook): 금지 표현·CTA·대학 맥락 문구 검증 �
 **Interfaces:**
 - Consumes: `plan_model.Plan`, `findings.Finding`
 - Produces:
-  - `backtranslation.worksheet(plan: Plan, glossary: dict) -> dict` — `{"month": str, "entries": [{"index": int, "language": str, "body_local": str, "back_ko": ""}]}`
+  - `backtranslation.worksheet(plan: Plan, glossary: dict) -> dict` — `{"month": str, "entries": [{"index": int, "language": str, "body_local": str, "body_hash": str, "back_ko": ""}]}` — `body_local`은 **CTA를 뗀** 본문이고 `body_hash`는 그 본문의 SHA-256 앞 12자다(워크시트를 손으로 만들면 이 키가 있어야 `load`가 받는다)
   - `backtranslation.load(path: Path, *, plan: Plan | None = None, glossary: dict | None = None) -> dict[int, str]` — index → `back_ko`. `plan`과 `glossary`를 둘 다 넘기면 `body_hash`로 신선도를 검증하고 낡은 항목을 `WorksheetError`로 거부한다(하나만 넘기면 `ValueError`, 둘 다 안 넘기면 검증하지 않는다)
   - `backtranslation.divergence(source_ko: str, back_ko: str) -> float` — 0.0(동일)~1.0(완전 상이)
   - `backtranslation.validate_backtranslation(plan: Plan, back: dict[int, str], glossary: dict, *, threshold: float = 0.45) -> list[Finding]`
@@ -399,6 +399,17 @@ def test_되번역의_숫자가_원문과_다르면_오류():
     # source_ko의 숫자열 다중집합과 back_ko의 것이 다르면 code == "역번역수치", severity == "error"
 def test_load는_본문이_바뀐_워크시트를_거부한다():
     # worksheet가 적어 둔 body_hash가 현재 body_local과 다르면 WorksheetError
+def test_역번역이_다른_게시물과_똑같으면_경고():
+    # 한 소재의 세 게시물은 source_ko가 글자까지 같으므로 역번역을 복사해도 숫자·유사도가 다 통과한다.
+    # 두 게시물의 역번역이 (공백·문장부호 정규화 후) 같으면 code == "역번역중복", severity == "warning",
+    # 메시지가 두 게시물 번호를 모두 댄다
+def test_숫자가_같은데_순서가_다르면_경고():
+    # "11월 5일" → "5월 11일": 다중집합이 같아 역번역수치는 안 나므로
+    # code == "역번역수치순서", severity == "warning"
+def test_본문이_CTA뿐이면_워크시트가_멈춘다():
+    # body_local이 그 언어 CTA와 똑같으면 번역할 본문이 남지 않는다 → ValueError
+def test_load는_다른_달의_워크시트를_거부한다():
+    # raw["month"] != plan.month → WorksheetError (index가 겹치므로 "본문이 바뀌었다"로 오진된다)
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -413,7 +424,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.backtranslati
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
-Expected: PASS (9 passed)
+Expected: PASS (13 passed)
 
 - [ ] **Step 5: Commit**
 
