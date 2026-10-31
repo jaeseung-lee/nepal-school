@@ -1303,13 +1303,12 @@ def test_안내가_표시_세_가지의_뜻을_설명한다():
     howto = _doc().find(class_="howto")
 
     # 안내 안의 견본 표시는 카드의 표시와 같은 종류 표지를 단다(그래야 같은 모양으로 보인다).
-    assert [mark.attrs["data-diff"] for mark in howto.find_all("mark")] == ["replace", "delete", "insert"]
+    assert [mark.attrs["data-diff"] for mark in howto.find_all("mark")] == ["delete", "insert", "replace"]  # 한쪽에만 있는 말이 먼저
     assert "서로 다른 낱말" in howto.text()
-    # 안내가 찾으라고 한 "없는 약속 추가"와 "빠진 한정어"가 바로 파란 쪽(insert)과 붉은 쪽(delete)이라고 말한다.
     legend_element = howto.find(data_role="mark-legend")
     assert "hidden" not in legend_element.attrs  # 설명은 있되 보이지 않는 것이 아니다
     legend = legend_element.text()
-    assert "되번역에만" in legend and "원문에만" in legend and "약속" in legend and "한정어" in legend
+    assert "되번역에만" in legend and "원문에만" in legend  # 막대는 한쪽에만 있는 말이다
 
 
 # --- 표시의 모양과 문장 단위 -------------------------------------------------------
@@ -1407,3 +1406,56 @@ def test_의역과_뒤집힌_부정이_붙어_있어도_칩은_한_문장_안에
     # 바뀌지 않은 문장 세 개(첫째·넷째·다섯째)는 칠해지지 않는다.
     marked_text = " ".join(text for text, _ in _marks(_col(card, "source")))
     assert "체류자격입니다" not in marked_text and "연장을" not in marked_text and "확인해" not in marked_text
+
+
+# --- 안내가 색깔에 뜻을 약속하지 않는다 --------------------------------------------------
+# 안내문은 한때 "덧붙은 약속은 파란 막대로, 빠진 단서는 붉은 막대로 나타나므로 이 둘을 먼저 읽으라"고 했다. 실측하니 코드는
+# 그 약속을 지키지 않는다: 말이 한쪽에만 있는지(insert/delete)는 SequenceMatcher가 **주변이 바뀌었는지**로 갈린다. 아래 두
+# 시험은 그 실측을 고정한다. 이것이 안내가 막대에 뜻을 짝지을 수 없는 이유이고, 짝지으면 독자가 "노란색은 또 의역, 뜻은
+# 막대에 있다"고 배워 노란색인 뒤집힌 부정을 지나친다.
+
+
+def test_깔끔히_빠진_한정어는_붉은_막대다():
+    # 낱말 하나만 사라지고 주변이 그대로면 delete다 — 막대가 쓸모 있다는 근거(한쪽에만 있는 말이 눈에 가장 빨리 들어온다).
+    card = _diff_card("평균 등록금은 보통 600만 원입니다.", "평균 등록금은 600만 원입니다.")
+
+    assert _marks(_col(card, "source")) == [("보통", "delete")]
+    assert _marks(_col(card, "back")) == []
+
+
+def test_주변을_함께_고쳐_쓰면_빠진_한정어도_노란색이다():
+    # 한정어가 사라지면서 문장 끝도 고쳐 쓰이면 replace다 — 붉은 막대가 없다. 안내가 색을 약속할 수 없는 이유다.
+    card = _diff_card("심사에는 2주가 걸리며 서류가 부족하면 더 길어질 수 있습니다.", "심사에는 2주가 걸립니다.")
+
+    assert _marks(_col(card, "source")) == [("걸리며 서류가 부족하면 더 길어질 수 있습니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("걸립니다.", "replace")]
+
+
+def test_뜻을_바꾸는_다른_변경도_색으로_갈리지_않는다():
+    # 위와 같은 실측의 나머지 장면. 약속이 뒤에 덧붙으면 insert지만 기존 절을 밀어내고 들어오면 replace이고, 부정 뒤집힘은 늘
+    # replace다. 그래서 "뜻이 바뀐 곳"은 어느 모양으로도 나올 수 있다.
+    appended = _diff_card("심사 결과는 학교가 정합니다.", "심사 결과는 학교가 정합니다. 합격을 보장합니다.")
+    assert _marks(_col(appended, "back")) == [("합격을 보장합니다.", "insert")]
+
+    displacing = _diff_card("심사 결과는 학교가 정합니다.", "심사 결과는 합격을 보장합니다.")
+    assert _marks(_col(displacing, "source")) == [("학교가 정합니다.", "replace")]
+    assert _marks(_col(displacing, "back")) == [("합격을 보장합니다.", "replace")]
+
+    flipped = _diff_card("비자를 받을 수 있습니다.", "비자를 받을 수 없습니다.")
+    assert _marks(_col(flipped, "source")) == [("있습니다.", "replace")]
+    assert _marks(_col(flipped, "back")) == [("없습니다.", "replace")]
+
+
+def test_안내는_노란색에도_뜻이_바뀐_곳이_있다고_적는다():
+    # 범례가 부정 뒤집힘이 노란색으로 나타난다는 것, 덧붙은 약속이나 빠진 단서가 주변을 고쳐 쓰면 노란색이 된다는 것, 노란색이
+    # "또 의역"이 아니라는 것을 적는다. 그리고 막대를 말하는 문장은 뜻(약속·단서·한정어)과 짝짓지 않는다.
+    legend = _doc().find(class_="howto").find(data_role="mark-legend").text()
+    sentences = [s for s in re.split(r"(?<=[.])\s+", legend) if s]
+
+    negation = [s for s in sentences if "부정" in s]
+    assert negation and all("노란색" in s for s in negation)
+    assert any("약속" in s and "단서" in s and "노란색" in s for s in sentences)
+    assert any("노란색" in s and "의역이라는 뜻은 아닙니다" in s for s in sentences)
+    for sentence in sentences:
+        if "막대" in sentence:
+            assert not any(word in sentence for word in ("약속", "단서", "한정어", "부정")), f"막대에 뜻을 짝지었다: {sentence!r}"
