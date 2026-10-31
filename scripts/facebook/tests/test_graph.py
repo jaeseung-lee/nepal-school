@@ -353,34 +353,48 @@ def test_message는_권한을_확인하지_못했고_읽기가_쓰기를_뜻하�
     assert has_hangul(message)
     assert f"이 토큰으로 페이지 '정우인재개발원'({PAGE})에 접근할 수 있습니다" in message
     assert "이 토큰이 가졌는지는 확인하지 못했습니다" in message
-    assert "확인하려던 권한: " in message
     for name, help_text in (("pages_manage_posts", "페이지에 글과 사진 올리기"),
                             ("pages_read_engagement", "페이지 게시물 읽기"),
                             ("pages_show_list", "관리하는 페이지 목록 보기")):
         assert f"{name}({help_text})" in message  # 영문 권한 이름만 던지지 않고 뜻을 한국어로 풀어 준다
-    assert ("확인하려던 권한: pages_manage_posts(페이지에 글과 사진 올리기), pages_read_engagement(페이지 게시물 읽기), "
-            "pages_show_list(관리하는 페이지 목록 보기). ") in message
+    # 영문 권한 이름은 사업주가 Business Manager에서 권한을 줄 때 필요하므로 지우지 않고 맨 끝 참고 줄로 옮겼다.
+    assert ("참고 — 올리기에 필요한 권한: pages_manage_posts(페이지에 글과 사진 올리기), pages_read_engagement(페이지 게시물 읽기), "
+            "pages_show_list(관리하는 페이지 목록 보기).") in message
     assert "권한(pages" not in message  # 괄호 속 괄호로 읽기 어려워지지 않게 목록을 문장에서 떼어 놓았다
-    # 왜 확인하지 못했는지
-    assert "확인하지 못한 이유: 이 도구는 토큰의 권한 목록을 조회하지 않습니다" in message
-    assert "앱 토큰이 필요하고, 토큰을 주소에 실어 보내야 하기 때문입니다" in message
+    # 권한을 확인하지 못했다는 사실은 말하고, 왜 조회하지 않는지(앱 토큰·토큰을 주소에 싣는 문제)는 말하지 않는다:
+    # 그것은 구현 근거이고 읽는 사람이 그 말로 할 수 있는 일이 없다. 근거는 TokenStatus의 문서에 있다.
+    assert "이 도구는 토큰의 권한 목록을 조회하지 않습니다" in message
+    assert "앱 토큰" not in message and "주소에 실어" not in message
     assert "scope" not in message.lower()  # 개발자 용어를 모르는 사람이 읽는 글이다
 
 
 def test_message는_역할을_증명하지_못한다는_것도_늘_말한다():
     # 이 검사는 읽을 수 있음만 증명한다. 다른 페이지의 토큰이 우리 페이지를 읽을 수 있어도 통과하므로, 그 사실을 감추지 않는다.
     message = graph.check_token(SENTINEL, PAGE, session=token_session()).message
-    assert "이 검사는 토큰으로 이 페이지를 읽을 수 있다는 것만 알려 줍니다" in message
-    assert "이 토큰의 주인이 이 페이지에서 역할을 가졌는지는 알려 주지 못하므로" in message
-    assert "다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 통과할 수 있습니다" in message
+    assert "이 검사가 알려 주는 것은 그 하나입니다" in message
+    assert "이 토큰의 주인이 이 페이지에서 역할을 가졌는지도 확인하지 못했습니다" in message
+    assert "다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 이 검사를 통과할 수 있습니다" in message
 
 
 def test_message는_읽기가_쓰기를_뜻하지_않으며_진짜_증거는_테스트_예약이라고_늘_안내한다():
     message = graph.check_token(SENTINEL, PAGE, session=token_session()).message
     assert "페이지를 읽을 수 있다는 것만으로는 글을 올릴 수 있다는 뜻이 아닙니다" in message
     # 운영 문서가 정한 진짜 증거: 테스트 글 하나를 예약해 보고, 눈으로 보고, 지운다.
-    assert "테스트 글 하나를 예약해 보고" in message
-    assert "예약된 게시물에 보이는지 눈으로 확인한 뒤 지워 보는 것으로만 알 수 있습니다" in message
+    assert "테스트 글 1건을 예약해 보고, 페이지의 예약된 게시물에 보이는지 눈으로 확인한 뒤 지우세요" in message
+    assert "이 토큰으로 글을 올릴 수 있는지는 그렇게 해 보는 것으로만 알 수 있습니다" in message
+
+
+def test_message는_할_일을_맨_앞에_두고_줄로_끊어_적는다():
+    # 운영자는 비개발자 한 명이고 이 글을 터미널에서 읽는다. 한 문단으로 쏟아지면 할 수 있는 일이 단서 더미에 묻히므로,
+    # 줄바꿈은 여기서 넣는다(출력하는 쪽이 다시 손보지 않게).
+    for session in (token_session(), token_session(page=FakeResponse(200, {"id": PAGE}))):
+        message = graph.check_token(SENTINEL, PAGE, session=session).message
+        lines = message.split("\n")
+        assert len(lines) >= 5
+        assert lines[0].startswith("다음으로 할 일: ")                      # 할 일이 첫 줄
+        assert lines[-1].startswith("참고 — 올리기에 필요한 권한: ")        # 영문 권한 이름은 맨 끝 참고 줄
+        assert all(line.strip() == line and line for line in lines)      # 빈 줄이나 어긋난 들여쓰기 없이
+        assert max(len(line) for line in lines[:-1]) <= 110              # 한 줄이 다시 문단이 되지 않게
 
 
 def test_message는_초록불처럼_읽히는_문장을_쓰지_않는다():
@@ -426,7 +440,9 @@ def test_이미_지난_시각이면_지났다고_말한다():
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(NOW - timedelta(hours=2), NOW)
     message = str(caught.value)
-    assert "이미 지난" in message and "보다 2시간 앞)" in message and "너무 가깝" not in message
+    # "2시간 앞"은 '2시간 나중'으로도 읽힌다. 운영자에게는 한 뜻으로만 읽히는 말이어야 한다.
+    assert "이미 지난" in message and "보다 2시간 전)" in message and "너무 가깝" not in message
+    assert "앞)" not in message
     assert f"10분 뒤({(NOW + config.SCHEDULE_MIN_LEAD).isoformat()})" in message
 
 

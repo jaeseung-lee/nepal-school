@@ -62,13 +62,17 @@ _PERMISSION_HELP = {
 _INVALID_TOKEN_CODE = 190
 # 사람이 읽는 메시지에 싣는 응답 본문의 최대 길이.
 _EXCERPT_LENGTH = 200
-# 토큰으로 글을 올릴 수 있는지는 읽기로 알 수 없다. 운영 문서가 정한 진짜 증거 한 가지.
+# 토큰으로 글을 올릴 수 있는지는 읽기로 알 수 없다. 운영 문서가 정한 진짜 증거 한 가지를 **안내문 맨 앞**에 둔다:
+# 운영자가 이 글을 읽고 실제로 할 수 있는 일은 이것뿐이고, 단서 더미 뒤에 두면 읽히지 않는다.
 _PROOF = (
-    "실제로 글을 올릴 수 있는지는 테스트 글 하나를 예약해 보고, 페이지의 예약된 게시물에 보이는지 눈으로 확인한 뒤 "
-    "지워 보는 것으로만 알 수 있습니다."
+    "다음으로 할 일: 테스트 글 1건을 예약해 보고, 페이지의 예약된 게시물에 보이는지 눈으로 확인한 뒤 지우세요.\n"
+    "이 토큰으로 글을 올릴 수 있는지는 그렇게 해 보는 것으로만 알 수 있습니다."
 )
-# 권한 목록을 조회하지 않는 이유(운영자가 읽는다). 자세한 이유는 TokenStatus의 문서에.
-_WHY_NO_SCOPES = "이 도구는 토큰의 권한 목록을 조회하지 않습니다. 조회하려면 앱 토큰이 필요하고, 토큰을 주소에 실어 보내야 하기 때문입니다"
+# 권한 목록을 조회하지 않는다는 **사실**만 운영자에게 알린다. 왜 조회하지 않는지(앱 토큰이 필요하고 토큰을 주소에
+# 실어야 한다)는 구현 근거이므로 `TokenStatus`의 문서에만 둔다 — 읽는 사람이 그 말로 할 수 있는 일이 없다.
+_WHY_NO_SCOPES = "이 도구는 토큰의 권한 목록을 조회하지 않습니다"
+# 영문 권한 이름은 사업주가 Business Manager에서 권한을 줄 때 필요한 이름이다. 지우지 않고 맨 끝 참고 줄로 보낸다.
+_PERMISSION_NOTE = "참고 — 올리기에 필요한 권한: {names}. 사업주가 Business Manager에서 권한을 줄 때 쓰는 이름입니다."
 # 요청이 나간 뒤 결과를 알 수 없을 때 덧붙이는 안내.
 _MAYBE_CREATED = (
     " 요청은 이미 나갔으므로 Facebook에 예약이 만들어졌을 수 있습니다. "
@@ -298,15 +302,24 @@ def _wrong_page_message(page_id: str, returned_id: str, returned_name: str | Non
 
 
 def _read_only_message(label: str, page_id: str) -> str:
-    """`ok=True`일 때도 늘 이 글이다: 이 검사는 읽을 수 있음만 증명한다."""
-    return (
-        f"이 토큰으로 페이지 '{label}'({page_id})에 접근할 수 있습니다. 다만 글을 올리는 데 필요한 권한을 이 토큰이 "
-        f"가졌는지는 확인하지 못했습니다. 확인하려던 권한: {_permission_list(REQUIRED_PERMISSIONS)}. 확인하지 못한 이유: "
-        f"{_WHY_NO_SCOPES}. "
-        f"또 이 검사는 토큰으로 이 페이지를 읽을 수 있다는 것만 알려 줍니다. 이 토큰의 주인이 이 페이지에서 역할을 가졌는지는 "
-        f"알려 주지 못하므로, 다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 통과할 수 있습니다. "
-        f"페이지를 읽을 수 있다는 것만으로는 글을 올릴 수 있다는 뜻이 아닙니다. {_PROOF}"
-    )
+    """`ok=True`일 때도 늘 이 글이다: 이 검사는 읽을 수 있음만 증명한다.
+
+    **할 일이 맨 앞에 오고, 문장 사이를 줄바꿈으로 끊는다.** 읽는 사람은 터미널 앞에 앉은 비개발자 한 명이다.
+    한 문단으로 쏟아 놓으면 그가 실제로 할 수 있는 일(테스트 예약 1건)이 단서 더미에 묻힌다. 줄바꿈을 여기서
+    넣어 두어야 출력하는 쪽(CLI)이 같은 일을 다시 하지 않는다.
+
+    과장하지 않기 위해 반드시 남아야 하는 셋: (1) 글 올리기 권한을 확인하지 못했다, (2) 이 토큰의 주인이 이
+    페이지에서 역할을 가졌는지 확인하지 못했다, (3) 읽을 수 있다는 것이 올릴 수 있다는 뜻이 아니다.
+    """
+    return "\n".join((
+        _PROOF,
+        f"이 토큰으로 페이지 '{label}'({page_id})에 접근할 수 있습니다. 이 검사가 알려 주는 것은 그 하나입니다.",
+        f"글을 올리는 데 필요한 권한을 이 토큰이 가졌는지는 확인하지 못했습니다. {_WHY_NO_SCOPES}.",
+        "이 토큰의 주인이 이 페이지에서 역할을 가졌는지도 확인하지 못했습니다. "
+        "다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 이 검사를 통과할 수 있습니다.",
+        "페이지를 읽을 수 있다는 것만으로는 글을 올릴 수 있다는 뜻이 아닙니다.",
+        _PERMISSION_NOTE.format(names=_permission_list(REQUIRED_PERMISSIONS)),
+    ))
 
 
 def check_token(token: str, page_id: str, *, session: _Session) -> TokenStatus:
@@ -358,7 +371,8 @@ def assert_schedulable(publish_at: datetime, now: datetime) -> None:
     latest = (now_utc + config.SCHEDULE_MAX_LEAD).astimezone(now.tzinfo)
     if lead < timedelta(0):
         raise GraphError(
-            f"예약 시각 {publish_at.isoformat()}은(는) 이미 지난 시각입니다 (지금 {now.isoformat()}보다 {_describe(lead)} 앞). "
+            # "…보다 2시간 앞"은 '2시간 나중'으로도 읽힌다. 운영자에게는 한 뜻으로만 읽히는 "전"을 쓴다.
+            f"예약 시각 {publish_at.isoformat()}은(는) 이미 지난 시각입니다 (지금 {now.isoformat()}보다 {_describe(lead)} 전). "
             f"예약은 지금부터 {_describe(config.SCHEDULE_MIN_LEAD)} 뒤({earliest.isoformat()}) 이후로만 가능합니다. 예약 시각을 늦추세요."
         )
     if lead < config.SCHEDULE_MIN_LEAD:
