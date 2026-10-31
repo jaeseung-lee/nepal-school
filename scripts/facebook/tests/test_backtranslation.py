@@ -1,7 +1,8 @@
 """역번역 대조(backtranslation.py) 테스트.
 
-여기서는 워크시트를 내는 것(CTA를 뗀 본문, 본문 해시), 채워 온 워크시트를 읽는 것(낡은 워크시트 거부),
-되번역이 빠짐없이 왔는지, 숫자가 원문과 같은지, 되번역이 한국어 원문에서 글자로 얼마나 벌어졌는지만 본다.
+여기서는 워크시트를 내는 것(CTA를 뗀 본문, 본문 해시), 채워 온 워크시트를 읽는 것(다른 달·낡은 워크시트 거부),
+되번역이 빠짐없이 왔는지, 다른 게시물의 것을 베끼지 않았는지, 숫자가 원문과 같은지, 되번역이 한국어 원문에서
+글자로 얼마나 벌어졌는지만 본다.
 **뜻이 옳은지는 보지 않는다** — 그것은 검토 화면에서 사람이 한국어 원문과 되번역을 나란히 놓고 판단한다.
 그래서 이 파일의 어떤 테스트도 "이 되번역의 뜻이 옳다"를 주장하지 않고, 글자 유사도가 어느 쪽으로 움직이는지와
 숫자열이 같은지만 고정한다.
@@ -55,8 +56,28 @@ UNRELATED = "일본 간병 취업비자를 받으려면 일본어 능력시험 N
 # --- 도우미 -------------------------------------------------------------------
 
 
-def _plan() -> Plan:
+def _raw_plan() -> Plan:
+    """픽스처 그대로. 한 소재의 세 게시물은 `source_ko`가 글자까지 같다."""
     return load_plan(FIXTURE)
+
+
+_LABEL = {"vi": "베트남어판", "my": "미얀마어판", "ne": "네팔어판"}
+
+
+def _plan() -> Plan:
+    """게시물마다 원문이 다르도록 본문 끝(CTA 앞)에 언어 표지를 붙인 픽스처. 숫자는 늘지 않는다.
+
+    원문이 글자까지 같으면 원문 그대로 돌려준 되번역도 서로 같아져 `역번역중복`이 난다. 아래 테스트 대부분은
+    그 경고가 아닌 것을 보려는 것이라 되번역이 서로 다를 수 있게 원문부터 다르게 둔다.
+    """
+    raw = _raw_plan()
+    posts = tuple(
+        dataclasses.replace(
+            post, source_ko=f"{post.source_ko.removesuffix(chr(10) * 2 + CTA)} ({_LABEL[post.language]})\n\n{CTA}"
+        )
+        for post in raw.posts
+    )
+    return dataclasses.replace(raw, posts=posts)
 
 
 def _edit(plan: Plan, index: int, **changes) -> Plan:
@@ -188,6 +209,20 @@ def test_워크시트는_본문이_CTA로_끝나지_않으면_통째로_내보�
         worksheet(plan, GLOSSARY)
 
     assert "0번" in str(info.value) and "CTA" in str(info.value) and _has_hangul(str(info.value))
+
+
+@pytest.mark.parametrize("language", LANGUAGES)
+@pytest.mark.parametrize("prefix", ["", "  \n\n", "...\n\n", "。 "], ids=["CTA만", "공백뒤CTA", "문장부호뒤CTA", "한자문장부호뒤CTA"])
+def test_본문이_CTA뿐이면_워크시트가_멈춘다(language, prefix):
+    # 번역할 본문이 남지 않는다. 빈 `body_local`을 내보내면 채우는 쪽이 무엇을 되번역할지 모른다.
+    index = LANGUAGES.index(language)  # 첫 소재의 세 게시물은 vi, my, ne 순이다
+    plan = _edit(_plan(), index, body_local=prefix + GLOSSARY["cta"][language])
+
+    with pytest.raises(ValueError) as info:
+        worksheet(plan, GLOSSARY)
+
+    message = str(info.value)
+    assert f"{index}번" in message and "되번역할 본문이 남지 않습니다" in message and _has_hangul(message)
 
 
 @pytest.mark.parametrize("language", LANGUAGES)
@@ -397,6 +432,35 @@ def test_load는_본문이_바뀐_워크시트를_거부한다(tmp_path):
     assert load(path) == {post.index: f"{post.index}번 되번역" for post in plan.posts}  # 플랜을 안 넘기면 확인하지 않는다
 
 
+def test_load는_다른_달의_워크시트를_거부한다(tmp_path):
+    # 번호도 본문도 같아서 `역번역플랜밖`도 `body_hash`도 못 알아채는 워크시트다. 달만 다르다.
+    plan = _plan()
+    path = _filled(tmp_path, dataclasses.replace(plan, month="2026-10"))
+    assert load(path, plan=dataclasses.replace(plan, month="2026-10"), glossary=GLOSSARY)  # 같은 달이면 읽힌다
+
+    with pytest.raises(WorksheetError) as info:
+        load(path, plan=plan, glossary=GLOSSARY)
+
+    message = str(info.value)
+    assert "2026-10" in message and "2026-11" in message and "다른 달" in message and _has_hangul(message)
+    assert "바뀐" not in message  # 본문이 바뀌었다고 오진하지 않는다
+    assert load(path) == {post.index: f"{post.index}번 되번역" for post in plan.posts}  # 플랜을 안 넘기면 달을 보지 않는다
+
+
+@pytest.mark.parametrize("month", [None, 202611, ["2026-11"], ""], ids=["없음", "숫자", "목록", "빈문자열"])
+def test_load는_month가_없거나_문자열이_아닌_워크시트를_플랜과_맞출_수_없어_거부한다(tmp_path, month):
+    plan = _plan()
+    raw = {"entries": [{"index": 0, "back_ko": "가", "body_hash": "000000000000"}]}
+    if month is not None:
+        raw["month"] = month
+    path = _write(tmp_path, json.dumps(raw, ensure_ascii=False))
+
+    with pytest.raises(WorksheetError) as info:
+        load(path, plan=plan, glossary=GLOSSARY)
+
+    assert "2026-11" in str(info.value) and "month" in str(info.value)
+
+
 def test_load는_본문이_바뀐_게시물을_전부_댄다(tmp_path):
     plan = _plan()
     path = _filled(tmp_path, plan)
@@ -426,7 +490,10 @@ def test_load는_body_hash가_없거나_이상한_항목을_확인할_수_없으
 
     message = str(info.value)
     assert "body_hash가 없어 본문이 그대로인지 확인할 수 없는 게시물: 2번" in message
-    assert load(path) == load(path, plan=None, glossary=None)  # 확인하지 않을 때는 읽지도 않는다
+    # 명시적으로 `None`을 넘겨도 확인하지 않으므로 같은 파일이 그대로 읽힌다(`body_hash`를 읽지도 않는다).
+    expected = {post.index: f"{post.index}번 되번역" for post in plan.posts}
+    assert load(path) == expected
+    assert load(path, plan=None, glossary=None) == expected
 
 
 def test_load는_바뀐_본문과_body_hash_없는_항목을_함께_알린다(tmp_path):
@@ -734,11 +801,48 @@ def test_같은_숫자가_여러_번_다르면_횟수를_적는다():
     assert "7(3번)" in _check(plan, back)[0].message
 
 
-def test_숫자의_순서는_따지지_않는다():
-    plan = _edit(_plan(), 0, source_ko="20시간, 3일 근무합니다.\n\n" + CTA)
-    back = {**_faithful(plan), 0: "3일, 20시간 근무합니다."}
+def test_숫자가_같은데_순서가_다르면_경고():
+    plan = _edit(_plan(), 0, source_ko="마감은 11월 5일입니다.\n\n" + CTA)
+    back = {**_faithful(plan), 0: "마감은 5월 11일입니다."}
+    assert 0.0 < divergence("마감은 11월 5일입니다.", back[0]) < 0.45  # 글자만 보면 놓치는 변경이다
 
-    assert not [f for f in _check(plan, back) if f.code == "역번역수치"]
+    findings = _check(plan, back)
+
+    assert _brief(findings) == [(0, "역번역수치순서", "warning")]  # 종류와 개수가 같으므로 `역번역수치`는 아니다
+    assert "11 → 5" in findings[0].message and "5 → 11" in findings[0].message and _has_hangul(findings[0].message)
+
+
+@pytest.mark.parametrize(
+    ("source", "back"),
+    [
+        ("마감은 11월 5일입니다.", "마감은 5월 11일입니다."),
+        ("소요 시간은 1.5시간입니다.", "소요 시간은 5.1시간입니다."),
+        ("마감일은 2026-11-05입니다.", "마감일은 2026-05-11입니다."),
+        ("1일 1회, 2일 안내", "1일 2회, 1일 안내"),
+        ("20시간, 3일 근무합니다.", "3일, 20시간 근무합니다."),
+    ],
+    ids=["월일", "소수", "ISO날짜", "겹치는숫자", "순서만바뀜"],
+)
+def test_숫자열의_순서만_다르면_오류가_아니라_경고(source, back):
+    plan = _edit(_plan(), 0, source_ko=source + "\n\n" + CTA)
+
+    findings = _check(plan, {**_faithful(plan), 0: back})
+
+    assert [(f.code, f.severity) for f in findings] == [("역번역수치순서", "warning")]
+
+
+def test_숫자열이_다르면_순서_경고를_함께_내지_않는다():
+    plan = _edit(_plan(), 0, source_ko="마감은 11월 5일입니다.\n\n" + CTA)
+
+    findings = _check(plan, {**_faithful(plan), 0: "마감은 5월 12일입니다."})
+
+    assert [(f.code, f.severity) for f in findings] == [("역번역수치", "error")]
+
+
+def test_숫자열과_순서가_모두_같으면_순서_경고가_없다():
+    plan = _edit(_plan(), 0, source_ko="마감은 11월 5일입니다.\n\n" + CTA)
+
+    assert _check(plan, {**_faithful(plan), 0: "마감은 11월 5일까지입니다."}) == []
 
 
 def test_천_단위_쉼표는_지우고_견준다():
@@ -802,6 +906,36 @@ def test_단위를_바꿔_쓴_되번역도_오류로_잡힌다_알려진_한계(
     assert _brief(_check(plan, {**_faithful(plan), 0: "등록금은 680만 원입니다."})) == [(0, "역번역수치", "error")]
 
 
+def test_점으로_천_단위를_끊은_숫자는_오류로_잡힌다_알려진_한계():
+    # 베트남어 본문의 `6.800.000`을 그대로 옮긴 되번역이다. 점을 천 단위로 읽으면 원문의 `1.234`와 되번역의 `1234`가
+    # 같아져 천 배 차이를 놓치므로 일부러 지우지 않는다. 대신 메시지가 이 경우를 알려 주고 다시 하라고 한다.
+    plan = _edit(_plan(), 0, source_ko="등록금은 6,800,000원입니다.\n\n" + CTA)
+
+    findings = _check(plan, {**_faithful(plan), 0: "등록금은 6.800.000원입니다."})
+
+    assert _brief(findings) == [(0, "역번역수치", "error")]
+    message = findings[0].message
+    assert "원문에만 있는 숫자: 6800000" in message and "역번역에만 있는 숫자: 000, 6, 800" in message
+    assert "6.800.000" in message and "6,800,000" in message and "다시 되번역하세요" in message
+
+
+def test_점이_든_숫자의_천_배_차이를_놓치지_않는다():
+    # 위의 한계를 없애려고 점을 지우면 생기는 구멍: 원문 `1.234`(소수)와 되번역 `1234`가 같은 수로 읽힌다.
+    plan = _edit(_plan(), 0, source_ko="배율은 1.234입니다.\n\n" + CTA)
+
+    assert _brief(_check(plan, {**_faithful(plan), 0: "배율은 1234입니다."})) == [(0, "역번역수치", "error")]
+
+
+def test_날짜의_앞뒤가_바뀐_되번역은_오류가_아니라_경고만_낸다_알려진_한계():
+    # 날짜를 거꾸로 적은 되번역이 게시 전에 막히지 않는다는 뜻이다. 사람이 경고를 보고 확인해야 한다.
+    plan = _edit(_plan(), 0, source_ko="신청 마감은 2026-11-05입니다.\n\n" + CTA)
+
+    findings = _check(plan, {**_faithful(plan), 0: "신청 마감은 2026-05-11입니다."})
+
+    assert [f.severity for f in findings] == ["warning"]
+    assert findings[0].code == "역번역수치순서"
+
+
 def test_숫자가_없는_글은_숫자가_없는_되번역과_같다():
     plan = _edit(_plan(), 0, source_ko="유학 비자 안내입니다.\n\n" + CTA)
 
@@ -813,6 +947,25 @@ def test_숫자_오류와_차이_경고가_같은_게시물에_함께_나오면_
     back = {**_faithful(plan), 3: UNRELATED}
 
     assert _brief(_check(plan, back)) == [(3, "역번역수치", "error"), (3, "역번역차이", "warning")]
+
+
+@pytest.mark.parametrize(
+    ("back_text", "expected"),
+    [
+        ("일본 간병 취업비자 5월 12일 시험 접수", ["역번역수치", "역번역차이", "역번역중복"]),
+        ("일본 간병 취업비자 5월 11일 시험 접수", ["역번역수치순서", "역번역차이", "역번역중복"]),
+    ],
+    ids=["수치", "수치순서"],
+)
+def test_한_게시물의_결과는_수치_수치순서_차이_중복_차례다(back_text, expected):
+    source = "마감은 11월 5일입니다. 유학 비자 서류 안내\n\n" + CTA
+    plan = _edit(_edit(_plan(), 1, source_ko=source), 2, source_ko=source)
+    back = {**_faithful(plan), 1: back_text, 2: back_text}
+
+    findings = [f for f in _check(plan, back) if f.post_index == 2]
+
+    assert [f.code for f in findings] == expected
+    assert [f.severity for f in findings] == [("error" if code == "역번역수치" else "warning") for code in expected]
 
 
 def test_누락되었거나_빈_게시물에는_숫자_오류를_더하지_않는다():
@@ -939,6 +1092,96 @@ def test_게시물이_없는_플랜도_되번역이_있으면_플랜밖_오류()
 
     assert _brief(_check(plan, {0: "가"})) == [(None, "역번역플랜밖", "error")]
     assert _check(plan, {}) == []
+
+
+# --- validate_backtranslation: 복사 --------------------------------------------
+
+
+def _distinct_raw_backs() -> dict[int, str]:
+    """픽스처의 여섯 게시물에 대한 충실한 되번역. 같은 소재의 세 개가 서로 다른 문장이다(원문은 셋이 같다)."""
+    plan = _raw_plan()
+    return {
+        0: _faithful(plan)[0],
+        1: PARAPHRASE_0,
+        2: "유학(D-2) 체류자격은 전문대학 이상 교육기관이나 학술연구기관에서 정규과정 교육을 받거나 특정 연구를 하려는 사람을 위한 것입니다.",
+        3: _faithful(plan)[3],
+        4: PARAPHRASE_3,
+        5: "전주기전대학의 연간 평균 등록금은 6,800,000원입니다(1년치). 이 금액은 전체 학과의 가중평균 공시값이어서 학생 개인이 실제로 내는 금액과 다를 수 있습니다.",
+    }
+
+
+def _duplicates(findings: list[Finding]) -> list[tuple[int | None, str]]:
+    return [(f.post_index, f.code) for f in findings if f.code == "역번역중복"]
+
+
+def test_역번역이_다른_게시물과_똑같으면_경고():
+    # 한 소재의 세 게시물은 `source_ko`가 글자까지 같다. 그래서 복사한 되번역은 숫자도 글자 유사도도 통과한다.
+    plan = _raw_plan()
+    assert len({post.source_ko for post in plan.posts[3:]}) == 1
+    backs = _distinct_raw_backs()
+    assert _check(plan, backs) == []  # 게시물마다 따로 되번역하면 문제가 없다
+
+    findings = _check(plan, {**backs, 4: backs[3], 5: backs[3]})
+
+    # 짝마다 하나씩, 나중 게시물에 붙는다: (3, 4)는 4번에, (3, 5)와 (4, 5)는 5번에.
+    assert _brief(findings) == [(4, "역번역중복", "warning")] + [(5, "역번역중복", "warning")] * 2
+    assert findings[0].severity == "warning" and findings[0].code == "역번역중복"
+    assert "3번과 4번" in findings[0].message and "3번과 5번" in findings[1].message
+    assert "4번과 5번" in findings[2].message and _has_hangul(findings[0].message)
+
+
+def test_역번역중복은_공백과_문장부호와_대소문자를_빼고_견준다():
+    plan = _plan()
+    back = {**_faithful(plan), 1: "유학(D-2) 비자 안내입니다.", 2: "유학(d-2)  비자 안내입니다!!"}
+
+    assert _duplicates(_check(plan, back)) == [(2, "역번역중복")]
+
+
+def test_역번역중복은_다른_소재의_게시물_사이에서도_본다():
+    plan = _plan()
+    back = {**_faithful(plan), 4: _faithful(plan)[1]}
+
+    findings = [f for f in _check(plan, back) if f.code == "역번역중복"]
+
+    assert [(f.post_index, f.severity) for f in findings] == [(4, "warning")]
+    assert "1번과 4번" in findings[0].message
+
+
+def test_역번역중복은_이웃하지_않은_게시물_사이에서도_본다():
+    plan = _plan()
+    back = {**_faithful(plan), 2: _faithful(plan)[0]}
+
+    findings = [f for f in _check(plan, back) if f.code == "역번역중복"]
+
+    assert [f.post_index for f in findings] == [2] and "0번과 2번" in findings[0].message
+
+
+def test_역번역중복은_글자가_다르면_내지_않는다():
+    plan = _plan()
+
+    assert _duplicates(_check(plan, {**_faithful(plan), 2: _faithful(plan)[0] + " 안내"})) == []
+
+
+def test_역번역중복은_비었거나_없는_되번역끼리는_견주지_않는다():
+    plan = _plan()
+    back = {**_faithful(plan), 1: "", 2: "  ", 5: "..."}
+    del back[4]
+
+    findings = _check(plan, back)
+
+    assert _brief(findings) == [
+        (1, "역번역빈칸", "error"),
+        (2, "역번역빈칸", "error"),
+        (4, "역번역누락", "error"),
+        (5, "역번역빈칸", "error"),
+    ]
+
+
+def test_역번역중복은_빈_되번역과_글이_있는_되번역을_견주지_않는다():
+    plan = _plan()
+    back = {**_faithful(plan), 1: ""}
+
+    assert _duplicates(_check(plan, back)) == []
 
 
 # --- validate_backtranslation: 입력 가드 ----------------------------------------
