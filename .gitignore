@@ -85,8 +85,9 @@ scripts/interview-sheets/.build/
 # 페이스북 월간 게시 이미지(ChatGPT 생성본). plan.json·facts.json은 커밋한다.
 output/facebook/*/images/
 
-# 예약 실행의 동시 실행 잠금 파일. 내용이 없고 프로세스가 죽으면 OS가 풀어 준다.
+# 예약 실행의 동시 실행 잠금 파일과 원장 쓰기의 임시 파일.
 output/facebook/*/*.lock
+output/facebook/*/*.tmp
 
 # Python 캐시
 __pycache__/
