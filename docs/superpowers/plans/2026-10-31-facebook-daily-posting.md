@@ -6,7 +6,7 @@
 
 **Architecture:** `scripts/facebook/` 패키지에 순수 함수 모듈(사실 데이터, 플랜 스키마, 검증, 검토 HTML, Graph 클라이언트)을 두고, `scripts/facebook-cli.py` 한 개가 `uv run --script` 진입점으로 서브커맨드를 노출한다. 본문·이미지 생성은 코드가 하지 않는다 — Claude Code 세션과 사업주가 만든 산출물을 `output/facebook/YYYY-MM/` 에서 읽어 검증하고 올린다. 네트워크를 타는 코드는 `graph.py` 한 곳에 모으고 나머지는 전부 오프라인 테스트가 가능하게 한다.
 
-**Tech Stack:** Python ≥3.11, `uv run --script` (저장소 기존 관례), 표준 라이브러리 + `requests`, 테스트는 `pytest`(`uv run --with pytest`), 루트 `package.json`에 npm 스크립트로 노출.
+**Tech Stack:** Python ≥3.11, `uv run --script` (저장소 기존 관례), 표준 라이브러리 + `requests`, 테스트는 `pytest`(`uv run --python 3.11 --isolated --with pytest`), 루트 `package.json`에 npm 스크립트로 노출.
 
 **Spec:** `docs/superpowers/specs/2026-10-29-facebook-daily-posting-design.md`
 
@@ -87,7 +87,7 @@ def test_출처가_http로_시작하지_않으면_FactsError(tmp_path): ...
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_facts.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_facts.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook'`
 
 - [ ] **Step 3: Implement `config.py` and `facts.py`**
@@ -96,7 +96,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_facts.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_facts.py -v`
 Expected: PASS (5 passed)
 
 - [ ] **Step 5: Commit**
@@ -151,8 +151,8 @@ def test_대학목록은_partnership_network의_planned를_제외한_실명뿐�
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_facts_data.py -v`
-Expected: FAIL — `FileNotFoundError: output/facebook/facts.json`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_facts_data.py -v`
+Expected: FAIL — `FactsError: 사실 파일을 찾을 수 없습니다: …/output/facebook/facts.json` (Task 1이 OS 오류를 한국어 `FactsError`로 감싼다)
 
 - [ ] **Step 3: 1차 출처를 조사해 세 파일을 작성한다**
 
@@ -160,7 +160,7 @@ Expected: FAIL — `FileNotFoundError: output/facebook/facts.json`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/ -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/ -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
@@ -207,7 +207,7 @@ def test_publish_at에_타임존이_없으면_PlanError(tmp_path): ...
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_plan_model.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_plan_model.py -v`
 Expected: FAIL — `ImportError: cannot import name 'load_plan'`
 
 - [ ] **Step 3: Implement `load_plan(path: Path) -> Plan` in `scripts/facebook/plan_model.py`**
@@ -216,7 +216,7 @@ Expected: FAIL — `ImportError: cannot import name 'load_plan'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_plan_model.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_plan_model.py -v`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
@@ -266,7 +266,7 @@ def test_모두_정상이면_findings가_비어_있다():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
 Expected: FAIL — `ImportError: cannot import name 'validate_structure'`
 
 - [ ] **Step 3: Implement `validate_structure` and `validate_facts` in `scripts/facebook/validate.py`**
@@ -275,7 +275,7 @@ Expected: FAIL — `ImportError: cannot import name 'validate_structure'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
 Expected: PASS (13 passed)
 
 - [ ] **Step 5: Commit**
@@ -318,7 +318,7 @@ def test_용어집_용어가_다르게_표기되면_경고():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
 Expected: FAIL — `ImportError: cannot import name 'validate_copy'`
 
 - [ ] **Step 3: Implement `load_banned_phrases` and `validate_copy` in `scripts/facebook/validate.py`**
@@ -327,7 +327,7 @@ CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
 Expected: PASS (7 passed)
 
 - [ ] **Step 5: Commit**
@@ -369,7 +369,7 @@ def test_divergence는_0과_1_사이():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.backtranslation'`
 
 - [ ] **Step 3: Implement `scripts/facebook/backtranslation.py`**
@@ -378,7 +378,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.backtranslati
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
 Expected: PASS (6 passed)
 
 - [ ] **Step 5: Commit**
@@ -416,7 +416,7 @@ def test_본문이_HTML_이스케이프된다():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_review.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 
 - [ ] **Step 3: Implement `render(...) -> str` in `scripts/facebook/review.py`**
@@ -425,7 +425,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_review.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
 Expected: PASS (5 passed)
 
 - [ ] **Step 5: Commit**
@@ -473,7 +473,7 @@ def test_토큰_값이_예외_메시지에_들어가지_않는다():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_graph.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_graph.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.graph'`
 
 - [ ] **Step 3: Implement `scripts/facebook/graph.py`**
@@ -482,7 +482,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.graph'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_graph.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_graph.py -v`
 Expected: PASS (9 passed)
 
 - [ ] **Step 5: Commit**
@@ -524,7 +524,7 @@ def test_원장이_없으면_빈_dict():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_schedule.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_schedule.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.schedule'`
 
 - [ ] **Step 3: Implement `scripts/facebook/schedule.py`**
@@ -533,7 +533,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.schedule'`
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_schedule.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_schedule.py -v`
 Expected: PASS (6 passed)
 
 - [ ] **Step 5: Commit**
@@ -577,7 +577,7 @@ def test_오류_출력에_토큰_값이_들어가지_않는다():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/test_cli.py -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_cli.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.cli'`
 
 - [ ] **Step 3: Implement `cli.py`, `scripts/facebook-cli.py`, `package.json` scripts, `docs/facebook-운영.md`**
@@ -588,7 +588,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.cli'`
 
 - [ ] **Step 4: Run the full suite**
 
-Run: `uv run --with pytest pytest scripts/facebook/tests/ -v`
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/ -v`
 Expected: PASS (전체)
 
 - [ ] **Step 5: Commit**
