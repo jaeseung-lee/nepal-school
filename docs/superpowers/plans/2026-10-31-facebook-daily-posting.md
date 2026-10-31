@@ -448,7 +448,7 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
 - Consumes: `plan_model.Plan`, `findings.Finding`, `backtranslation.load`
 - Produces:
   - `backtranslation.divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]` — 게시물 index → 차이값. `validate_backtranslation`과 **같은 CTA 제거 경로**를 쓴다(비공개 도우미를 공유하고 떼는 규칙을 두 번 쓰지 않는다). 역번역이 없거나 빈 게시물은 키에 넣지 않는다.
-  - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path) -> str` — 완결된 HTML 문서 문자열
+  - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path, *, cta_ko: str) -> str` — 완결된 HTML 문서 문자열. `cta_ko`는 **필수**다: 워크시트가 현지어 쪽 CTA를 떼므로 되번역에는 CTA가 없고, 원문 쪽에서도 떼지 않으면 모든 카드 끝에 CTA가 강조되어 "강조가 있다"는 사실이 아무 뜻도 갖지 못한다. 기본값을 두면 Task 10이 빼먹었을 때 아무것도 실패하지 않고 강조만 조용히 무의미해지므로 기본값을 두지 않는다
 
 레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 되번역 한국어 / 현지어 본문** 세 단을 같은 너비로 나란히 둔다. 순서가 이것인 이유는 두 한국어가 서로 이웃해야 눈이 바로 견줄 수 있기 때문이다 — 현지어 단은 참고용이라 끝에 둔다. 그리고 **두 한국어 단에서 서로 다른 낱말을 강조 표시한다.** Task 6이 실측한 대로 부정 뒤집힘은 글자 유사도 0.03~0.05에 묻히고, 다섯 문장짜리 두 단락을 사람이 맞대어 읽으며 `입니다` → `이 아닙니다`를 잡아내는 일은 사람이 가장 못하는 일이다. 충실한 의역의 글자 유사도가 0.88~0.92이므로 강조는 전체의 10~20%에 그치고, 독자의 눈은 그 대목으로 간다. 임계값으로 걸러 내거나 잡음이라고 숨기지 않는다 — 숨기면 뒤집힌 부정이 그 안에 들어간다. 카드에는 `fact_keys`와 `university_names`도 한 줄로 적어 그 게시물이 무엇에 기대어 있다고 주장하는지 보이게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
 
@@ -486,6 +486,8 @@ def test_빠진_문장은_원문_쪽에만_강조된다():
 def test_강조_안의_글자도_이스케이프된다():
     # 다른 낱말이 "<script>"여도 강조 표시 안에서 마크업이 되지 않는다
 def test_인용한_사실_키와_대학명이_카드에_들어간다():
+def test_cta_ko_없이는_render를_부를_수_없다():
+    # 기본값이 있으면 빼먹어도 아무것도 실패하지 않고 강조만 조용히 무의미해진다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -502,7 +504,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
-Expected: PASS (18 passed)
+Expected: PASS (19 passed)
 
 - [ ] **Step 5: Commit**
 
