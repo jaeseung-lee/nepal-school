@@ -9,6 +9,7 @@
 
 `validate_back_copy`는 같은 사전의 **한국어** 목록을 되번역에 건다. 현지어 목록은 검수를 받지 않았고 한국어 목록만 사람이
 확인했기 때문이다. 되번역은 현지어 본문을 한국어로 되살린 글이므로 그 하나의 사전으로 세 현지어 본문을 기계적으로 본다.
+모든 게시물 구역은 조건 없이, 대학명 구역은 `대학맥락`과 같게 회사가 말하는 문장(1인칭 표지나 회사명)에서만 건다.
 
 원문과 현지어 본문의 뜻이 같은지(역번역 대조)는 여기서 보지 않고, 글자 유사도도 계산하지 않는다.
 구조·사실 검증(`validate_structure`·`validate_facts`)은 `validate_structure`에 있다.
@@ -286,7 +287,9 @@ def _check_banned_phrases(plan: Plan, banned: dict[str, tuple[str, ...]]) -> lis
     return findings
 
 
-def validate_back_copy(plan: Plan, back: dict[int, str], banned: dict[str, tuple[str, ...]]) -> list[Finding]:
+def validate_back_copy(
+    plan: Plan, back: dict[int, str], banned: dict[str, tuple[str, ...]], glossary: dict
+) -> list[Finding]:
     """되번역(한국어)에 **한국어** 금지 표현이 있는지 본다. 있으면 문구마다 `역번역금지표현`(오류).
 
     왜 있는가: 베트남어·미얀마어·네팔어 금지 목록은 AI가 썼고 원어민 검수를 받지 않았다. 사람이 확인한 사전은 한국어
@@ -297,20 +300,25 @@ def validate_back_copy(plan: Plan, back: dict[int, str], banned: dict[str, tuple
     오류인 이유: 되번역에 금지 문구가 보이면 현지어 본문이 정말 그렇게 말하거나(발행할 수 없다) 되번역이 틀렸다(고쳐야
     한다). 어느 쪽이든 그대로 나갈 수 없다.
 
-    `원문(source_ko)` 검사(`_check_banned_phrases`)와 같게 동작한다: 같은 `_hits`로 대조해 표기 차이(`_compact`)와 영문 약어를
+    원문 검사(`_check_banned_phrases`·`대학맥락`)와 같게 동작한다: 같은 `_hits`로 대조해 표기 차이(`_compact`)와 영문 약어를
     같이 다루고, 문구마다 항목 하나를 사전에 적힌 순서로 낸다(같은 문구가 되풀이돼도 한 번). 두 경로가 같은 사전을 다르게
     읽으면 한쪽이 통과시키는 것을 다른 쪽이 막는다. 문장부호는 지우지 않으므로(`합격, 보장`) 원문 검사가 놓치는 꼴은 여기서도
     놓친다.
 
-    `banned["ko"]`(모든 게시물 구역)는 언제나, `banned["ko:대학명"]`(대학명이 나오는 게시물 구역)는 그 게시물의
-    `university_names`가 비어 있지 않을 때만 건다 — 모든 게시물 구역이 먼저이고, 두 구역에 같은 문구가 있으면 한 번만
-    보고한다. 현지어 목록(`vi`·`my`·`ne`)은 쓰지 않는다. 되번역은 한국어다.
+    - `banned["ko"]`(모든 게시물 구역)는 **언제나, 조건 없이** 건다. `합격을 보장`은 누가 말하든 약속이다.
+    - `banned["ko:대학명"]`(대학명이 나오는 게시물 구역)는 그 게시물의 `university_names`가 비어 있지 않을 때만, 그리고
+      `대학맥락`과 같은 조건으로 건다: 문구가 **회사가 말하는 문장**(1인칭 표지나 회사명이 있는 문장, `_first_person_marker`)에
+      있을 때만이다. 관계 어휘(`협력`·`연계`·`협약`)는 대학 소개글에 흔하고, 회사가 맺지 않은 관계를 회사가 말할 때만 거짓이다.
+      조건이 없으면 `산학협력단이 …` 같은 대학 자신의 이야기가 게시물마다 오류가 되어 운영자가 이 코드를 무시하게 된다.
+      모든 게시물 구역이 먼저이고, 두 구역에 같은 문구가 있으면 모든 게시물 구역으로 한 번만 보고한다.
+    - 현지어 목록(`vi`·`my`·`ne`)은 쓰지 않는다. 되번역은 한국어다.
 
-    **`validate_copy`와 다른 점 둘**(둘 다 이 함수가 `universities`를 받지 않아서다). (1) `대학맥락`의 1인칭 조건을 걸지 않는다:
-    `validate_copy`는 회사가 스스로 말하는 문장(1인칭 + 관계 어휘)만 막고 대학 자신의 이야기(`산학협력단이 …`)는 통과시키지만,
-    되번역 검사는 대학명 구역의 문구가 들어 있으면 막는다. 충실한 되번역도 걸릴 수 있다는 뜻이다. (2) 대학명 게시물인지를
-    `university_names`로만 정한다 — `validate_copy`는 목록에 적지 않았어도 원문·본문에 쓰인 승인된 대학명을 대학명으로 친다.
-    그래서 대학명을 본문에 쓰고 `university_names`를 비운 게시물은 대학명 구역을 거치지 않는다.
+    **`validate_copy`와 다른 점 하나**(이 함수가 `universities`를 받지 않아서다): 대학명 게시물인지를 `university_names`로만
+    정한다. `validate_copy`는 목록에 적지 않았어도 원문·본문에 쓰인 승인된 대학명을 대학명으로 친다. 그래서 대학명을 본문에
+    쓰고 `university_names`를 비운 게시물은 대학명 구역을 거치지 않는다.
+
+    `glossary`는 회사명 표지를 읽으려는 것이고, `validate_copy`와 같은 검사(`_require_glossary`)를 거친다 — 회사명이 비면 모든
+    문장이 회사가 말하는 문장이 되어 조건이 사라진다.
 
     비었거나 없는 되번역은 보지 않는다(`validate_backtranslation`이 `역번역빈칸`·`역번역누락`으로 이미 보고한다). 플랜에 없는
     번호의 되번역도 그쪽이 `역번역플랜밖`으로 보고한다. `back`의 모양({정수: 문자열})은 `validate_backtranslation`이 확인한다 —
@@ -319,6 +327,7 @@ def validate_back_copy(plan: Plan, back: dict[int, str], banned: dict[str, tuple
     """
     university_key = _university_key("ko")
     _require_banned(banned, ("ko", university_key))
+    _require_glossary(glossary)
 
     findings: list[Finding] = []
     for post in plan.posts:
@@ -326,27 +335,26 @@ def validate_back_copy(plan: Plan, back: dict[int, str], banned: dict[str, tuple
         if text is None or is_blank(text):
             continue
         everywhere = _hits(text, banned["ko"])
-        university_only = (
-            [phrase for phrase in _hits(text, banned[university_key]) if phrase not in everywhere]
-            if post.university_names
-            else []
-        )
-        for university, phrases in ((False, everywhere), (True, university_only)):
-            for phrase in phrases:
-                message = _back_banned_message(post.index, phrase, university=university)
-                findings.append(_error("역번역금지표현", post.index, message))
+        claims = _company_claims(text, "ko", banned[university_key], glossary) if post.university_names else {}
+        university_only = [phrase for phrase in banned[university_key] if phrase in claims and phrase not in everywhere]
+        reports = [(phrase, None) for phrase in everywhere] + [(phrase, claims[phrase]) for phrase in university_only]
+        for phrase, claim in reports:
+            findings.append(_error("역번역금지표현", post.index, _back_banned_message(post.index, phrase, claim)))
     return findings
 
 
-def _back_banned_message(index: int, phrase: str, *, university: bool) -> str:
-    """`역번역금지표현` 항목의 문장. 게시물 카드 없이 목록에서 이 줄만 읽어도 무엇을 해야 하는지 알 수 있어야 한다."""
-    why = (
-        " 대학명이 나오는 게시물에서만 금지하는 표현입니다(회사가 대학과 협력·제휴·입학 알선·합격 가능성을 말하는 것처럼 "
-        "읽히기 때문입니다). 원문에 대학 부서 이름(예: 산학협력단)으로 들어 있는 말이라면 원문(과 그에 맞춘 현지어 본문)을 "
-        "다른 말로 바꿔야 이 검사를 통과합니다."
-        if university
-        else ""
-    )
+def _back_banned_message(index: int, phrase: str, claim: tuple[str, str] | None) -> str:
+    """`역번역금지표현` 항목의 문장. 게시물 카드 없이 목록에서 이 줄만 읽어도 무엇을 해야 하는지 알 수 있어야 한다.
+
+    `claim`은 대학명 구역 문구가 걸린 경우의 `(1인칭 표지, 문장)`이고, 모든 게시물 구역 문구면 `None`이다.
+    """
+    why = ""
+    if claim is not None:
+        marker, sentence = claim
+        why = (
+            f" 대학명이 나오는 게시물에서 회사가 스스로({marker}) 말하는 문장에 있어, 협력·제휴·입학 알선·합격 가능성을 "
+            f"내세우는 것처럼 읽힙니다 — 문장: '{_excerpt(sentence)}'."
+        )
     return (
         f"게시물 {index}번의 역번역에 금지 표현 '{phrase}'이(가) 있습니다.{why} 역번역은 현지어 본문(body_local)을 한국어로 "
         f"되살린 글이라, 현지어 본문이 실제로 그렇게 말하거나 역번역이 본문을 잘못 옮겼다는 뜻입니다 — 어느 쪽이든 그대로 둘 수 "
@@ -436,6 +444,29 @@ def _first_person_marker(text: str, language: str, glossary: dict) -> str | None
     return None
 
 
+def _company_claims(
+    text: str, language: str, phrases: tuple[str, ...], glossary: dict
+) -> dict[str, tuple[str, str]]:
+    """`text`에서 회사가 말하는 문장(그 언어의 1인칭 표지가 있는 문장)에 들어 있는 `phrases`를 `{문구: (표지, 문장)}`으로.
+
+    문장마다 판정한다 — 문구와 회사의 표지가 **같은 문장**에 있어야 한다. 같은 문구는 처음 나온 문장 하나만 남기고,
+    순서는 문장이 나온 순서다. `대학맥락`(원문·본문)과 `validate_back_copy`(되번역)가 같은 판정을 하도록 한 곳에 둔다.
+    """
+    found: dict[str, tuple[str, str]] = {}
+    for sentence in _sentences(text):
+        marker = _first_person_marker(sentence, language, glossary)
+        if marker is None:
+            continue
+        for term in _hits(sentence, phrases):
+            found.setdefault(term, (marker, sentence.strip()))
+    return found
+
+
+def _excerpt(sentence: str) -> str:
+    """메시지에 싣는 문장: 60자를 넘으면 자른다."""
+    return sentence if len(sentence) <= 60 else sentence[:60] + "…"
+
+
 def _context_terms(
     post: Post, banned: dict[str, tuple[str, ...]], glossary: dict
 ) -> list[tuple[str, str, str, str]]:
@@ -450,12 +481,8 @@ def _context_terms(
         ("한국어 원문(source_ko)", post.source_ko, "ko"),
         ("현지어 본문(body_local)", post.body_local, post.language),
     ):
-        for sentence in _sentences(text):
-            marker = _first_person_marker(sentence, language, glossary)
-            if marker is None:
-                continue
-            for term in _hits(sentence, banned[_university_key(language)]):
-                found.setdefault((side, term), (marker, sentence.strip()))
+        for term, claim in _company_claims(text, language, banned[_university_key(language)], glossary).items():
+            found[(side, term)] = claim
     return [(side, term, marker, sentence) for (side, term), (marker, sentence) in found.items()]
 
 
@@ -474,11 +501,10 @@ def _check_university_context(
         if not named:
             continue
         for side, term, marker, sentence in _context_terms(post, banned, glossary):
-            shown = sentence if len(sentence) <= 60 else sentence[:60] + "…"
             findings.append(_error(
                 "대학맥락", post.index,
                 f"대학명({', '.join(named)})이 나오는 게시물의 {side}에서 회사가 스스로({marker}) 협력·제휴를 말하는 것처럼 "
-                f"읽히는 표현 '{term}'이(가) 있습니다 — 문장: '{shown}'. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·"
+                f"읽히는 표현 '{term}'이(가) 있습니다 — 문장: '{_excerpt(sentence)}'. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·"
                 f"입학 알선·합격 가능성과 연결하지 마세요.",
             ))
     return findings

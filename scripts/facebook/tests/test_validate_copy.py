@@ -1417,6 +1417,10 @@ def _faithful_back(plan: Plan) -> dict[int, str]:
     return {post.index: comparison_source(post.source_ko, cta_ko) for post in plan.posts}
 
 
+def _check_back(plan: Plan, back: dict[int, str], banned: dict[str, tuple[str, ...]]) -> list[Finding]:
+    return validate_back_copy(plan, back, banned, GLOSSARY)
+
+
 def _first_quoted(finding: Finding) -> str:
     """메시지에서 처음 작은따옴표로 묶인 문구 — `금지표현`·`역번역금지표현` 둘 다 걸린 문구를 먼저 댄다."""
     match = re.search(r"'([^']+)'", finding.message)
@@ -1435,7 +1439,7 @@ def test_되번역에_한국어_금지표현이_있으면_오류(promise):
     back = _faithful_back(plan)
     back[0] = f"{back[0]}\n\n{promise}"
 
-    findings = validate_back_copy(plan, back, _real_banned())
+    findings = _check_back(plan, back, _real_banned())
 
     assert _brief(findings) == [(0, "역번역금지표현", "error")]
 
@@ -1444,13 +1448,13 @@ def test_대학명_있는_게시물용_금지표현은_university_names가_비�
     # 0번은 university_names가 비어 있고 3번은 있다. 같은 문장이 두 되번역에 들어 있다.
     plan = _plan()
     assert plan.posts[0].university_names == () and plan.posts[3].university_names
-    sentence = "지역 산업과 연계한 교육을 운영합니다."
+    sentence = "저희는 지역 산업과 연계한 교육을 운영합니다."  # 대학명 구역은 회사가 말하는 문장에서만 건다
     back = _faithful_back(plan)
     back[0] += sentence
     back[3] += sentence
 
     for banned in (_banned(university={"ko": ("연계",)}), _real_banned()):
-        findings = validate_back_copy(plan, back, banned)
+        findings = _check_back(plan, back, banned)
 
         assert _brief(findings) == [(3, "역번역금지표현", "error")]
         assert _first_quoted(findings[0]) == "연계"
@@ -1462,7 +1466,7 @@ def test_모든_게시물_구역의_금지표현은_대학명이_없는_게시�
     back = _faithful_back(plan)
     back[0] += "합격 보장."
 
-    findings = validate_back_copy(plan, back, _banned({"ko": ("합격 보장",)}))
+    findings = _check_back(plan, back, _banned({"ko": ("합격 보장",)}))
 
     assert _brief(findings) == [(0, "역번역금지표현", "error")]
 
@@ -1472,12 +1476,15 @@ def test_대학명_구역의_금지표현은_메시지가_왜_걸렸는지_밝�
     # 문구임을 적는다. 모든 게시물 구역의 문구에는 그 말이 없다.
     plan = _plan()
     faithful = _faithful_back(plan)
-    from_university = validate_back_copy(plan, {**faithful, 3: faithful[3] + "산학협력단이 있습니다."}, _real_banned())
-    from_always = validate_back_copy(plan, {**faithful, 3: faithful[3] + "합격 보장."}, _real_banned())
+    from_university = _check_back(plan, {**faithful, 3: faithful[3] + "저희가 산학협력단을 운영합니다."}, _real_banned())
+    from_always = _check_back(plan, {**faithful, 3: faithful[3] + "합격 보장."}, _real_banned())
 
     assert [_first_quoted(f) for f in from_university] == ["협력"]
     assert [_first_quoted(f) for f in from_always] == ["합격 보장"]
     assert "대학명이 나오는 게시물" in from_university[0].message
+    # 어느 문장의 어떤 표지 때문에 걸렸는지 보여 준다 — 평범한 낱말(`협력`)이 왜 걸렸는지 읽는 사람이 알 수 있어야 한다.
+    assert "(저희)" in from_university[0].message
+    assert "저희가 산학협력단을 운영합니다" in from_university[0].message
     assert "대학명이 나오는 게시물" not in from_always[0].message
 
 
@@ -1491,7 +1498,7 @@ def test_되번역이_비었거나_없으면_금지표현을_보지_않는다(bl
     back = _faithful_back(plan)
     back[0] = blank
 
-    assert validate_back_copy(plan, back, _banned({"ko": ("...", "!!!")})) == []
+    assert _check_back(plan, back, _banned({"ko": ("...", "!!!")})) == []
 
 
 def test_되번역이_없는_게시물은_멈추지_않고_넘어간다():
@@ -1500,10 +1507,10 @@ def test_되번역이_없는_게시물은_멈추지_않고_넘어간다():
     back[4] += "합격을 보장합니다."
     del back[0], back[2]
 
-    findings = validate_back_copy(plan, back, _real_banned())
+    findings = _check_back(plan, back, _real_banned())
 
     assert _brief(findings) == [(4, "역번역금지표현", "error")]
-    assert validate_back_copy(plan, {}, _real_banned()) == []
+    assert _check_back(plan, {}, _real_banned()) == []
 
 
 _MISSED_BY_LOCAL_LIST = [
@@ -1524,7 +1531,7 @@ def test_현지어_목록이_놓친_표현도_한국어_목록이_잡는다(lang
     back = _faithful_back(plan)
     back[index] = back_ko
 
-    findings = validate_back_copy(plan, back, _real_banned())
+    findings = _check_back(plan, back, _real_banned())
 
     assert _brief(findings) == [(index, "역번역금지표현", "error")]
 
@@ -1553,7 +1560,7 @@ def test_금지표현_판정은_validate_copy와_같은_압축_규칙을_쓴다(
     back[0] = f"유학 안내 {written} 안내"
 
     from_source = [f.code for f in _check(in_source, banned)]
-    from_back = [f.code for f in validate_back_copy(plan, back, banned)]
+    from_back = [f.code for f in _check_back(plan, back, banned)]
 
     assert from_source == (["금지표현"] if caught else [])
     assert from_back == (["역번역금지표현"] if caught else [])
@@ -1568,12 +1575,12 @@ def test_알파벳_약어는_validate_copy처럼_대소문자를_구분해_낱�
     def codes(text: str) -> list[str]:
         back = _faithful_back(plan)
         back[3] = text
-        return [f.code for f in validate_back_copy(plan, back, banned)]
+        return [f.code for f in _check_back(plan, back, banned)]
 
-    assert codes("협약 문서에 mou라고 적혀 있습니다.") == []
-    assert codes("MOUSE와 TEAM OUT은 약어가 아닙니다.") == []
-    assert codes("전주기전대학과 MOU를 맺었습니다.") == ["역번역금지표현"]
-    assert codes("전주기전대학과 M.O.U.를 맺었습니다.") == ["역번역금지표현"]
+    assert codes("저희는 협약 문서에 mou라고 적었습니다.") == []
+    assert codes("저희는 MOUSE와 TEAM OUT을 쓰지 않습니다.") == []
+    assert codes("저희는 전주기전대학과 MOU를 맺었습니다.") == ["역번역금지표현"]
+    assert codes("저희는 전주기전대학과 M.O.U.를 맺었습니다.") == ["역번역금지표현"]
 
 
 def test_메시지가_걸린_문구와_게시물_번호를_댄다():
@@ -1582,7 +1589,7 @@ def test_메시지가_걸린_문구와_게시물_번호를_댄다():
     back = _faithful_back(plan)
     back[4] += "저희는 합격을 보장합니다."
 
-    (finding,) = validate_back_copy(plan, back, _real_banned())
+    (finding,) = _check_back(plan, back, _real_banned())
 
     assert finding.post_index == 4
     assert "게시물 4번" in finding.message
@@ -1601,7 +1608,7 @@ def test_여러_게시물의_금지표현을_한_번에_모은다():
     back[3] += "취업을 보장합니다."
     back = dict(reversed(list(back.items())))  # 되번역을 넣은 순서가 아니라 플랜의 게시물 순서를 따른다
 
-    findings = validate_back_copy(plan, back, _real_banned())
+    findings = _check_back(plan, back, _real_banned())
 
     assert [(f.post_index, _first_quoted(f)) for f in findings] == [
         (0, "합격을 보장"), (3, "취업을 보장"), (5, "수수료"),
@@ -1620,7 +1627,7 @@ def test_한_되번역에_금지표현이_여럿이면_validate_copy와_같은_�
     back[0] = text
 
     from_source = _check(in_source, banned)
-    from_back = validate_back_copy(plan, back, banned)
+    from_back = _check_back(plan, back, banned)
 
     assert [_first_quoted(f) for f in from_source] == ["합격 보장", "취업 보장"]
     assert [_first_quoted(f) for f in from_back] == [_first_quoted(f) for f in from_source]
@@ -1630,20 +1637,21 @@ def test_대학명_게시물에서는_두_구역을_모든_게시물_구역부�
     banned = _banned({"ko": ("입학 알선",)}, {"ko": ("알선", "연계")})
     plan = _plan()
     back = _faithful_back(plan)
-    back[3] = "연계하여 입학 알선을 합니다."
+    back[3] = "저희는 연계하여 입학 알선을 합니다."
 
-    findings = validate_back_copy(plan, back, banned)
+    findings = _check_back(plan, back, banned)
 
     assert [_first_quoted(f) for f in findings] == ["입학 알선", "알선", "연계"]
 
 
 def test_두_구역에_같은_문구가_있어도_한_번만_보고한다():
+    # 대학명 구역은 회사가 말하는 문장에서만 걸리므로, 두 구역 모두에서 걸리게 1인칭 문장으로 만든다.
     banned = _banned({"ko": ("합격 보장",)}, {"ko": ("합격 보장",)})
     plan = _plan()
     back = _faithful_back(plan)
-    back[3] += "합격 보장."
+    back[3] += "저희는 합격 보장."
 
-    findings = validate_back_copy(plan, back, banned)
+    findings = _check_back(plan, back, banned)
 
     assert [_first_quoted(f) for f in findings] == ["합격 보장"]
 
@@ -1657,14 +1665,14 @@ def test_한국어_목록만_쓴다_다른_언어_목록은_되번역에_걸지_
     plan = _plan()
     back = {index: f"{text} 합격 보장. 연계." for index, text in _faithful_back(plan).items()}
 
-    assert validate_back_copy(plan, back, banned) == []
+    assert _check_back(plan, back, banned) == []
 
 
 def test_원문과_현지어_본문의_금지표현은_이_검사가_보지_않는다():
     # 원문·본문의 금지 표현은 `validate_copy`의 몫이다. 이 함수는 되번역만 본다.
     plan = _edit(_plan(), 0, source_ko=_with_cta("합격 보장입니다.", "ko"), body_local=_with_cta("đảm bảo đỗ", "vi"))
 
-    assert validate_back_copy(plan, _faithful_back(_plan()), _real_banned()) == []
+    assert _check_back(plan, _faithful_back(_plan()), _real_banned()) == []
 
 
 def test_플랜에_없는_번호의_되번역은_보지_않는다():
@@ -1673,7 +1681,7 @@ def test_플랜에_없는_번호의_되번역은_보지_않는다():
     back = _faithful_back(plan)
     back[99] = "합격을 보장합니다."
 
-    assert validate_back_copy(plan, back, _real_banned()) == []
+    assert _check_back(plan, back, _real_banned()) == []
 
 
 @pytest.mark.parametrize("missing", [["ko"], ["ko:대학명"], ["ko", "ko:대학명"]])
@@ -1683,41 +1691,160 @@ def test_되번역_검사도_필요한_사전_항목이_없으면_조용히_건�
         del banned[key]
 
     with pytest.raises(ValueError, match=re.escape(f"항목이 없습니다: {', '.join(missing)}.")):
-        validate_back_copy(_plan(), _faithful_back(_plan()), banned)
+        _check_back(_plan(), _faithful_back(_plan()), banned)
 
 
-def test_validate_back_copy는_plan_back_banned_세_인자만_받는다():
-    assert list(inspect.signature(validate_back_copy).parameters) == ["plan", "back", "banned"]
+def test_validate_back_copy는_plan_back_banned_glossary_네_인자를_받는다():
+    assert list(inspect.signature(validate_back_copy).parameters) == ["plan", "back", "banned", "glossary"]
 
 
 def test_실제_사전의_한국어_문구는_모두_되번역에서_걸린다():
     # 사전의 문구가 늘거나 바뀌어도, 사전에 적힌 모든 한국어 문구가 이 경로에서 실제로 걸리는지 데이터에서 고정한다.
-    # 모든 게시물 구역은 대학명이 없는 0번에, 대학명 구역은 있는 3번에 넣는다.
+    # 모든 게시물 구역은 대학명이 없는 0번에, 대학명 구역은 있는 3번에 넣는다. 문구마다 1인칭 문장 하나로 만든다.
     banned = _real_banned()
     plan = _plan()
     for key, index in (("ko", 0), ("ko:대학명", 3)):
         for phrase in banned[key]:
             back = _faithful_back(plan)
-            back[index] = f"안내드립니다. {phrase} 입니다."
+            back[index] = f"저희는 {phrase} 입니다."  # 대학명 구역은 1인칭 문장에서만 걸린다
 
-            findings = validate_back_copy(plan, back, banned)
+            findings = _check_back(plan, back, banned)
 
             assert any(_first_quoted(f) == phrase for f in findings), (key, phrase, findings)
 
 
-def test_대학_소개글의_산학협력단은_대학명_게시물의_되번역에서_걸린다_알려진_한계():
-    # `validate_copy`는 이 문장을 통과시킨다(`test_대학_실무_표현은_대학맥락이_아니다`): 회사가 말하는 문장이 아니라서다.
-    # 되번역 검사는 1인칭 조건 없이 대학명 구역을 걸므로 충실한 되번역도 막힌다. 막힌 게시물은 원문을 다른 말로 고쳐야 한다.
-    # 1인칭 조건을 걸면 거짓 양성은 줄지만, 되번역이 1인칭을 빠뜨린 약속(`협력하고 있습니다`)을 놓친다.
-    plan = _edit(
-        _plan(), 3, fact_keys=(), source_ko=_with_cta("전북대학교 산학협력단이 유학생 지원 프로그램을 운영합니다.", "ko")
-    )
-    assert [f for f in _check(plan, _real_banned()) if f.post_index == 3] == []
+# 조정자가 `_hits`(대학명 구역)와 `_first_person_marker`로 재 본 문장들이다. 시험과 실측이 어긋나지 않도록 그대로 옮겼다.
+# 앞의 여섯은 대학 자신의 이야기라 발행해도 되고, 뒤의 셋은 회사가 스스로 말하는 관계 주장이라 막아야 한다.
+_UNIVERSITY_OWN_STORY = [
+    "경희대학교 산학협력단이 유학생 연구 과정을 운영합니다.",
+    "국제협력처에서 유학생 상담을 받을 수 있습니다.",
+    "이 학교에는 공학과 경영학을 묶은 연계전공이 있습니다.",
+    "학교가 여러 기업과 협약을 맺어 현장실습을 운영합니다.",
+    "대학 간 학술 교류 협력 사업이 있습니다.",
+    "교내 파트너 기업 채용설명회가 매년 열립니다.",
+]
+_COMPANY_CLAIMS = [
+    ("저희와 협약을 맺은 대학입니다.", "협약", "저희"),
+    ("정우인재개발원이 제휴한 학교라 입학이 쉽습니다.", "제휴", "정우인재개발원"),  # 대명사가 아니라 회사명으로 잡힌다
+    ("우리는 이 대학과 MOU를 체결했습니다.", "MOU", "우리"),
+]
 
-    findings = validate_back_copy(plan, _faithful_back(plan), _real_banned())
+
+def _source_university_context_codes(sentence: str) -> list[str]:
+    """같은 문장을 3번 게시물(대학명이 있다)의 한국어 원문에 넣었을 때 `validate_copy`가 내는 `대학맥락`."""
+    plan = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta(sentence, "ko"))
+    return [f.code for f in _check(plan, _real_banned()) if f.post_index == 3 and f.code == "대학맥락"]
+
+
+@pytest.mark.parametrize("sentence", _UNIVERSITY_OWN_STORY)
+def test_대학_자신의_이야기는_대학명_게시물의_충실한_되번역에서_걸리지_않는다(sentence):
+    # 대학명 구역의 관계 어휘(`협력`·`연계`·`협약`·`제휴`·`파트너`)는 대학 소개글에 흔하다. 회사가 맺지 않은 관계를 회사가
+    # 말할 때만 거짓이므로 `대학맥락`과 같은 1인칭 조건을 건다. 이 조건이 없으면 소개 게시물마다 오류가 나서 운영자가
+    # `역번역금지표현`을 무시하게 되고, 그러면 진짜 약속도 지나간다.
+    plan = _plan()
+    back = _faithful_back(plan)
+    back[3] = sentence
+
+    assert _check_back(plan, back, _real_banned()) == []
+    assert _source_university_context_codes(sentence) == []  # 원문 쪽도 같다
+
+
+@pytest.mark.parametrize(("sentence", "phrase", "marker"), _COMPANY_CLAIMS, ids=["저희", "회사명", "우리"])
+def test_회사가_스스로_말하는_관계_주장은_대학명_게시물의_되번역에서_걸린다(sentence, phrase, marker):
+    plan = _plan()
+    back = _faithful_back(plan)
+    back[3] = sentence
+
+    findings = _check_back(plan, back, _real_banned())
 
     assert _brief(findings) == [(3, "역번역금지표현", "error")]
-    assert _first_quoted(findings[0]) == "협력"
+    assert _first_quoted(findings[0]) == phrase
+    assert f"({marker})" in findings[0].message  # 어떤 표지 때문에 회사가 말하는 문장으로 봤는지
+    assert sentence.rstrip(".") in findings[0].message
+    assert _source_university_context_codes(sentence) == ["대학맥락"]  # 원문 쪽도 같다
+
+
+def test_정우인재개발원은_대명사가_없어도_회사가_말하는_문장으로_본다():
+    # 위 시험의 둘째 문장에는 1인칭 대명사가 없다. 회사명만으로 회사가 말하는 문장이 된다.
+    sentence = _COMPANY_CLAIMS[1][0]
+    assert not re.search(r"저희|우리|당사", sentence)
+    plan = _plan()
+    back = _faithful_back(plan)
+    back[3] = sentence
+
+    assert [f.code for f in _check_back(plan, back, _real_banned())] == ["역번역금지표현"]
+
+
+def test_1인칭과_관계어휘가_다른_문장이면_되번역도_걸리지_않는다():
+    # `대학맥락`과 같이 같은 문장에 있어야 한다. 되번역은 여러 문장이라 글 전체로 짝지으면 거의 모든 글이 걸린다.
+    plan = _plan()
+
+    def codes(text: str) -> list[str]:
+        back = _faithful_back(plan)
+        back[3] = text
+        return [f.code for f in _check_back(plan, back, _real_banned())]
+
+    assert codes("저희는 한국 대학을 소개합니다. 전북대학교 산학협력단은 유학생을 지원합니다.") == []
+    assert codes("저희는 한국 대학을 소개합니다.\n전북대학교 산학협력단은 유학생을 지원합니다.") == []
+    assert codes("전북대학교 산학협력단은 유학생을 지원합니다. 저희는 한국 대학을 소개합니다.") == []
+    assert codes("저희는 전북대학교 산학협력단을 소개합니다.") == ["역번역금지표현"]  # 한 문장에 있으면 걸린다(알려진 거짓 양성)
+
+
+def test_대학명_구역의_문구는_문장이_나온_순서가_아니라_사전_순서로_보고한다():
+    # 모든 게시물 구역의 `금지표현`과 같은 규칙이다(`대학맥락`은 문장이 나온 순서). 사전은 알선 → 연계, 글은 연계 → 알선.
+    banned = _banned(university={"ko": ("알선", "연계")})
+    plan = _plan()
+    back = _faithful_back(plan)
+    back[3] = "저희는 연계합니다. 저희는 알선합니다."
+
+    findings = _check_back(plan, back, banned)
+
+    assert [_first_quoted(f) for f in findings] == ["알선", "연계"]
+
+
+def test_메시지에_싣는_문장은_처음_걸린_문장이고_공백이_없고_60자를_넘으면_자른다():
+    plan = _plan()
+
+    def message(text: str) -> str:
+        back = _faithful_back(plan)
+        back[3] = text
+        (finding,) = _check_back(plan, back, _real_banned())
+        return finding.message
+
+    first = message("먼저 안내합니다. 저희는 산학협력단을 운영합니다. 저희는 또 산학협력단을 소개합니다.")
+    assert "문장: '저희는 산학협력단을 운영합니다'." in first  # 앞 문장이 아니라 걸린 문장이고, 앞의 공백은 없다
+    assert "소개합니다" not in first  # 같은 문구가 되풀이돼도 처음 걸린 문장만 보인다
+
+    exact = ("저희는 산학협력단을 운영합니다" + "다" * 60)[:60]
+    assert len(exact) == 60
+    assert f"문장: '{exact}'." in message(exact)  # 60자까지는 그대로
+    assert f"문장: '{exact}…'." in message(exact + "다")  # 넘으면 60자에서 자르고 …
+
+    # 같은 자르기를 `대학맥락`도 쓴다.
+    source = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta(exact + "다", "ko"))
+    (context,) = [f for f in _check(source, _real_banned()) if f.code == "대학맥락"]
+    assert f"문장: '{exact}…'." in context.message
+
+
+def test_모든_게시물_구역의_금지표현은_1인칭_없이도_대학명_게시물에서_건다():
+    # 1인칭 조건은 대학명 구역에만 건다. `합격을 보장`은 누가 말하든 약속이다.
+    plan = _plan()
+    back = _faithful_back(plan)
+    back[3] += "합격을 보장합니다."
+
+    findings = _check_back(plan, back, _real_banned())
+
+    assert _brief(findings) == [(3, "역번역금지표현", "error")]
+    assert _first_quoted(findings[0]) == "합격을 보장"
+
+
+def test_되번역_검사도_용어집의_회사명이_비면_조용히_넘어가지_않고_멈춘다():
+    # 회사명이 비면 `_compact("") in …`가 늘 참이라 모든 문장이 회사가 말하는 문장이 되어 대학명 구역이 1인칭 조건 없이 걸린다.
+    glossary = copy.deepcopy(GLOSSARY)
+    glossary["company_name"]["ko"] = ""
+
+    with pytest.raises(ValueError, match=r"company_name\.ko"):
+        validate_back_copy(_plan(), _faithful_back(_plan()), _real_banned(), glossary)
 
 
 def test_university_names를_비운_게시물은_본문에_대학명이_있어도_대학명_구역을_거치지_않는다_알려진_한계():
@@ -1728,8 +1855,8 @@ def test_university_names를_비운_게시물은_본문에_대학명이_있어�
     listed = _edit(unlisted, 3, university_names=("전주기전대학",))
     assert "대학맥락" in [f.code for f in _check(unlisted, _real_banned()) if f.post_index == 3]
 
-    assert validate_back_copy(unlisted, _faithful_back(unlisted), _real_banned()) == []
-    assert _brief(validate_back_copy(listed, _faithful_back(listed), _real_banned())) == [(3, "역번역금지표현", "error")]
+    assert _check_back(unlisted, _faithful_back(unlisted), _real_banned()) == []
+    assert _brief(_check_back(listed, _faithful_back(listed), _real_banned())) == [(3, "역번역금지표현", "error")]
 
 
 def test_픽스처의_충실한_되번역은_findings가_비어_있다():
@@ -1737,10 +1864,10 @@ def test_픽스처의_충실한_되번역은_findings가_비어_있다():
     # 승인된 CTA가 금지 문구에 걸리면 모든 게시물의 되번역이 막힌다.
     plan = _plan()
 
-    assert validate_back_copy(plan, _faithful_back(plan), _real_banned()) == []
+    assert _check_back(plan, _faithful_back(plan), _real_banned()) == []
     with_cta = {post.index: post.source_ko for post in plan.posts}
     assert all(GLOSSARY["cta"]["ko"] in text for text in with_cta.values())
-    assert validate_back_copy(plan, with_cta, _real_banned()) == []
+    assert _check_back(plan, with_cta, _real_banned()) == []
 
 
 # --- 정상 경로 ----------------------------------------------------------------
