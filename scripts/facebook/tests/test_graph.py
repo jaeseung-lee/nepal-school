@@ -105,7 +105,11 @@ def assert_token_only_in_header(session: FakeSession) -> None:
     """토큰은 어느 호출에서든 `Authorization` 헤더에만 있다: URL·params·data·files 어디에도 없다."""
     assert session.calls
     for call in session.calls:
-        assert call.kwargs["headers"] == {"Authorization": f"Bearer {SENTINEL}"}
+        # 헤더 dict 전체를 견주면 User-Agent 하나가 생겨도 이 장치를 쓰는 시험 스물이 한꺼번에 깨지고,
+        # 어느 보장이 깨진 것인지 알 수 없다. 같은 엄격함(헤더는 Authorization 하나뿐)을 두 줄로 나눠 짚는다.
+        headers = call.kwargs["headers"]
+        assert headers["Authorization"] == f"Bearer {SENTINEL}"
+        assert len(headers) == 1
         assert SENTINEL not in call.url
         others = {key: value for key, value in call.kwargs.items() if key != "headers"}
         assert SENTINEL not in repr(others)
@@ -906,11 +910,8 @@ def test_토큰_값이_토큰_점검의_예외와_상태_메시지에도_들어�
     assert_token_only_in_header(session)
 
 
-def test_assert_schedulable_메시지에도_토큰이_없다():
-    # 이 함수는 토큰을 받지 않는다. 시각만 있는 메시지에 토큰이 생길 길이 없음을 못 박는다.
-    with pytest.raises(graph.GraphError) as caught:
-        graph.assert_schedulable(NOW, NOW)
-    assert_no_leak(caught.value)
+# `assert_schedulable`에는 토큰 누출 시험이 없다. 그 함수는 토큰을 받지 않으므로 어떻게 고쳐도 실패할 수 없는
+# 시험이 되기 때문이다(그 사실은 graph.py의 `assert_schedulable` 문서에 적어 두었다).
 
 
 def token_fragments(token: str, length: int = 8) -> set[str]:
