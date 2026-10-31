@@ -9,6 +9,8 @@
 1. `worksheet(plan, glossary)`: 채울 워크시트를 낸다. 항목마다 `body_local`만 담고 **한국어 원문은 담지 않는다** —
    되번역하는 쪽이 원문을 보면 베끼기만 하고 되번역이 아니게 된다. `body_local`은 끝의 승인된 상담 문구(CTA)를
    뗀 것이라 채우는 쪽은 CTA를 보지도, 되번역하지도 않는다. 항목마다 그 본문의 짧은 해시 `body_hash`를 적는다.
+   최상위 `작성_지침`은 채우는 쪽에게 되번역에 **주어를 적으라**고 일러 준다: 대학명 구역 금지 검사는 회사가 말하는
+   문장에서만 걸리는데, 주어를 빼는 현지어를 옮기다 보면 되번역이 주어를 잃는다. `load`는 이 키를 읽지 않는다.
 2. `load(path)`: 채워 온 워크시트를 `{게시물 번호: back_ko}`로 읽는다. 모양이 틀리면 `WorksheetError`.
    `plan`과 `glossary`를 함께 넘기면 워크시트가 이 플랜의 달 것인지, 워크시트를 채운 뒤 본문이 바뀌지 않았는지
    (`body_hash`)도 확인한다.
@@ -160,11 +162,25 @@ def _body_hash(body: str) -> str:
     return hashlib.sha256(body.encode("utf-8")).hexdigest()[:_HASH_LENGTH]
 
 
+# 되번역을 채우는 세션에게 주는 지침. 워크시트의 최상위 `작성_지침` 키에 실린다(`load`는 이 키를 읽지 않는다).
+# 대학명 구역 금지 검사(`validate_copy.validate_back_copy`)는 회사가 말하는 문장(1인칭 표지나 회사명이 있는 문장)에서만
+# 걸린다. 원문에서는 사람이 주어를 빼지만 되번역에서는 주어를 빼는 현지어(미얀마어·네팔어)를 LLM이 옮기므로 파이프라인이
+# 주어를 잃는다. 지침을 어기면 그 검사는 조용히 놓친다 — 기계로 강제되는 것이 아니다.
+_GUIDE_KEY = "작성_지침"
+_GUIDE = (
+    "back_ko를 채울 때 주어를 빼지 마세요. 현지어 문장이 주어를 생략해도(미얀마어·네팔어는 흔히 생략합니다) 한국어 "
+    "되번역에는 그 문장의 주어를 적습니다. 현지어 문장이 '우리가 X와 MOU를 체결했다'는 뜻이면 'X와 MOU를 체결했습니다'가 "
+    "아니라 '저희는 X와 MOU를 체결했습니다'(또는 '정우인재개발원은 X와 …')라고 쓰고, 주어가 대학이면 그 대학 이름을 씁니다. "
+    "주어가 없으면 대학명 구역 검사가 그 문장을 회사가 말하는 문장으로 보지 못해 놓칩니다."
+)
+
+
 def worksheet(plan: Plan, glossary: dict) -> dict:
     """되번역을 채울 워크시트를 낸다. 항목은 `plan.posts` 순서이고 `back_ko`는 비어 있다.
 
     `body_local`은 끝의 CTA(`glossary["cta"][언어]`)를 뗀 것이고 `body_hash`는 그 본문의 해시다. 한국어 원문
-    (`source_ko`)은 일부러 담지 않는다. 이 딕셔너리를 `json.dumps(..., ensure_ascii=False)`로 파일에 쓰면 되고,
+    (`source_ko`)은 일부러 담지 않는다. 최상위 `작성_지침`은 채우는 세션이 읽을 지침이다(되번역에 주어를 적으라는 것).
+    이 딕셔너리를 `json.dumps(..., ensure_ascii=False)`로 파일에 쓰면 되고,
     채운 파일은 `load`가 읽는다. 용어집에 게시물 언어의 CTA가 없거나 본문이 그 CTA로 끝나지 않으면 `ValueError`.
     """
     entries = []
@@ -177,7 +193,7 @@ def worksheet(plan: Plan, glossary: dict) -> dict:
             "body_hash": _body_hash(body),
             "back_ko": "",
         })
-    return {"month": plan.month, "entries": entries}
+    return {"month": plan.month, _GUIDE_KEY: _GUIDE, "entries": entries}
 
 
 def load(path: Path, *, plan: Plan | None = None, glossary: dict | None = None) -> dict[int, str]:

@@ -159,7 +159,7 @@ def test_워크시트가_모든_게시물을_담는다():
 
     sheet = worksheet(plan, GLOSSARY)
 
-    assert set(sheet) == {"month", "entries"}
+    assert set(sheet) == {"month", "작성_지침", "entries"}
     assert sheet["month"] == "2026-11"
     assert [set(entry) for entry in sheet["entries"]] == [{"index", "language", "body_local", "body_hash", "back_ko"}] * 6
     assert [
@@ -174,6 +174,75 @@ def test_워크시트가_모든_게시물을_담는다():
         for post in plan.posts
     ]
     assert [entry["index"] for entry in sheet["entries"]] == [0, 1, 2, 3, 4, 5]
+
+
+# 대학명 구역 검사(`validate_copy.validate_back_copy`)는 회사가 말하는 문장(1인칭 표지나 회사명이 있는 문장)에서만 걸린다.
+# 원문에서는 사람이 주어를 빼지만, 되번역에서는 주어를 빼는 현지어(미얀마어·네팔어)를 LLM이 옮기므로 파이프라인이 주어를 잃는다.
+# 그래서 되번역을 채우는 세션에게 워크시트가 직접 일러 준다.
+GUIDE_KEY = "작성_지침"
+
+
+def test_워크시트는_되번역에_주어를_적으라는_지침을_담는다():
+    sheet = worksheet(_plan(), GLOSSARY)
+
+    guide = sheet[GUIDE_KEY]
+
+    assert isinstance(guide, str)
+    assert "주어" in guide and "생략" in guide
+    # 예시는 한국어 되번역에 실제로 쓸 말이다: 저희는 / 회사명은. 회사명은 용어집에서 가져와 맞춘다.
+    assert "저희는" in guide
+    assert f"{GLOSSARY['company_name']['ko']}은" in guide
+    # 이유를 한 구절로: 주어가 없으면 대학명 구역 검사가 그 문장을 보지 못한다.
+    assert "대학명 구역" in guide and "주어가 없으면" in guide
+    # 읽는 쪽은 워크시트를 채우는 세션이다. 몇 줄에 담는다.
+    assert len(guide) <= 400
+
+
+def test_지침은_항목보다_앞에_온다():
+    # 워크시트는 위에서부터 읽힌다. 채울 항목을 만나기 전에 지침을 읽게 한다.
+    assert list(worksheet(_plan(), GLOSSARY)) == ["month", GUIDE_KEY, "entries"]
+
+
+def test_지침은_원문이나_CTA를_새로_들여오지_않는다():
+    plan = _plan()
+    guide = worksheet(plan, GLOSSARY)[GUIDE_KEY]
+
+    for language in ("ko", *LANGUAGES):
+        assert GLOSSARY["cta"][language] not in guide
+    for post in plan.posts:
+        for line in post.source_ko.splitlines():
+            if line.strip():
+                assert line not in guide
+
+
+def test_load는_지침이_든_워크시트를_읽는다(tmp_path):
+    plan = _plan()
+    path = _filled(tmp_path, plan)  # `worksheet`가 낸 것에 back_ko만 채웠으므로 지침 키가 그대로 있다
+    assert GUIDE_KEY in json.loads(path.read_text(encoding="utf-8"))
+
+    assert load(path) == {post.index: f"{post.index}번 되번역" for post in plan.posts}
+    assert load(path, plan=plan, glossary=GLOSSARY) == load(path)
+
+
+def test_load는_지침이_없는_옛_워크시트도_읽는다(tmp_path):
+    # 이 변경 전에 손으로 만든 워크시트에는 지침 키가 없다.
+    plan = _plan()
+    sheet = json.loads(_filled(tmp_path, plan).read_text(encoding="utf-8"))
+    del sheet[GUIDE_KEY]
+    path = _write(tmp_path, json.dumps(sheet, ensure_ascii=False))
+
+    assert load(path) == {post.index: f"{post.index}번 되번역" for post in plan.posts}
+    assert load(path, plan=plan, glossary=GLOSSARY) == load(path)
+
+
+@pytest.mark.parametrize("value", [None, 5, ["지침"], {"a": 1}, ""], ids=["None", "숫자", "목록", "객체", "빈문자열"])
+def test_load는_지침_키의_내용을_읽지_않는다(tmp_path, value):
+    plan = _plan()
+    sheet = json.loads(_filled(tmp_path, plan).read_text(encoding="utf-8"))
+    sheet[GUIDE_KEY] = value
+    path = _write(tmp_path, json.dumps(sheet, ensure_ascii=False))
+
+    assert load(path) == {post.index: f"{post.index}번 되번역" for post in plan.posts}
 
 
 def test_워크시트는_CTA를_떼고_본문을_내보낸다():

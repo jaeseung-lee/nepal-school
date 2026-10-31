@@ -1847,6 +1847,33 @@ def test_되번역_검사도_용어집의_회사명이_비면_조용히_넘어�
         validate_back_copy(_plan(), _faithful_back(_plan()), _real_banned(), glossary)
 
 
+def test_대학명_구역은_주어가_있어야_걸린다_주어가_없으면_여덟_문구_모두_놓친다_알려진_한계():
+    # 원문에서는 사람이 주어를 빼지만 되번역에서는 파이프라인이 주어를 잃는다(미얀마어·네팔어는 주어를 자주 생략하고 LLM이 옮긴다).
+    # 그래서 `backtranslation.worksheet`의 `작성_지침`이 되번역에 주어를 적으라고 일러 준다. 그 지침이 있는 이유를 고정한다.
+    banned = _real_banned()
+    assert len(banned["ko:대학명"]) == 8
+    plan = _plan()
+    for phrase in banned["ko:대학명"]:
+        with_subject = _faithful_back(plan) | {3: f"저희는 전주기전대학과 {phrase} 입니다."}
+        without_subject = _faithful_back(plan) | {3: f"전주기전대학과 {phrase} 입니다."}
+
+        assert [_first_quoted(f) for f in _check_back(plan, with_subject, banned)] == [phrase], phrase
+        assert _check_back(plan, without_subject, banned) == [], phrase
+    assert _check_back(plan, _faithful_back(plan) | {3: "전주기전대학과 MOU를 체결했습니다."}, banned) == []
+
+
+@pytest.mark.parametrize("phrase", ["협력 대학", "제휴 대학", "협약 대학", "파트너 대학"])
+def test_명사구_금지표현은_주어가_없어도_대학명_게시물_아닌_게시물에서도_걸린다(phrase):
+    # 주어를 잃은 되번역에서도 모든 게시물 구역의 명사구는 남아 있다. 이 꼴이 주어 없는 구멍을 일부 막는다.
+    plan = _plan()
+    for index in (0, 3):  # 0번은 대학명이 없고 3번은 있다
+        back = _faithful_back(plan) | {index: f"{phrase}입니다."}
+
+        findings = _check_back(plan, back, _real_banned())
+
+        assert [(f.post_index, _first_quoted(f)) for f in findings] == [(index, phrase)]
+
+
 def test_university_names를_비운_게시물은_본문에_대학명이_있어도_대학명_구역을_거치지_않는다_알려진_한계():
     # `validate_copy`는 목록에 적지 않았어도 원문·본문에 승인된 대학명이 있으면 대학명이 나오는 글로 친다. 되번역 검사는
     # 승인 목록(`universities`)을 받지 않아 `university_names`만 본다. 목록을 비운 게시물의 되번역은 대학명 구역을 거치지 않는다.
