@@ -12,11 +12,24 @@
   어느 코드도 따로 다루지 않는다 — 그 경고의 뜻은 finding의 메시지가 말한다. 게시물에 매이지 않은 finding
   (`post_index`가 `None`)은 카드가 없으니 요약에 **메시지까지** 싣는다.
 - **finding이 하나도 없으면 없다고 적는다.** 빈 요약은 "검사해서 괜찮다"로도 "아무것도 안 돌았다"로도 읽힌다.
-- **한국어 원문과 되번역을 서로 붙여 둔다.** 눈이 바로 견주어야 하는 것이 그 둘이다. 현지어 본문은 그 옆이다.
-- **차이값은 받은 것을 그대로 보여 준다.** `render`는 글자 대조를 하지 않는다. 숫자가 `validate_backtranslation`의 경고문과
-  어긋나지 않게 `backtranslation.divergences`가 한 곳에서 잰다. 값에 따라 색을 달리하지도 않는다 — 낮은 값을 초록으로
-  칠하면 "읽지 않아도 된다"는 신호가 되는데, 위의 측정이 바로 그 신호가 틀렸음을 보였다.
+- **한국어 원문과 되번역을 서로 붙여 두고, 서로 다른 낱말을 칠한다.** 눈이 바로 견주어야 하는 것이 그 둘이라 현지어
+  본문은 그 옆(끝)이다. 그래도 다섯 문장짜리 두 단락을 맞대어 읽으며 `입니다` -> `이 아닙니다`를 잡는 것은 사람이 가장
+  못하는 일이라, 공백으로 끊은 **낱말 목록**에 `difflib.SequenceMatcher`를 걸어 다른 구간을 양쪽에 칠한다(원문 쪽은
+  빠졌거나 바뀐 낱말, 되번역 쪽은 덧붙었거나 바뀐 낱말). 글자 단위로 하면 한국어 조사마다 쪼개져 읽을 수 없다.
+  **임계값으로 걸러 내거나 "잡음"이라고 숨기지 않는다.** 충실한 의역에도 표시가 생기지만(글자 유사도 0.88~0.92라
+  전체의 10~20%) 숨기면 뒤집힌 부정이 그 안에 들어간다. 눈으로 구별되지 않는 차이(NFC/NFD)와 공백·줄바꿈 차이만 차이로
+  치지 않는다.
+- **칠하는 원문은 `validate_backtranslation`이 재는 원문과 같다.** 되번역 워크시트는 끝의 승인된 상담 문구(CTA)를 떼고
+  나가므로 되번역에는 CTA가 없다. 원문의 CTA까지 견주면 모든 게시물 끝에 늘 같은 표시가 생겨 "표시가 있다"가 아무것도
+  알려 주지 못한다. `cta_ko`를 받으면 `backtranslation.comparison_source`(CTA 떼기 규칙이 있는 유일한 곳)로 같은 방식으로
+  떼고, 떼어 낸 꼬리는 글자 그대로 회색으로 보여 준다. **호출하는 쪽은 `cta_ko`를 넘겨야 한다** — 안 넘기면 CTA도 견준다.
+- **차이값은 받은 것을 그대로 보여 준다.** `render`는 `divergence`를 계산하지 않는다. 숫자가 `validate_backtranslation`의
+  경고문과 어긋나지 않게 `backtranslation.divergences`가 한 곳에서 잰다. 값에 따라 색을 달리하지도 않는다 — 낮은 값을
+  초록으로 칠하면 "읽지 않아도 된다"는 신호가 되는데, 위의 측정이 바로 그 신호가 틀렸음을 보였다.
 - **되번역이 없으면 빈칸으로 두지 않고 없다고 적는다.** 차이값이 없는 것도 0이 아니라 "측정하지 않음"이다.
+- 카드 머리 밑에 그 게시물이 인용한 사실 키(`fact_keys`)와 대학명(`university_names`)을 한 줄로 적는다. 값은 싣지
+  않는다(수치가 사실 값과 맞는지는 `출처없는수치`가 이미 기계로 대조한다). 사람이 볼 것은 이 게시물이 **무엇에 기대어
+  있다고 주장하는지**이고, 등록금 글이 사실 키를 하나도 달지 않았다면 "없음"이 눈에 띈다.
 - 이미지 아래에 `image_prompt`를 그대로 적는다. 글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 것을
   사람이 보는 유일한 자리다.
 
@@ -29,12 +42,16 @@ HTML이 놓일 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일
 
 from __future__ import annotations
 
+import difflib
 import html
 import os
+import re
+import unicodedata
 from collections import Counter
 from pathlib import Path
 from urllib.parse import quote
 
+from .backtranslation import comparison_source
 from .findings import Finding
 from .plan_model import Plan, Post
 
@@ -45,12 +62,12 @@ _STYLE = """
 :root {
   color-scheme: light dark;
   --bg: #f5f4ef; --panel: #ffffff; --ink: #1d1d1b; --muted: #5d5b55; --line: #d6d3c8; --accent: #1f4e79;
-  --error: #a8201a; --error-bg: #fdecea; --warning: #7a4f00; --warning-bg: #fff3d1;
+  --error: #a8201a; --error-bg: #fdecea; --warning: #7a4f00; --warning-bg: #fff3d1; --mark: #ffe27a;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #151513; --panel: #201f1c; --ink: #ecebe6; --muted: #a8a59b; --line: #3b3934; --accent: #8ab4e8;
-    --error: #ff9a91; --error-bg: #3b1d1a; --warning: #f3c471; --warning-bg: #3a2f12;
+    --error: #ff9a91; --error-bg: #3b1d1a; --warning: #f3c471; --warning-bg: #3a2f12; --mark: #6e5600;
   }
 }
 * { box-sizing: border-box; }
@@ -109,6 +126,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .post-head h2 { margin: 0; }
 .topic { font-weight: 600; }
 .chip { display: inline-block; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; }
+.cites { margin: 0; padding: 6px 16px; color: var(--muted); font-size: .85rem; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .findings { padding: 10px 16px; border-bottom: 1px solid var(--line); }
 .findings-title { margin: 0 0 6px; font-weight: 700; }
 .findings ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
@@ -129,6 +147,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .divergence { margin: 0 0 6px; color: var(--muted); font-size: .8rem; }
 .divergence strong { color: var(--ink); font-size: .95rem; }
 .text { white-space: pre-wrap; overflow-wrap: anywhere; }
+mark.diff { background: var(--mark); color: inherit; border-radius: 2px; padding: 1px 0; box-decoration-break: clone; }
+.cta { color: var(--muted); }
 .text.missing { padding: 8px; border: 2px dashed var(--error); color: var(--error); font-weight: 700; white-space: normal; }
 .empty { color: var(--muted); }
 
@@ -149,8 +169,15 @@ _HOWTO = """<aside class="howto">
 <li><strong>금액</strong>·기간·시간·날짜·인원이 바뀐 곳</li>
 <li>원문에 없는 <strong>약속</strong>·보장·조건이 덧붙은 곳, 원문에 있던 단서(‘평균’, ‘~일 수 있습니다’)가 빠진 곳</li>
 </ul>
+<p><mark class="diff">노란 표시</mark>는 <strong>두 한국어 단에서 서로 다른 낱말</strong>입니다. 원문 쪽은 되번역에 없거나 바뀐 낱말, 되번역 쪽은 원문에 없거나 바뀐 낱말입니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 먼저 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다.{cta_note}</p>
 <p class="caveat">‘글자 차이’ 숫자는 두 한국어 글의 글자 유사도일 뿐 뜻을 재지 않습니다. 부정이 뒤집히거나 금액이 바뀌어도 낮게 나오고, 뜻이 같은 의역도 높게 나옵니다. 숫자가 낮다는 것은 읽지 않아도 되는 근거가 아닙니다.</p>
 </aside>"""
+
+_HOWTO_CTA_NOTE = " 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다."
+
+
+def _howto(has_cta: bool) -> str:
+    return _HOWTO.replace("{cta_note}", _HOWTO_CTA_NOTE if has_cta else "")
 
 
 def _e(value: object) -> str:
@@ -253,18 +280,97 @@ def _divergence(value: float | None) -> str:
     )
 
 
-def _back_text(text: str | None) -> str:
+_PIECE = re.compile(r"\S+|\s+")
+
+
+def _pieces(text: str) -> tuple[list[str], list[int]]:
+    """`text`를 낱말과 공백 조각으로 나눈다: (조각들, 낱말인 조각의 위치들). 조각을 이어 붙이면 `text`가 그대로 나온다."""
+    pieces = _PIECE.findall(text)
+    return pieces, [position for position, piece in enumerate(pieces) if not piece.isspace()]
+
+
+def _marked(pieces: list[str], words: list[int], runs: list[tuple[int, int, str]]) -> str:
+    """조각을 이스케이프해 이어 붙이되 `runs`(낱말 번호의 [처음, 끝) 구간과 종류)를 `<mark>`로 감싼다.
+
+    구간 안의 공백과 줄바꿈은 표시 안에 그대로 둔다(표시가 낱말마다 끊기지 않는다). 칸이 `pre-wrap`이라 표시 바깥의
+    글자도 하나도 바꾸거나 덧붙이지 않는다."""
+    out, cursor = [], 0
+    for first, end, kind in runs:
+        start, stop = words[first], words[end - 1] + 1
+        out.append(_e("".join(pieces[cursor:start])))
+        out.append(f'<mark class="diff" data-diff="{kind}">{_e("".join(pieces[start:stop]))}</mark>')
+        cursor = stop
+    out.append(_e("".join(pieces[cursor:])))
+    return "".join(out)
+
+
+def _word_diff(source: str, back: str) -> tuple[str, str]:
+    """한국어 원문과 되번역에서 서로 다른 낱말을 칠한 (원문 HTML, 되번역 HTML).
+
+    공백으로 끊은 낱말 목록에 `SequenceMatcher`를 건다. `replace`는 양쪽, `delete`(되번역에 없음)는 원문 쪽, `insert`
+    (원문에 없음)는 되번역 쪽에 칠한다. **구간을 걸러 내지 않는다** — 임계값도, 짧은 구간 무시도, 비슷하면 건너뛰기도 없다.
+    낱말은 NFC로 맞춰 견준다: 눈으로 구별되지 않는 표기 차이를 칠하면 칠해진 곳에서 아무 차이도 못 찾는다.
+    `autojunk`는 끈다(긴 글에서 자주 나오는 낱말을 버려 차이를 지어낸다. `divergence`도 끈다).
+    """
+    source_pieces, source_words = _pieces(source)
+    back_pieces, back_words = _pieces(back)
+    keys = [
+        [unicodedata.normalize("NFC", pieces[position]) for position in words]
+        for pieces, words in ((source_pieces, source_words), (back_pieces, back_words))
+    ]
+    source_runs: list[tuple[int, int, str]] = []
+    back_runs: list[tuple[int, int, str]] = []
+    for kind, first, end, back_first, back_end in difflib.SequenceMatcher(None, *keys, autojunk=False).get_opcodes():
+        if kind == "equal":
+            continue
+        if end > first:
+            source_runs.append((first, end, kind))
+        if back_end > back_first:
+            back_runs.append((back_first, back_end, kind))
+    return _marked(source_pieces, source_words, source_runs), _marked(back_pieces, back_words, back_runs)
+
+
+def _is_blank(text: str | None) -> bool:
+    return text is None or not text.strip()
+
+
+def _source_text(compared_html: str, tail: str) -> str:
+    # 안쪽에 공백이나 줄바꿈을 끼우지 않는다: 칸이 `pre-wrap`이라 그대로 화면에 나온다.
+    cta = f'<span class="cta">{_e(tail)}</span>' if tail else ""
+    return f'<div class="text" data-role="text">{compared_html}{cta}</div>'
+
+
+def _back_text(text: str | None, marked_html: str) -> str:
     if text is None:
         return '<div class="text missing" data-role="text">되번역이 없습니다. 워크시트가 채워지지 않았거나 이 번호의 항목이 빠졌습니다.</div>'
     if not text.strip():
         return '<div class="text missing" data-role="text">되번역 칸이 비어 있습니다.</div>'
-    # 안쪽에 공백이나 줄바꿈을 끼우지 않는다: 칸이 `pre-wrap`이라 그대로 화면에 나온다.
-    return f'<div class="text" data-role="text">{_e(text)}</div>'
+    return f'<div class="text" data-role="text">{marked_html}</div>'
+
+
+def _cites(post: Post) -> str:
+    """그 게시물이 인용한 사실 키와 대학명 한 줄. 없으면 "없음" — 등록금 글이 사실을 하나도 달지 않았다면 보여야 한다."""
+    keys = ", ".join(f"<code>{_e(key)}</code>" for key in post.fact_keys) or "없음"
+    names = ", ".join(_e(name) for name in post.university_names) or "없음"
+    return f'<p class="cites" data-role="cites">인용한 사실 {keys} · 대학 {names}</p>'
 
 
 def _card(
-    post: Post, title: str, post_findings: list[Finding], back_text: str | None, gap: float | None, images_dir: Path
+    post: Post,
+    title: str,
+    post_findings: list[Finding],
+    back_text: str | None,
+    gap: float | None,
+    images_dir: Path,
+    cta_ko: str | None,
 ) -> str:
+    # 견주는 원문은 `validate_backtranslation`이 재는 원문과 같다. 떼어 낸 CTA 꼬리는 칠하지 않고 그대로 보여 준다.
+    compared = post.source_ko if cta_ko is None else comparison_source(post.source_ko, cta_ko)
+    tail = post.source_ko[len(compared):]
+    if _is_blank(back_text):  # 견줄 되번역이 없으면 칠할 것도 없다
+        source_html, back_html = _e(compared), ""
+    else:
+        source_html, back_html = _word_diff(compared, back_text)
     errors = sum(1 for f in post_findings if _is_error(f))
     warnings = len(post_findings) - errors
     state = " has-error" if errors else " has-warning" if warnings else ""
@@ -279,6 +385,7 @@ def _card(
         f'<span class="chip">{_e(language)}</span><span class="topic">{_e(title)}</span>'
         f'<time datetime="{_e(post.publish_at.isoformat())}">{_e(post.publish_at.isoformat(sep=" ", timespec="minutes"))}</time>'
         f"{chips}</header>"
+        f"{_cites(post)}"
         f"{_findings_box(post_findings)}"
         '<div class="post-body">'
         '<figure class="image" data-col="image">'
@@ -289,9 +396,9 @@ def _card(
         "</figure>"
         '<div class="cols">'
         '<div class="col" data-col="source" lang="ko"><h3>한국어 원문</h3>'
-        f'<div class="text" data-role="text">{_e(post.source_ko)}</div></div>'
+        f"{_source_text(source_html, tail)}</div>"
         '<div class="col" data-col="back" lang="ko"><h3>되번역 한국어</h3>'
-        f"{_divergence(gap)}{_back_text(back_text)}</div>"
+        f"{_divergence(gap)}{_back_text(back_text, back_html)}</div>"
         f'<div class="col" data-col="local" lang="{_e(post.language)}"><h3>현지어 본문 ({_e(language)})</h3>'
         f'<div class="text" data-role="text">{_e(post.body_local)}</div></div>'
         "</div></div></article>"
@@ -299,7 +406,13 @@ def _card(
 
 
 def render(
-    plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path
+    plan: Plan,
+    findings: list[Finding],
+    back: dict[int, str],
+    divergences: dict[int, float],
+    images_dir: Path,
+    *,
+    cta_ko: str | None = None,
 ) -> str:
     """검토 화면의 완결된 HTML 문서를 문자열로 돌려준다. 파일을 읽거나 쓰지 않는다.
 
@@ -308,9 +421,18 @@ def render(
     **다시 재지 않고** 받은 값을 보여 준다. 되번역이 없거나 비어 있어 `divergences`에 번호가 없는 게시물은 0이 아니라
     "측정하지 않음"으로 보인다.
 
+    `cta_ko`는 용어집의 한국어 CTA(`glossary["cta"]["ko"]`)다. **넘기면** 낱말 강조가 `validate_backtranslation`과 같은
+    원문(끝의 CTA를 뗀 것)을 되번역과 견주고 떼어 낸 꼬리는 칠하지 않는다. **안 넘기면** CTA까지 견주어, 되번역에 없는
+    CTA가 모든 게시물 끝에 칠해진다. 비어 있는 값은 `ValueError` — 빈 CTA는 원문 전체를 "꼬리"로 만들어 강조를 조용히 끈다.
+
     게시물은 게시 시각 순으로(같으면 번호 순으로) 놓는다. `images_dir`는 `<달 폴더>/images`로, 이미지의 `src`는
     그 부모(HTML이 놓일 달 폴더) 기준 상대 경로다.
     """
+    if cta_ko is not None and not (isinstance(cta_ko, str) and cta_ko.strip()):
+        raise ValueError(
+            f"cta_ko가 비어 있습니다 (받은 값: {cta_ko!r}). 빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 강조가 조용히 "
+            f"꺼집니다. 용어집의 cta.ko를 넘기거나, CTA를 견주려면 아예 넘기지 마세요."
+        )
     titles = {topic.topic_id: topic.title_ko for topic in plan.topics}
     by_post: dict[int | None, list[Finding]] = {}
     for finding in findings:
@@ -325,6 +447,7 @@ def render(
             back.get(post.index),
             divergences.get(post.index),
             images_dir,
+            cta_ko,
         )
         for post in posts
     ) or '<p class="empty">플랜에 게시물이 없습니다.</p>'
@@ -337,7 +460,7 @@ def render(
         f"<title>페이스북 게시물 검토 {month}</title>\n<style>{_STYLE}</style>\n</head>\n<body>\n"
         f'<header class="page-head"><h1>페이스북 게시물 검토 <span class="month">{month}</span></h1>'
         f'<p class="meta">게시물 {len(plan.posts)}건 · 게시일 순</p></header>\n'
-        f"<main>\n{_HOWTO}\n"
+        f"<main>\n{_howto(cta_ko is not None)}\n"
         f"{_summary(findings, {post.index for post in plan.posts})}\n"
         f'<section id="posts">\n{cards}\n</section>\n</main>\n</body>\n</html>\n'
     )

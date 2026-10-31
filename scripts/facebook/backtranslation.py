@@ -16,6 +16,7 @@
    원문과 같은지 보고, 되번역이 한국어 원문에서 글자로 얼마나 벌어졌는지 잰다.
 4. `divergences(plan, back, glossary)`: 검토 화면이 보여 줄 `{게시물 번호: 차이값}`을 낸다. `validate_backtranslation`이
    경고문에 적는 값과 같은 길(같은 CTA 떼기)로 재서, 화면의 숫자와 경고문의 숫자가 어긋나지 않게 한다.
+   `comparison_source(source_ko, cta_ko)`는 그 CTA 떼기 규칙이 있는 유일한 곳이고, 검토 화면의 낱말 강조도 쓴다.
 
 **뜻이 옳은지는 여기서 판단하지 않는다.** 검토 화면에서 사람이 한국어 원문과 되번역을 나란히 놓고 읽는다.
 여기서 내는 `divergence`는 글자 유사도일 뿐이다. 그래서 다음은 못 잡는다 — 한 낱말의 부정이 뒤집히는 것,
@@ -117,6 +118,19 @@ def _strip_cta(text: str, cta: str) -> str | None:
     """
     body = text.rstrip()
     return body[: -len(cta)].rstrip() if body.endswith(cta) else None
+
+
+def comparison_source(source_ko: str, cta_ko: str) -> str:
+    """되번역과 견줄 한국어 원문: 끝의 한국어 CTA(`cta_ko`)로 끝나면 CTA와 그 앞 공백을 뗀 앞부분, 끝나지 않으면
+    `source_ko` 통째로. 결과는 늘 `source_ko`의 앞부분이다.
+
+    **원문에서 CTA를 떼는 규칙은 이 함수 한 곳에만 있다.** `validate_backtranslation`(경고문의 차이값·숫자), `divergences`
+    (검토 화면이 보여 주는 차이값), 검토 화면의 낱말 강조가 모두 이것으로 "되번역과 견줄 원문"을 얻는다. 어느 하나가 따로
+    떼면 화면이 검증기와 다른 값을 말하게 되어 화면이 무의미해진다. 떼고 남은 것이 빈 문자열인 것(원문이 CTA뿐)과 떼지
+    못한 것(원문 통째로)은 다르다 — 그래서 `None`을 `is`로 가른다. 되번역에서는 아무것도 떼지 않는다.
+    """
+    stripped = _strip_cta(source_ko, cta_ko)
+    return source_ko if stripped is None else stripped
 
 
 def _worksheet_body(post: Post, glossary: dict) -> str:
@@ -344,8 +358,8 @@ def divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, f
     """게시물 번호마다 `validate_backtranslation`이 재는 것과 같은 `divergence` 값을 돌려준다. 검토 화면이 쓴다.
 
     화면이 숫자를 스스로 계산하지 않고 이 함수의 결과를 받는 까닭은, 어긋나면 화면의 숫자와 경고문의 숫자가 다른
-    값을 말하게 되기 때문이다. 그래서 원문에서 CTA를 떼는 길도 `validate_backtranslation`과 같다: 한국어 CTA
-    (`glossary["cta"]["ko"]`)로 끝나면 떼고, 끝나지 않으면 원문 통째로 재며, 되번역에서는 아무것도 떼지 않는다.
+    값을 말하게 되기 때문이다. 그래서 원문에서 CTA를 떼는 길도 `validate_backtranslation`과 같다(`comparison_source`):
+    한국어 CTA(`glossary["cta"]["ko"]`)로 끝나면 떼고, 끝나지 않으면 원문 통째로 재며, 되번역에서는 아무것도 떼지 않는다.
 
     **되번역이 없거나 비어 있는(공백·문장부호뿐인) 게시물은 키에 넣지 않는다.** 그 게시물에는 `역번역누락`·`역번역빈칸`
     오류가 이미 있고, 1.0을 넣으면 화면이 "재 봤더니 최악"으로 보여 주게 된다. 플랜에 없는 번호는 넣지 않는다.
@@ -359,9 +373,7 @@ def divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, f
         text = back.get(post.index)
         if text is None or not _comparable(text):
             continue
-        stripped = _strip_cta(post.source_ko, cta_ko)
-        source = post.source_ko if stripped is None else stripped
-        measured[post.index] = divergence(source, text)
+        measured[post.index] = divergence(comparison_source(post.source_ko, cta_ko), text)
     return measured
 
 
@@ -413,8 +425,7 @@ def validate_backtranslation(
             continue
         comparable_back[post.index] = comparable
 
-        stripped = _strip_cta(post.source_ko, cta_ko)
-        source = post.source_ko if stripped is None else stripped
+        source = comparison_source(post.source_ko, cta_ko)
 
         source_sequence, back_sequence = _digit_sequence(source), _digit_sequence(text)
         source_runs, back_runs = Counter(source_sequence), Counter(back_sequence)

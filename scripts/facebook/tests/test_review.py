@@ -15,17 +15,17 @@
 from __future__ import annotations
 
 import dataclasses
-import difflib
 import html
 import inspect
 import re
+import unicodedata
 from datetime import datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
 
-from facebook import config, review
+from facebook import backtranslation, config, review
 from facebook.findings import Finding
 from facebook.plan_model import Plan, load_plan
 from facebook.review import render
@@ -135,9 +135,12 @@ def _back(plan: Plan) -> dict[int, str]:
     return {post.index: f"{post.index}번 게시물의 되번역 고유 문장입니다." for post in plan.posts}
 
 
-def _output(plan=None, findings=(), back=None, gaps=None, images_dir=IMAGES_DIR) -> str:
+def _output(plan=None, findings=(), back=None, gaps=None, images_dir=IMAGES_DIR, **render_kwargs) -> str:
     plan = _plan() if plan is None else plan
-    return render(plan, list(findings), _back(plan) if back is None else back, dict(GAPS) if gaps is None else gaps, images_dir)
+    return render(
+        plan, list(findings), _back(plan) if back is None else back, dict(GAPS) if gaps is None else gaps, images_dir,
+        **render_kwargs,
+    )
 
 
 def _doc(*args, **kwargs) -> _Node:
@@ -507,11 +510,14 @@ def test_차이값이_게시물마다_표시된다():
 
 def test_차이값은_backtranslation의_측정을_그대로_쓴다(monkeypatch):
     # render가 받은 divergences의 값이 출력에 그대로 들어간다(재계산하지 않는다). 되번역이 원문과 같아도
-    # 받은 값이 나와야 하고, 글자 대조를 부르는 순간 터지게 해 둔다.
+    # 받은 값이 나와야 하고, `divergence`를 부르는 순간 터지게 해 둔다. (낱말 강조가 `SequenceMatcher`를 쓰므로
+    # difflib을 막을 수는 없다. 값이 직접 잰 0.00이 아니라 받은 0.91이라는 것이 재계산하지 않았다는 증거다.)
     def boom(*args, **kwargs):
-        raise AssertionError("render가 글자 대조(difflib)를 불렀다")
+        raise AssertionError("render가 divergence를 불렀다")
 
-    monkeypatch.setattr(difflib, "SequenceMatcher", boom)
+    monkeypatch.setattr(backtranslation, "divergence", boom)
+    if hasattr(review, "divergence"):
+        monkeypatch.setattr(review, "divergence", boom)
     plan = _plan()
     identical = {post.index: post.source_ko for post in plan.posts}  # 직접 재면 0.00이다
     gaps = {post.index: 0.91 for post in plan.posts}
@@ -685,6 +691,8 @@ def _inject(field: str) -> tuple[Plan, list[Finding], dict[int, str]]:
     plan, findings, back = _plan(), [_error("역번역수치", 0, "메시지")], _back(_plan())
     if field in {"source_ko", "body_local", "image_prompt", "image_file", "language"}:
         plan = _edit(plan, 0, **{field: PROBE})
+    elif field in {"fact_keys", "university_names"}:
+        plan = _edit(plan, 0, **{field: (PROBE,)})
     elif field == "title_ko":
         plan = dataclasses.replace(plan, topics=tuple(dataclasses.replace(t, title_ko=PROBE) for t in plan.topics))
     elif field == "month":
@@ -706,7 +714,10 @@ def _inject(field: str) -> tuple[Plan, list[Finding], dict[int, str]]:
 
 @pytest.mark.parametrize(
     "field",
-    ["source_ko", "body_local", "back_ko", "image_prompt", "image_file", "language", "title_ko", "month", "message", "code", "orphan_message", "orphan_code"],
+    [
+        "source_ko", "body_local", "back_ko", "image_prompt", "image_file", "language", "title_ko", "month",
+        "message", "code", "orphan_message", "orphan_code", "fact_keys", "university_names",
+    ],
 )
 def test_화면에_나오는_모든_문자열이_이스케이프된다(field):
     plan, findings, back = _inject(field)
@@ -821,6 +832,369 @@ def test_입력을_바꾸지_않는다():
 
 
 def test_시그니처가_계약과_같다():
-    assert list(inspect.signature(render).parameters) == ["plan", "findings", "back", "divergences", "images_dir"]
+    parameters = inspect.signature(render).parameters
+    assert list(parameters) == ["plan", "findings", "back", "divergences", "images_dir", "cta_ko"]
+    assert parameters["cta_ko"].kind is inspect.Parameter.KEYWORD_ONLY and parameters["cta_ko"].default is None
     assert config.LANGUAGES == ("vi", "my", "ne")  # 언어 이름 표가 이 세 언어를 모두 덮는지 아래에서 본다
     assert set(review._LANGUAGE_NAMES) >= set(config.LANGUAGES)
+
+
+# --- 다른 낱말 강조 ---------------------------------------------------------------
+# 글자 유사도는 부정 뒤집힘(0.03~0.05)을 의역의 잡음(0.08~0.12)과 구별하지 못하고, 다섯 문장짜리 두 단락을 맞대어
+# 읽으며 `입니다` -> `이 아닙니다`를 잡는 일은 사람이 가장 못하는 일이다. 그래서 두 한국어 단에서 서로 다른 낱말을
+# 칠한다. 임계값으로 걸러 내거나 잡음이라고 숨기지 않는다 — 숨기면 뒤집힌 부정이 그 안에 들어간다.
+
+
+def _marks(col: _Node) -> list[tuple[str, str]]:
+    """칸 안의 강조 표시를 (글, 종류)로. 종류는 replace / delete / insert."""
+    return [(mark.text(), mark.attrs["data-diff"]) for mark in col.find_all("mark")]
+
+
+def _diff_card(source: str, back: str, **kwargs) -> _Node:
+    """0번 게시물의 원문과 되번역만 바꿔 렌더한 카드."""
+    plan = _edit(_plan(), 0, source_ko=source)
+    return _card(_doc(plan, back={**_back(plan), 0: back}, **kwargs), 0)
+
+
+def test_원문과_되번역의_다른_낱말이_강조된다():
+    # "…입니다" -> "…이 아닙니다": 바뀐 낱말이 양쪽 단의 강조 표시 안에 들어간다.
+    card = _diff_card("이 비자는 유학생을 위한 체류자격입니다.", "이 비자는 유학생을 위한 체류자격이 아닙니다.")
+
+    assert _marks(_col(card, "source")) == [("체류자격입니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("체류자격이 아닙니다.", "replace")]
+
+
+def test_같은_글이면_강조가_하나도_없다():
+    source = "비자는 신청 후 심사를 거칩니다. 심사 결과는 이메일로 알려 드립니다."
+
+    card = _diff_card(source, source)
+
+    assert _marks(_col(card, "source")) == [] and _marks(_col(card, "back")) == []
+
+
+def test_공백과_줄바꿈만_다른_글은_강조하지_않는다():
+    # 낱말 목록으로 견주므로 띄어 쓴 칸 수나 줄바꿈은 차이가 아니다(글자로 견주던 `divergence`도 공백을 접는다).
+    card = _diff_card("비자는 신청 후\n\n심사를 거칩니다.", "비자는   신청 후 심사를\n거칩니다.")
+
+    assert _marks(_col(card, "source")) == [] and _marks(_col(card, "back")) == []
+
+
+def test_같은_낱말의_NFC와_NFD_표기는_강조하지_않는다():
+    # 눈으로 구별되지 않는 차이를 칠하면 사람이 칠해진 곳에서 아무 차이도 못 찾는다.
+    source = "체류자격입니다."
+
+    card = _diff_card(source, unicodedata.normalize("NFD", source))
+
+    assert _marks(_col(card, "source")) == [] and _marks(_col(card, "back")) == []
+
+
+def test_빠진_문장은_원문_쪽에만_강조된다():
+    card = _diff_card(
+        "비자는 신청 후 심사를 거칩니다. 심사 결과는 이메일로 알려 드립니다.",
+        "비자는 신청 후 심사를 거칩니다.",
+    )
+
+    assert _marks(_col(card, "source")) == [("심사 결과는 이메일로 알려 드립니다.", "delete")]
+    assert _marks(_col(card, "back")) == []
+
+
+def test_덧붙은_문장은_되번역_쪽에만_강조된다():
+    # 약속 한 문장이 덧붙는 것은 글자 유사도 0.12로 의역과 구별되지 않던 오류다.
+    card = _diff_card("비자는 신청할 수 있습니다.", "비자는 신청할 수 있습니다. 합격을 보장합니다.")
+
+    assert _marks(_col(card, "source")) == []
+    assert _marks(_col(card, "back")) == [("합격을 보장합니다.", "insert")]
+
+
+def test_금액이_바뀐_낱말도_강조된다():
+    card = _diff_card("연간 등록금은 6,800,000원입니다.", "연간 등록금은 8,600,000원입니다.")
+
+    assert _marks(_col(card, "source")) == [("6,800,000원입니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("8,600,000원입니다.", "replace")]
+
+
+def test_강조는_글자가_아니라_낱말_단위다():
+    # 글자 단위로 하면 `체류자격입니다.`/`체류자격이다.`의 `입니`만 칠해져 읽을 수 없다.
+    card = _diff_card("이 비자는 체류자격입니다.", "이 비자는 체류자격이다.")
+
+    assert _marks(_col(card, "source")) == [("체류자격입니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("체류자격이다.", "replace")]
+
+
+def test_강조는_걸러_내지_않는다_한_낱말도_전부도():
+    # 임계값이나 "잡음" 필터가 있으면 뒤집힌 부정이 그 안에 숨는다. 마침표 하나 차이도, 전혀 다른 글도 칠한다.
+    one = _diff_card("비자는 신청할 수 있습니다", "비자는 신청할 수 있습니다.")
+    assert _marks(_col(one, "source")) == [("있습니다", "replace")]
+    assert _marks(_col(one, "back")) == [("있습니다.", "replace")]
+
+    unrelated = _diff_card("비자는 신청할 수 있습니다.", "일본 간병 취업은 어렵습니다.")
+    assert _marks(_col(unrelated, "source")) == [("비자는 신청할 수 있습니다.", "replace")]
+    assert _marks(_col(unrelated, "back")) == [("일본 간병 취업은 어렵습니다.", "replace")]
+
+
+def test_거의_같은_다섯_문장_글에서_뒤집힌_부정_하나도_칠한다():
+    # 이 화면이 존재하는 이유: 글이 거의 같을수록(유사도가 높을수록) 사람은 한 낱말의 부정을 놓치고, 유사도로 걸러 내는
+    # 필터는 바로 그런 글을 통째로 끈다. 다섯 문장에서 한 낱말(`입니다` -> `이 아닙니다`)만 달라도 칠해진다.
+    sentences = [
+        "유학(D-2)은 전문대학 이상의 교육기관에서 정규과정의 교육을 받으려는 사람을 위한 체류자격입니다.",
+        "신청하려면 입학허가서와 재정증명서를 준비해서 가까운 출입국 사무소에 제출해야 합니다.",
+        "심사에는 보통 2주에서 4주가 걸리며 서류가 부족하면 더 길어질 수 있습니다.",
+        "체류 기간은 학교의 교육과정에 따라 정해지고 필요하면 연장을 신청할 수 있습니다.",
+        "자세한 조건은 학교와 출입국 사무소의 안내를 먼저 확인해 주세요.",
+    ]
+    source = " ".join(sentences)
+    flipped = source.replace("체류자격입니다.", "체류자격이 아닙니다.")
+    assert flipped != source
+
+    card = _diff_card(source, flipped)
+
+    assert _marks(_col(card, "source")) == [("체류자격입니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("체류자격이 아닙니다.", "replace")]
+
+
+def test_강조는_멀리_떨어진_바뀐_낱말을_따로_칠한다():
+    card = _diff_card(
+        "비자는 학생이 신청하고 심사는 한 달 걸립니다.",
+        "비자는 학부모가 신청하고 심사는 두 달 걸립니다.",
+    )
+
+    assert _marks(_col(card, "source")) == [("학생이", "replace"), ("한", "replace")]
+    assert _marks(_col(card, "back")) == [("학부모가", "replace"), ("두", "replace")]
+
+
+def test_강조해도_원문_글자와_줄바꿈이_그대로다():
+    source = "첫 문단입니다.\n\n둘째 문단은 다릅니다.\n\n셋째 문단입니다."
+    back = "첫 문단입니다.\n\n둘째 문단은 같습니다.\n\n셋째 문단입니다."
+
+    card = _diff_card(source, back)
+
+    assert _text_of(card, "source") == source and _text_of(card, "back") == back
+    assert _marks(_col(card, "source")) == [("다릅니다.", "replace")]
+
+
+def test_여러_낱말에_걸친_강조는_사이의_줄바꿈도_한_표시_안에_둔다():
+    card = _diff_card("앞입니다.\n\n빠진 문단\n\n입니다 뒤.", "앞입니다. 입니다 뒤.")
+
+    assert _marks(_col(card, "source")) == [("빠진 문단", "delete")]
+
+
+def test_강조_안의_글자도_이스케이프된다():
+    # 다른 낱말이 "<script>"여도 강조 표시 안에서 마크업이 되지 않는다.
+    payload = "<script>alert(1)</script>"
+    plan = _edit(_plan(), 0, source_ko=f"비자 {payload} 안내입니다.")
+    back = {**_back(plan), 0: "비자 <b>굵게</b> 안내입니다."}
+
+    output = _output(plan, back=back)
+
+    assert re.search(r"<mark[^>]*>&lt;script&gt;alert\(1\)&lt;/script&gt;</mark>", output)
+    assert re.search(r"<mark[^>]*>&lt;b&gt;굵게&lt;/b&gt;</mark>", output)
+    assert not re.search(r"<script|<b>", output)
+    card = _card(_parse(output), 0)
+    assert _marks(_col(card, "source")) == [(payload, "replace")]
+    assert _marks(_col(card, "back")) == [("<b>굵게</b>", "replace")]
+
+
+def test_되번역이_없거나_비면_원문에_강조가_없다():
+    plan = _plan()
+
+    doc = _doc(plan, back={i: t for i, t in _back(plan).items() if i != 3})
+    assert _marks(_col(_card(doc, 3), "source")) == []
+
+    doc = _doc(plan, back={**_back(plan), 3: "  "})
+    assert _marks(_col(_card(doc, 3), "source")) == []
+    assert _marks(_col(_card(doc, 3), "back")) == []
+
+
+def test_강조는_게시물마다_그_게시물의_글끼리_견준다():
+    plan = _edit(_edit(_plan(), 0, source_ko="가 나 다"), 1, source_ko="가 나 다")
+    back = {**_back(plan), 0: "가 나 다", 1: "가 나 라"}
+
+    doc = _doc(plan, back=back)
+
+    assert _marks(_col(_card(doc, 0), "source")) == []
+    assert _marks(_col(_card(doc, 1), "source")) == [("다", "replace")]
+
+
+def test_표시가_무엇인지_안내한다():
+    howto = _doc().find(class_="howto").text()
+
+    assert "표시" in howto and "낱말" in howto
+
+
+# --- 강조와 CTA ---------------------------------------------------------------
+# 되번역 워크시트는 끝의 승인된 상담 문구(CTA)를 떼고 나가므로 되번역에는 CTA가 없다. 원문의 CTA를 되번역과 견주면
+# 모든 게시물의 끝에 늘 같은 표시가 생겨 "표시가 있다"가 아무것도 알려 주지 못한다. `validate_backtranslation`이 원문에서
+# CTA를 떼고 재는 것과 같은 규칙(`backtranslation.comparison_source`)으로 뗀다.
+
+CTA = "상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요."
+
+
+def test_cta_ko를_주면_원문_끝의_CTA는_강조하지_않는다():
+    body = "비자는 신청할 수 있습니다."
+
+    card = _diff_card(f"{body}\n\n{CTA}", body, cta_ko=CTA)
+
+    assert _marks(_col(card, "source")) == []
+    assert _text_of(card, "source") == f"{body}\n\n{CTA}"  # 글자는 그대로 보인다
+    assert _col(card, "source").find(class_="cta").text() == f"\n\n{CTA}"
+
+
+def test_cta_ko를_안_주면_원문의_CTA도_견준다():
+    # 호출하는 쪽이 CTA를 넘기지 않았을 때의 모습이다. 숨기지 않고 보인다.
+    body = "비자는 신청할 수 있습니다."
+
+    card = _diff_card(f"{body}\n\n{CTA}", body)
+
+    assert _marks(_col(card, "source")) == [(CTA, "delete")]
+
+
+def test_CTA를_떼고도_본문의_다른_낱말은_강조한다():
+    card = _diff_card("비자는 신청할 수 있습니다.\n\n" + CTA, "비자는 신청할 수 없습니다.", cta_ko=CTA)
+
+    assert _marks(_col(card, "source")) == [("있습니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("없습니다.", "replace")]
+
+
+def test_원문이_CTA로_끝나지_않으면_원문_통째로_견준다():
+    # validate_backtranslation의 대체 경로와 같다.
+    source = f"{CTA}\n\n비자는 신청할 수 있습니다."
+
+    card = _diff_card(source, "비자는 신청할 수 있습니다.", cta_ko=CTA)
+
+    assert _marks(_col(card, "source")) == [(CTA, "delete")]
+    assert _col(card, "source").find_all(class_="cta") == []
+
+
+def test_되번역에_CTA가_적혀_있으면_되번역_쪽에서_강조된다():
+    # 되번역에서는 아무것도 떼지 않는다. 채우는 쪽이 CTA를 덧붙였다면 그것이 보여야 한다.
+    body = "비자는 신청할 수 있습니다."
+
+    card = _diff_card(f"{body}\n\n{CTA}", f"{body}\n\n{CTA}", cta_ko=CTA)
+
+    assert _marks(_col(card, "source")) == []
+    assert _marks(_col(card, "back")) == [(CTA, "insert")]
+
+
+@pytest.mark.parametrize("blank", ["", "  \n", 5], ids=["빈문자열", "공백", "문자열아님"])
+def test_cta_ko가_비어_있으면_ValueError(blank):
+    # 빈 CTA는 "끝이 같은가"가 늘 참이라 원문 전체가 떼어 낼 꼬리가 되어 강조가 조용히 꺼진다.
+    with pytest.raises(ValueError) as info:
+        _output(cta_ko=blank)
+
+    assert "cta_ko" in str(info.value)
+
+
+def test_cta_ko를_안_줘도_렌더된다_기본은_None():
+    assert "<mark" in _output()  # 기본 입력은 되번역이 원문과 달라 표시가 있다
+
+
+def test_안내는_cta_ko를_받았을_때만_회색_상담_문구를_설명한다():
+    assert "회색" in _doc(cta_ko=CTA).find(class_="howto").text()
+    assert "회색" not in _doc().find(class_="howto").text()
+
+
+def test_CTA_꼬리가_없으면_cta_표시도_없다():
+    card = _diff_card("비자는 신청할 수 있습니다.", "비자는 신청할 수 있습니다.", cta_ko=CTA)
+
+    assert _col(card, "source").find_all(class_="cta") == []
+
+
+# --- 인용한 사실과 대학 ------------------------------------------------------------
+
+
+def test_인용한_사실_키와_대학명이_카드에_들어간다():
+    # 그 게시물이 무엇에 기대어 있다고 주장하는지 보이게 한다. 값은 싣지 않는다(출처없는수치가 이미 기계로 대조한다).
+    doc = _doc()
+
+    tuition = _card(doc, 3).find(data_role="cites")
+    assert "tuition_kijeon" in tuition.text() and "전주기전대학" in tuition.text()
+    assert [code.text() for code in tuition.find_all("code")] == ["tuition_kijeon"]
+    assert "visa_d2_definition" in _card(doc, 0).find(data_role="cites").text()
+
+
+def test_인용한_사실이_없으면_없다고_적는다():
+    # 등록금 카드가 사실 키를 하나도 달지 않았다면 눈에 띄어야 한다.
+    plan = _edit(_edit(_plan(), 3, fact_keys=()), 4, university_names=())
+
+    doc = _doc(plan)
+
+    assert "인용한 사실 없음" in _card(doc, 3).find(data_role="cites").text()
+    assert "대학 없음" in _card(doc, 4).find(data_role="cites").text()
+
+
+def test_여러_사실_키와_대학명은_모두_적힌다():
+    plan = _edit(_plan(), 3, fact_keys=("tuition_kijeon", "tuition_geumgang"), university_names=("전주기전대학", "금강대학교"))
+
+    cites = _card(_doc(plan), 3).find(data_role="cites")
+
+    assert [code.text() for code in cites.find_all("code")] == ["tuition_kijeon", "tuition_geumgang"]
+    assert "전주기전대학" in cites.text() and "금강대학교" in cites.text()
+
+
+def test_인용한_사실은_한_줄이고_사실의_값은_싣지_않는다():
+    cites = _card(_doc(), 3).find(data_role="cites")
+
+    assert cites.tag == "p" and "\n" not in cites.text()
+    assert "6,800,000" not in cites.text()
+
+
+def test_긴_글에서도_바뀐_낱말_하나만_칠한다():
+    # `SequenceMatcher`는 두 번째 글이 200낱말 이상이면 자주 나오는 낱말을 버려(autojunk) 바뀐 곳 뒤를 통째로 다른 것으로
+    # 만든다. 낱말 종류가 적은 긴 글에서 하나가 바뀌었는데 150낱말이 칠해지면 표시가 아무것도 알려 주지 못한다.
+    vocabulary = ("가", "나", "다")
+    words = [vocabulary[(i * 7 + i // 5) % 3] for i in range(300)]
+    changed = list(words)
+    changed[150] = "라"
+
+    card = _diff_card(" ".join(words), " ".join(changed))
+
+    assert _marks(_col(card, "source")) == [(words[150], "replace")]
+    assert _marks(_col(card, "back")) == [("라", "replace")]
+
+
+def _assert_nothing_injected(output: str) -> None:
+    assert PROBE not in output
+    assert html.escape(PROBE) in output  # 사라진 것이 아니라 글자로 보인다
+    nodes = list(_parse(output).walk())
+    assert not any(node.tag == "zzprobe" for node in nodes)
+    assert not any("zzattr" in node.attrs for node in nodes)
+
+
+@pytest.mark.parametrize(
+    "source, back, cta_ko, where",
+    [
+        (f"앞 {PROBE} 뒤 가", f"앞 {PROBE} 뒤 나", None, "표시보다 앞"),
+        (f"가 앞 {PROBE} 뒤", f"나 앞 {PROBE} 뒤", None, "마지막 표시 뒤"),
+        (f"앞 {PROBE} 뒤", f"앞 {PROBE} 뒤", None, "표시가 하나도 없음"),
+        (f"앞 {PROBE} 뒤", None, None, "되번역이 없음"),
+        (f"본문입니다.\n\n{PROBE}", "본문입니다.", PROBE, "떼어 낸 CTA 꼬리"),
+    ],
+    ids=["표시앞", "표시뒤", "표시없음", "되번역없음", "CTA꼬리"],
+)
+def test_강조_바깥의_글자도_이스케이프된다(source, back, cta_ko, where):
+    # 칠해지지 않는 글자는 따로 이어 붙이므로 칠한 글자의 이스케이프와 별개로 본다.
+    plan = _edit(_plan(), 0, source_ko=source)
+    backs = _back(plan)
+    if back is None:
+        del backs[0]
+    else:
+        backs[0] = back
+
+    output = _output(plan, back=backs, cta_ko=cta_ko)
+
+    _assert_nothing_injected(output)
+
+
+def test_원문이_CTA로_끝나지_않으면_뒤쪽_공백도_떼지_않고_꼬리도_만들지_않는다():
+    # 대체 경로는 원문 통째다(`comparison_source`). 호출하는 쪽이 자기 규칙으로 뒤쪽 공백을 떼면 가짜 꼬리가 생긴다.
+    card = _diff_card(f"{CTA}\n\n비자는 신청할 수 있습니다.\n", "비자는 신청할 수 있습니다.", cta_ko=CTA)
+
+    assert _col(card, "source").find_all(class_="cta") == []
+    assert _text_of(card, "source") == f"{CTA}\n\n비자는 신청할 수 있습니다.\n"
+
+
+def test_안내가_노란_표시의_뜻을_설명한다():
+    howto = _doc().find(class_="howto")
+
+    assert howto.find("mark").text() == "노란 표시"
+    assert "서로 다른 낱말" in howto.text()

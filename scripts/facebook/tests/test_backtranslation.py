@@ -25,6 +25,7 @@ import pytest
 from facebook import config
 from facebook.backtranslation import (
     WorksheetError,
+    comparison_source,
     divergence,
     divergences,
     load,
@@ -1370,10 +1371,13 @@ def test_divergences는_되번역에서는_아무것도_떼지_않는다():
 
 def test_divergences의_값은_validate의_역번역차이_경고에_적힌_값과_같다():
     # 임계값 0은 글자가 하나라도 다르면 경고하고, 경고문에는 측정값이 소수 둘째 자리까지 적힌다.
-    # 원문이 CTA로 끝나는 게시물, 끝나지 않는 게시물, 뒤에 공백이 있는 게시물을 섞어 두 경로가 같은지 본다.
+    # 원문이 CTA로 끝나는 게시물, 끝나지 않는 게시물, 뒤에 공백이 있는 게시물, CTA뿐인 게시물을 섞어 두 호출자가
+    # (`validate_backtranslation`, `divergences`) `comparison_source`를 거쳐 같은 값을 내는지 본다. 한쪽이 CTA 떼기를
+    # 따로 쓰면 이 시험이 깨진다 — CTA뿐인 원문은 "떼고 남은 빈 문자열"과 "못 뗀 원문"을 갈라 보는지도 확인한다.
     plan = _plan()
     plan = _edit(plan, 2, source_ko=CTA + "\n\n" + plan.posts[2].source_ko.removesuffix("\n\n" + CTA))
     plan = _edit(plan, 4, source_ko=plan.posts[4].source_ko + "  \n")
+    plan = _edit(plan, 5, source_ko=CTA)
     back = _mixed_back(plan)
 
     gaps = _gaps(plan, back)
@@ -1432,3 +1436,34 @@ def test_divergences도_back의_모양이_틀리면_ValueError(back):
 
 def test_divergences의_시그니처가_계약과_같다():
     assert list(inspect.signature(divergences).parameters) == ["plan", "back", "glossary"]
+
+
+# --- comparison_source: 원문에서 CTA를 떼는 규칙 한 곳 ------------------------------
+# `validate_backtranslation`·`divergences`·검토 화면의 낱말 강조가 모두 이 함수로 "되번역과 견줄 원문"을 얻는다.
+# 위의 `test_divergences의_값은_validate의_역번역차이_경고에_적힌_값과_같다`가 두 호출자가 같은 값을 내는지 지킨다.
+
+
+def test_comparison_source는_CTA로_끝나면_CTA와_그_앞_공백을_뗀다():
+    assert comparison_source("유학 비자 안내입니다.\n\n" + CTA, CTA) == "유학 비자 안내입니다."
+
+
+def test_comparison_source는_원문_뒤쪽_공백을_무시하고_뗀다():
+    assert comparison_source("유학 비자 안내입니다.\n\n" + CTA + "  \n\n", CTA) == "유학 비자 안내입니다."
+
+
+def test_comparison_source는_CTA로_끝나지_않으면_원문_통째로_돌려준다():
+    source = CTA + "\n\n유학 비자 안내입니다."
+
+    assert comparison_source(source, CTA) == source
+
+
+def test_comparison_source는_원문이_CTA뿐이면_빈_문자열이다():
+    # 떼고 남은 것이 비었다는 것과 떼지 못했다는 것은 다르다. 앞의 것은 "", 뒤의 것은 원문 통째다.
+    assert comparison_source(CTA, CTA) == ""
+    assert comparison_source("  " + CTA, CTA) == ""
+
+
+def test_comparison_source는_결과가_늘_원문의_앞부분이다():
+    # 검토 화면이 떼어 낸 꼬리를 `source[len(결과):]`로 되찾는다.
+    for source in ("본문입니다.\n\n" + CTA, "본문입니다.\n\n" + CTA + " \n", CTA + "\n\n본문입니다.", "본문입니다.", CTA):
+        assert source.startswith(comparison_source(source, CTA))
