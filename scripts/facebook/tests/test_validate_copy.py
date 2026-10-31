@@ -1,4 +1,4 @@
-"""문구 검증(validate.py의 `load_banned_phrases`·`validate_copy`) 테스트.
+"""문구 검증(validate_copy.py의 `load_banned_phrases`·`validate_copy`) 테스트.
 
 여기서는 게시물이 *무엇을 말하는지*만 본다: 상담 문구(CTA), 금지 표현, 대학명과 그 맥락,
 용어집 표기, 출처 없는 수치. 구조(언어·날짜·이미지)는 `test_validate_structure.py`의 몫이고
@@ -23,7 +23,8 @@ import pytest
 from facebook import config
 from facebook.facts import load_facts
 from facebook.plan_model import Plan, load_plan
-from facebook.validate import BannedPhrasesError, Finding, load_banned_phrases, validate_copy
+from facebook.findings import Finding
+from facebook.validate_copy import BannedPhrasesError, load_banned_phrases, validate_copy
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
 LANGS = ("ko", "vi", "my", "ne")

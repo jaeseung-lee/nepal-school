@@ -1,9 +1,9 @@
-"""구조 검증(validate.py의 `validate_structure`·`validate_facts`) 테스트.
+"""구조 검증(validate_structure.py의 `validate_structure`·`validate_facts`) 테스트.
 
 여기서는 언어 로테이션, 게시물 수, 게시일(연속성·월), 이미지 파일(존재·크기·확장자·중복),
 이미지 프롬프트의 필수 지시 문구, 사실의 존재·게시일 기준 만료만 본다. 본문이 *무엇을
-말하는지*(금지 표현·CTA·대학명 맥락)는 같은 모듈의 `validate_copy`가 보고 그 테스트는
-`test_validate_copy.py`에 있으며, 역번역 대조는 `validate.py` 밖의 별도 모듈의 몫이다.
+말하는지*(금지 표현·CTA·대학명 맥락)는 `validate_copy.py`의 `validate_copy`가 보고 그 테스트는
+`test_validate_copy.py`에 있으며, 역번역 대조는 별도 모듈의 몫이다.
 """
 
 from __future__ import annotations
@@ -18,7 +18,8 @@ import pytest
 from facebook import config
 from facebook.facts import Fact
 from facebook.plan_model import Plan, Post, load_plan
-from facebook.validate import Finding, validate_facts, validate_structure
+from facebook.findings import Finding
+from facebook.validate_structure import validate_facts, validate_structure
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
 JST = timezone(timedelta(hours=9))
