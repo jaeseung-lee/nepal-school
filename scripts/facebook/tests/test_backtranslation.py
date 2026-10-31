@@ -71,6 +71,9 @@ def _plan() -> Plan:
     그 경고가 아닌 것을 보려는 것이라 되번역이 서로 다를 수 있게 원문부터 다르게 둔다.
     """
     raw = _raw_plan()
+    for post in raw.posts:
+        # 이 전제가 깨지면 아래 `removesuffix`가 조용히 아무것도 떼지 않아 CTA가 두 번 붙은 원문이 만들어진다.
+        assert post.source_ko.endswith("\n\n" + CTA), f"픽스처 {post.index}번 원문이 본문, 빈 줄, CTA 순서가 아니다"
     posts = tuple(
         dataclasses.replace(
             post, source_ko=f"{post.source_ko.removesuffix(chr(10) * 2 + CTA)} ({_LABEL[post.language]})\n\n{CTA}"
@@ -433,10 +436,12 @@ def test_load는_본문이_바뀐_워크시트를_거부한다(tmp_path):
 
 
 def test_load는_다른_달의_워크시트를_거부한다(tmp_path):
-    # 번호도 본문도 같아서 `역번역플랜밖`도 `body_hash`도 못 알아채는 워크시트다. 달만 다르다.
+    # 지난달 워크시트다: 번호는 겹쳐서 `역번역플랜밖`이 나지 않고, 본문도 달라서 달을 먼저 보지 않으면 `body_hash`가 먼저
+    # 걸려 "4번 본문이 바뀌었다"로 오진한다.
     plan = _plan()
-    path = _filled(tmp_path, dataclasses.replace(plan, month="2026-10"))
-    assert load(path, plan=dataclasses.replace(plan, month="2026-10"), glossary=GLOSSARY)  # 같은 달이면 읽힌다
+    last_month = dataclasses.replace(_extend_body(plan, 4, "지난달 안내입니다."), month="2026-10")
+    path = _filled(tmp_path, last_month)
+    assert load(path, plan=last_month, glossary=GLOSSARY)  # 같은 달 같은 본문이면 읽힌다
 
     with pytest.raises(WorksheetError) as info:
         load(path, plan=plan, glossary=GLOSSARY)
@@ -1115,7 +1120,8 @@ def _duplicates(findings: list[Finding]) -> list[tuple[int | None, str]]:
 
 
 def test_역번역이_다른_게시물과_똑같으면_경고():
-    # 한 소재의 세 게시물은 `source_ko`가 글자까지 같다. 그래서 복사한 되번역은 숫자도 글자 유사도도 통과한다.
+    # 한 소재의 세 게시물은 `source_ko`가 글자까지 같다. 그래서 복사한 되번역은 숫자도 글자 유사도도 통과한다. 같은
+    # 입력이 충실한 되번역 셋에서도 나온다(아래 알려진 한계 테스트) — 경고는 "베꼈다"가 아니라 독립된 증거가 없다는 뜻이다.
     plan = _raw_plan()
     assert len({post.source_ko for post in plan.posts[3:]}) == 1
     backs = _distinct_raw_backs()
@@ -1128,6 +1134,38 @@ def test_역번역이_다른_게시물과_똑같으면_경고():
     assert findings[0].severity == "warning" and findings[0].code == "역번역중복"
     assert "3번과 4번" in findings[0].message and "3번과 5번" in findings[1].message
     assert not any("4번과 5번" in f.message for f in findings) and _has_hangul(findings[0].message)
+    # 메시지는 충실한 경우와 베낀 경우를 이 화면이 구별하지 못한다고 말하고, 정보를 만드는 한 가지 행동을 일러 준다.
+    # 현지어를 읽을 사람은 없으므로 "본문을 읽어 확인하라"고 하지 않는다.
+    for finding in findings:
+        assert "구별할 수 없" in finding.message and "새 세션" in finding.message and "다시 되번역하세요" in finding.message
+        assert "각각 읽어" not in finding.message and "베꼈" not in finding.message
+    assert "4번의 현지어 본문 하나만" in findings[0].message and "5번의 현지어 본문 하나만" in findings[1].message
+
+
+def test_완벽히_충실한_워크시트도_소재마다_역번역중복을_낸다_알려진_한계(tmp_path):
+    # 한 소재의 세 원문은 글자까지 같으므로 세 본문이 모두 충실하면 세 되번역이 같아진다. 되번역이 원문을 그대로 되살린
+    # 가장 충실한 경우에도 소재마다 2건이 난다. 열 소재 한 달이면 20건이다. 체계적이고, 억제하지 않는다.
+    plan = _raw_plan()
+    sheet = json.loads(json.dumps(worksheet(plan, GLOSSARY), ensure_ascii=False))
+    for entry, post in zip(sheet["entries"], plan.posts):
+        entry["back_ko"] = post.source_ko.removesuffix("\n\n" + CTA)
+    path = _write(tmp_path, json.dumps(sheet, ensure_ascii=False))
+
+    findings = _check(plan, load(path, plan=plan, glossary=GLOSSARY))
+
+    assert _brief(findings) == [(index, "역번역중복", "warning") for index in (1, 2, 4, 5)]
+    for finding, pair in zip(findings, ("0번과 1번", "0번과 2번", "3번과 4번", "3번과 5번")):
+        assert pair in finding.message
+
+
+def test_한_소재_안에서_되번역을_맞바꾸거나_돌려_놓아도_아무것도_나지_않는다_알려진_한계():
+    # 서로 다른 충실한 되번역이 그대로 남아 있어 숫자도 글자도 중복도 걸리지 않는다. 현지어 본문을 읽어야 알 수 있다.
+    plan = _raw_plan()
+    backs = _distinct_raw_backs()
+    assert _check(plan, backs) == []
+
+    assert _check(plan, {**backs, 4: backs[5], 5: backs[4]}) == []
+    assert _check(plan, {**backs, 0: backs[1], 1: backs[2], 2: backs[0]}) == []
 
 
 def test_같은_역번역이_많아도_먼저_적은_게시물과만_짝지어_n_1건만_낸다():
@@ -1187,13 +1225,6 @@ def test_역번역중복은_비었거나_없는_되번역끼리는_견주지_않
         (4, "역번역누락", "error"),
         (5, "역번역빈칸", "error"),
     ]
-
-
-def test_역번역중복은_빈_되번역과_글이_있는_되번역을_견주지_않는다():
-    plan = _plan()
-    back = {**_faithful(plan), 1: ""}
-
-    assert _duplicates(_check(plan, back)) == []
 
 
 # --- validate_backtranslation: 입력 가드 ----------------------------------------
