@@ -7,8 +7,9 @@
 
 토큰 자리에는 `SENTINEL`만 쓴다. 진짜 토큰이 아니라, 어디로든 새면 찾아낼 수 있게 일부러 눈에 띄게 만든 값이다.
 
-원장(`scheduled.json`)에 들어가는 값은 둘뿐이다: 사진 id와 `"결과 불명"`. 요청이 나가지 않은 실패는 적지 않는다.
-이 비대칭이 이 모듈의 핵심이라 시험도 두 방향을 모두 짚는다.
+원장(`scheduled.json`)은 게시물마다 한 줄이고 줄마다 `결과`(사진 id 또는 `"결과 불명"`)와 `이미지`(그 게시물의 신원)를 적는다.
+요청을 보내기 **직전에** `"결과 불명"`을 먼저 적고, 성공하면 사진 id로 덮고, 분명한 거절이면 지운다. 요청이 나가지 않은 실패는
+적지 않는다. 이 비대칭이 이 모듈의 핵심이라 시험도 두 방향을 모두 짚는다. 신호로 갑자기 끝나는 경우는 진짜 자식 프로세스로 본다.
 """
 
 from __future__ import annotations
@@ -20,6 +21,9 @@ import json
 import os
 import signal
 import socket
+import stat
+import subprocess
+import sys
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -32,11 +36,13 @@ from facebook.findings import Finding
 from facebook.plan_model import Plan, load_plan
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
+SCRIPTS = Path(__file__).resolve().parents[2]  # `facebook` 패키지가 들어 있는 scripts/
 SENTINEL = "EAAZ-SENTINEL-not-a-real-token-7c41e9d2b8"
 JST = timezone(timedelta(hours=9))
 NOW = datetime(2026, 10, 31, 12, 0, tzinfo=JST)  # 플랜의 첫 게시(11-01 19:00)보다 31시간 앞. 여섯 건 모두 창 안이다.
 PHOTOS_URL = f"https://graph.facebook.com/{config.GRAPH_VERSION}/{config.PAGE_ID}/photos"
 UNKNOWN = "결과 불명"
+CONFIRMED = "확인함"
 
 ERROR_A = Finding("error", "금지표현", 3, "게시물 3에 금지 표현이 있습니다.")
 ERROR_B = Finding("error", "이미지없음", 4, "게시물 4의 이미지 파일이 없습니다.")
@@ -134,9 +140,21 @@ class Env:
             token=SENTINEL, session=session, now=now, dry_run=dry_run,
         )
 
-    def saved(self) -> dict:
-        """원장 파일에 디스크에 실제로 적힌 내용(JSON을 그대로 읽은 것)."""
+    def saved_raw(self) -> dict:
+        """원장 파일에 디스크에 실제로 적힌 내용(JSON을 그대로 읽은 것): {"번호": {"결과": …, "이미지": …}}."""
         return json.loads(self.ledger.read_text(encoding="utf-8"))
+
+    def saved(self) -> dict:
+        """디스크의 원장에서 번호별 `결과`만: {"번호": 결과}."""
+        return {key: entry["결과"] for key, entry in self.saved_raw().items()}
+
+    def seed(self, results: dict[int, str], *, images: dict[int, str] | None = None) -> None:
+        """운영자가 쓰던 원장을 미리 놓는다. 신원은 기본으로 지금 플랜의 같은 자리 게시물이다(`images`로 바꾼다)."""
+        entries = {
+            str(index): {"결과": result, "이미지": (images or {}).get(index) or self.post(index).image_file}
+            for index, result in results.items()
+        }
+        self.ledger.write_text(json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def post(self, index: int):
         return self.plan.posts[index]
@@ -195,7 +213,8 @@ def test_네트워크_차단_장치가_실제로_소켓_연결을_막는다():
 
 def test_Outcome은_바꿀_수_없고_필드가_정해져_있다():
     outcome = schedule.Outcome(index=0, ok=True, post_id="1_2", error=None)
-    assert [f.name for f in dataclasses.fields(schedule.Outcome)] == ["index", "ok", "post_id", "error"]
+    assert [f.name for f in dataclasses.fields(schedule.Outcome)] == ["index", "ok", "post_id", "error", "skipped"]
+    assert outcome.skipped is False  # 기본: 이번 실행이 다룬 건
     with pytest.raises(dataclasses.FrozenInstanceError):
         outcome.ok = False
 
@@ -203,6 +222,11 @@ def test_Outcome은_바꿀_수_없고_필드가_정해져_있다():
 def test_결과_불명_표지는_운영_문서가_기대하는_글자_그대로다():
     # 운영자가 `scheduled.json`에서 이 글자를 찾아 지운다(운영 문서). 글자가 바뀌면 문서와 어긋난다.
     assert schedule.UNKNOWN_RESULT == UNKNOWN
+
+
+def test_확인함_표지도_안내문과_운영_문서가_기대하는_글자_그대로다():
+    # 안내문이 운영자에게 이 글자로 바꾸라고 말한다. 글자가 바뀌면 안내와 문서가 어긋난다.
+    assert schedule.CONFIRMED_BY_HAND == CONFIRMED
 
 
 # ── load_ledger ──────────────────────────────────────────────────────────────
@@ -214,17 +238,47 @@ def test_원장이_없으면_빈_dict(tmp_path):
 
 def test_원장은_index를_정수로_돌려준다(tmp_path):
     path = tmp_path / "scheduled.json"
-    path.write_text(json.dumps({"0": "100_1", "12": UNKNOWN}, ensure_ascii=False), encoding="utf-8")
-    assert schedule.load_ledger(path) == {0: "100_1", 12: UNKNOWN}
+    path.write_text(
+        json.dumps({"0": {"결과": "100_1", "이미지": "a.png"}, "12": {"결과": UNKNOWN, "이미지": "b.png"}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    assert schedule.load_ledger(path) == {0: "100_1", 12: UNKNOWN}  # 신원은 돌려주지 않는다: 견주는 일은 플랜을 가진 run의 몫
 
 
-def test_원장_파일은_사람이_읽고_고칠_수_있는_글자로_적힌다(env):
-    # 운영자가 파일을 열어 "결과 불명"을 찾아 고친다. 유니코드 이스케이프(백슬래시 u 와 숫자)로 적히면 찾을 수 없다.
+def test_원장_파일은_한_줄에_항목_하나인_사람이_고칠_수_있는_모양으로_적힌다(env):
+    # 줄 하나를 지워도 모양이 깨지지 않고, "결과 불명"을 글자 그대로 찾아 "확인함"으로 바꿀 수 있어야 한다(이스케이프 없음).
     env.run(FakeSession({1: TimeoutError("read timed out")}))
-    text = env.ledger.read_text(encoding="utf-8")
-    assert f'"1": "{UNKNOWN}"' in text
-    assert "\\u" not in text
-    assert text.endswith("\n")
+    expected = "{\n" + ",\n".join(
+        f'  "{i}": {{"결과": "{UNKNOWN if i == 1 else env.id_of(i)}", "이미지": "{env.post(i).image_file}"}}' for i in range(6)
+    ) + "\n}\n"
+    assert env.ledger.read_text(encoding="utf-8") == expected
+
+
+def test_맨_끝_줄을_지워_쉼표만_남아도_읽는다(env):
+    # 운영자가 손으로 줄을 지우면 앞 줄 끝의 쉼표가 남는다. 그것 때문에 원장이 읽히지 않으면 안 된다.
+    env.run(FakeSession())
+    lines = env.ledger.read_text(encoding="utf-8").splitlines()
+    assert lines[-2].lstrip().startswith('"5"') and lines[-3].endswith(",")
+    env.ledger.write_text("\n".join(lines[:-2] + [lines[-1]]) + "\n", encoding="utf-8")  # 5번 줄을 지운다
+    assert sorted(schedule.load_ledger(env.ledger)) == [0, 1, 2, 3, 4]
+    retry = FakeSession()
+    env.run(retry)
+    assert retry.uploaded == [env.post(5).image_file]
+
+
+def test_원장_번호는_숫자_순서로_적히고_플랜에_없는_번호는_그대로_남는다(env):
+    # 문자열 순서면 "10"이 "2"보다 앞에 온다. 읽은 순서를 그대로 쓰면 새로 적는 번호가 뒤에 붙는다. 플랜에 없는 번호(9, 10)는 무시하되 지우지 않는다.
+    entries = {10: "옛-10.png", 9: "옛-09.png", 2: env.post(2).image_file, 1: env.post(1).image_file}
+    env.ledger.write_text(
+        "{\n" + ",\n".join(f'  "{i}": {{"결과": "100_{i}", "이미지": "{image}"}}' for i, image in entries.items()) + "\n}\n",
+        encoding="utf-8",
+    )
+    session = FakeSession()
+    env.run(session)
+    assert session.uploaded == [env.post(i).image_file for i in (0, 3, 4, 5)]
+    raw = env.saved_raw()
+    assert list(raw) == ["0", "1", "2", "3", "4", "5", "9", "10"]
+    assert raw["9"] == {"결과": "100_9", "이미지": "옛-09.png"} and raw["10"] == {"결과": "100_10", "이미지": "옛-10.png"}
 
 
 def test_LedgerError는_ValueError가_아니다():
@@ -232,16 +286,27 @@ def test_LedgerError는_ValueError가_아니다():
     assert not issubclass(schedule.LedgerError, ValueError)
 
 
+def entry(result="100_1", image="a.png") -> str:
+    return json.dumps({"결과": result, "이미지": image}, ensure_ascii=False)
+
+
 @pytest.mark.parametrize(
     "content",
     [
         pytest.param("", id="빈파일"),
-        pytest.param('{"0": "100_1"', id="잘린JSON"),
-        pytest.param('["100_1"]', id="객체가아님"),
-        pytest.param('{"첫째": "100_1"}', id="index가숫자아님"),
-        pytest.param('{"-1": "100_1"}', id="음수index"),
-        pytest.param('{"0": 100}', id="값이문자열아님"),
-        pytest.param('{"0": ""}', id="값이빔"),
+        pytest.param('{"0": ' + entry(), id="잘린JSON"),
+        pytest.param("[" + entry() + "]", id="객체가아님"),
+        pytest.param('{"첫째": ' + entry() + "}", id="index가숫자아님"),
+        pytest.param('{"-1": ' + entry() + "}", id="음수index"),
+        pytest.param('{"0": "100_1"}', id="옛모양_결과만있음"),
+        pytest.param('{"0": ["결과", "이미지"]}', id="항목이객체아님_목록"),  # 칸 이름만 맞는 목록도 객체가 아니다
+        pytest.param('{"0": {"결과": "100_1"}}', id="이미지칸없음"),
+        pytest.param('{"0": {"이미지": "a.png"}}', id="결과칸없음"),
+        pytest.param('{"0": {"결과": "100_1", "이미지": "a.png", "메모": "x"}}', id="모르는칸"),
+        pytest.param('{"0": ' + entry(result="") + "}", id="결과가빔"),
+        pytest.param('{"0": ' + entry(image="") + "}", id="이미지가빔"),
+        pytest.param('{"0": {"결과": 100, "이미지": "a.png"}}', id="결과가문자열아님"),
+        pytest.param('{"0": {"결과": "100_1", "이미지": 7}}', id="이미지가문자열아님"),
     ],
 )
 def test_망가진_원장은_빈_원장으로_보지_않고_멈춘다(env, content):
@@ -265,7 +330,7 @@ def test_dry_run은_API를_호출하지_않고_예정_목록을_돌려준다(env
     outcomes = env.run(session, dry_run=True)
     assert session.calls == []
     assert [o.index for o in outcomes] == [0, 1, 2, 3, 4, 5]
-    assert all(o.ok and o.post_id is None and o.error is None for o in outcomes)  # 예정: 아직 사진 id가 없다
+    assert all(o.ok and o.post_id is None and o.error is None and not o.skipped for o in outcomes)  # 예정: 아직 사진 id가 없다
     assert not env.ledger.exists()  # 예정을 보는 것만으로 원장을 만들지 않는다
 
 
@@ -291,13 +356,14 @@ def test_창_밖이면서_이미지도_없는_건은_두_문제를_모두_알린
 
 
 def test_dry_run은_원장에_이미_있는_건을_예정에_넣지_않고_알려_준다(env):
-    env.ledger.write_text(json.dumps({"1": "100_1", "3": UNKNOWN}), encoding="utf-8")
+    env.seed({1: "100_1", 3: UNKNOWN})
     before = env.ledger.read_text(encoding="utf-8")
     session = FakeSession()
     outcomes = env.run(session, dry_run=True)
     assert session.calls == []
-    assert (outcomes[1].ok, outcomes[1].post_id) == (True, "100_1")  # 이미 예약됨
-    assert (outcomes[3].ok, outcomes[3].post_id) == (False, schedule.UNKNOWN_RESULT)  # 사람이 확인해야 함
+    assert (outcomes[1].ok, outcomes[1].post_id, outcomes[1].skipped) == (True, "100_1", True)  # 이미 예약됨
+    assert (outcomes[3].ok, outcomes[3].post_id, outcomes[3].skipped) == (False, schedule.UNKNOWN_RESULT, True)  # 사람이 확인해야 함
+    assert [o.skipped for o in outcomes] == [False, True, False, True, False, False]
     assert env.ledger.read_text(encoding="utf-8") == before
 
 
@@ -309,6 +375,7 @@ def test_게시물마다_한_번씩_올리고_결과를_플랜_순서대로_돌�
     outcomes = env.run(session)
     assert session.uploaded == [p.image_file for p in env.plan.posts]
     assert outcomes == [schedule.Outcome(index=i, ok=True, post_id=env.id_of(i), error=None) for i in range(6)]
+    assert not any(o.skipped for o in outcomes)  # 이번에 예약한 건은 건너뛴 것이 아니다
     assert env.saved() == {str(i): env.id_of(i) for i in range(6)}
 
 
@@ -329,21 +396,96 @@ def test_각_게시물의_현지어_본문과_이미지와_시각을_올린다(e
 
 
 def test_성공할_때마다_원장에_즉시_기록된다(env):
-    # 다음 호출이 도착한 순간에 이미 앞 건이 디스크에 있어야 한다. 실행 끝에 한꺼번에 적는 구현은 여기서 빨개진다.
+    # 다음 호출이 도착한 순간에 이미 앞 건들이 사진 id로 디스크에 있어야 한다. 실행 끝에 한꺼번에 적는 구현은 여기서 빨개진다.
     seen = {}
 
     def snapshot(number):
-        seen[number] = env.saved() if env.ledger.exists() else {}
+        seen[number] = env.saved()
 
     env.run(FakeSession(on_call=snapshot))
-    assert seen == {n: {str(i): env.id_of(i) for i in range(n)} for n in range(6)}
+    for n in range(6):
+        earlier = {key: result for key, result in seen[n].items() if key != str(n)}  # 그 건 자신의 줄은 아래 시험이 본다
+        assert earlier == {str(i): env.id_of(i) for i in range(n)}
+
+
+def test_요청이_도착한_순간_그_건은_이미_결과_불명으로_원장에_적혀_있다(env):
+    # 요청이 끝난 뒤에 적으면, 업로드 도중 파이썬 코드를 한 줄도 못 돌리고 끝나는 프로세스(kill, 창 닫기, 전원)는 흔적을 못 남긴다.
+    seen = {}
+
+    def snapshot(number):
+        seen[number] = env.saved_raw()
+
+    env.run(FakeSession(on_call=snapshot))
+    for n in range(6):
+        assert seen[n][str(n)] == {"결과": UNKNOWN, "이미지": env.post(n).image_file}
+
+
+CHILD = r"""
+import os, sys, time
+from datetime import datetime
+from pathlib import Path
+
+sys.path.insert(0, sys.argv[1])
+from facebook import schedule
+from facebook.plan_model import load_plan
+
+plan_file, images, ledger, now, number = Path(sys.argv[2]), Path(sys.argv[3]), Path(sys.argv[4]), datetime.fromisoformat(sys.argv[5]), int(sys.argv[6])
+
+
+class Response:
+    status_code = 200
+    text = "{}"
+
+    def __init__(self, post_id):
+        self.post_id = post_id
+
+    def json(self):
+        return {"id": self.post_id}
+
+
+class Session:
+    calls = 0
+
+    def post(self, url, **kwargs):
+        name, handle, _ = kwargs["files"]["source"]
+        handle.read()
+        Session.calls += 1
+        if Session.calls == 2:
+            os.kill(os.getpid(), number)  # 요청은 도착했는데 응답이 오기 전에 프로세스가 신호로 끝난다
+            time.sleep(60)
+        return Response("photo-" + name)
+
+
+schedule.run(load_plan(plan_file), [], images, ledger, token="not-a-real-token", session=Session(), now=now, dry_run=False)
+"""
+
+
+@pytest.mark.parametrize(
+    "number",
+    [pytest.param(signal.SIGTERM, id="SIGTERM_kill"), pytest.param(signal.SIGHUP, id="SIGHUP_터미널창닫기"),
+     pytest.param(signal.SIGKILL, id="SIGKILL")],
+)
+def test_신호로_갑자기_끝나도_재실행이_같은_사진을_다시_올리지_않는다(env, number):
+    # Ctrl-C(SIGINT)는 파이썬이 KeyboardInterrupt로 바꿔 주지만, 이 신호들은 파이썬 코드를 한 줄도 돌리지 않고 프로세스를 끝낸다.
+    # 진짜 자식 프로세스가 둘째 건의 업로드 도중 스스로 신호를 맞고 죽는다.
+    child = subprocess.run(
+        [sys.executable, "-c", CHILD, str(SCRIPTS), str(FIXTURE), str(env.images), str(env.ledger), NOW.isoformat(), str(int(number))],
+        capture_output=True, timeout=60,
+    )
+    assert child.returncode == -int(number), child.stderr.decode(errors="replace")  # 신호로 죽었다(파이썬이 정리하지 못했다)
+    assert env.saved() == {"0": env.id_of(0), "1": UNKNOWN}  # 첫 건은 사진 id, 업로드 중이던 둘째 건은 결과 불명
+
+    rerun = FakeSession()
+    outcomes = env.run(rerun)  # 죽은 프로세스의 잠금은 저절로 풀려 있다
+    assert rerun.uploaded == [env.post(i).image_file for i in (2, 3, 4, 5)]  # 업로드 중이던 둘째 건을 다시 올리지 않는다
+    assert (outcomes[1].ok, outcomes[1].post_id, outcomes[1].skipped) == (False, schedule.UNKNOWN_RESULT, True)
 
 
 def test_도중에_끊겨도_앞_건은_원장에_남아_있고_끊긴_건은_결과_불명이다(env):
     session = FakeSession({1: RuntimeError("예상하지 못한 오류")})
     with pytest.raises(RuntimeError):
         env.run(session)
-    # 둘째 건은 요청이 나갔는지 알 수 없다 → 모르면 적는다. 셋째 건으로 가지 않는다.
+    # 둘째 건은 요청이 나갔는지 알 수 없다 → 요청 직전에 적어 둔 표시가 남는다. 셋째 건으로 가지 않는다.
     assert env.saved() == {"0": env.id_of(0), "1": UNKNOWN}
     assert len(session.calls) == 2
 
@@ -372,46 +514,126 @@ def test_이미_원장에_있는_index는_건너뛴다(env):
     outcomes = env.run(second)
     assert second.uploaded == [env.post(2).image_file]  # 실패한 건만 다시, 예약된 다섯 건은 다시 올라가지 않는다
     assert all(o.ok for o in outcomes)
+    assert [o.skipped for o in outcomes] == [True, True, False, True, True, True]  # 이번에 예약한 건과 건너뛴 건이 구별된다
     assert env.saved() == {str(i): env.id_of(i) for i in range(6)}
 
     third = FakeSession()
-    env.run(third)
+    outcomes = env.run(third)
     assert third.calls == []  # 다 끝난 달은 다시 돌려도 아무것도 올리지 않는다
+    assert all(o.ok and o.skipped for o in outcomes)
 
 
 def test_원장에_이미_있는_건은_성공으로_알리되_원래_사진_id를_보존한다(env):
-    env.ledger.write_text(json.dumps({"0": "100_old", "5": "100_older"}), encoding="utf-8")
+    env.seed({0: "100_old", 5: "100_older"})
     session = FakeSession()
     outcomes = env.run(session)
     assert session.uploaded == [env.post(i).image_file for i in (1, 2, 3, 4)]
-    assert (outcomes[0].ok, outcomes[0].post_id, outcomes[0].error) == (True, "100_old", None)
-    assert (outcomes[5].ok, outcomes[5].post_id, outcomes[5].error) == (True, "100_older", None)
+    assert (outcomes[0].ok, outcomes[0].post_id, outcomes[0].error, outcomes[0].skipped) == (True, "100_old", None, True)
+    assert (outcomes[5].ok, outcomes[5].post_id, outcomes[5].error, outcomes[5].skipped) == (True, "100_older", None, True)
     assert env.saved()["0"] == "100_old" and env.saved()["5"] == "100_older"  # 덮어쓰지 않는다
 
 
-def test_원장의_결과_불명은_건너뛰되_실패로_알리고_확인_방법을_말한다(env):
-    env.ledger.write_text(json.dumps({"1": UNKNOWN}), encoding="utf-8")
+def test_원장의_결과_불명은_건너뛰되_실패로_알리고_확인_방법을_한_번만_말한다(env):
+    env.seed({1: UNKNOWN})
     session = FakeSession()
     outcomes = env.run(session)
     assert env.post(1).image_file not in session.uploaded
     outcome = outcomes[1]
-    assert (outcome.ok, outcome.post_id) == (False, schedule.UNKNOWN_RESULT)
-    # 운영자가 할 일: 페이스북에서 확인 → 없으면 원장에서 그 줄을 지우고 다시 실행
-    for needle in ("페이스북", "예약된 게시물", str(env.ledger), "지우고", schedule.CONFIRMED_BY_HAND):
+    assert (outcome.ok, outcome.post_id, outcome.skipped) == (False, schedule.UNKNOWN_RESULT, True)
+    # 운영자가 할 일: 페이스북에서 찾기 → 있으면 "확인함"으로, 없으면 그 줄을 지우고 다시 실행
+    for needle in ("페이스북", str(env.ledger), "지운 뒤", schedule.CONFIRMED_BY_HAND, env.post(1).image_file):
         assert needle in outcome.error
-    assert env.saved()["1"] == UNKNOWN  # 사람이 지우기 전에는 그대로 남는다
+    assert outcome.error.count("예약된 게시물") == 1  # 같은 지시를 두 번 말하지 않는다
+    assert env.saved()["1"] == UNKNOWN  # 사람이 고치기 전에는 그대로 남는다
 
 
 def test_결과_불명_줄을_사람이_지우면_그_건만_다시_올라간다(env):
-    env.ledger.write_text(json.dumps({str(i): env.id_of(i) for i in range(6)} | {"4": UNKNOWN}), encoding="utf-8")
+    env.seed({i: env.id_of(i) for i in range(6)} | {4: UNKNOWN})
     env.run(FakeSession())  # 건너뛴다
-    ledger = env.saved()
-    del ledger["4"]
-    env.ledger.write_text(json.dumps(ledger), encoding="utf-8")
+    raw = env.saved_raw()
+    del raw["4"]
+    env.ledger.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
     session = FakeSession()
     outcomes = env.run(session)
     assert session.uploaded == [env.post(4).image_file]
     assert all(o.ok for o in outcomes)
+
+
+def test_결과_불명을_확인함으로_바꾸면_예약된_것으로_세고_다시_올리지_않는다(env):
+    env.seed({i: env.id_of(i) for i in range(6)} | {4: UNKNOWN})
+    assert not env.run(FakeSession())[4].ok
+    text = env.ledger.read_text(encoding="utf-8")
+    assert text.count(UNKNOWN) == 1
+    env.ledger.write_text(text.replace(UNKNOWN, CONFIRMED), encoding="utf-8")  # 운영자가 파일에서 하는 일 그대로
+    session = FakeSession()
+    outcomes = env.run(session)
+    assert session.calls == []
+    assert all(o.ok and o.skipped for o in outcomes)
+    assert outcomes[4].post_id == CONFIRMED
+
+
+# ── 플랜이 바뀐 뒤의 재실행 ──────────────────────────────────────────────────
+# 원장은 번호로 게시물을 가리킨다. 플랜에 게시물을 끼워 넣거나 빼면 번호가 밀려, 번호만 믿으면 엉뚱한 게시물이 건너뛰어지고
+# 이미 예약된 게시물이 다시 올라간다. 그래서 줄마다 신원(이미지 파일 이름)을 함께 적고, 원장에 있는 번호만 견준다.
+
+
+def mismatch_message(env: Env, *, index: int, recorded: str, current: str, more: str = "") -> str:
+    return (
+        f'원장 {env.ledger}과(와) 지금 플랜이 맞지 않아 아무것도 올리지 않고 멈춥니다. 원장의 "{index}"번 줄은 이미지 파일 '
+        f"{recorded}의 게시물 기록인데, 지금 플랜의 {index}번 자리는 {current}입니다.{more} 플랜에서 게시물을 넣거나 빼서 번호가 밀린 "
+        f"것일 수 있습니다. 이대로 실행하면 엉뚱한 게시물이 건너뛰어지거나 같은 게시물이 두 번 올라갑니다. 페이스북 페이지의 예약된 "
+        f"게시물에서 {recorded} 쪽 게시물을 찾아 확인하고, 지울 것은 지운 뒤 원장에서 \"{index}\" 줄을 지우고 다시 실행하세요. "
+        f"그 줄을 지우면 지금 플랜의 {index}번 게시물이 새로 예약됩니다."
+    )
+
+
+def with_image(plan: Plan, index: int, image_file: str) -> Plan:
+    posts = tuple(dataclasses.replace(p, image_file=image_file) if p.index == index else p for p in plan.posts)
+    return dataclasses.replace(plan, posts=posts)
+
+
+@pytest.mark.parametrize("dry_run", [False, True], ids=["실제실행", "dry_run"])
+def test_원장의_게시물과_지금_플랜의_같은_자리가_다르면_아무것도_올리지_않고_멈춘다(env, dry_run):
+    env.seed({i: env.id_of(i) for i in range(6)})
+    before = env.ledger.read_text(encoding="utf-8")
+    session = FakeSession()
+    with pytest.raises(schedule.LedgerError) as info:
+        env.run(session, plan=with_image(env.plan, 3, "수정된-03.png"), dry_run=dry_run)
+    assert session.calls == []
+    assert str(info.value) == mismatch_message(env, index=3, recorded=env.post(3).image_file, current="수정된-03.png")
+    assert env.ledger.read_text(encoding="utf-8") == before  # 멈추면서 원장을 건드리지 않았다
+
+
+def test_플랜_맨_앞에_게시물을_끼워_넣으면_옛_게시물을_다시_올리지_않고_멈춘다(env):
+    # 여섯 건 전부 예약한 뒤 플랜 맨 앞에 한 건을 끼우면 번호가 모두 한 칸씩 밀린다. 번호만 믿던 때는 옛 5번이 다시 올라갔고
+    # 끼운 건은 한 번도 안 올라가는데 모두 성공으로 보고됐다.
+    env.run(FakeSession())
+    inserted = dataclasses.replace(env.post(0), index=0, image_file="끼워넣은-00.png")
+    shifted = tuple(dataclasses.replace(p, index=p.index + 1) for p in env.plan.posts)
+    plan = dataclasses.replace(env.plan, posts=(inserted, *shifted))
+    (env.images / "끼워넣은-00.png").write_bytes(b"x")
+    before = env.ledger.read_text(encoding="utf-8")
+
+    session = FakeSession()
+    with pytest.raises(schedule.LedgerError) as info:
+        env.run(session, plan=plan)
+    assert session.calls == []
+    assert str(info.value) == mismatch_message(
+        env, index=0, recorded=env.post(0).image_file, current="끼워넣은-00.png", more=" 같은 문제가 5건 더 있습니다(번호: 1, 2, 3, 4, 5)."
+    )
+    assert env.ledger.read_text(encoding="utf-8") == before
+
+
+def test_원장에_없는_게시물을_고치는_것은_막지_않는다(env):
+    # 부분 실패를 고치고 다시 돌리는 것이 가장 흔한 재실행이다. 아직 예약하지 않은 번호는 견주지 않는다.
+    env.seed({0: "100_0", 1: "100_1", 2: "100_2"})
+    plan = with_image(env.plan, 4, "고친-04.png")
+    (env.images / "고친-04.png").write_bytes(b"x")
+    session = FakeSession()
+    outcomes = env.run(session, plan=plan)
+    assert session.uploaded == [env.post(3).image_file, "고친-04.png", env.post(5).image_file]
+    assert all(o.ok for o in outcomes)
+    assert env.saved_raw()["4"]["이미지"] == "고친-04.png"  # 새 신원이 적힌다
 
 
 # ── 한 건의 실패 ─────────────────────────────────────────────────────────────
@@ -429,8 +651,8 @@ def test_일부_실패해도_나머지를_계속_시도한다(env):
 
 
 @pytest.mark.parametrize("response", REJECTED_SCENARIOS)
-def test_Facebook이_분명히_거절한_건은_원장에_적지_않고_다시_시도된다(env, response):
-    # maybe_created가 거짓: 아무것도 만들어지지 않았다. 원인을 고치고 다시 돌리면 그 건은 올라가야 한다.
+def test_Facebook이_분명히_거절한_건은_표시를_지워_원장에_남기지_않고_다시_시도된다(env, response):
+    # maybe_created가 거짓: 아무것도 만들어지지 않았다. 요청 직전에 적어 둔 표시를 지워야, 원인을 고치고 다시 돌릴 때 그 건이 올라간다.
     outcomes = env.run(FakeSession({3: response}))
     assert (outcomes[3].ok, outcomes[3].post_id) == (False, None)
     assert "3" not in env.saved()
@@ -444,27 +666,68 @@ def test_Facebook이_분명히_거절한_건은_원장에_적지_않고_다시_�
 
 
 @pytest.mark.parametrize("response", UNKNOWN_RESULT_SCENARIOS)
-def test_결과를_알_수_없는_실패는_결과_불명으로_원장에_적고_다시_올리지_않는다(env, response):
+def test_결과를_알_수_없는_실패는_결과_불명으로_원장에_남고_다시_올리지_않는다(env, response):
     # maybe_created가 참: 요청이 나갔으므로 예약이 만들어졌을 수 있다. 같은 사진이 두 번 나가는 것을 막는다.
     session = FakeSession({3: response})
     outcomes = env.run(session)
     assert len(session.calls) == 6  # 한 건의 불명이 나머지를 멈추지 않는다
-    assert (outcomes[3].ok, outcomes[3].post_id) == (False, schedule.UNKNOWN_RESULT)
+    assert (outcomes[3].ok, outcomes[3].post_id, outcomes[3].skipped) == (False, schedule.UNKNOWN_RESULT, False)
     assert has_hangul(outcomes[3].error) and "페이스북" in outcomes[3].error
+    assert outcomes[3].error.count("예약된 게시물") == 1  # graph의 "확인하세요"와 이 모듈의 안내가 같은 지시를 두 번 하지 않는다
     assert env.saved()["3"] == UNKNOWN
     assert [o.ok for o in outcomes] == [True, True, True, False, True, True]
 
     retry = FakeSession()
     again = env.run(retry)
     assert retry.calls == []  # 다시 돌려도 불명 건을 올리지 않는다
-    assert (again[3].ok, again[3].post_id) == (False, schedule.UNKNOWN_RESULT)
+    assert (again[3].ok, again[3].post_id, again[3].skipped) == (False, schedule.UNKNOWN_RESULT, True)
 
 
-def test_결과_불명_안내는_원장_경로와_지우는_방법을_알려_준다(env):
+def test_결과_불명_안내는_원장_경로와_고치는_방법을_알려_준다(env):
     outcomes = env.run(FakeSession({0: TimeoutError("read timed out")}))
     error = outcomes[0].error
-    for needle in (str(env.ledger), "지우고", "다시 실행", "페이스북", schedule.CONFIRMED_BY_HAND):
+    for needle in (str(env.ledger), '"0" 줄', "지운 뒤", "다시 실행", "페이스북", schedule.CONFIRMED_BY_HAND):
         assert needle in error
+
+
+def test_표시를_적지_못하면_요청을_보내지_않고_멈춘다(env, monkeypatch):
+    # 쓰기 순서: 1 시작 점검, 2 첫 건의 표시. 표시를 적지 못한 채 요청을 보내면 신호로 끝났을 때 흔적이 없다.
+    real_replace = os.replace
+    writes = []
+
+    def disk_full_on_second_write(src, dst):
+        writes.append(dst)
+        if len(writes) == 2:
+            raise OSError(28, "No space left on device")
+        real_replace(src, dst)
+
+    monkeypatch.setattr(schedule.os, "replace", disk_full_on_second_write)
+    session = FakeSession()
+    with pytest.raises(schedule.LedgerError) as info:
+        env.run(session)
+    assert session.calls == []
+    assert "올리기 전에" in str(info.value) and "이 게시물은 아직 올리지 않았습니다" in str(info.value)
+    assert env.saved() == {}
+
+
+def test_거절된_건의_표시를_지우지_못하면_멈추고_지울_줄을_알린다(env, monkeypatch):
+    # 쓰기 순서: 1 시작 점검, 2 첫 건의 표시, 3 거절 뒤 표시 지우기. 표시가 남은 채로는 그 건이 건너뛰어지므로 조용히 넘어가면 안 된다.
+    real_replace = os.replace
+    writes = []
+
+    def fail_on_third_write(src, dst):
+        writes.append(dst)
+        if len(writes) == 3:
+            raise OSError(28, "No space left on device")
+        real_replace(src, dst)
+
+    monkeypatch.setattr(schedule.os, "replace", fail_on_third_write)
+    session = FakeSession({0: FakeResponse(400, {"error": {"message": "Invalid parameter", "code": 100}})})
+    with pytest.raises(schedule.LedgerError) as info:
+        env.run(session)
+    assert len(session.calls) == 1
+    assert '"0" 줄을 지운 뒤 다시 실행하세요' in str(info.value)
+    assert env.saved() == {"0": UNKNOWN}  # 표시가 남아 있다: 건너뛰는 쪽(안전한 쪽)으로 어긋난다
 
 
 # ── 요청이 나가지 않은 실패 ──────────────────────────────────────────────────
@@ -487,7 +750,7 @@ def test_예약창_밖인_게시물은_호출하지_않고_실패로_기록된�
     assert (outcomes[2].ok, outcomes[2].post_id) == (False, None)
     assert has_hangul(outcomes[2].error) and needle in outcomes[2].error
     assert [o.ok for o in outcomes] == [True, True, False, True, True, True]
-    assert "2" not in env.saved()  # 요청이 나가지 않았으므로 원장에 적지 않는다
+    assert "2" not in env.saved()  # 요청이 나가지 않았으므로 원장에 적지 않는다(요청 직전 표시도 창 검사를 통과한 뒤에만 적는다)
 
 
 def test_예약창_밖이던_건은_시각을_고치고_다시_돌리면_올라간다(env):
@@ -513,6 +776,24 @@ def test_이미지_파일이_없으면_호출하지_않고_실패로_기록되�
     again = env.run(retry)
     assert retry.uploaded == [env.post(1).image_file]
     assert all(o.ok for o in again)
+
+
+def test_요청이_나가지_않는_건은_원장의_어떤_판에도_표시가_적히지_않는다(env, monkeypatch):
+    # 표시를 창·이미지 검사 앞에 적으면, 나중에 지우더라도 그 사이에 신호로 끝났을 때 안 나간 건이 "결과 불명"으로 남는다.
+    # 최종 내용만 보면 그 순간을 못 보므로, 원장을 바꿔 끼우는 매 순간의 내용을 모아 본다.
+    plan = with_publish_at(env.plan, 1, NOW - timedelta(hours=1))
+    (env.images / env.post(3).image_file).unlink()
+    versions = []
+    real_replace = os.replace
+
+    def replace(src, dst):
+        versions.append(set(json.loads(Path(src).read_text(encoding="utf-8"))))
+        real_replace(src, dst)
+
+    monkeypatch.setattr(schedule.os, "replace", replace)
+    outcomes = env.run(FakeSession(), plan=plan)
+    assert [o.ok for o in outcomes] == [True, False, True, False, True, True]
+    assert versions and all("1" not in keys and "3" not in keys for keys in versions)
 
 
 # ── 예약 창 ──────────────────────────────────────────────────────────────────
@@ -542,13 +823,28 @@ def test_가까운_쪽_거절_메시지_전문(env):
     assert outcomes[0].error == NEAR_MESSAGE
 
 
-@pytest.mark.parametrize("minutes", [0, 9, 12], ids=["지금과같음", "Meta의10분미만", "여유구간"])
-def test_가까운_예약은_Meta의_10분_안이든_여유_구간이든_같은_메시지로_15분_뒤를_알린다(env, minutes):
-    # graph의 "10분 뒤(12:10) 이후로만 가능" 메시지로 새면 운영자가 12:10으로 고쳤다가 한 번 더 거절당한다.
+PAST_MESSAGE = (
+    "예약 시각 2026-10-31T11:00:00+09:00은(는) 이미 지난 시각입니다. 지금은 2026-10-31T12:00:00+09:00이고, 예약은 지금부터 "
+    "15분 뒤인 2026-10-31T12:15:00+09:00 이후로만 받습니다. Facebook은 지금부터 10분 뒤부터 받지만, 올리는 데 시간이 걸려 "
+    "요청이 도착할 때쯤 그보다 가까워지면 거절하므로 5분을 더 띄워 둡니다. 예약 시각을 늦추세요."
+)
+
+
+def test_이미_지난_시각_거절_메시지_전문(env):
+    # 지난 시각도 가까운 쪽과 같은 하한(지금부터 15분)을 말한다. graph의 "10분 뒤 이후로만 가능" 메시지가 새면 운영자가 그 말대로
+    # 12:10으로 고쳤다가 우리 하한에 한 번 더 거절당한다.
+    outcomes = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, NOW - timedelta(hours=1)))
+    assert outcomes[0].error == PAST_MESSAGE
+
+
+@pytest.mark.parametrize("minutes", [-60, 0, 9, 12], ids=["지난시각", "지금과같음", "Meta의10분미만", "여유구간"])
+def test_지난_시각이든_가깝든_여유_구간이든_같은_하한_15분_뒤를_알린다(env, minutes):
     outcomes = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, NOW + timedelta(minutes=minutes)))
     error = outcomes[0].error
     assert f"지금은 {NOW.isoformat()}이고" in error
     assert f"15분 뒤인 {(NOW + timedelta(minutes=15)).isoformat()} 이후로만 받습니다" in error
+    assert "이후로만 가능" not in error  # graph의 10분 메시지가 아니다
+    assert (NOW + timedelta(minutes=10)).isoformat() not in error  # Meta의 경계를 허용 시각으로 말하지 않는다
 
 
 @pytest.mark.parametrize(
@@ -696,7 +992,9 @@ def test_진짜_잠금이_걸려_있으면_두_번째_실행은_멈추고_풀리
 def test_잠금은_예외로_끝나도_풀린다(env, lock_path):
     with pytest.raises(RuntimeError) as info:
         env.run(FakeSession({1: RuntimeError("예상하지 못한 오류")}))
-    # `info`가 트레이스백(과 그 프레임의 파일 핸들)을 붙들고 있다: finally에서 풀지 않으면 여기서 잠금이 잡히지 않는다.
+    # 이 시험이 지키는 것은 "잠금이 실행보다 오래 살지 않는다"까지다(예: 핸들을 모듈 전역에 붙들어 두는 구현은 여기서 걸린다).
+    # `finally`의 명시적 해제는 옳지만, 그것을 지워도 CPython이 참조가 사라질 때 핸들을 닫아 잠금을 풀어 주므로 어떤 시험도
+    # 그 둘을 가릴 수 없다(등가 변이). 이 시험이 그것을 증명한다고 주장하지 않는다.
     with open(lock_path, "a") as probe:
         fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
     assert info.value is not None
@@ -746,7 +1044,10 @@ def test_원장을_둘_폴더가_없으면_첫_요청_전에_멈춘다(env, tmp_
     with pytest.raises(schedule.LedgerError) as info:
         schedule.run(env.plan, [], env.images, missing, token=SENTINEL, session=session, now=NOW, dry_run=False)
     assert session.calls == []
-    assert str(missing) in str(info.value) and "시작하지 않았습니다" in str(info.value)
+    message = str(info.value)
+    # 운영자에게 진짜 문제는 "폴더가 없다"이다. `잠금 파일`은 설명 없는 구현 용어이므로 문장에 나오지 않는다.
+    assert message.startswith(f"원장을 둘 폴더 {missing.parent}을(를) 쓸 수 없어 예약을 시작하지 않았습니다")
+    assert "잠금" not in message
     assert not missing.parent.exists()
 
 
@@ -764,10 +1065,61 @@ def test_원장에_적지_못하면_그_자리에서_멈추고_만들어진_사�
         env.run(session)
     message = str(info.value)
     assert len(session.calls) == 2  # 기록할 수 없는 예약을 더 만들지 않는다
-    assert env.id_of(1) in message and "1" in message  # 사람이 원장에 손으로 적을 수 있게
-    assert "두 번" in message  # 적지 않고 다시 돌리면 어떻게 되는지
-    assert env.saved() == {"0": env.id_of(0)}  # 쓰다 끊겨도 앞 원장은 온전하다(임시 파일에 쓴 뒤 바꿔 끼운다)
+    # 사람이 원장의 그 줄을 바꿔 적을 수 있게 줄 전체를 준다
+    assert f'"1": {{"결과": "{env.id_of(1)}", "이미지": "{env.post(1).image_file}"}}' in message
+    assert "두 번 올라가지는 않습니다" in message  # 바꾸지 않아도 중복은 생기지 않는다(표시가 남아 있으므로)
+    assert env.saved() == {"0": env.id_of(0), "1": UNKNOWN}  # 쓰다 끊겨도 앞 원장은 온전하다: 요청 직전의 표시가 그대로 남는다
     assert not [p for p in env.ledger.parent.iterdir() if p.name.endswith(".tmp")]  # 임시 파일을 남기지 않는다
+
+
+def test_원장은_임시_파일을_디스크에_내린_뒤_바꿔_끼우고_폴더도_내린다(env, monkeypatch):
+    # 파이썬 코드가 못 도는 종료(전원 차단 포함) 뒤에도 원장은 앞 내용이거나 새 내용 전체여야 한다. 쓸 때마다 이 순서를 지킨다.
+    events = []
+    real_replace = os.replace
+
+    def sync(fd):
+        if stat.S_ISDIR(os.fstat(fd).st_mode):
+            events.append("폴더")
+            return
+        # 내용이 이미 운영체제에 넘어가 있어야(flush) 디스크에 내리는 일이 뜻을 가진다. 버퍼에 남은 채 내리면 아무것도 내리지 못한다.
+        assert env.ledger.with_name("scheduled.json.tmp").read_bytes().startswith(b"{")
+        events.append("파일")
+
+    def replace(src, dst):
+        events.append("바꿔끼움")
+        real_replace(src, dst)
+
+    monkeypatch.setattr(schedule, "_sync", sync)
+    monkeypatch.setattr(schedule.os, "replace", replace)
+    env.run(FakeSession())
+    writes = 1 + 2 * 6  # 시작 점검 1번 + 게시물마다 (요청 직전 표시, 결과) 2번
+    assert events == ["파일", "바꿔끼움", "폴더"] * writes
+
+
+@pytest.mark.parametrize(
+    ("has_full", "full_fails", "expected"),
+    [
+        pytest.param(True, False, [("fcntl", 7, 51)], id="F_FULLFSYNC가_되면_그것만"),
+        pytest.param(True, True, [("fcntl", 7, 51), ("fsync", 7)], id="F_FULLFSYNC가_안_되면_fsync로_물러남"),
+        pytest.param(False, False, [("fsync", 7)], id="F_FULLFSYNC가_없으면_fsync"),
+    ],
+)
+def test_디스크에_내릴_때_macOS의_F_FULLFSYNC를_먼저_쓰고_안_되면_fsync로_물러난다(monkeypatch, has_full, full_fails, expected):
+    calls = []
+
+    def fake_fcntl(fd, command, *args):
+        calls.append(("fcntl", fd, command))
+        if full_fails:
+            raise OSError(errno.ENOTSUP, "Operation not supported")
+
+    monkeypatch.setattr(schedule.os, "fsync", lambda fd: calls.append(("fsync", fd)))
+    if has_full:
+        monkeypatch.setattr(schedule.fcntl, "F_FULLFSYNC", 51, raising=False)
+        monkeypatch.setattr(schedule.fcntl, "fcntl", fake_fcntl)
+    else:
+        monkeypatch.delattr(schedule.fcntl, "F_FULLFSYNC", raising=False)
+    schedule._sync(7)
+    assert calls == expected
 
 
 # ── 토큰 ─────────────────────────────────────────────────────────────────────
