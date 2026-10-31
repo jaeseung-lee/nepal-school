@@ -31,6 +31,16 @@ LANGUAGE_OFFSET_MINUTES: dict[str, int] = {lang: 0 for lang in LANGUAGES}
 
 # 업로드 전에 거르는 이미지 최대 용량.
 MAX_IMAGE_BYTES = 8 * 1024 * 1024
+# 올릴 수 있는 이미지 확장자(소문자). JPEG와 PNG만 받는다.
+ALLOWED_IMAGE_SUFFIXES: tuple[str, ...] = (".jpg", ".jpeg", ".png")
+
+# 이미지 프롬프트에 반드시 들어가야 하는 지시 문구. 사업주가 ChatGPT 이미지 도구에 그대로 붙여넣는
+# 프롬프트이므로 영어다. 검증은 대소문자와 공백 수를 무시한 부분 문자열 일치로 찾는다.
+# (짧은 "no text"로 두면 "no texture"에도 걸리므로 문구 전체를 요구한다.)
+# 글자: 이미지 모델이 미얀마 문자·데바나가리를 깨뜨려 그리므로 글자가 없는 그림만 받는다.
+IMAGE_PROMPT_NO_TEXT = "no text, no letters, no logos"
+# 삽화: AI 그림이 실존 인물·특정 캠퍼스·회사 시설의 실제 기록 사진으로 읽히면 안 된다.
+IMAGE_PROMPT_NO_REAL_SUBJECTS = "no real people, no real campuses, no company facilities"
 
 TOKEN_ENV_NAME = "FB_PAGE_TOKEN"
 ENV_PATH = ROOT / ".env"
