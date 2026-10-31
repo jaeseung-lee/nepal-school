@@ -594,6 +594,19 @@ def test_check_token은_토큰이_무효면_종료코드_2(env, 토큰, capsys):
     assert has_hangul(shown(capsys))
 
 
+def test_env의_따옴표가_열린_채_끊겼으면_종료코드_2와_한국어_안내(env, capsys):
+    """추측해서 따옴표를 떼면 망가진 토큰을 그대로 보내게 되고, 돌아오는 거절은 「토큰이 유효하지 않거나
+    만료되었습니다」로 보인다 — 멀쩡한 토큰을 계속 재발급하는 고리다. 그래서 멈추고, 멈춘 이유가 터미널까지
+    한국어로 닿는지 본다(끊긴 값은 어디에도 찍히지 않는다)."""
+    config.ENV_PATH.write_text('FB_PAGE_TOKEN="EAA-unclosed-quote\n', encoding="utf-8")
+
+    assert env.run("check-token", "--month", MONTH, session=page_session()) == 2
+    text = shown(capsys)
+    assert "따옴표" in text
+    assert "EAA-unclosed-quote" not in text and "unclosed" not in text
+    assert config.TOKEN_ENV_NAME in text and has_hangul(text)
+
+
 def test_FB_PAGE_TOKEN이_없으면_종료코드_2와_한국어_안내(env, capsys):
     assert env.run("check-token", "--month", MONTH, session=page_session()) == 2
     text = shown(capsys)

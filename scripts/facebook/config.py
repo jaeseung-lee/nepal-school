@@ -77,29 +77,47 @@ def month_dir(month: str) -> Path:
 
 
 # 따옴표로 시작하는 값: 여는 따옴표부터 **처음 나오는 같은 따옴표**까지가 값이다.
-_QUOTED_VALUE = re.compile(r"""^(?P<quote>["'])(?P<value>[^"']*)(?P=quote)""")
+_QUOTED_VALUE = re.compile(r"""^(?P<quote>["'])(?P<value>.*?)(?P=quote)""")
+# 여는 따옴표만 있는지 보는 짝. 짝이 되는 닫는 따옴표가 없으면 값을 추측하지 않고 멈춘다.
+_OPENING_QUOTE = re.compile(r"""^["']""")
 # 따옴표로 시작하지 않는 값의 줄 끝 주석: **첫 `#`부터** 끝까지. 앞의 공백을 요구하지 않는다 —
 # `FB_PAGE_TOKEN=토큰#메모`처럼 붙여 쓴 `#`를 놓치면 그 글자가 토큰에 섞여 들어간다.
 _INLINE_COMMENT = re.compile(r"#.*$")
 
 
-def _parse_env_value(raw: str) -> str:
+def _parse_env_value(raw: str, *, path: Path, name: str) -> str:
     """`.env` 한 줄에서 `=` 뒤를 값으로 읽는다.
 
-    규칙은 둘이고 **순서가 중요하다.**
+    규칙은 셋이고 **순서가 중요하다.**
 
-    - 값이 따옴표로 시작하면 **닫는 따옴표까지가 값**이고 그 뒤는 버린다. 따옴표 안의 `#`는 값의 일부다.
+    - 값이 따옴표로 시작하고 **짝이 되는 닫는 따옴표가 있으면** 거기까지가 값이고 그 뒤는 버린다.
+      따옴표 안의 `#`는 값의 일부다.
+    - 값이 따옴표로 시작하는데 **닫는 따옴표가 없으면 추측하지 않고 멈춘다**(`RuntimeError`).
     - 따옴표로 시작하지 않으면 **첫 `#`부터 버린다**(앞에 공백이 있든 없든 주석이다).
 
     따옴표를 벗기는 일이 주석을 떼는 일보다 **먼저** 와야 한다. 거꾸로 하면 `TOKEN="값" # 메모`에서 양 끝이
-    `"`와 `모`라 따옴표 짝이 아니라고 판정하고, 주석만 뗀 뒤 따옴표가 값에 남는다. 그 값으로 Graph API를
-    부르면 Facebook이 거절하고, 운영자는 그것을 「토큰이 만료되었다」로 읽어 멀쩡한 토큰을 다시 발급하는
-    고리에 갇힌다(설치 직후 첫 10분에 일어난다). 두 경우 모두 `tests/test_config.py`가 못박는다.
+    `"`와 `모`라 따옴표 짝이 아니라고 판정하고, 주석만 뗀 뒤 따옴표가 값에 남는다.
+
+    **추측해서 고치지 않는 까닭:** 따옴표가 섞인 값으로 Graph API를 부르면 Facebook이 거절하고, 이 도구는
+    그 거절을 「토큰이 유효하지 않거나 만료되었습니다」로 번역해 보여 준다. 운영자가 보는 그림은 "방금 발급한
+    토큰이 벌써 죽었다"이고, 그래서 멀쩡한 토큰을 계속 재발급하는 고리에 갇힌다(설치 직후 첫 10분에
+    일어난다). 조용히 추측하는 쪽은 그 고리를 그대로 남기므로, `.env` 한 줄이 잘못됐다고 말하고 멈춘다.
+
+    **잘린 값은 메시지에 넣지 않는다** — 따옴표가 열린 채 끊긴 값이라도 토큰 조각이다. 세 경우 모두
+    `tests/test_config.py`가 못박는다.
     """
     raw = raw.strip()
     quoted = _QUOTED_VALUE.match(raw)
     if quoted is not None:
         return quoted.group("value")
+    if _OPENING_QUOTE.match(raw):
+        raise RuntimeError(
+            f"{path}의 {name} 값이 따옴표로 시작하는데 짝이 되는 닫는 따옴표가 없습니다. 어디까지가 토큰인지 "
+            f"추측하지 않고 멈춥니다 — 따옴표가 섞인 값을 보내면 Facebook이 거절하고, 그 거절은 "
+            f"「토큰이 유효하지 않거나 만료되었습니다」로 보여서 멀쩡한 토큰을 몇 번이고 다시 발급하게 됩니다. "
+            f"그 줄의 따옴표를 짝이 맞게 고치거나 따옴표를 모두 지운 뒤 다시 실행하세요. "
+            f"가장 안전한 모양은 따옴표도 메모도 없는 한 줄입니다: `{name}=<페이지 토큰>`"
+        )
     return _INLINE_COMMENT.sub("", raw).strip()
 
 
@@ -129,7 +147,7 @@ def _read_env_file(path: Path, name: str) -> str:
             line = line[len("export "):]
         key, sep, raw = line.partition("=")
         if sep and key.strip() == name:
-            value = _parse_env_value(raw)  # 같은 키가 여러 번이면 마지막 줄이 이긴다
+            value = _parse_env_value(raw, path=path, name=name)  # 같은 키가 여러 번이면 마지막 줄이 이긴다
     return value
 
 

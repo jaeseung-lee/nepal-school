@@ -106,11 +106,57 @@ def test_load_token은_dotenv의_일반적인_표기를_해석한다(isolated_to
     assert config.load_token() == "from-file"
 
 
+@pytest.mark.parametrize("line", [
+    'FB_PAGE_TOKEN="EAA-unclosed-quote',
+    "FB_PAGE_TOKEN='EAA-unclosed-quote",
+    'FB_PAGE_TOKEN="EAA-unclosed-quote # 만료일 확인',
+    "FB_PAGE_TOKEN=\"EAA-unclosed-quote'",
+], ids=["쌍따옴표", "홑따옴표", "주석까지", "짝이안맞음"])
+def test_load_token은_닫는_따옴표가_없으면_추측하지_않고_멈춘다(isolated_token, line):
+    """여는 따옴표만 있고 닫는 따옴표가 없으면 **값을 추측하지 않고 멈춘다.**
+
+    추측해서 따옴표를 떼면 망가진 토큰을 그대로 Facebook에 보내게 되고, 돌아오는 거절은
+    「토큰이 유효하지 않거나 만료되었습니다」로 보인다 — 멀쩡한 토큰을 계속 재발급하는 고리,
+    따옴표+메모와 공백 없는 `#`를 고치면서 닫은 바로 그 함정이다. 따옴표를 남겨도 결과는 같다.
+
+    **잘린 값은 메시지에 넣지 않는다.** 따옴표가 열린 채 끊긴 값이라도 토큰 조각이다.
+
+    짝이 맞는 따옴표가 지금처럼 그대로 동작하는 것은 위의
+    `test_load_token은_dotenv의_일반적인_표기를_해석한다`(따옴표 네 경우)와
+    `test_load_token은_따옴표_안의_샵은_값으로_읽는다`가 지킨다.
+    """
+    isolated_token.write_text(f"# 페이스북\n\n{line}\n", encoding="utf-8")
+
+    with pytest.raises(RuntimeError) as info:
+        config.load_token()
+
+    message = str(info.value)
+    assert "EAA-unclosed-quote" not in message  # 잘린 값도 토큰 조각이다
+    assert "unclosed" not in message
+    assert str(isolated_token) in message and config.TOKEN_ENV_NAME in message
+    assert "따옴표" in message  # 무엇을 고쳐야 하는지
+    assert any("가" <= char <= "힣" for char in message)  # 영어 오류 문구로 새지 않는다
+
+
+def test_load_token은_다른_키의_따옴표가_열려_있어도_멈추지_않는다(isolated_token):
+    """멈추는 것은 **토큰 줄**에서만이다. `.env`의 다른 줄까지 들여다보면, 토큰과 무관한 메모 한 줄 때문에
+    도구 전체가 서는 길이 생긴다."""
+    isolated_token.write_text('OTHER_KEY="열린 따옴표\nFB_PAGE_TOKEN=EAA-fine\n', encoding="utf-8")
+    assert config.load_token() == "EAA-fine"
+
+
 def test_load_token은_따옴표_안의_샵은_값으로_읽는다(isolated_token):
     """주석을 떼는 규칙(첫 `#`부터 버림)이 따옴표 안까지 들어가면, `#`가 든 토큰이 조용히 잘린다.
     그래서 따옴표로 시작하는 값은 **닫는 따옴표까지가 값**이고 그 안의 `#`는 손대지 않는다."""
     isolated_token.write_text('FB_PAGE_TOKEN="from#file" # 메모\n', encoding="utf-8")
     assert config.load_token() == "from#file"
+
+
+def test_load_token은_쌍따옴표_안의_홑따옴표도_값으로_읽는다(isolated_token):
+    """"닫는 따옴표"는 **여는 것과 같은 종류**의 첫 따옴표다. 다른 종류의 따옴표를 값의 끝으로 보면
+    짝이 맞는 줄을 "닫는 따옴표가 없다"고 판정해 멈추게 되고, 그것은 고칠 것이 없는 거짓 멈춤이다."""
+    isolated_token.write_text("FB_PAGE_TOKEN=\"from'file\" # 메모\n", encoding="utf-8")
+    assert config.load_token() == "from'file"
 
 
 def test_load_token은_같은_키가_여러_번이면_마지막_줄을_쓴다(isolated_token):
