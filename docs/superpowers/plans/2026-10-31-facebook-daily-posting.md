@@ -515,6 +515,66 @@ git commit -m "feat(facebook): 한국어 대조 검토 화면 생성 추가"
 
 ---
 
+### Task 7b: 되번역에 한국어 금지 표현 목록을 걸기
+
+이 계획에서 가장 약한 고리는 `banned-phrases.json`의 **베트남어·미얀마어·네팔어 목록이 AI가 작성했고 원어민 검수를 받지 않았다**는 점이다(README에 적혀 있다). 반대로 **한국어 목록은 사람이 확인한 유일한 사전**이다.
+
+되번역은 현지어 본문을 한국어로 되살린 것이다. 그래서 **되번역에 한국어 금지 목록을 걸면, 신뢰할 수 있는 사전 하나로 세 현지어 본문을 기계적으로 검사할 수 있다.** 지금은 "없는 약속이 현지어로 나가는 것"이라는 안티골에 기계 검사가 **하나도** 없다 — Task 6이 실측했듯 약속 문장 추가는 유사도 0.09~0.12로 의역 잡음과 구분되지 않고, 숫자도 바뀌지 않는다. 컨트롤러가 픽스처로 뽑아 본 샘플에서 `저희가 입학을 도와드립니다.`를 더한 게시물은 **finding이 하나도 나지 않았다.**
+
+**Files:**
+- Modify: `scripts/facebook/validate_copy.py`
+- Modify: `scripts/facebook/tests/test_validate_copy.py`
+
+**Interfaces:**
+- Consumes: `plan_model.Plan`, `findings.Finding`, `validate_copy.load_banned_phrases`
+- Produces:
+  - `validate_copy.validate_back_copy(plan: Plan, back: dict[int, str], banned: dict) -> list[Finding]` — 되번역에 한국어 금지 문구가 있으면 `역번역금지표현` (error)
+
+`모든 게시물` 묶음의 `ko` 문구는 언제나 걸고, `대학명이 나오는 게시물` 묶음의 `ko` 문구는 `post.university_names`가 비어 있지 않을 때만 건다 — `validate_copy`가 `source_ko`·`body_local`에 쓰는 것과 같은 의미다. 압축 비교도 같은 도우미(`_compact`)를 쓴다. 비었거나 없는 되번역은 보지 않는다(`역번역빈칸`·`역번역누락`이 이미 보고한다).
+
+error인 이유: 되번역에 금지 문구가 보이면 현지어 본문이 실제로 그렇게 말하거나(발행하면 안 된다) 되번역이 틀렸다(고쳐야 한다). 어느 쪽이든 그대로 나갈 수 없다.
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_되번역에_한국어_금지표현이_있으면_오류():
+    # back_ko에 "합격을 보장" → code == "역번역금지표현", severity == "error"
+def test_대학명_있는_게시물용_금지표현은_university_names가_비면_넘어간다():
+def test_되번역이_비었거나_없으면_금지표현을_보지_않는다():
+def test_현지어_목록이_놓친_표현도_한국어_목록이_잡는다():
+    # body_local은 validate_copy를 통과하는데 그 되번역에서 ko 목록이 잡는 경우.
+    # 이것이 이 검사가 존재하는 이유다 — 미검수 현지어 목록의 구멍을 검수된 한국어 목록이 받는다
+def test_금지표현_판정은_validate_copy와_같은_압축_규칙을_쓴다():
+    # 공백·문장부호가 끼어도 같게 잡는다
+def test_메시지가_걸린_문구와_게시물_번호를_댄다():
+def test_여러_게시물의_금지표현을_한_번에_모은다():
+def test_픽스처의_충실한_되번역은_findings가_비어_있다():
+    # 실제 glossary의 ko CTA가 들어 있어도 걸리지 않음을 고정한다
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
+Expected: FAIL — `ImportError: cannot import name 'validate_back_copy'`
+
+- [ ] **Step 3: Implement `validate_back_copy` in `scripts/facebook/validate_copy.py`**
+
+기존 금지 문구 검사의 비공개 도우미를 그대로 쓴다. 새 압축·대조 규칙을 따로 만들지 않는다 — 두 경로가 같은 사전을 다르게 읽으면 한쪽이 통과시키는 것을 다른 쪽이 막는 일이 생긴다.
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
+Expected: PASS (8 passed, 기존 테스트 전부 유지)
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/facebook
+git commit -m "feat(facebook): 되번역에 검수된 한국어 금지 목록을 걸어 현지어 본문을 검사한다"
+```
+
+---
+
 ### Task 8: Graph API 클라이언트와 토큰 점검
 
 네트워크 호출이 있는 유일한 모듈이다. 테스트는 `requests.Session`을 가짜 객체로 주입해 돌린다. 실제 호출은 하지 않는다.
