@@ -1,6 +1,6 @@
 """월간 플랜의 구조 검증.
 
-`validate_structure`는 게시물 수·언어 로테이션·게시일(연속성, 플랜의 달)·이미지 파일(경로,
+`validate_structure`는 게시물 수·언어 로테이션·소재 배치·게시일(연속성, 플랜의 달)·이미지 파일(경로,
 확장자, 존재, 크기, 중복)·이미지 프롬프트의 필수 지시 문구를, `validate_facts`는 게시물이 쓰는
 사실의 존재와 **게시일 기준** 유효기한을 본다. 둘 다 멈추지 않고 발견한 문제를 전부 모아
 `Finding` 목록으로 돌려준다. 호출하는 쪽(CLI)이 오류가 하나라도 있으면 다음 단계로 넘기지 않는다.
@@ -9,7 +9,7 @@
 파일은 `stat`만 한다 — 내용을 열어 JPEG/PNG 형식인지까지는 확인하지 않는다.
 
 결과 순서는 항상 같다. 게시물에 매이지 않는 항목(`post_index`가 `None`)이 먼저 오고, 그다음
-게시물 번호 오름차순이며, 같은 게시물 안에서는 검사한 순서(언어 → 월·날짜 → 이미지 → 프롬프트)다.
+게시물 번호 오름차순이며, 같은 게시물 안에서는 검사한 순서(언어 → 소재 배치 → 월·날짜 → 이미지 → 프롬프트)다.
 """
 
 from __future__ import annotations
@@ -48,6 +48,7 @@ def validate_structure(plan: Plan, images_dir: Path) -> list[Finding]:
     findings: list[Finding] = []
     findings += _check_count(plan)
     findings += _check_rotation(plan)
+    findings += _check_adjacency(plan)
     findings += _check_dates(plan)
     findings += _check_images(plan, images_dir)
     findings += _check_prompts(plan)
@@ -116,6 +117,27 @@ def _check_rotation(plan: Plan) -> list[Finding]:
                 "언어순서", index,
                 f"소재 '{topic.topic_id}'의 언어가 {expected} 순서와 다릅니다 (현재: {shown}).",
             ))
+    return findings
+
+
+def _check_adjacency(plan: Plan) -> list[Finding]:
+    """한 소재의 게시물이 `plan.posts`에서 이어 붙어 있는지(번호가 n, n+1, n+2…) 본다.
+
+    게시일이 게시물마다 하루씩 이어지는지는 `_check_dates`가 전체 목록에서 보므로, 번호가 이어
+    붙어 있으면 그 소재의 게시물은 연속한 날짜에 놓인다. 날짜를 여기서 다시 계산하지 않는다.
+    언어가 맞는지는 `_check_rotation`의 몫이라 여기서는 보지 않는다(서로 독립이다).
+    """
+    findings: list[Finding] = []
+    for topic in plan.topics:
+        indices = [post.index for post in plan.posts_for(topic.topic_id)]
+        if all(later == earlier + 1 for earlier, later in zip(indices, indices[1:])):
+            continue  # 게시물이 0건이거나 1건이어도 여기서는 이어 붙은 것으로 본다
+        findings.append(_error(
+            "소재분산", indices[0],
+            f"소재 '{topic.topic_id}'의 게시물이 이어 붙어 있지 않습니다 (게시물 번호: "
+            f"{', '.join(map(str, indices))}). 한 소재의 게시물은 연속한 번호, 곧 하루에 한 건씩 "
+            f"연속한 날짜에 놓여야 합니다.",
+        ))
     return findings
 
 

@@ -73,6 +73,16 @@ def _without(plan: Plan, index: int) -> Plan:
     return dataclasses.replace(plan, posts=tuple(dataclasses.replace(p, index=i) for i, p in enumerate(kept)))
 
 
+def _arranged(plan: Plan, order: list[int]) -> Plan:
+    """`order`의 순서대로 게시물을 다시 늘어놓는다. 번호와 게시일은 자리(슬롯)를 따라가므로
+    날짜는 계속 하루씩 이어지고, 달라지는 것은 어느 소재의 어느 언어가 어느 자리에 있느냐뿐이다."""
+    posts = tuple(
+        dataclasses.replace(plan.posts[old], index=slot, publish_at=plan.posts[slot].publish_at)
+        for slot, old in enumerate(order)
+    )
+    return dataclasses.replace(plan, posts=posts)
+
+
 def _only(plan: Plan, index: int, **changes) -> Plan:
     """`index`번 게시물 하나만 남긴 플랜. 사실 검증처럼 게시물 하나로 충분한 테스트에 쓴다."""
     post = dataclasses.replace(plan.posts[index], **changes)
@@ -141,6 +151,7 @@ def test_소재마다_세_언어가_vi_my_ne_순서로_있어야_한다(tmp_path
     assert missing[0].severity == "error"
     assert "visa-d2" in missing[0].message and "my" in missing[0].message
     assert "tuition-kijeon" not in missing[0].message
+    assert _at(findings, "소재분산") == []  # 남은 게시물은 이어 붙어 있다 — 언어 문제와는 별개다
 
 
 def test_같은_언어가_겹치면_빠진_언어를_알려준다(tmp_path):
@@ -185,6 +196,46 @@ def test_게시물이_하나도_없는_소재는_post_index_없이_보고한다(
 
     assert _pairs(findings) == [(None, "언어누락")]
     assert "tuition-kijeon" in findings[0].message
+
+
+def test_소재의_세_게시물이_이어붙어_있지_않으면_오류(tmp_path):
+    plan, images = _setup(tmp_path)
+    # A-vi, B-vi, A-my, B-my, A-ne, B-ne — 소재별 언어는 맞고 날짜도 하루씩이지만 소재가 흩어져 있다.
+    plan = _arranged(plan, [0, 3, 1, 4, 2, 5])
+    assert [(p.topic_id, p.language) for p in plan.posts] == [
+        ("visa-d2", "vi"), ("tuition-kijeon", "vi"), ("visa-d2", "my"),
+        ("tuition-kijeon", "my"), ("visa-d2", "ne"), ("tuition-kijeon", "ne"),
+    ]
+
+    findings = validate_structure(plan, images)
+
+    assert _pairs(findings) == [(0, "소재분산"), (1, "소재분산")]  # 각 소재의 첫 게시물에 붙는다
+    assert findings[0].severity == "error"
+    assert "visa-d2" in findings[0].message and "tuition-kijeon" in findings[1].message
+    assert "0, 2, 4" in findings[0].message  # 실제 게시물 번호를 보여 준다
+
+
+def test_한_소재만_흩어지면_그_소재만_걸린다(tmp_path):
+    plan, images = _setup(tmp_path)
+    # A-vi, A-my, B-vi, B-my, B-ne, A-ne — A는 0,1,5로 흩어지고 B는 2,3,4로 이어진다
+    plan = _arranged(plan, [0, 1, 3, 4, 5, 2])
+
+    findings = validate_structure(plan, images)
+
+    assert _pairs(findings) == [(0, "소재분산")]
+    assert "visa-d2" in findings[0].message
+
+
+def test_소재분산은_언어_오류와_따로_판정한다(tmp_path):
+    plan, images = _setup(tmp_path)
+    # visa-d2의 my를 빼고 그 자리에 tuition-kijeon 게시물이 끼어든다: A-vi, B-vi, A-ne, B-my, B-ne
+    plan = _arranged(_without(plan, 1), [0, 2, 1, 3, 4])
+
+    findings = validate_structure(plan, images)
+
+    assert _at(findings, "언어누락") == [0]  # visa-d2: vi, ne — my가 없다
+    assert _at(findings, "소재분산") == [0, 1]  # visa-d2(0,2)와 tuition-kijeon(1,3,4) 모두 흩어짐
+    assert _at(findings, "언어순서") == []
 
 
 @pytest.mark.parametrize(

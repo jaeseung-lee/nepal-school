@@ -37,6 +37,10 @@ def test_month_dir은_YYYY_MM이_아니면_거부한다(month):
         config.month_dir(month)
 
 
+def test_이미지_용량_상한이_8MiB다():
+    assert config.MAX_IMAGE_BYTES == 8 * 1024 * 1024
+
+
 def test_언어별_오프셋은_모든_언어를_기본_0으로_가진다():
     assert config.LANGUAGE_OFFSET_MINUTES == {lang: 0 for lang in config.LANGUAGES}
 
