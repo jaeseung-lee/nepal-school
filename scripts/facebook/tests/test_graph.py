@@ -15,6 +15,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone, tzinfo
 from pathlib import Path
+from urllib.parse import quote, quote_plus
 
 import pytest
 
@@ -89,17 +90,16 @@ class FakeSession:
         return outcome
 
 
-def permissions_body(granted=ALL_PERMISSIONS, **other_status):
-    data = [{"permission": name, "status": "granted"} for name in granted]
-    data += [{"permission": name, "status": status} for name, status in other_status.items()]
-    return {"data": data}
+def debug_body(scopes=ALL_PERMISSIONS, **data):
+    """`GET /debug_token` 성공 응답의 모양: `{"data": {"is_valid": ..., "scopes": [...], ...}}`."""
+    return {"data": {"app_id": "111", "type": "PAGE", "is_valid": True, "scopes": list(scopes), **data}}
 
 
-def token_session(*, name="정우인재개발원", permissions=None, page=None) -> FakeSession:
-    """check_token이 부르는 두 곳(페이지 이름, 권한 목록)에 답하는 가짜 세션."""
+def token_session(*, name="정우인재개발원", returned_id=PAGE, page=None, debug=None) -> FakeSession:
+    """check_token이 부르는 두 곳(페이지 정보 `/{page_id}`, 권한 점검 `/debug_token`)에 답하는 가짜 세션."""
     return FakeSession({
-        ("GET", f"{BASE}/{PAGE}"): page if page is not None else FakeResponse(200, {"name": name, "id": PAGE}),
-        ("GET", f"{BASE}/me/permissions"): permissions if permissions is not None else FakeResponse(200, permissions_body()),
+        ("GET", f"{BASE}/{PAGE}"): page if page is not None else FakeResponse(200, {"id": returned_id, "name": name}),
+        ("GET", f"{BASE}/debug_token"): debug if debug is not None else FakeResponse(200, debug_body()),
     })
 
 
@@ -165,15 +165,43 @@ def test_필요한_권한마다_한국어_설명이_있다():
     assert all(has_hangul(text) for text in graph._PERMISSION_HELP.values())
 
 
+def test_GraphError의_maybe_created는_기본_False이고_키워드로만_받는다():
+    assert graph.GraphError("x").maybe_created is False
+    assert graph.GraphError("x", maybe_created=True).maybe_created is True
+    with pytest.raises(TypeError):
+        graph.GraphError("x", True)
+
+
 # ── check_token ──────────────────────────────────────────────────────────────
 
+# debug_token이 권한을 알려 주지 못하는 모든 모양. 어느 것이든 check_token은 ok를 바꾸지 않고 권한을 짐작으로 채우지 않는다.
+UNVERIFIED_DEBUG_OUTCOMES = [
+    pytest.param(FakeResponse(400, {"error": {"message": "(#100) requires an app access token", "code": 100}}), id="거절"),
+    pytest.param(FakeResponse(200, {"error": {"message": "Invalid parameter", "code": 100}}), id="HTTP-200-오류"),
+    pytest.param(OSError("Max retries exceeded"), id="연결-실패"),
+    pytest.param(TimeoutError("Read timed out"), id="시간-초과"),
+    pytest.param(FakeResponse(502, text="<html>Bad Gateway</html>", json_error=ValueError("Expecting value")), id="JSON이-아님"),
+    pytest.param(FakeResponse(200, ["data"]), id="JSON-객체가-아님"),
+    pytest.param(FakeResponse(503, {"unexpected": True}), id="오류-객체-없는-503"),
+    pytest.param(FakeResponse(200, {}), id="data-없음"),
+    pytest.param(FakeResponse(200, {"data": "pages_manage_posts"}), id="data가-객체가-아님"),
+    pytest.param(FakeResponse(200, {"data": {"is_valid": True}}), id="scopes-없음"),
+    pytest.param(FakeResponse(200, {"data": {"is_valid": True, "scopes": "pages_manage_posts"}}), id="scopes가-목록이-아님"),
+    pytest.param(FakeResponse(200, debug_body([])), id="scopes가-빔"),
+    pytest.param(FakeResponse(200, debug_body([1, None, {"a": 1}])), id="scopes에-문자열이-없음"),
+    pytest.param(FakeResponse(200, debug_body(ALL_PERMISSIONS, is_valid=False)), id="is_valid가-False"),
+]
 
-def test_권한이_모두_있으면_ok():
+
+def test_토큰으로_이_페이지를_읽을_수_있고_권한도_확인되면_ok():
     status = graph.check_token(SENTINEL, PAGE, session=token_session(name="정우인재개발원"))
     assert status.ok is True
     assert status.page_name == "정우인재개발원"
     assert status.missing_permissions == ()
-    assert has_hangul(status.message) and "정우인재개발원" in status.message
+    assert has_hangul(status.message) and "정우인재개발원" in status.message and PAGE in status.message
+    assert "필요한 권한 3개를 모두 가지고 있다고 Facebook이 확인했습니다" in status.message
+    # 권한 목록이 맞아도 그것이 글을 올릴 수 있다는 보증은 아니다. 진짜 증거를 계속 안내한다.
+    assert "테스트 글 하나를 예약해 보고" in status.message
 
 
 def test_TokenStatus는_바꿀_수_없다():
@@ -182,70 +210,47 @@ def test_TokenStatus는_바꿀_수_없다():
         status.ok = False
 
 
-def test_check_token은_GET으로_페이지와_권한을_묻고_토큰은_헤더에만_싣는다():
+def test_check_token은_GET으로_페이지를_읽고_권한을_점검한다():
     session = token_session()
     graph.check_token(SENTINEL, PAGE, session=session)
-    assert [(c.verb, c.url) for c in session.calls] == [("GET", f"{BASE}/{PAGE}"), ("GET", f"{BASE}/me/permissions")]
-    assert session.calls[0].kwargs["params"] == {"fields": "name"}
-    assert not session.calls[1].kwargs.get("params")
+    assert [(c.verb, c.url) for c in session.calls] == [("GET", f"{BASE}/{PAGE}"), ("GET", f"{BASE}/debug_token")]
+    page, debug = session.calls
+    assert page.kwargs["params"] == {"fields": "id,name"}
+    # debug_token은 Meta가 정한 형식상 토큰을 쿼리로 받는다: 토큰이 URL에 실리는 유일한 호출이다(머리말 참고).
+    assert debug.kwargs["params"] == {"input_token": SENTINEL, "access_token": SENTINEL}
     for call in session.calls:
-        # 토큰은 헤더에만 있다. URL·쿼리·본문에 있으면 요청 오류 메시지와 로그로 새기 쉽다.
         assert call.kwargs["headers"] == {"Authorization": f"Bearer {SENTINEL}"}
         assert call.kwargs["timeout"] == config.GRAPH_TIMEOUT
-        assert SENTINEL not in call.url
-        assert SENTINEL not in repr(call.kwargs.get("params")) and "data" not in call.kwargs and "files" not in call.kwargs
+        assert SENTINEL not in call.url and "data" not in call.kwargs and "files" not in call.kwargs
+    assert SENTINEL not in repr(page.kwargs["params"])
 
 
-def test_권한이_빠지면_missing_permissions에_담긴다():
-    session = token_session(permissions=FakeResponse(200, permissions_body(["pages_show_list", "pages_read_engagement"])))
+# 페이지 정보 확인
+
+
+def test_돌아온_id가_지정한_페이지와_다르면_ok_False와_돌아온_페이지를_알려_준다():
+    session = token_session(returned_id="999888777", name="다른 페이지")
     status = graph.check_token(SENTINEL, PAGE, session=session)
     assert status.ok is False
-    assert status.missing_permissions == ("pages_manage_posts",)
-    assert status.page_name == "정우인재개발원"
-    assert "pages_manage_posts" in status.message
-    # 가지고 있는 권한은 빠졌다고 말하지 않는다.
-    assert "pages_show_list" not in status.message and "pages_read_engagement" not in status.message
+    assert status.page_name == "다른 페이지"
+    assert status.missing_permissions == ()
+    for needle in ("지정한 페이지(100200300)를 조회했더니 다른 페이지(id 999888777, 이름 '다른 페이지')가 돌아왔습니다",
+                   "다른 페이지의 토큰을 붙여 넣었거나 페이지 id가 잘못된 것은 아닌지", config.TOKEN_ENV_NAME, str(config.ENV_PATH)):
+        assert needle in status.message
+    assert len(session.calls) == 1  # 엉뚱한 페이지의 권한을 물어볼 이유가 없다
 
 
-@pytest.mark.parametrize("state", ["declined", "expired"])
-def test_거절되거나_만료된_권한은_빠진_것으로_센다(state):
-    body = permissions_body(["pages_show_list", "pages_read_engagement"], pages_manage_posts=state)
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, body)))
-    assert status.ok is False and status.missing_permissions == ("pages_manage_posts",)
+def test_다른_페이지가_돌아왔는데_이름이_없으면_id만_알려_준다():
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"id": "999888777"})))
+    assert status.ok is False and status.page_name is None
+    assert "다른 페이지(id 999888777)가 돌아왔습니다" in status.message and "이름 '" not in status.message
 
 
-def test_권한이_하나도_없으면_세_개_모두_필요한_순서대로_빠진_것이다():
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, {"data": []})))
-    assert status.ok is False
-    assert status.missing_permissions == ALL_PERMISSIONS
-
-
-def test_빠진_권한은_알파벳순이_아니라_REQUIRED_PERMISSIONS의_순서로_담긴다(monkeypatch):
-    monkeypatch.setattr(graph, "REQUIRED_PERMISSIONS", ("zeta_permission", "alpha_permission"))
-    monkeypatch.setattr(graph, "_PERMISSION_HELP", {"zeta_permission": "제타", "alpha_permission": "알파"})
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, {"data": []})))
-    assert status.missing_permissions == ("zeta_permission", "alpha_permission")
-    assert status.message.index("zeta_permission(제타)") < status.message.index("alpha_permission(알파)")
-
-
-def test_더_많이_받은_권한은_문제가_아니다():
-    body = permissions_body([*ALL_PERMISSIONS, "email", "public_profile"])
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, body)))
-    assert status.ok is True and status.missing_permissions == ()
-
-
-def test_빠진_권한_안내는_권한이_무엇이고_어떻게_고치는지_말한다():
-    session = token_session(permissions=FakeResponse(200, {"data": []}))
-    message = graph.check_token(SENTINEL, PAGE, session=session).message
-    assert has_hangul(message) and "'정우인재개발원'" in message
-    for name, help_text in (("pages_manage_posts", "글과 사진 올리기"),
-                            ("pages_read_engagement", "게시물 읽기"),
-                            ("pages_show_list", "페이지 목록 보기")):
-        assert name in message and help_text in message  # 영문 권한 이름만 던지지 않고 뜻을 한국어로 풀어 준다
-    # 어떻게 하면 되는지: 토큰을 다시 발급받아 어디에 넣는지.
-    assert "다시 발급" in message or "새로 발급" in message
-    assert config.TOKEN_ENV_NAME in message and str(config.ENV_PATH) in message
-    assert "scope" not in message.lower()  # 개발자 용어를 모르는 사람이 읽는 글이다
+@pytest.mark.parametrize("body", [{"name": "정우인재개발원"}, {"id": None}, {"id": ""}, {"id": 100200300}], ids=["id-없음", "None", "빈-문자열", "숫자"])
+def test_돌아온_id를_알_수_없으면_GraphError(body):
+    with pytest.raises(graph.GraphError) as caught:
+        graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, body)))
+    assert has_hangul(str(caught.value)) and "id" in str(caught.value) and caught.value.maybe_created is False
 
 
 def test_토큰이_무효면_ok_False와_한국어_메시지():
@@ -261,7 +266,7 @@ def test_토큰이_무효면_ok_False와_한국어_메시지():
     # 어떻게 고치는지, 그리고 Facebook이 한 말을 그대로.
     assert config.TOKEN_ENV_NAME in status.message and "새로 발급" in status.message
     assert "Invalid OAuth access token" in status.message and "190" in status.message
-    assert len(session.calls) == 1  # 페이지 조회가 거절됐으니 권한 조회는 하지 않는다
+    assert len(session.calls) == 1  # 페이지 정보 조회가 거절됐으니 권한 점검은 하지 않는다
 
 
 def test_HTTP_200이어도_본문에_error가_있으면_ok_False():
@@ -282,37 +287,20 @@ def test_토큰_문제가_아닌_API_오류는_Facebook의_말을_그대로_싣�
     assert "유효하지 않" not in status.message and "만료" not in status.message
 
 
-def test_권한_조회에서_토큰_무효를_알려도_페이지_이름은_남고_재발급을_안내한다():
-    expired = FakeResponse(400, {"error": {"message": "Error validating access token: Session has expired", "code": 190}})
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=expired))
-    assert status.ok is False and status.page_name == "정우인재개발원"
-    assert "유효하지 않" in status.message and "새로 발급" in status.message and "Session has expired" in status.message
-
-
 def test_error가_문자열인_거절도_ok_False이고_토큰_무효로_단정하지_않는다():
     status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(400, {"error": "Something went wrong"})))
     assert status.ok is False and "Something went wrong" in status.message and "유효하지 않" not in status.message
 
 
-def test_권한_조회가_거절되면_ok_False이고_이미_알아낸_페이지_이름은_남긴다():
-    denied = FakeResponse(400, {"error": {"message": "Tried accessing nonexisting field (permissions)", "code": 100}})
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=denied))
-    assert status.ok is False
-    assert status.page_name == "정우인재개발원"
-    assert status.missing_permissions == ()
-    assert "Tried accessing nonexisting field" in status.message and "code 100" in status.message
-    assert "권한 조회 요청을 Facebook이 거절했습니다 (HTTP 400)" in status.message
-
-
-def test_페이지_이름이_응답에_없으면_page_name은_None이고_안내는_page_id를_쓴다():
+def test_응답에_이름이_없으면_page_name은_None이고_안내는_page_id를_쓴다():
     status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"id": PAGE})))
     assert status.ok is True and status.page_name is None
-    assert PAGE in status.message
+    assert f"이 페이지('{PAGE}', {PAGE})" in status.message
 
 
 @pytest.mark.parametrize("name", ["", None, 123], ids=["빈-문자열", "None", "숫자"])
-def test_페이지_이름이_문자열이_아니거나_비었으면_None으로_본다(name):
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"name": name, "id": PAGE})))
+def test_이름이_문자열이_아니거나_비었으면_None으로_본다(name):
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"id": PAGE, "name": name})))
     assert status.page_name is None and PAGE in status.message
 
 
@@ -323,13 +311,13 @@ def test_페이지_이름이_문자열이_아니거나_비었으면_None으로_�
     pytest.param(FakeResponse(200, ["data"]), id="JSON-객체가-아님"),
     pytest.param(FakeResponse(503, {"unexpected": True}), id="오류-객체-없는-503"),
 ])
-@pytest.mark.parametrize("which", ["page", "permissions"])
-def test_답을_받지_못하면_ok_False가_아니라_GraphError(failure, which):
+def test_페이지_정보의_답을_받지_못하면_ok_False가_아니라_GraphError(failure):
     # "토큰이 나쁘다"와 "Facebook에 닿지 못했다"는 다르다. 후자를 ok=False로 돌려주면 멀쩡한 토큰을 새로 발급하게 된다.
-    session = token_session(**{which: failure})
     with pytest.raises(graph.GraphError) as caught:
-        graph.check_token(SENTINEL, PAGE, session=session)
+        graph.check_token(SENTINEL, PAGE, session=token_session(page=failure))
     assert has_hangul(str(caught.value))
+    assert caught.value.maybe_created is False  # 조회일 뿐 아무것도 만들지 않는다
+    assert "만들어졌을 수" not in str(caught.value)  # 예약 안내는 예약 호출에만 붙는다
 
 
 _N = graph._EXCERPT_LENGTH
@@ -355,18 +343,127 @@ def test_error가_긴_문자열이면_발췌해서_싣는다():
     assert status.message.endswith("z" * _N + "…")
 
 
-@pytest.mark.parametrize("body", [{"data": "pages_manage_posts"}, {"paging": {}}, {"data": None}], ids=["data가-문자열", "data-없음", "data가-None"])
-def test_권한_목록_응답이_예상과_다르면_GraphError(body):
-    with pytest.raises(graph.GraphError) as caught:
-        graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, body)))
-    assert has_hangul(str(caught.value)) and "권한" in str(caught.value)
+# 권한 점검(debug_token): 분명히 답했을 때
 
 
-def test_권한_목록에_모양이_이상한_항목이_섞여도_멈추지_않고_받지_못한_것으로_센다():
-    body = {"data": ["pages_manage_posts", None, {"permission": "pages_show_list"}, {"status": "granted"},
-                     {"permission": "pages_read_engagement", "status": "granted"}]}
-    status = graph.check_token(SENTINEL, PAGE, session=token_session(permissions=FakeResponse(200, body)))
-    assert status.missing_permissions == ("pages_manage_posts", "pages_show_list")
+def test_권한이_분명히_빠졌다고_답하면_ok_False와_missing_permissions():
+    debug = FakeResponse(200, debug_body(["pages_show_list", "pages_read_engagement"]))
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug))
+    assert status.ok is False
+    assert status.missing_permissions == ("pages_manage_posts",)
+    assert status.page_name == "정우인재개발원"
+    assert "pages_manage_posts" in status.message
+    # 가지고 있는 권한은 빠졌다고 말하지 않는다.
+    assert "pages_show_list" not in status.message and "pages_read_engagement" not in status.message
+
+
+def test_필요한_권한이_하나도_없는_목록이면_세_개_모두_필요한_순서대로_빠진_것이다():
+    debug = FakeResponse(200, debug_body(["public_profile", "email"]))
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug))
+    assert status.ok is False
+    assert status.missing_permissions == ALL_PERMISSIONS
+
+
+def test_빠진_권한은_알파벳순이_아니라_REQUIRED_PERMISSIONS의_순서로_담긴다(monkeypatch):
+    monkeypatch.setattr(graph, "REQUIRED_PERMISSIONS", ("zeta_permission", "alpha_permission"))
+    monkeypatch.setattr(graph, "_PERMISSION_HELP", {"zeta_permission": "제타", "alpha_permission": "알파"})
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=FakeResponse(200, debug_body(["other"]))))
+    assert status.missing_permissions == ("zeta_permission", "alpha_permission")
+    assert status.message.index("zeta_permission(제타)") < status.message.index("alpha_permission(알파)")
+
+
+def test_확인된_권한_개수는_필요한_권한_목록에서_센다(monkeypatch):
+    monkeypatch.setattr(graph, "REQUIRED_PERMISSIONS", ("pages_show_list", "pages_manage_posts"))
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=FakeResponse(200, debug_body(["pages_show_list", "pages_manage_posts"]))))
+    assert status.ok is True and "필요한 권한 2개를 모두 가지고 있다고" in status.message
+
+
+def test_더_많이_가진_권한은_문제가_아니다():
+    debug = FakeResponse(200, debug_body([*ALL_PERMISSIONS, "email", "public_profile"]))
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug))
+    assert status.ok is True and status.missing_permissions == ()
+    assert "모두 가지고 있다고 Facebook이 확인했습니다" in status.message
+
+
+def test_is_valid가_없는_응답도_권한_목록이_있으면_받아들인다():
+    debug = FakeResponse(200, {"data": {"scopes": list(ALL_PERMISSIONS)}})
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug))
+    assert status.ok is True and "모두 가지고 있다고 Facebook이 확인했습니다" in status.message
+
+
+def test_권한_목록에_문자열이_아닌_항목이_섞여도_멈추지_않는다():
+    debug = FakeResponse(200, debug_body(["pages_show_list", None, 3, "pages_read_engagement"]))
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug))
+    assert status.missing_permissions == ("pages_manage_posts",)
+
+
+def test_빠진_권한_안내는_권한이_무엇이고_어떻게_고치는지_말한다():
+    debug = FakeResponse(200, debug_body(["public_profile"]))
+    message = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug)).message
+    assert has_hangul(message) and "'정우인재개발원'" in message
+    assert ("빠진 권한: pages_manage_posts(페이지에 글과 사진 올리기), pages_read_engagement(페이지 게시물 읽기), "
+            "pages_show_list(관리하는 페이지 목록 보기).") in message
+    for name, help_text in (("pages_manage_posts", "글과 사진 올리기"),
+                            ("pages_read_engagement", "게시물 읽기"),
+                            ("pages_show_list", "페이지 목록 보기")):
+        assert name in message and help_text in message  # 영문 권한 이름만 던지지 않고 뜻을 한국어로 풀어 준다
+    # 어떻게 하면 되는지: 토큰을 다시 발급받아 어디에 넣는지.
+    assert "다시 발급" in message or "새로 발급" in message
+    assert config.TOKEN_ENV_NAME in message and str(config.ENV_PATH) in message
+    assert "scope" not in message.lower()  # 개발자 용어를 모르는 사람이 읽는 글이다
+
+
+# 권한 점검(debug_token): 답하지 못했을 때 — 모른다고 말하고, 짐작하지 않는다
+
+
+@pytest.mark.parametrize("debug", UNVERIFIED_DEBUG_OUTCOMES)
+def test_권한을_확인하지_못해도_ok는_페이지_확인의_결과이고_권한은_짐작으로_채우지_않는다(debug):
+    session = token_session(debug=debug)
+    status = graph.check_token(SENTINEL, PAGE, session=session)
+    assert status.ok is True
+    assert status.page_name == "정우인재개발원"
+    assert status.missing_permissions == ()
+    assert len(session.calls) == 2  # 시도는 했다
+
+
+@pytest.mark.parametrize("debug", UNVERIFIED_DEBUG_OUTCOMES)
+def test_권한을_확인하지_못했다고_말하고_읽기가_쓰기를_뜻하지_않는다고_알린다(debug):
+    message = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug)).message
+    assert has_hangul(message)
+    assert f"페이지 '정우인재개발원'({PAGE})에 접근할 수 있습니다" in message
+    assert "이 토큰이 가졌는지는 확인하지 못했습니다" in message and "확인하지 못한 이유: " in message
+    assert "확인하려던 권한: " in message
+    for name in ALL_PERMISSIONS:  # 무엇을 확인하지 못했는지
+        assert name in message
+    assert "권한(pages" not in message  # 괄호 속 괄호로 읽기 어려워지지 않게 목록을 문장에서 떼어 놓았다
+    assert "읽을 수 있다는 것만으로는 글을 올릴 수 있다는 뜻이 아닙니다" in message
+    # 운영 문서가 정한 진짜 증거: 테스트 글 하나를 예약해 보고, 눈으로 보고, 지운다.
+    assert "테스트 글 하나를 예약해 보고" in message and "눈으로 확인한 뒤 지워 보는 것으로만 알 수 있습니다" in message
+    # 과장하지 않는다: 초록불처럼 읽히는 문장이 없다.
+    for overclaim in ("정상", "예약할 수 있습니다", "가지고 있다고", "확인했습니다"):
+        assert overclaim not in message
+    assert "scope" not in message.lower()
+
+
+def test_권한_점검이_거절됐으면_Facebook이_한_말을_이유로_싣는다():
+    debug = FakeResponse(400, {"error": {"message": "(#100) requires an app access token", "code": 100}})
+    message = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug)).message
+    assert "권한 조회 기능(debug_token)을 쓰지 못했습니다. Facebook 응답: (#100) requires an app access token [code 100]" in message
+
+
+def test_권한_점검에_닿지_못했으면_이유를_일반적으로만_적고_예외_내용은_싣지_않는다():
+    message = graph.check_token(SENTINEL, PAGE, session=token_session(debug=OSError("Max retries exceeded"))).message
+    assert "권한 조회 기능(debug_token)에 닿지 못했거나 응답을 알아볼 수 없었습니다" in message
+    assert "Max retries" not in message  # 이 호출의 연결 오류 문자열에는 토큰이 든 URL이 실린다
+
+
+def test_권한_점검의_응답이_믿을_수_없으면_그렇다고_적는다():
+    for debug, why in ((FakeResponse(200, {"data": {"is_valid": False, "scopes": list(ALL_PERMISSIONS)}}), "응답을 믿을 수 없었습니다"),
+                       (FakeResponse(200, {"data": "x"}), "응답을 믿을 수 없었습니다"),
+                       (FakeResponse(200, debug_body([])), "권한 목록이 없거나 비어 있었습니다"),
+                       (FakeResponse(200, {"data": {"is_valid": True}}), "권한 목록이 없거나 비어 있었습니다")):
+        message = graph.check_token(SENTINEL, PAGE, session=token_session(debug=debug)).message
+        assert why in message
 
 
 # ── assert_schedulable ───────────────────────────────────────────────────────
@@ -375,6 +472,7 @@ def test_권한_목록에_모양이_이상한_항목이_섞여도_멈추지_않�
 def test_10분_이내_예약이면_GraphError():
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(NOW + timedelta(minutes=5), NOW)
+    assert caught.value.maybe_created is False  # 요청을 보내지 않았다
     message = str(caught.value)
     assert has_hangul(message) and "너무 가깝" in message
     assert (NOW + timedelta(minutes=5)).isoformat() in message          # 어느 게시물 시각이 문제인지
@@ -576,6 +674,7 @@ def test_API가_오류를_주면_GraphError에_한국어_설명(image, response)
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
     message = str(caught.value)
     assert has_hangul(message)
+    assert caught.value.maybe_created is False  # Facebook이 분명히 거절했다: 다시 시도해도 중복이 아니다
     assert "(#100) Invalid parameter [code 100, subcode 1366046, fbtrace_id TRACE9]" in message   # API가 한 말 그대로
     assert f"사진 예약 게시 요청을 Facebook이 거절했습니다 (HTTP {response.status_code})" in message  # 무엇을, 어떤 상태로
     # Facebook이 분명히 거절했으니 "만들어졌을 수도 있다"는 안내는 붙이지 않는다.
@@ -601,6 +700,7 @@ def test_빈_error_객체도_거절이다(image):
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(FakeResponse(200, {"error": {}})))
     assert "거절했습니다" in str(caught.value) and "메시지 없음" in str(caught.value)
+    assert caught.value.maybe_created is False
 
 
 @pytest.mark.parametrize("raised", [RuntimeError("버그"), KeyError("x"), TypeError("잘못된 인자")])
@@ -636,6 +736,7 @@ def test_error가_딕셔너리가_아니어도_GraphError(image):
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
     assert "Something went wrong" in str(caught.value) and has_hangul(str(caught.value))
+    assert caught.value.maybe_created is False
 
 
 def test_code가_0이어도_적는다(image):
@@ -657,11 +758,13 @@ def test_오류_객체_없이_HTTP_상태만_실패면_상태_코드를_말한�
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT,
                                   session=photo_session(FakeResponse(500, {"ok": False}, text='{"ok": false}')))
     assert '요청이 실패했습니다 (HTTP 500). 응답에 오류 내용이 없습니다. 응답 앞부분: {"ok": false}' in str(caught.value)
+    assert caught.value.maybe_created is True  # error 객체 없이 실패 상태만 왔다: Facebook이 무엇을 했는지 모른다
     assert has_hangul(str(caught.value))
 
 
 @pytest.mark.parametrize("outcome", [
     pytest.param(OSError("Connection reset by peer"), id="연결-실패"),
+    pytest.param(TimeoutError("Read timed out"), id="시간-초과"),
     pytest.param(FakeResponse(502, text="<html>Bad Gateway</html>", json_error=ValueError("Expecting value")), id="JSON이-아닌-502"),
     pytest.param(FakeResponse(200, text="ok", json_error=ValueError("Expecting value")), id="JSON이-아닌-200"),
     pytest.param(FakeResponse(200, ["id"]), id="JSON-객체가-아님"),
@@ -676,6 +779,7 @@ def test_응답을_믿을_수_없으면_GraphError이고_예약이_만들어졌�
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(outcome))
     message = str(caught.value)
+    assert caught.value.maybe_created is True  # 코드가 가르는 신호. 메시지 문장은 운영자용이다
     assert has_hangul(message) and "만들어졌을 수" in message and "예약된 게시물" in message
 
 
@@ -684,6 +788,7 @@ def test_성공_응답에_id가_없으면_그렇다고_말한다(image, body):
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(FakeResponse(200, body)))
     assert "성공(HTTP 2xx)으로 응답했지만 응답에 생성된 id가 없습니다" in str(caught.value)
+    assert caught.value.maybe_created is True
 
 
 def test_JSON이_아닌_응답은_본문_앞부분과_상태를_보여_준다(image):
@@ -712,6 +817,7 @@ def test_이미지_파일을_열_수_없으면_요청_없이_GraphError(tmp_path
     message = str(caught.value)
     assert has_hangul(message) and str(missing) in message and "FileNotFoundError" in message
     assert "파일이 있는지, 읽을 권한이 있는지 확인하세요" in message
+    assert caught.value.maybe_created is False  # 요청을 보내지 않았다
     # 파일 오류는 토큰을 담을 수 없으므로 원인을 남겨 둔다(네트워크 예외와 다르다).
     assert isinstance(caught.value.__cause__, FileNotFoundError)
     assert session.calls == []
@@ -726,6 +832,7 @@ def test_타임존_없는_예약_시각은_요청_없이_GraphError(image):
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, naive, session=session)
     assert has_hangul(str(caught.value)) and "타임존" in str(caught.value) and "publish_at" in str(caught.value)
     assert session.calls == []
+    assert caught.value.maybe_created is False
 
 
 # ── 토큰이 새지 않는다 ───────────────────────────────────────────────────────
@@ -766,7 +873,7 @@ def test_토큰_값이_예외_메시지에_들어가지_않는다(image, outcome
 
 
 @pytest.mark.parametrize("outcome", LEAK_SCENARIOS + TOKEN_CHECK_ONLY_SCENARIOS)
-@pytest.mark.parametrize("which", ["page", "permissions"])
+@pytest.mark.parametrize("which", ["page", "debug"])
 def test_토큰_값이_토큰_점검의_예외와_상태_메시지에도_들어가지_않는다(outcome, which):
     session = token_session(**{which: outcome})
     try:
@@ -792,6 +899,41 @@ def test_빈_토큰이어도_메시지가_망가지지_않는다(image):
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post("", PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
     assert "An access token is required" in str(caught.value) and "***" not in str(caught.value)
+
+
+def test_debug_token의_연결_오류가_토큰이_든_URL을_싣고_있어도_상태_메시지에는_없다():
+    # 이 호출만 토큰이 쿼리에 실린다. requests의 연결 오류 문자열은 쿼리 달린 URL을 그대로 싣는다.
+    leaky = OSError("HTTPSConnectionPool(host='graph.facebook.com', port=443): Max retries exceeded with url: "
+                    f"/v26.0/debug_token?input_token={SENTINEL}&access_token={SENTINEL} (Caused by NewConnectionError)")
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(debug=leaky))
+    assert status.ok is True and SENTINEL not in status.message and SENTINEL not in repr(status)
+
+
+SPECIAL_TOKEN = "123|AbCd Ef+Gh/Ij=sentinel"  # URL에 실리면 원문·quote·quote_plus 세 모양이 서로 다르다
+
+
+def test_토큰에_특수문자가_있으면_URL에_인코딩되어_실린_모양까지_가린다(image):
+    forms = {SPECIAL_TOKEN, quote(SPECIAL_TOKEN, safe=""), quote_plus(SPECIAL_TOKEN)}
+    assert len(forms) == 3
+    leaky = OSError(f"Max retries exceeded with url: /v26.0/debug_token?input_token={quote(SPECIAL_TOKEN, safe='')}"
+                    f"&access_token={quote_plus(SPECIAL_TOKEN)} raw={SPECIAL_TOKEN}")
+    with pytest.raises(graph.GraphError) as caught:
+        graph.schedule_photo_post(SPECIAL_TOKEN, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(leaky))
+    for form in forms:
+        assert form not in str(caught.value) and form not in repr(caught.value)
+    assert str(caught.value).count("***") == 3
+
+
+# 토큰이 여럿인 것은 집합 순회 순서가 문자열 해시에 따라 달라지기 때문이다: 정렬을 잃어도 한두 개는 우연히 통과하지만
+# 열두 개가 모두 우연히 통과하기는 어렵다.
+@pytest.mark.parametrize("token", [f"tok{n}%" for n in range(12)])
+def test_인코딩된_모양이_원문을_부분_문자열로_품어도_조각이_남지_않게_긴_모양부터_가린다(image, token):
+    # 토큰 "tok0%"의 인코딩 "tok0%25"는 원문 "tok0%"로 시작한다. 원문을 먼저 지우면 "***25"가 남는다.
+    assert quote(token, safe="").startswith(token)
+    leaky = OSError(f"Max retries exceeded with url: /x?input_token={quote(token, safe='')}&raw={token}")
+    with pytest.raises(graph.GraphError) as caught:
+        graph.schedule_photo_post(token, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(leaky))
+    assert "/x?input_token=***&raw=***" in str(caught.value)
 
 
 def test_토큰이_메시지에_있으면_별표로_가린다(image):
