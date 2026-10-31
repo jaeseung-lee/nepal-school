@@ -722,7 +722,7 @@ npm 스크립트: `fb:check-token`, `fb:images`, `fb:validate`, `fb:review`, `fb
 
 - **플랜 작성 세션에게 이미지 프롬프트 규칙을 보여 줘야 한다.** Task 4가 `config.IMAGE_PROMPT_NO_TEXT`와 `config.IMAGE_PROMPT_NO_REAL_SUBJECTS` 두 문구를 프롬프트 안에서 **문구 그대로** 요구하는데, 지금 그 문구를 플랜 작성자에게 알려 주는 자리가 어디에도 없다. `images` 출력과 운영 문서의 플랜 작성 지침이 둘 다 이 두 상수를 그대로 보여 준다.
 - **수는 숫자로, 원문과 같은 단위로.** Task 6의 `역번역수치`는 숫자열 다중집합을 견주므로, 한국어 원문이 `1년치`로 쓰고 현지어 본문이 `cả năm`처럼 말로 쓰면 충실한 역번역에도 되찾을 숫자가 없어 거짓 오류가 난다. `680만 원` 대 `6,800,000원`도 같은 부류다. 플랜 작성 지침에 "수는 숫자로 적고, 단위를 바꾸지 말 것"을 명시한다. 베트남어의 점 천단위(`6.800.000`)는 역번역에서 쉼표로 적어야 한다(검사는 쉼표만 제거한다).
-- **월간 절차의 호출 순서가 고정되어 있다.** `validate_copy` → `backtranslation.worksheet(plan, glossary)` → `backtranslation.load(path, plan=plan, glossary=glossary)`. `worksheet`는 본문이 해당 언어 CTA로 끝나지 않으면 raise하므로 문구 검증이 먼저다. **신선도 보호는 `load`에 `plan`과 `glossary`를 둘 다 넘길 때만 존재한다** — 하나만 넘기면 `ValueError`, 둘 다 안 넘기면 낡은 워크시트가 조용히 통과한다.
+- **월간 절차의 호출 순서가 고정되어 있다.** `validate_copy` → `backtranslation.worksheet(plan, glossary)` → `backtranslation.load(path, plan=plan, glossary=glossary)`. `worksheet`는 본문이 해당 언어 CTA로 끝나지 않으면 raise하므로 문구 검증이 먼저다. **신선도 보호는 `load`에 `plan`과 `glossary`를 둘 다 넘길 때만 존재한다** — 하나만 넘기면 `ValueError`, 둘 다 안 넘기면 낡은 워크시트가 조용히 통과한다. 그리고 `load` 뒤에 `validate_backtranslation`과 **`validate_copy.validate_back_copy(plan, back, banned)`를 둘 다 돌린다** — 후자를 부르지 않으면 "없는 약속이 현지어로 나가는 것"이라는 안티골에 걸린 **유일한 기계 검사가 존재하지 않는 것과 같다**(Task 7b가 그것 때문에 있다).
 - **플랜 JSON은 `fact_keys`와 `university_names`를 비어 있어도 반드시 쓴다(`[]`).** 키가 없으면 Task 3의 로더가 거부한다.
 - **검토 화면은 `config.month_dir(month)/review.html`에 쓴다.** 이미지는 `month_dir/images/`에 있고 HTML이 그 부모에 놓이므로 상대 경로가 `images/<파일명>`이 된다.
 - **운영 문서는 한계를 숨기지 않고 적는다.** (1) 역번역의 문자 유사도는 부정 뒤집힘·금액 변경·약속 문장 추가를 잡지 못한다 — 실측치로 적는다: 부정 뒤집힘 0.05, 금액 변경 0.01, 약속 추가 0.12이고 충실한 의역의 잡음이 0.08~0.12이므로 **어떤 임계값으로도 가를 수 없다.** 뜻은 검토 화면의 세 단을 사람이 읽어야 확인된다. (2) `banned-phrases.json`의 베트남어·미얀마어·네팔어 문구와 1인칭 제외 낱말은 AI가 작성했고 **원어민 검수를 받지 않았다** — 첫 실제 월 운영 전에 검수가 필요하다. 그래서 Task 7b가 **되번역에 검수된 한국어 목록을 겹쳐 건다**: 이것이 세 현지어 본문에 걸리는 유일한 사람 검수 사전이지만, 목록에 있는 표현만 잡으므로 목록 밖의 약속은 여전히 사람의 눈뿐이다. (3) `주 20시간` 같은 1차 출처를 못 찾은 수치는 `facts.json`에 일부러 넣지 않았으므로 게시물에 쓸 수 없다.
@@ -748,6 +748,9 @@ def test_images는_글자금지와_실존인물금지_지시도_출력한다():
     # config.IMAGE_PROMPT_NO_TEXT와 IMAGE_PROMPT_NO_REAL_SUBJECTS가 출력에 그대로 들어간다
 def test_validate는_낡은_역번역_워크시트를_오류로_잡는다():
     # 워크시트를 만든 뒤 플랜의 본문을 고치면 종료코드 1과 한국어 안내
+def test_validate는_되번역의_한국어_금지표현을_잡는다():
+    # 현지어 본문이 validate_copy를 통과하는데 그 되번역에서 ko 금지 목록이 잡히면 종료코드 1.
+    # 7b의 검사가 배선되지 않으면 이 테스트만 실패한다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
