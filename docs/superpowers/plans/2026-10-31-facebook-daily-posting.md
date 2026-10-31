@@ -300,7 +300,7 @@ git commit -m "feat(facebook): 로테이션·일정·이미지·사실 만료 �
 - Consumes: `validate.Finding` (Task 4), `config.UNIVERSITIES_PATH`, `config.GLOSSARY_PATH` (Task 2)
 - Produces:
   - `validate.load_banned_phrases(path: Path) -> dict[str, tuple[str, ...]]` — 언어코드(`ko`/`vi`/`my`/`ne`) → 금지 문구 목록
-  - `validate.validate_copy(plan: Plan, universities: list[dict], banned: dict[str, tuple[str, ...]], glossary: dict) -> list[Finding]`
+  - `validate.validate_copy(plan: Plan, universities: list[dict], banned: dict[str, tuple[str, ...]], glossary: dict, facts: dict[str, Fact]) -> list[Finding]`
 
 `banned-phrases.json`에는 최소한 합격 보장, 취업 보장, 비용 보장/무료 유학, 상담 이후 절차·수수료 언급, "저희 협력 대학", "입학을 도와드립니다" 계열을 네 언어로 넣는다.
 
@@ -319,6 +319,20 @@ def test_용어집_용어가_다르게_표기되면_경고():
 def test_출처없는_수치가_본문에_있으면_경고():
     # fact_keys가 비었는데 source_ko에 금액·시간 수치가 있으면 code == "출처없는수치", severity == "warning"
 def test_fact_keys가_있으면_수치가_있어도_통과():
+    # 인용한 사실의 value에 그 수치의 숫자열이 들어 있으면 통과한다
+def test_인용한_사실에_없는_수치는_경고():
+    # fact_keys가 비어 있지 않아도, 숫자열이 인용한 어느 사실에도 없으면 code == "출처없는수치"
+def test_대학_실무_표현은_대학맥락이_아니다():
+    # 산학협력단·국제협력처·연계전공·합격자 발표·불합격 다섯 문장은 findings가 비어 있어야 한다
+def test_대학맥락은_1인칭_주체가_있어야_발화한다():
+    # 대학명 + 관계 어휘만으로는 통과하고, 여기에 저희/우리/당사/회사명이 붙을 때만 오류
+def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
+    # vi/my/ne 본문에서도 1인칭 표지가 있을 때만 발화한다
+def test_1인칭과_관계어휘가_다른_문장이면_발화하지_않는다():
+    # "저희는 한국 대학을 소개합니다. 전북대학교 산학협력단은 유학생을 지원합니다."
+    # → 1인칭과 관계 어휘가 같은 문장에 없으므로 findings가 비어 있다
+def test_용어집_값이_비면_멈춘다():
+    # glossary의 cta나 용어 문자열이 빈 문자열이면 ValueError (검사가 조용히 꺼지는 것을 막는다)
 def test_등록금_사실을_인용하면_평균과_연단위_한정어가_있어야_한다():
     # fact_keys에 tuition_* 가 있는데 source_ko에 "평균"이 없거나
     # "1년"/"연간" 중 아무것도 없으면 code == "등록금한정어", severity == "error"
@@ -341,7 +355,7 @@ CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
-Expected: PASS (12 passed)
+Expected: PASS (18 passed)
 
 - [ ] **Step 5: Commit**
 
