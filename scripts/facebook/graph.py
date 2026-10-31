@@ -8,7 +8,7 @@
   `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. 이 규칙에는 예외가 없다. 토큰을 인자로 받는 함수가 만드는 모든
   `GraphError`는 `_error` 또는 `_rejected`를 거쳐 메시지에서 토큰 문자열을 `***`로 가린다. 외부에서 온 글자를 자르기보다
   **가리기를 먼저** 한다(`_excerpt`가 토큰을 받는 이유다 — 잘린 조각은 어느 모양과도 맞지 않아 가려지지 않는다).
-  남은 세 자리(`_require_aware`와 `assert_schedulable`의 거절)는 **토큰을 애초에 인자로 받지 않고** 메시지를 시각만으로
+  남은 네 자리(`_require_aware`의 한 곳과 `assert_schedulable`의 세 거절)는 **토큰을 애초에 인자로 받지 않고** 메시지를 시각만으로
   만들므로 가릴 토큰이 없다. 또 **Facebook 호출에서 올라온 예외는 `__cause__`/`__context__`로 달지 않는다**
   (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 토큰이 닿을 수 없는 예외만 원인을 남긴다: 이미지 파일을 열지 못한
   `OSError`는 경로만 들고 있고 그 원인이 고치는 데 도움이 되므로 `from exc`로 남긴다. 메시지는 버그 리포트에 그대로 붙여도 안전해야 한다.
@@ -59,7 +59,8 @@ _PERMISSION_HELP = {
 }
 
 # Graph API가 "토큰이 유효하지 않다(만료·폐기·형식 오류)"를 알릴 때 쓰는 오류 코드.
-# **4xx에서만 뜻을 가진다**(`_send` 참고): 5xx에 같은 코드가 실려 와도 토큰에 대한 판정으로 읽지 않는다.
+# **5xx에서만 뜻을 갖지 않는다**(`_send` 참고): 5xx는 서버가 애초에 처리를 못 한 것이므로 토큰에 대한 말이 아니다.
+# 그 밖의 상태(4xx든 200이든)에서는 Facebook이 토큰에 대해 하는 말이므로 판정을 낸다.
 _INVALID_TOKEN_CODE = 190
 # 사람이 읽는 메시지에 싣는 응답 본문의 최대 길이.
 _EXCERPT_LENGTH = 200
@@ -232,6 +233,10 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
                 problem = f"{what}에 대한 Facebook의 응답이 JSON 객체가 아닙니다 (HTTP {status}). 응답 앞부분: {_excerpt(response.text, token)}"
             elif "error" not in body and not 200 <= status < 300:
                 # 거절한다는 말(error 객체)도 없이 실패 상태만 왔다: Facebook이 무엇을 했는지 알 수 없다.
+                # 상태가 4xx여도 **보수적으로** 결과 불명으로 둔다(아래 `maybe_created=may_create`). 이 응답을
+                # Facebook이 썼다는 증거조차 없기 때문이다 — 중간 장비(프록시·게이트웨이·로드밸런서)가 답했을 수도
+                # 있고, Facebook이 받아 처리한 뒤 답만 뒤바뀐 것일 수도 있다. 모르면 사람이 한 번 확인하는 쪽이
+                # 같은 사진이 같은 날 두 번 나가는 것보다 싸다.
                 problem = f"{what} 요청이 실패했습니다 (HTTP {status}). 응답에 오류 내용이 없습니다. 응답 앞부분: {_excerpt(response.text, token)}"
     if problem is not None:
         raise _error(token, problem + (_MAYBE_CREATED if may_create else ""), maybe_created=may_create)
@@ -252,8 +257,9 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
             token,
             f"{what} 요청을 {verdict} (HTTP {status}): {reason}" + (_MAYBE_CREATED if maybe_created else ""),
             reason=reason,
-            # **토큰에 대한 판정은 4xx에서만 낸다.** 5xx는 Facebook 쪽 처리 실패이므로 그 응답에 실린 코드가
-            # 무엇이든(190이라도) 토큰에 대해 아무것도 증명하지 않는다. 5xx에서 "토큰이 무효"라고 단정하면
+            # **토큰에 대한 판정을 못 내는 것은 5xx뿐이다.** 5xx는 Facebook 쪽 처리 실패이므로 그 응답에 실린
+            # 코드가 무엇이든(190이라도) 토큰에 대해 아무것도 증명하지 않는다. 그 밖의 상태(4xx든 200이든)에서
+            # code 190은 Facebook이 토큰에 대해 하는 말이므로 판정을 낸다. 5xx에서 "토큰이 무효"라고 단정하면
             # 멀쩡한 토큰을 버리고 새로 발급하게 된다 — `check_token`이 답을 못 받은 요청을 `ok=False`로
             # 돌려주지 않는 것과 같은 이유다.
             invalid_token=not server_side and isinstance(error, dict) and error.get("code") == _INVALID_TOKEN_CODE,
@@ -319,7 +325,9 @@ def _read_only_message(label: str, page_id: str) -> str:
     """
     return "\n".join((
         _PROOF,
-        f"이 토큰으로 페이지 '{label}'({page_id})에 접근할 수 있습니다. 이 검사가 알려 주는 것은 그 하나입니다.",
+        # "접근할 수 있습니다"라고 쓰지 않는다: 쓰기까지 포함해 읽힐 수 있고, 증명한 것은 읽을 수 있다는 것뿐이다.
+        # 아래 줄들도 모두 "읽을 수 있다"로 말하므로 한 줄만 느슨해지지 않게 같은 말을 쓴다.
+        f"이 토큰으로 페이지 '{label}'({page_id})의 정보를 읽을 수 있습니다. 이 검사가 알려 주는 것은 그 하나입니다.",
         f"글을 올리는 데 필요한 권한을 이 토큰이 가졌는지는 확인하지 못했습니다. {_WHY_NO_SCOPES}.",
         "이 토큰의 주인이 이 페이지에서 역할을 가졌는지도 확인하지 못했습니다. "
         "다른 페이지의 토큰이라도 이 페이지를 읽을 수 있으면 이 검사를 통과할 수 있습니다.",

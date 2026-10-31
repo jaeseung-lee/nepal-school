@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone, tzinfo
 from pathlib import Path
 from urllib.parse import quote, quote_plus
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import pytest
 
@@ -26,9 +26,6 @@ SENTINEL = "EAAZ-SENTINEL-not-a-real-token-7c41e9d2b8"
 PAGE = "100200300"  # config.PAGE_ID와 일부러 다르다: 코드가 인자를 쓰는지 상수를 쓰는지 가른다
 BASE = f"https://graph.facebook.com/{config.GRAPH_VERSION}"
 JST = timezone(timedelta(hours=9))
-# 이 사업에 쓰이는 시간대(JST·KST·베트남·미얀마·네팔)에는 DST가 없다. DST가 있는 지역을 하나 끌어오는 것은
-# assert_schedulable이 벽시계가 아니라 절대 시간으로 견주는지 가르기 위해서다(고정 오프셋으로는 가를 수 없다).
-NEW_YORK = ZoneInfo("America/New_York")
 NOW = datetime(2026, 11, 1, 12, 0, tzinfo=JST)
 PUBLISH_AT = datetime(2026, 11, 1, 19, 0, tzinfo=JST)
 PUBLISH_UNIX = "1793527200"  # 2026-11-01T10:00:00Z. `date -u`와 파이썬 두 갈래로 따로 계산한 값
@@ -136,6 +133,20 @@ def image(tmp_path) -> Path:
     path = tmp_path / "post-01.jpg"
     path.write_bytes(b"\xff\xd8\xff-fake-jpeg-bytes")
     return path
+
+
+def new_york() -> ZoneInfo:
+    """DST를 지키는 시간대 하나. 이 사업에 쓰이는 시간대(JST·KST·베트남·미얀마·네팔)에는 DST가 없으므로,
+    `assert_schedulable`이 벽시계가 아니라 절대 시간으로 견주는지 가르려면 이것이 필요하다(고정 오프셋으로는 못 가른다).
+
+    **모듈 수준에서 만들지 않는다.** 시간대 DB가 없는 환경에서 `ZoneInfo(...)`가 수집 단계에서 터지면 이 파일
+    전체(그리고 묶음 전체)가 죽는다. 이 묶음이 이 프로젝트의 유일한 안전망이므로, 못 돌리는 환경에서는 안전망이
+    조용히 꺼지는 대신 **DST 시험 둘만** 건너뛰어야 한다.
+    """
+    try:
+        return ZoneInfo("America/New_York")
+    except ZoneInfoNotFoundError as exc:
+        pytest.skip(f"시간대 DB가 없어 DST 시험만 건너뜁니다: {exc}")
 
 
 def has_hangul(text: str) -> bool:
@@ -301,7 +312,7 @@ def test_error가_문자열인_거절도_ok_False이고_토큰_무효로_단정�
 def test_응답에_이름이_없으면_page_name은_None이고_안내는_page_id를_쓴다():
     status = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"id": PAGE})))
     assert status.ok is True and status.page_name is None
-    assert f"이 토큰으로 페이지 '{PAGE}'({PAGE})에 접근할 수 있습니다" in status.message
+    assert f"이 토큰으로 페이지 '{PAGE}'({PAGE})의 정보를 읽을 수 있습니다" in status.message
 
 
 @pytest.mark.parametrize("name", ["", None, 123], ids=["빈-문자열", "None", "숫자"])
@@ -355,7 +366,10 @@ def test_error가_긴_문자열이면_발췌해서_싣는다():
 def test_message는_권한을_확인하지_못했고_읽기가_쓰기를_뜻하지_않는다고_늘_말한다():
     message = graph.check_token(SENTINEL, PAGE, session=token_session()).message
     assert has_hangul(message)
-    assert f"이 토큰으로 페이지 '정우인재개발원'({PAGE})에 접근할 수 있습니다" in message
+    # 이 메시지의 존재 이유가 과장하지 않는 것이므로 "접근"처럼 쓰기까지 포함해 읽히는 말을 쓰지 않는다:
+    # 증명한 것은 읽을 수 있다는 것뿐이고, 모든 줄이 같은 말을 써야 한 줄만 느슨해지는 일이 없다.
+    assert f"이 토큰으로 페이지 '정우인재개발원'({PAGE})의 정보를 읽을 수 있습니다" in message
+    assert "접근" not in message
     assert "이 토큰이 가졌는지는 확인하지 못했습니다" in message
     for name, help_text in (("pages_manage_posts", "페이지에 글과 사진 올리기"),
                             ("pages_read_engagement", "페이지 게시물 읽기"),
@@ -411,8 +425,8 @@ def test_message는_초록불처럼_읽히는_문장을_쓰지_않는다():
 def test_message의_단서는_페이지_이름이_없어도_같다():
     named = graph.check_token(SENTINEL, PAGE, session=token_session()).message
     unnamed = graph.check_token(SENTINEL, PAGE, session=token_session(page=FakeResponse(200, {"id": PAGE}))).message
-    assert f"페이지 '{PAGE}'({PAGE})에 접근할 수 있습니다" in unnamed
-    assert named.split("접근할 수 있습니다", 1)[1] == unnamed.split("접근할 수 있습니다", 1)[1]
+    assert f"페이지 '{PAGE}'({PAGE})의 정보를 읽을 수 있습니다" in unnamed
+    assert named.split("의 정보를 읽을 수 있습니다", 1)[1] == unnamed.split("의 정보를 읽을 수 있습니다", 1)[1]
 
 
 # ── assert_schedulable ───────────────────────────────────────────────────────
@@ -498,16 +512,18 @@ def test_DST가_접히는_구간에서도_벽시계가_아니라_절대_시간�
     # 두 시각의 tzinfo가 같으면 파이썬은 오프셋을 무시하고 벽시계를 뺀다(CPython이 문서로 정한 동작).
     # 미국 동부가 서머타임을 끝내는 새벽 한 시가 두 번 지나가는 구간에서, 절대 시간으로 10분 뒤인 예약이
     # 벽시계로는 50분 전으로 계산돼 "이미 지난 시각"으로 거절됐다.
-    now = datetime(2026, 11, 1, 1, 55, tzinfo=NEW_YORK, fold=0)        # EDT, -04:00
-    publish_at = datetime(2026, 11, 1, 1, 5, tzinfo=NEW_YORK, fold=1)  # EST, -05:00 → 절대 시간으로 10분 뒤
+    zone = new_york()
+    now = datetime(2026, 11, 1, 1, 55, tzinfo=zone, fold=0)        # EDT, -04:00
+    publish_at = datetime(2026, 11, 1, 1, 5, tzinfo=zone, fold=1)  # EST, -05:00 → 절대 시간으로 10분 뒤
     assert publish_at.astimezone(timezone.utc) - now.astimezone(timezone.utc) == timedelta(minutes=10)
-    assert publish_at - now == timedelta(minutes=-50)                  # 벽시계로 빼면 이렇게 어긋난다
+    assert publish_at - now == timedelta(minutes=-50)               # 벽시계로 빼면 이렇게 어긋난다
     assert graph.assert_schedulable(publish_at, now) is None
 
 
 def test_DST가_접히는_구간의_안내도_절대_시간으로_계산한_시각을_적는다():
-    now = datetime(2026, 11, 1, 1, 55, tzinfo=NEW_YORK, fold=0)
-    publish_at = datetime(2026, 11, 1, 1, 4, tzinfo=NEW_YORK, fold=1)  # 절대 시간으로 9분 뒤: 창 밖
+    zone = new_york()
+    now = datetime(2026, 11, 1, 1, 55, tzinfo=zone, fold=0)
+    publish_at = datetime(2026, 11, 1, 1, 4, tzinfo=zone, fold=1)  # 절대 시간으로 9분 뒤: 창 밖
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(publish_at, now)
     message = str(caught.value)
@@ -515,6 +531,22 @@ def test_DST가_접히는_구간의_안내도_절대_시간으로_계산한_시�
     # 가장 이른 가능 시각도 벽시계가 아니라 절대 시간으로 센다: 01:55 EDT + 10분 = 01:05 EST(같은 순간).
     # 운영자가 읽는 시각은 now의 시간대로 적는다(UTC로 바꿔 적으면 읽는 사람이 다시 환산해야 한다).
     assert "10분 뒤(2026-11-01T01:05:00-05:00)" in message
+
+
+def test_DST를_건너는_75일_경계의_안내도_절대_시간으로_계산한_시각을_적는다():
+    # 창의 먼 쪽 경계(latest)도 같은 산수여야 한다. 가까운 쪽(earliest)만 고치면 이 메시지가 한 시간 틀린 시각을
+    # 적고, 운영자는 되는 시각을 안 된다고 읽거나 그 반대로 읽는다.
+    zone = new_york()
+    now = datetime(2026, 11, 1, 1, 55, tzinfo=zone, fold=0)        # EDT, -04:00 (= 05:55 UTC)
+    publish_at = datetime(2027, 1, 15, 0, 56, tzinfo=zone)         # EST, -05:00 → 절대 시간으로 75일 1분 뒤
+    assert publish_at.astimezone(timezone.utc) - now.astimezone(timezone.utc) == timedelta(days=75, minutes=1)
+    assert publish_at - now == timedelta(days=74, hours=23, minutes=1)  # 벽시계로 빼면 창 안으로 보인다
+    with pytest.raises(graph.GraphError) as caught:
+        graph.assert_schedulable(publish_at, now)
+    message = str(caught.value)
+    assert "너무 멉니다" in message and "75일 1분 뒤입니다" in message
+    # 01:55 EDT + 75일 = 00:55 EST(같은 순간). 벽시계로 더하면 01:55로 한 시간 틀린다.
+    assert "75일 뒤(2027-01-15T00:55:00-05:00)" in message
 
 
 def test_예약_창은_config_값을_따른다(monkeypatch):
@@ -671,9 +703,10 @@ def test_API가_오류를_주면_GraphError에_한국어_설명(image, response)
 
 @pytest.mark.parametrize("status", [500, 502, 503])
 def test_5xx에_error_객체가_있으면_결과를_알_수_없는_실패다(image, status):
-    # Graph의 code 1·2는 Meta 쪽 일시 장애에 5xx와 함께 돌아오고, Meta의 안내는 재시도다. 사진 업로드는 멱등이 아니므로
-    # 그 사이에 게시물이 만들어졌을 수 있다. maybe_created를 False로 두면 Task 9가 "안 나갔으니 재시도해도 안전하다"로
-    # 읽어 같은 사진이 실제 페이지에 두 번 나간다.
+    # 5xx는 Facebook이 요청을 받아 처리하다 자기 쪽에서 실패한 것이다. 사진 업로드는 멱등이 아니므로 그 사이에
+    # 게시물이 만들어졌을 수 있다. maybe_created를 False로 두면 Task 9가 "안 나갔으니 재시도해도 안전하다"로
+    # 읽어 같은 사진이 실제 페이지에 두 번 나간다. 가르는 기준은 상태 코드뿐이다 — 어떤 오류 코드가 일시 장애인지를
+    # 1차 출처 없이 적지 않는다(아래 응답은 그런 응답의 한 예일 뿐이고, 코드 번호에 기대는 단정은 하지 않는다).
     response = FakeResponse(status, {"error": {"message": "An unexpected error has occurred. Please retry your request later.",
                                                "type": "OAuthException", "code": 2, "fbtrace_id": "TRACE5"}})
     with pytest.raises(graph.GraphError) as caught:
@@ -697,8 +730,11 @@ def test_토큰_점검의_5xx도_거절이_아니라_처리_실패로_적는다(
     assert status.message.startswith("토큰을 확인하지 못했습니다. ")
     assert "페이지 정보 조회 요청을 Facebook 쪽에서 처리하지 못했습니다 (HTTP 503)" in status.message
     assert "거절했습니다" not in status.message
-    assert "(#1) An unknown error occurred" in status.message and "code 1" in status.message
+    assert "An unknown error occurred" in status.message and "code 1" in status.message
     assert "유효하지 않" not in status.message and "만료" not in status.message  # 토큰 탓이라고 단정하지 않는다
+    # 결과 불명 안내는 **쓰기**에만 붙는다. 읽기만 하는 검사가 "예약이 만들어졌을 수 있다"고 말하면 거짓이고,
+    # 운영자는 만들지도 않은 게시물을 찾으러 간다.
+    assert "만들어졌을 수" not in status.message and "예약된 게시물" not in status.message
     assert len(session.calls) == 1
 
 
@@ -718,9 +754,12 @@ def test_5xx는_오류_코드가_무엇이든_토큰에_대한_판정을_내지_
     assert len(session.calls) == 1
 
 
-def test_4xx의_토큰_무효_판정은_그대로다():
-    # 반대쪽을 함께 묶어 둔다: 4xx에서는 code 190이 토큰에 대한 판정이고, 그 판정이 사라지면 안 된다.
-    response = FakeResponse(400, {"error": {"message": "Error validating access token", "code": 190}})
+@pytest.mark.parametrize("status_code", [400, 403, 200])
+def test_5xx가_아니면_토큰_무효_코드는_판정을_낸다(status_code):
+    # 반대쪽을 함께 묶어 둔다. 못 믿을 경우는 **서버가 애초에 처리를 못 한 5xx뿐**이고, 그 밖의 상태에서
+    # code 190은 Facebook이 토큰에 대해 하는 말이므로 판정을 낸다 — 200에 실려 와도 마찬가지다.
+    # 이것을 "4xx에서만"으로 좁히면 200에 실린 190이 판정 없이 지나간다.
+    response = FakeResponse(status_code, {"error": {"message": "Error validating access token", "code": 190}})
     status = graph.check_token(SENTINEL, PAGE, session=token_session(page=response))
     assert status.ok is False
     assert "유효하지 않" in status.message or "만료" in status.message
@@ -752,6 +791,20 @@ def test_2xx가_아니면_본문이_멀쩡해도_실패다(image, status):
     with pytest.raises(graph.GraphError) as caught:
         graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
     assert f"HTTP {status}" in str(caught.value)
+
+
+@pytest.mark.parametrize("status", [199, 300, 301, 400, 404])
+def test_오류_객체_없이_실패한_상태는_4xx여도_쓰기에서는_결과_불명이다(image, status):
+    # 거절한다는 말(error 객체)이 없으면 이 응답을 Facebook이 썼는지조차 알 수 없다 — 중간 장비(프록시·게이트웨이)가
+    # 답했을 수도 있고, Facebook이 받아 처리한 뒤 답이 바뀐 것일 수도 있다. 그래서 4xx여도 **보수적으로** 결과
+    # 불명이다: 모르면 사람이 한 번 확인하는 쪽이 같은 사진을 두 번 올리는 것보다 싸다.
+    session = photo_session(FakeResponse(status, {"ok": False}, text='{"ok": false}'))
+    with pytest.raises(graph.GraphError) as caught:
+        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+    assert caught.value.maybe_created is True
+    message = str(caught.value)
+    assert f"요청이 실패했습니다 (HTTP {status}). 응답에 오류 내용이 없습니다" in message
+    assert "만들어졌을 수" in message and "예약된 게시물" in message
 
 
 def test_빈_error_객체도_거절이다(image):
@@ -957,11 +1010,21 @@ def token_fragments(token: str, length: int = 8) -> set[str]:
     return {token[start:start + length] for start in range(len(token) - length + 1)}
 
 
-@pytest.mark.parametrize("make_response", [
-    pytest.param(lambda body: FakeResponse(502, text=body, json_error=ValueError("Expecting value")), id="JSON이-아닌-본문"),
-    pytest.param(lambda body: FakeResponse(400, {"error": body}), id="error가-문자열"),
+# `_excerpt`를 부르는 자리는 네 곳이고 **자리마다 토큰을 넘겨야** 한다. 한 자리만 토큰을 빼먹어도 그 경로에서는
+# 토큰 조각이 샌다. 그래서 네 자리를 한 묶음이 아니라 **케이스 하나씩** 겨눈다 — 한 자리만 되돌리면 그 케이스
+# 하나만 빨개져야 한다. `증거`는 그 케이스가 겨눈 자리를 실제로 지났다는 표시다(응답 모양이 바뀌어 다른 분기로
+# 흘러가면 가리기를 시험하지 않고도 통과할 수 있기 때문이다).
+@pytest.mark.parametrize(("make_response", "증거"), [
+    pytest.param(lambda body: FakeResponse(502, text=body, json_error=ValueError("Expecting value")),
+                 "응답이 JSON이 아닙니다 (HTTP 502)", id="JSON이-아닌-본문"),
+    pytest.param(lambda body: FakeResponse(200, ["목록"], text=body),
+                 "응답이 JSON 객체가 아닙니다 (HTTP 200)", id="JSON-객체가-아닌-본문"),
+    pytest.param(lambda body: FakeResponse(500, {"다른": "값"}, text=body),
+                 "요청이 실패했습니다 (HTTP 500). 응답에 오류 내용이 없습니다", id="오류-객체-없는-실패-상태"),
+    pytest.param(lambda body: FakeResponse(400, {"error": body}),
+                 "Facebook이 거절했습니다 (HTTP 400)", id="error가-문자열"),
 ])
-def test_토큰이_발췌_경계에_걸쳐도_토큰_조각이_남지_않는다(make_response):
+def test_토큰이_발췌_경계에_걸쳐도_토큰_조각이_남지_않는다(make_response, 증거):
     # 가리기보다 자르기가 먼저 일어나면 경계에 걸친 토큰의 앞부분만 남아 세 모양 어디에도 맞지 않는 조각이 메시지에 실린다.
     # (프록시·WAF의 오류 페이지가 Authorization 헤더를 되풀이하는 경우.) 가린 뒤에 자르면 남을 조각이 없다.
     body = "A" * (_N - 20) + SENTINEL
@@ -970,6 +1033,7 @@ def test_토큰이_발췌_경계에_걸쳐도_토큰_조각이_남지_않는다(
         rendered = graph.check_token(SENTINEL, PAGE, session=session).message
     except graph.GraphError as exc:
         rendered = "".join(f"{item}{item!r}" for item in chain(exc))
+    assert 증거 in rendered
     assert SENTINEL not in rendered
     assert not [piece for piece in token_fragments(SENTINEL) if piece in rendered]
 
