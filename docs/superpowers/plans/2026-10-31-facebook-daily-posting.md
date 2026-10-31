@@ -231,15 +231,15 @@ git commit -m "feat(facebook): plan.json 스키마와 로더 추가"
 ### Task 4: 구조 검증 — 로테이션·일정·이미지·사실 만료
 
 **Files:**
-- Create: `scripts/facebook/validate.py`
+- Create: `scripts/facebook/validate_structure.py` / `scripts/facebook/validate_copy.py`
 - Create: `scripts/facebook/tests/test_validate_structure.py`
 
 **Interfaces:**
 - Consumes: `plan_model.Plan`/`Post`, `facts.Fact`, `config.*` (Task 1, 3)
 - Produces:
-  - `validate.Finding` — frozen dataclass: `severity: Literal["error", "warning"]`, `code: str`, `post_index: int | None`, `message: str` (한국어)
-  - `validate.validate_structure(plan: Plan, images_dir: Path) -> list[Finding]`
-  - `validate.validate_facts(plan: Plan, facts: dict[str, Fact]) -> list[Finding]`
+  - `findings.Finding` — frozen dataclass: `severity: Literal["error", "warning"]`, `code: str`, `post_index: int | None`, `message: str` (한국어)
+  - `validate_structure.validate_structure(plan: Plan, images_dir: Path) -> list[Finding]`
+  - `validate_structure.validate_facts(plan: Plan, facts: dict[str, Fact]) -> list[Finding]`
 
 - [ ] **Step 1: Write the failing test**
 
@@ -271,7 +271,7 @@ def test_모두_정상이면_findings가_비어_있다():
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
 Expected: FAIL — `ImportError: cannot import name 'validate_structure'`
 
-- [ ] **Step 3: Implement `validate_structure` and `validate_facts` in `scripts/facebook/validate.py`**
+- [ ] **Step 3: Implement `validate_structure` and `validate_facts` in `scripts/facebook/validate_structure.py` / `scripts/facebook/validate_copy.py`**
 
 `validate_facts`는 반드시 `post.publish_at.date()` 를 `Fact.is_valid_on`에 넘긴다 — 실행일이 아니다. 프롬프트 검사는 필수 지시 문구 목록을 `config`에 상수로 두고 부분 문자열로 찾는다 (스펙의 "글자 없는 사진", "실존 인물·캠퍼스·회사 시설 금지"를 프롬프트 단계에서 강제하는 유일한 기계적 수단이다).
 
@@ -293,14 +293,14 @@ git commit -m "feat(facebook): 로테이션·일정·이미지·사실 만료 �
 
 **Files:**
 - Create: `scripts/facebook/data/banned-phrases.json`
-- Modify: `scripts/facebook/validate.py`
+- Modify: `scripts/facebook/validate_structure.py` / `scripts/facebook/validate_copy.py`
 - Create: `scripts/facebook/tests/test_validate_copy.py`
 
 **Interfaces:**
-- Consumes: `validate.Finding` (Task 4), `config.UNIVERSITIES_PATH`, `config.GLOSSARY_PATH` (Task 2)
+- Consumes: `findings.Finding` (Task 4), `config.UNIVERSITIES_PATH`, `config.GLOSSARY_PATH` (Task 2)
 - Produces:
-  - `validate.load_banned_phrases(path: Path) -> dict[str, tuple[str, ...]]` — 언어코드(`ko`/`vi`/`my`/`ne`) → 금지 문구 목록
-  - `validate.validate_copy(plan: Plan, universities: list[dict], banned: dict[str, tuple[str, ...]], glossary: dict, facts: dict[str, Fact]) -> list[Finding]`
+  - `validate_copy.load_banned_phrases(path: Path) -> dict[str, tuple[str, ...]]` — 언어코드(`ko`/`vi`/`my`/`ne`) → 금지 문구 목록
+  - `validate_copy.validate_copy(plan: Plan, universities: list[dict], banned: dict[str, tuple[str, ...]], glossary: dict, facts: dict[str, Fact]) -> list[Finding]`
 
 `banned-phrases.json`에는 최소한 합격 보장, 취업 보장, 비용 보장/무료 유학, 상담 이후 절차·수수료 언급, "저희 협력 대학", "입학을 도와드립니다" 계열을 네 언어로 넣는다.
 
@@ -348,7 +348,7 @@ def test_픽스처_플랜은_findings가_비어_있다():
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
 Expected: FAIL — `ImportError: cannot import name 'validate_copy'`
 
-- [ ] **Step 3: Implement `load_banned_phrases` and `validate_copy` in `scripts/facebook/validate.py`**
+- [ ] **Step 3: Implement `load_banned_phrases` and `validate_copy` in `scripts/facebook/validate_structure.py` / `scripts/facebook/validate_copy.py`**
 
 CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에 있는지로 본다. 대학 맥락 규칙은 `post.university_names`가 비어 있지 않을 때만 협력 계열 표현을 찾는다. 용어집 불일치는 경고(warning)로, 나머지는 오류(error)로 낸다.
 
@@ -377,10 +377,10 @@ git commit -m "feat(facebook): 금지 표현·CTA·대학 맥락 문구 검증 �
 **Interfaces:**
 - Consumes: `plan_model.Plan`, `findings.Finding`
 - Produces:
-  - `backtranslation.worksheet(plan: Plan) -> dict` — `{"month": str, "entries": [{"index": int, "language": str, "body_local": str, "back_ko": ""}]}`
-  - `backtranslation.load(path: Path) -> dict[int, str]` — index → `back_ko`
+  - `backtranslation.worksheet(plan: Plan, glossary: dict) -> dict` — `{"month": str, "entries": [{"index": int, "language": str, "body_local": str, "back_ko": ""}]}`
+  - `backtranslation.load(path: Path, *, plan: Plan | None = None, glossary: dict | None = None) -> dict[int, str]` — index → `back_ko`. `plan`과 `glossary`를 둘 다 넘기면 `body_hash`로 신선도를 검증하고 낡은 항목을 `WorksheetError`로 거부한다(하나만 넘기면 `ValueError`, 둘 다 안 넘기면 검증하지 않는다)
   - `backtranslation.divergence(source_ko: str, back_ko: str) -> float` — 0.0(동일)~1.0(완전 상이)
-  - `backtranslation.validate_backtranslation(plan: Plan, back: dict[int, str], *, threshold: float = 0.45) -> list[Finding]`
+  - `backtranslation.validate_backtranslation(plan: Plan, back: dict[int, str], glossary: dict, *, threshold: float = 0.45) -> list[Finding]`
 
 - [ ] **Step 1: Write the failing test**
 
@@ -392,6 +392,13 @@ def test_차이가_임계값을_넘으면_경고():
     # severity == "warning", code == "역번역차이"
 def test_거의_같은_문장이면_findings가_비어_있다():
 def test_divergence는_0과_1_사이():
+def test_워크시트는_CTA를_떼고_본문을_내보낸다():
+    # body_local 끝의 glossary["cta"][language]를 정확히 떼어 내보내므로
+    # 채우는 쪽이 CTA를 역번역할 일이 없다
+def test_되번역의_숫자가_원문과_다르면_오류():
+    # source_ko의 숫자열 다중집합과 back_ko의 것이 다르면 code == "역번역수치", severity == "error"
+def test_load는_본문이_바뀐_워크시트를_거부한다():
+    # worksheet가 적어 둔 body_hash가 현재 body_local과 다르면 WorksheetError
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -401,12 +408,12 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.backtranslati
 
 - [ ] **Step 3: Implement `scripts/facebook/backtranslation.py`**
 
-`divergence`는 `1.0 - difflib.SequenceMatcher(None, a, b).ratio()`로 두되, 비교 전에 공백과 문장부호를 정규화한다. 누락·빈 칸은 error, 임계값 초과는 warning이다 (경고는 예약을 막지 않지만 검토 화면 상단에 뜬다).
+`divergence`는 `difflib.SequenceMatcher(autojunk=False)`의 `ratio()`를 **양방향으로 재서 평균한** 값의 여수로 둔다 — `ratio()`는 비대칭이어서(`tide`/`diet` → 0.25 대 0.5) 한 방향만 재면 인자 순서가 결과를 바꾼다. 비교 전에 공백과 문장부호를 정규화한다. 누락·빈 칸과 숫자열 불일치는 error, 임계값 초과는 warning이다 (경고는 예약을 막지 않지만 검토 화면 상단에 뜬다).
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_backtranslation.py -v`
-Expected: PASS (6 passed)
+Expected: PASS (9 passed)
 
 - [ ] **Step 5: Commit**
 
@@ -419,16 +426,20 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
 
 ### Task 7: 검토 HTML 생성
 
+이 화면이 **뜻을 확인하는 유일한 지점**이다. Task 6이 실측으로 보인 대로 문자 유사도는 부정 뒤집힘(0.05)·금액 변경(0.01)·약속 문장 추가(0.12)를 충실한 의역의 잡음(0.08~0.12)과 구분하지 못한다. 그래서 이 화면의 요구사항은 "보기 좋게"가 아니라 **사람이 세 단을 실제로 읽게 만드는 것**이고, 어떤 게시물에 달린 오류가 위쪽 요약에만 있어서 지나치는 일이 없어야 한다.
+
 **Files:**
 - Create: `scripts/facebook/review.py`
 - Create: `scripts/facebook/tests/test_review.py`
+- Modify: `scripts/facebook/backtranslation.py` (공개 측정 함수 추가)
 
 **Interfaces:**
 - Consumes: `plan_model.Plan`, `findings.Finding`, `backtranslation.load`
 - Produces:
-  - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], images_dir: Path) -> str` — 완결된 HTML 문서 문자열
+  - `backtranslation.divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]` — 게시물 index → 차이값. `validate_backtranslation`과 **같은 CTA 제거 경로**를 쓴다(비공개 도우미를 공유하고 떼는 규칙을 두 번 쓰지 않는다). 역번역이 없거나 빈 게시물은 키에 넣지 않는다.
+  - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path) -> str` — 완결된 HTML 문서 문자열
 
-레이아웃: 상단에 오류·경고 요약, 그 아래 게시물 30개를 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 현지어 본문 / 되번역 한국어** 세 단. 이미지는 `images_dir` 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
+레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 현지어 본문 / 되번역 한국어** 세 단을 같은 너비로 나란히 두고, 한국어 원문과 되번역을 서로 붙여 눈이 바로 견주게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -436,9 +447,21 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
 def test_모든_게시물이_렌더된다():
 def test_한국어_원문과_되번역이_모두_들어간다():
 def test_오류가_있으면_상단_요약에_표시된다():
-def test_이미지_경로가_상대경로로_들어간다():
+def test_게시물에_달린_finding이_그_게시물_자리에도_표시된다():
+    # post_index=2의 error가 2번 게시물 블록 안에 코드와 메시지로 나타난다
+    # (요약에만 있으면 긴 목록에서 지나친다)
+def test_오류가_없으면_없다고_명시한다():
+    # findings가 비면 요약이 비어 있지 않고 "오류 0건"·"경고 0건"을 적는다
+def test_차이값이_게시물마다_표시된다():
+def test_차이값은_backtranslation의_측정을_그대로_쓴다():
+    # render가 받은 divergences의 값이 출력에 그대로 들어간다(재계산하지 않는다)
+def test_이미지_경로가_HTML_위치_기준_상대경로다():
+    # src == "images/<image_file>"  (images_dir=<month>/images, HTML=<month>/review.html)
+def test_이미지_프롬프트가_들어간다():
 def test_본문이_HTML_이스케이프된다():
     # body_local에 "<script>" → 출력에 "&lt;script&gt;"
+def test_되번역과_프롬프트와_finding_메시지도_이스케이프된다():
+    # 사람이 채우는 칸과 기계가 만든 메시지 모두 이스케이프된다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -446,14 +469,14 @@ def test_본문이_HTML_이스케이프된다():
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 
-- [ ] **Step 3: Implement `render(...) -> str` in `scripts/facebook/review.py`**
+- [ ] **Step 3: Implement `divergences` in `backtranslation.py`, then `render(...) -> str` in `scripts/facebook/review.py`**
 
-템플릿 엔진을 들이지 않고 f-string과 `html.escape`로 조립한다. 미얀마 문자와 데바나가리가 깨지지 않도록 `<meta charset="utf-8">`와 시스템 폰트 스택을 넣는다.
+템플릿 엔진을 들이지 않고 f-string과 `html.escape`로 조립한다. 미얀마 문자와 데바나가리가 깨지지 않도록 `<meta charset="utf-8">`와 시스템 폰트 스택을 넣는다. 상대 경로는 `os.path.relpath(images_dir / post.image_file, start=images_dir.parent)`로 만들고 구분자를 `/`로 맞춘다.
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
-Expected: PASS (5 passed)
+Expected: PASS (11 passed)
 
 - [ ] **Step 5: Commit**
 
@@ -589,6 +612,16 @@ git commit -m "feat(facebook): 예약 실행과 재실행 안전 원장 추가"
 
 npm 스크립트: `fb:check-token`, `fb:images`, `fb:validate`, `fb:review`, `fb:schedule`, `test:facebook`.
 
+**이 task가 받아 온 결정들 (선행 task의 carry-forward — 전부 이 task가 이행해야 한다):**
+
+- **플랜 작성 세션에게 이미지 프롬프트 규칙을 보여 줘야 한다.** Task 4가 `config.IMAGE_PROMPT_NO_TEXT`와 `config.IMAGE_PROMPT_NO_REAL_SUBJECTS` 두 문구를 프롬프트 안에서 **문구 그대로** 요구하는데, 지금 그 문구를 플랜 작성자에게 알려 주는 자리가 어디에도 없다. `images` 출력과 운영 문서의 플랜 작성 지침이 둘 다 이 두 상수를 그대로 보여 준다.
+- **수는 숫자로, 원문과 같은 단위로.** Task 6의 `역번역수치`는 숫자열 다중집합을 견주므로, 한국어 원문이 `1년치`로 쓰고 현지어 본문이 `cả năm`처럼 말로 쓰면 충실한 역번역에도 되찾을 숫자가 없어 거짓 오류가 난다. `680만 원` 대 `6,800,000원`도 같은 부류다. 플랜 작성 지침에 "수는 숫자로 적고, 단위를 바꾸지 말 것"을 명시한다. 베트남어의 점 천단위(`6.800.000`)는 역번역에서 쉼표로 적어야 한다(검사는 쉼표만 제거한다).
+- **월간 절차의 호출 순서가 고정되어 있다.** `validate_copy` → `backtranslation.worksheet(plan, glossary)` → `backtranslation.load(path, plan=plan, glossary=glossary)`. `worksheet`는 본문이 해당 언어 CTA로 끝나지 않으면 raise하므로 문구 검증이 먼저다. **신선도 보호는 `load`에 `plan`과 `glossary`를 둘 다 넘길 때만 존재한다** — 하나만 넘기면 `ValueError`, 둘 다 안 넘기면 낡은 워크시트가 조용히 통과한다.
+- **플랜 JSON은 `fact_keys`와 `university_names`를 비어 있어도 반드시 쓴다(`[]`).** 키가 없으면 Task 3의 로더가 거부한다.
+- **검토 화면은 `config.month_dir(month)/review.html`에 쓴다.** 이미지는 `month_dir/images/`에 있고 HTML이 그 부모에 놓이므로 상대 경로가 `images/<파일명>`이 된다.
+- **운영 문서는 한계를 숨기지 않고 적는다.** (1) 역번역의 문자 유사도는 부정 뒤집힘·금액 변경·약속 문장 추가를 잡지 못한다 — 뜻은 검토 화면의 세 단을 사람이 읽어야 확인된다. (2) `banned-phrases.json`의 베트남어·미얀마어·네팔어 문구와 1인칭 제외 낱말은 AI가 작성했고 **원어민 검수를 받지 않았다** — 첫 실제 월 운영 전에 검수가 필요하다. (3) `주 20시간` 같은 1차 출처를 못 찾은 수치는 `facts.json`에 일부러 넣지 않았으므로 게시물에 쓸 수 없다.
+
+
 - [ ] **Step 1: Write the failing test**
 
 ```python
@@ -600,6 +633,10 @@ def test_month_인자가_없으면_오류():
 def test_images는_프롬프트와_파일명을_모두_출력한다():
 def test_FB_PAGE_TOKEN이_없으면_종료코드_2와_한국어_안내():
 def test_오류_출력에_토큰_값이_들어가지_않는다():
+def test_images는_글자금지와_실존인물금지_지시도_출력한다():
+    # config.IMAGE_PROMPT_NO_TEXT와 IMAGE_PROMPT_NO_REAL_SUBJECTS가 출력에 그대로 들어간다
+def test_validate는_낡은_역번역_워크시트를_오류로_잡는다():
+    # 워크시트를 만든 뒤 플랜의 본문을 고치면 종료코드 1과 한국어 안내
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
