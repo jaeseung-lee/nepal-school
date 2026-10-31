@@ -256,9 +256,17 @@ def _forget(path: Path, entries: dict[int, _Entry], post: Post) -> None:
         ) from exc
 
 
-def _resolve_unknown(path: Path, index: int) -> str:
+def _resolve_unknown(path: Path) -> str:
+    """결과 불명을 사람이 되돌리는 법. **게시물 번호를 넣지 않는다.**
+
+    이 글은 `Outcome.error`로 나가고 부르는 쪽(`cli._reasons`)이 **같은 까닭을 한 묶음으로** 모아 번호를 목록으로
+    한 번 적는다. 여기에 번호를 박으면 까닭 문자열이 게시물마다 달라져 묶기가 쪼개진다. 전면 네트워크 장애에서
+    거의 같은 ~390자 문단이 게시물 수만큼 찍혀(6건에서 까닭 절 2,880자, 서른 건이면 ~1만 4천 자) 운영자가
+    읽어야 할 화면이 벽이 된다 — 하필 결과 불명이 무더기로 난 직후, 중복 게시 위험이 가장 높은 순간이다.
+    원장 경로는 게시물과 무관하므로 남겨 둔다(어느 파일을 고치는지는 그 자리에 있어야 한다).
+    """
     return (
-        f'원장 {path}의 "{index}" 줄에서 "{_RESULT}"를 "{CONFIRMED_BY_HAND}"으로 바꾸고, 없으면 그 줄을 지운 뒤 다시 실행하세요.'
+        f'원장 {path}에서 그 번호의 줄의 "{_RESULT}"를 "{CONFIRMED_BY_HAND}"으로 바꾸고, 없으면 그 줄을 지운 뒤 다시 실행하세요.'
     )
 
 
@@ -396,7 +404,7 @@ def _schedule_one(
             return Outcome(
                 post.index, False, UNKNOWN_RESULT,
                 f'{exc} 이 게시물은 원장에 "{UNKNOWN_RESULT}"으로 적어 두었으므로 다시 실행해도 건너뜁니다. '
-                f"페이스북 페이지에 예약된 것이 있으면 {_resolve_unknown(ledger_path, post.index)}",
+                f"페이스북 페이지에 예약된 것이 있으면 {_resolve_unknown(ledger_path)}",
             )
         # Facebook이 분명히 거절했다(또는 요청이 나가지 않았다). 아무것도 만들어지지 않았으니 표시를 지워야 고친 뒤 다시 시도된다.
         _forget(ledger_path, entries, post)
@@ -411,7 +419,7 @@ def _already_recorded(ledger_path: Path, index: int, entry: _Entry) -> Outcome:
         return Outcome(
             index, False, entry.result,
             f"이전 실행에서 결과를 알 수 없었던 게시물(이미지 파일 {entry.image_file})이라 건너뜁니다. 페이스북 페이지의 예약된 게시물에서 "
-            f"이 게시물을 찾아보세요. 있으면 {_resolve_unknown(ledger_path, index)}",
+            f"이 게시물을 찾아보세요. 있으면 {_resolve_unknown(ledger_path)}",
             skipped=True,
         )
     return Outcome(index, True, entry.result, None, skipped=True)

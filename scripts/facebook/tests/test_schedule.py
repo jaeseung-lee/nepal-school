@@ -693,10 +693,17 @@ def test_결과를_알_수_없는_실패는_결과_불명으로_원장에_남고
 
 
 def test_결과_불명_안내는_원장_경로와_고치는_방법을_알려_준다(env):
+    """경로·바꿀 값·되돌리는 절차는 이 글에 있어야 하고, **게시물 번호는 없어야 한다.**
+
+    번호를 박으면 까닭 문자열이 게시물마다 달라져 부르는 쪽(`cli._reasons`)의 「같은 까닭은 한 번만
+    적습니다」가 쪼개진다 — 전면 장애에서 거의 같은 ~390자 문단이 게시물 수만큼 찍혔다. 번호는 묶음
+    머리에 목록으로 한 번 실린다(`tests/test_cli.py`가 그 출력을 못박는다).
+    """
     outcomes = env.run(FakeSession({0: TimeoutError("read timed out")}))
     error = outcomes[0].error
-    for needle in (str(env.ledger), '"0" 줄', "지운 뒤", "다시 실행", "페이스북", schedule.CONFIRMED_BY_HAND):
+    for needle in (str(env.ledger), "그 번호의 줄", "지운 뒤", "다시 실행", "페이스북", schedule.CONFIRMED_BY_HAND):
         assert needle in error
+    assert '"0" 줄' not in error  # 번호가 들어가면 묶기가 쪼개진다
 
 
 def test_표시를_적지_못하면_요청을_보내지_않고_멈춘다(env, monkeypatch):

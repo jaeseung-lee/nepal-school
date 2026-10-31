@@ -706,6 +706,26 @@ def test_schedule은_같은_실패_메시지를_묶어_한_번만_보여_준다(
     assert "0, 1, 2, 3, 4, 5번" in text
 
 
+def test_schedule은_전면_장애의_결과_불명_까닭도_한_묶음으로_적는다(env, 토큰, capsys):
+    """머리글이 「같은 까닭은 한 번만 적습니다」라고 약속한다. 전면 네트워크 장애에서는 여섯 건이 거의 같은
+    ~390자 문단으로 **여섯 번** 찍혔다(측정: 출력 3,204자). 서른 건이면 까닭만 1만 2천 자다. 그리고 이 글을
+    읽는 순간은 하필 결과 불명이 무더기로 난 직후, **중복 게시 위험이 가장 높은 순간**이다 — 벽이 되면
+    운영자는 그 문단 안의 "다시 실행하기 전에 페이스북의 예약된 게시물을 확인하세요"를 넘겨 읽는다.
+
+    묶는 기계가 고장난 것이 아니라 **열쇠**가 잘못됐다: `schedule._resolve_unknown`이 원장 수정 지시에 게시물
+    번호를 박아 까닭 문자열이 게시물마다 달라졌다. 번호는 묶음 머리에 목록으로 한 번 실린다.
+    """
+    fill_worksheet(env)
+    session = FakeSession({number: OSError("Network is unreachable") for number in range(6)})
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=session) == 2
+    text = shown(capsys)
+    assert "결과 불명: 6건" in text
+    assert "게시물 0, 1, 2, 3, 4, 5번 (6건)" in text  # 번호는 잃지 않고 묶음 머리에 목록으로
+    assert text.count("인터넷 연결을 확인하세요") == 1  # ~390자 문단이 한 번만
+    assert text.count(f'"{schedule.CONFIRMED_BY_HAND}"으로 바꾸고') == 1  # 원장 수정 지시도 한 번만
+    assert str(env.ledger) in text  # 묶었어도 어느 파일을 고치는지는 그 자리에 남는다
+
+
 def test_schedule은_이미_예약된_건을_건너뛴_것으로_따로_센다(env, 토큰, capsys):
     fill_worksheet(env)
     env.seed_ledger({
