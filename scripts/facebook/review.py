@@ -205,7 +205,7 @@ def _howto() -> str:
 <li><strong>금액</strong>·기간·시간·날짜·인원이 바뀐 곳</li>
 <li>원문에 없는 <strong>약속</strong>·보장·조건이 덧붙은 곳, 원문에 있던 단서(‘평균’, ‘~일 수 있습니다’)가 빠진 곳</li>
 </ul>
-<p data-role="mark-legend">두 한국어 단에서 <strong>서로 다른 낱말</strong>에 표시가 있고 모양이 셋입니다. {_mark("delete", "붉은 막대")}는 원문에만 있고 되번역에는 없는 말, {_mark("insert", "파란 막대")}는 되번역에만 있고 원문에는 없는 말입니다. 한쪽에만 있는 말은 눈에 가장 빨리 들어오니 먼저 보세요. {_mark("replace", "노란색")}은 양쪽에 말이 있는데 서로 다른 말입니다. 노란색은 의역에서 흔하지만 <strong>뜻을 바꾸는 변경도 대개 노란색입니다</strong>: 부정이 뒤집히면 항상 노란색이고, 덧붙은 약속이나 빠진 단서가 주변 문장을 함께 고쳐 쓰면 노란색이 됩니다. 노란색이 또 의역이라는 뜻은 아닙니다. 표시는 문장을 넘지 않게 끊었습니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다. 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다.</p>
+<p data-role="mark-legend">두 한국어 단에서 <strong>서로 다른 낱말</strong>에 표시가 있고 모양이 셋입니다. {_mark("delete", "붉은 막대")}는 원문에만 있고 되번역에는 없는 말, {_mark("insert", "파란 막대")}는 되번역에만 있고 원문에는 없는 말, {_mark("replace", "노란색")}은 양쪽에 말이 있는데 서로 다른 말입니다. <strong>세 모양은 낱말이 어떻게 다른지만 말하고, 뜻이 바뀌었는지는 말하지 않습니다.</strong> 뜻을 바꾸는 변경은 세 모양 어느 것으로도 나타납니다: 부정은 ‘-지 않’이 붙거나 ‘있’과 ‘없’이 뒤바뀌면 노란색이지만 ‘안’·‘못’이 덧붙으면 파란 막대, 빠지면 붉은 막대입니다. 한 글자짜리 막대 하나가 문장의 뜻을 뒤집을 수 있습니다. 그러므로 <strong>표시된 곳은 모양을 가리지 말고 모두 읽으세요.</strong> 막대를 먼저 보는 것은 눈에 빨리 들어와서일 뿐 뜻이 거기 있어서가 아닙니다. 노란색은 의역에서 흔하지만 노란색이 또 의역이라는 뜻은 아닙니다. 표시는 문장을 넘지 않게 끊었습니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다. 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다.</p>
 <p class="caveat">‘글자 차이’ 숫자는 두 한국어 글의 글자 유사도일 뿐 뜻을 재지 않습니다. 부정이 뒤집히거나 금액이 바뀌어도 낮게 나오고, 뜻이 같은 의역도 높게 나옵니다. 숫자가 낮다는 것은 읽지 않아도 되는 근거가 아닙니다.</p>
 </aside>"""
 
@@ -317,7 +317,14 @@ def _divergence(value: float | None, back_text: str | None) -> str:
 
 
 _PIECE = re.compile(r"\S+|\s+")
-_SENTENCE_FINAL = re.compile(SENTENCE_END.pattern + r"\Z")  # 낱말이 문장 끝 글자로 끝나는가
+
+
+def _ending_with(pattern: re.Pattern[str]) -> re.Pattern[str]:
+    """`pattern`이 문자열의 끝에서 끝나는 패턴. 패턴을 자기 묶음 안에 넣어 `\\Z`가 최상위 `|`의 모든 갈래에 걸리게 한다."""
+    return re.compile(rf"(?:{pattern.pattern})\Z")
+
+
+_SENTENCE_FINAL = _ending_with(SENTENCE_END)  # 낱말이 문장 끝 글자로 끝나는가
 
 
 def _pieces(text: str) -> tuple[list[str], list[int]]:
@@ -484,16 +491,17 @@ def render(
     `cta_ko`는 용어집의 한국어 CTA(`glossary["cta"]["ko"]`)이고 **반드시 넘겨야 한다**(키워드 전용, 기본값 없음 —
     빼먹으면 `TypeError`). 낱말 강조가 `validate_backtranslation`과 같은 원문(끝의 CTA를 뗀 것)을 되번역과 견주고 떼어 낸
     꼬리는 칠하지 않고 회색으로 보여 준다. 기본값이 없는 까닭: 있다면 빼먹은 호출이 조용히 CTA를 견주어 되번역에 없는
-    CTA가 모든 게시물 끝에 칠해진다. 문자열이 아니거나 비어 있는 값(`None` 포함)은 `ValueError` — 빈 CTA는 원문 전체를
+    CTA가 모든 게시물 끝에 칠해진다. 문자열이 아니거나 비어 있는 값(`None`, 공백·문장부호뿐인 값 포함 — `validate_backtranslation`이
+    용어집에서 막는 것과 같은 `backtranslation.is_blank`의 판정)은 `ValueError` — 빈 CTA는 원문 전체를
     "꼬리"로 만들어 강조를 조용히 끈다.
 
     게시물은 게시 시각 순으로(같으면 번호 순으로) 놓는다. `images_dir`는 `<달 폴더>/images`로, 이미지의 `src`는
     그 부모(HTML이 놓일 달 폴더) 기준 상대 경로다.
     """
-    if not (isinstance(cta_ko, str) and cta_ko.strip()):
+    if not (isinstance(cta_ko, str) and not is_blank(cta_ko)):  # 빈칸의 판정은 `backtranslation.is_blank` 하나다
         raise ValueError(
-            f"cta_ko가 비어 있거나 문자열이 아닙니다 (받은 값: {cta_ko!r}). 빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 "
-            f"강조가 조용히 꺼집니다. 용어집의 cta.ko를 넘기세요."
+            f"cta_ko가 비어 있거나 문자열이 아닙니다 (받은 값: {cta_ko!r}). 공백이나 문장부호뿐인 값도 비어 있는 것으로 봅니다. "
+            f"빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 강조가 조용히 꺼집니다. 용어집의 cta.ko를 넘기세요."
         )
     off_plan = sorted(set(divergences) - {post.index for post in plan.posts})
     if off_plan:

@@ -1446,16 +1446,125 @@ def test_뜻을_바꾸는_다른_변경도_색으로_갈리지_않는다():
     assert _marks(_col(flipped, "back")) == [("없습니다.", "replace")]
 
 
-def test_안내는_노란색에도_뜻이_바뀐_곳이_있다고_적는다():
-    # 범례가 부정 뒤집힘이 노란색으로 나타난다는 것, 덧붙은 약속이나 빠진 단서가 주변을 고쳐 쓰면 노란색이 된다는 것, 노란색이
-    # "또 의역"이 아니라는 것을 적는다. 그리고 막대를 말하는 문장은 뜻(약속·단서·한정어)과 짝짓지 않는다.
+@pytest.mark.parametrize(
+    "name, source, back, source_marks, back_marks",
+    [
+        ("-지 않 붙음", "이 비자는 연장이 가능합니다.", "이 비자는 연장이 가능하지 않습니다.",
+         [("가능합니다.", "replace")], [("가능하지 않습니다.", "replace")]),
+        ("있→없", "비자를 받을 수 있습니다.", "비자를 받을 수 없습니다.", [("있습니다.", "replace")], [("없습니다.", "replace")]),
+        ("없→있", "비자를 받을 수 없습니다.", "비자를 받을 수 있습니다.", [("없습니다.", "replace")], [("있습니다.", "replace")]),
+        ("아니 빠짐", "이것은 합격 보장이 아닙니다.", "이것은 합격 보장입니다.",
+         [("보장이 아닙니다.", "replace")], [("보장입니다.", "replace")]),
+        ("안 덧붙음", "학생은 아르바이트를 합니다.", "학생은 아르바이트를 안 합니다.", [], [("안", "insert")]),
+        ("안 빠짐", "학생은 아르바이트를 안 합니다.", "학생은 아르바이트를 합니다.", [("안", "delete")], []),
+        ("못 덧붙음", "신청자는 한국어를 읽습니다.", "신청자는 한국어를 못 읽습니다.", [], [("못", "insert")]),
+        ("못 빠짐", "신청자는 한국어를 못 읽습니다.", "신청자는 한국어를 읽습니다.", [("못", "delete")], []),
+    ],
+    ids=["지않붙음", "있없", "없있", "아니빠짐", "안덧붙음", "안빠짐", "못덧붙음", "못빠짐"],
+)
+def test_부정_뒤집힘은_세_모양_모두로_나타난다(name, source, back, source_marks, back_marks):
+    # 측정값이다. `안`·`못`은 한국어에서 따로 떨어진 낱말이라 통째로 덧붙고(insert) 통째로 빠진다(delete). `-지 않`이 붙거나
+    # `있`과 `없`이 뒤바뀌면 낱말의 끝이 고쳐 쓰이므로 replace다. 한 가지 뜻(부정이 뒤집힘)이 세 모양 모두로 나타나므로 범례가
+    # 모양에 뜻을 짝지을 수 없다 — "뒤집힘은 노란색"도, "한쪽에만 있는 말이 뜻이 바뀐 곳"도 거짓이다. 그 이유를 고정한다.
+    card = _diff_card(source, back)
+
+    assert _marks(_col(card, "source")) == source_marks
+    assert _marks(_col(card, "back")) == back_marks
+
+
+def test_부정_뒤집힘의_여덟_구성이_세_모양을_모두_쓴다():
+    # 위 시험의 합: 하나의 뜻이 replace·insert·delete 모두로 나타난다.
+    kinds = set()
+    for source, back in [
+        ("이 비자는 연장이 가능합니다.", "이 비자는 연장이 가능하지 않습니다."),
+        ("학생은 아르바이트를 합니다.", "학생은 아르바이트를 안 합니다."),
+        ("신청자는 한국어를 못 읽습니다.", "신청자는 한국어를 읽습니다."),
+    ]:
+        card = _diff_card(source, back)
+        kinds |= {kind for column in ("source", "back") for _, kind in _marks(_col(card, column))}
+
+    assert kinds == {"replace", "insert", "delete"}
+
+
+def test_안내는_어떤_모양도_뜻을_보장한다고_적지_않는다():
+    # 범례는 세 모양을 낱말이 어떻게 다른지로만 설명하고, 뜻을 바꾸는 변경이 세 모양 어느 것으로도 나타난다고 말하며, 표시된
+    # 곳을 모양과 상관없이 모두 읽으라고 한다. 어떤 모양에도 뜻을 짝짓지 않는다 — 짝지으면(어느 방향이든) 독자가 거기에 안
+    # 맞는 변경을 지나친다. 앞 판은 "부정이 뒤집히면 항상 노란색"이라 썼고 그것은 거짓이었다(`안`·`못`은 막대로 나온다).
     legend = _doc().find(class_="howto").find(data_role="mark-legend").text()
     sentences = [s for s in re.split(r"(?<=[.])\s+", legend) if s]
+    shapes = ("노란색", "붉은 막대", "파란 막대", "막대")
 
-    negation = [s for s in sentences if "부정" in s]
-    assert negation and all("노란색" in s for s in negation)
-    assert any("약속" in s and "단서" in s and "노란색" in s for s in sentences)
-    assert any("노란색" in s and "의역이라는 뜻은 아닙니다" in s for s in sentences)
+    # 세 모양은 낱말이 어떻게 다른지만 말한다.
+    assert any("낱말이 어떻게 다른지만" in s and "뜻이 바뀌었는지는 말하지 않" in s for s in sentences)
+    # 뜻을 바꾸는 변경은 세 모양 어느 것으로도 나타난다 — 부정의 예로 셋을 모두 보인다.
+    example = [s for s in sentences if "뜻을 바꾸는 변경" in s]
+    assert example and "어느 것으로도" in example[0] and "세 모양" in example[0]
+    assert all(shape in example[0] for shape in ("노란색", "파란 막대", "붉은 막대"))
+    for word in ("안", "못", "있", "없"):  # 한 글자 낱말이 낱말로 나온다(다른 낱말 속의 글자가 아니다)
+        assert re.search(rf"(?<![가-힣]){word}(?![가-힣])", example[0]), f"예에 낱말 '{word}'가 없다"
+    assert any("한 글자짜리 막대 하나가 문장의 뜻을 뒤집을 수 있습니다" in s for s in sentences)
+    # 모양을 가리지 말고 모두 읽는다. 막대를 먼저 보는 것은 눈에 빨리 들어와서일 뿐이다.
+    assert any("모양을 가리지 말고" in s and "모두 읽" in s for s in sentences)
     for sentence in sentences:
-        if "막대" in sentence:
-            assert not any(word in sentence for word in ("약속", "단서", "한정어", "부정")), f"막대에 뜻을 짝지었다: {sentence!r}"
+        if "먼저" in sentence and "막대" in sentence:
+            assert "뜻이 거기 있어서가 아닙니다" in sentence, f"막대를 먼저 보라면서 이유를 안 적었다: {sentence!r}"
+    # 어떤 문장도 모양을 "항상"과 함께 말하지 않고, 특정 모양만 읽거나 건너뛰라고 하지 않는다.
+    for sentence in sentences:
+        if any(shape in sentence for shape in shapes):
+            assert "항상" not in sentence, f"모양에 단정을 달았다: {sentence!r}"
+            assert not any(word in sentence for word in ("만 읽", "건너뛰", "넘기")), f"모양을 골라 읽으라고 했다: {sentence!r}"
+    # 노란색이 또 의역이라는 뜻은 아니다(참이고 중요하다).
+    assert any("노란색" in s and "의역이라는 뜻은 아닙니다" in s for s in sentences)
+
+
+# --- cta_ko의 빈칸 판정, 열 너비, 문장 끝 패턴 ------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["", "   \n", "。", " . , ", "​", "…", "(  )", "가", "상담은 무료입니다.", " 가 "],
+    ids=["빈문자열", "공백", "마침표", "문장부호", "제로폭", "말줄임", "괄호", "한글자", "문구", "공백낀글자"],
+)
+def test_cta_ko_빈칸_판정은_backtranslation과_같다(text):
+    # `cta_ko`가 비었는지를 `render`가 따로(`.strip()`) 정하면 문장부호뿐인 CTA를 한쪽은 받고 한쪽은 막는다. 빈칸의 판정은
+    # `backtranslation.is_blank` 하나이고, 같은 용어집 값을 `validate_backtranslation`이 막는 것과 `render`가 막는 것이 같다.
+    plan = _plan()
+
+    def raises(call) -> bool:
+        try:
+            call()
+        except ValueError:
+            return True
+        return False
+
+    render_rejects = raises(lambda: _output(plan, cta_ko=text))
+    validate_rejects = raises(lambda: backtranslation.validate_backtranslation(plan, _back(plan), {"cta": {"ko": text}}))
+
+    assert render_rejects is validate_rejects is backtranslation.is_blank(text)
+
+
+def test_세_단은_공백_없는_긴_문자열에도_같은_너비다():
+    # 공백 없이 이어지는 미얀마어·데바나가리 한 줄이 자기 칸을 밀어 넓히면 옆의 한국어 두 칸이 좁아져 이 화면이 존재하는
+    # 이유(두 한국어 단을 나란히 견주기)가 깨진다. 그래서 세 가지가 함께 있어야 한다: 열이 줄어들 수 있고(`minmax(0, …)`),
+    # 칸이 자기 내용 너비로 버티지 않으며(`min-width: 0`), 긴 낱말이 칸 안에서 접힌다(`overflow-wrap`). 스타일시트에만 있는
+    # 요구라 선언을 읽는다.
+    long_run = "က" * 400  # 공백 없는 400자
+    plan = _edit(_edit(_plan(), 1, body_local=long_run), 2, body_local="अ" * 400)
+    doc = _doc(plan, back={**_back(plan), 1: long_run})
+    style = doc.find("style").text()
+
+    columns = _css_rule(style, ".cols")["grid-template-columns"]
+    assert _equal_tracks(columns) == 3 and re.findall(r"minmax\(\s*0\s*,", columns), "열이 줄어들 수 없다"
+    assert _css_rule(style, ".col")["min-width"] == "0"
+    assert _css_rule(style, ".text")["overflow-wrap"] in {"anywhere", "break-word"}
+    assert _text_of(_card(doc, 1), "local") == long_run  # 내용은 그대로다(자르지 않는다)
+
+
+def test_문장_끝_패턴은_최상위_갈래가_있어도_끝에_묶인다():
+    # `_SENTENCE_FINAL`은 `SENTENCE_END`에 `\Z`를 붙인 것이다. 패턴 문자열을 그냥 이어 붙이면 최상위에 `|`가 있을 때 `\Z`가 마지막
+    # 갈래에만 걸린다. 지금의 `SENTENCE_END`는 `(?:…)+` 한 묶음이라 우연히 맞을 뿐이므로, 갈래가 있는 패턴으로 따로 시험한다.
+    ending = review._ending_with(re.compile("a|b"))
+
+    assert ending.search("xa") and ending.search("xb")
+    assert not ending.search("ax") and not ending.search("bx")  # 이어 붙이기만 하면 `a`가 어디서든 걸린다
+    assert review._SENTENCE_FINAL.search("입니다.") and not review._SENTENCE_FINAL.search("입니다. 다음")
