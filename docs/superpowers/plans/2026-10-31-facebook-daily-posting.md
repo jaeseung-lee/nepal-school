@@ -538,9 +538,11 @@ git commit -m "feat(facebook): 한국어 대조 검토 화면 생성 추가"
 **Interfaces:**
 - Consumes: `plan_model.Plan`, `findings.Finding`, `validate_copy.load_banned_phrases`
 - Produces:
-  - `validate_copy.validate_back_copy(plan: Plan, back: dict[int, str], banned: dict) -> list[Finding]` — 되번역에 한국어 금지 문구가 있으면 `역번역금지표현` (error)
+  - `validate_copy.validate_back_copy(plan: Plan, back: dict[int, str], banned: dict, glossary: dict) -> list[Finding]` — 되번역에 한국어 금지 문구가 있으면 `역번역금지표현` (error). `glossary`는 1인칭 표지의 회사명을 보는 데 쓴다
 
-`모든 게시물` 묶음의 `ko` 문구는 언제나 걸고, `대학명이 나오는 게시물` 묶음의 `ko` 문구는 `post.university_names`가 비어 있지 않을 때만 건다 — `validate_copy`가 `source_ko`·`body_local`에 쓰는 것과 같은 의미다. 압축 비교도 같은 도우미(`_compact`)를 쓴다. 비었거나 없는 되번역은 보지 않는다(`역번역빈칸`·`역번역누락`이 이미 보고한다).
+`모든 게시물` 묶음의 `ko` 문구는 **게이트 없이 언제나** 걸고, `대학명이 나오는 게시물` 묶음의 `ko` 문구는 `post.university_names`가 비어 있지 않고 **그 되번역에 1인칭 표지가 있을 때만** 건다 — `validate_copy`의 `대학맥락`과 같은 조건이다. 압축 비교도 같은 도우미(`_compact`)를 쓴다. 비었거나 없는 되번역은 보지 않는다(`역번역빈칸`·`역번역누락`이 이미 보고한다).
+
+**1인칭 게이트가 대학명 구역에만 붙는 이유(실측).** 대학명 구역의 문구는 관계 어휘(`협력`·`협약`·`제휴`·`MOU`·`파트너`·`연계`)이고, 이것은 대학 자신의 이야기에 흔하다. 게이트 없이 걸면 정당한 대학 소개 문장 여섯 개(`산학협력단이 …`, `국제협력처에서 …`, `연계전공이 있습니다`, `학교가 기업과 협약을 맺어 …`, `학술 교류 협력 사업`, `교내 파트너 기업 채용설명회`)가 **6/6 거짓 오류**가 되고, 1인칭 게이트를 걸면 **거짓 오류 0/6에 회사가 스스로 말하는 주장 3/3을 그대로 잡는다**(`저희와 협약을 맺은 대학`, `정우인재개발원이 제휴한 학교` — 회사명 경로, `우리는 이 대학과 MOU를 체결했습니다`). 관계 주장은 **회사가 자기에 대해 말할 때만** 거짓이므로 게이트는 이 목록의 올바른 의미이고 약화가 아니다. 진짜 위험인 노골적 약속은 모든 게시물 구역에 있고 그쪽은 게이트가 없다. 게시물당 거짓 오류 여섯 건은 한 달 안에 이 코드를 무시하게 만들고, 그러면 진짜 약속이 지나간다.
 
 error인 이유: 되번역에 금지 문구가 보이면 현지어 본문이 실제로 그렇게 말하거나(발행하면 안 된다) 되번역이 틀렸다(고쳐야 한다). 어느 쪽이든 그대로 나갈 수 없다.
 
@@ -555,7 +557,13 @@ def test_현지어_목록이_놓친_표현도_한국어_목록이_잡는다():
     # body_local은 validate_copy를 통과하는데 그 되번역에서 ko 목록이 잡는 경우.
     # 이것이 이 검사가 존재하는 이유다 — 미검수 현지어 목록의 구멍을 검수된 한국어 목록이 받는다
 def test_금지표현_판정은_validate_copy와_같은_압축_규칙을_쓴다():
-    # 공백·문장부호가 끼어도 같게 잡는다
+    # 공백이 끼어도 같게 잡는다. **문장부호는 두 경로가 똑같이 놓친다**(`합격, 보장`) — `_compact`가
+    # 문장부호를 지우지 않기 때문이고, 한쪽만 고치면 한 경로가 통과시키는 것을 다른 경로가 막는다.
+    # 같게 놓치는 것을 고정하고 한계는 운영 문서에 적는다
+def test_대학_자신의_이야기는_1인칭이_없으면_걸리지_않는다():
+    # `산학협력단이 …`는 `협력`을 담지만 발행해도 되는 소개 문장이다(게이트 없이 6/6 거짓 오류였다)
+def test_회사가_스스로_말하는_관계_주장은_걸린다():
+    # `저희와 협약을 맺은 대학`, 그리고 대명사 없이 회사명만 쓴 `정우인재개발원이 제휴한 학교`도 걸린다
 def test_메시지가_걸린_문구와_게시물_번호를_댄다():
 def test_여러_게시물의_금지표현을_한_번에_모은다():
 def test_픽스처의_충실한_되번역은_findings가_비어_있다():
@@ -574,7 +582,7 @@ Expected: FAIL — `ImportError: cannot import name 'validate_back_copy'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
-Expected: PASS (8 passed, 기존 테스트 전부 유지)
+Expected: PASS (브리프가 지정한 11개를 포함해 `test_validate_copy.py` 전부)
 
 - [ ] **Step 5: Commit**
 
@@ -722,7 +730,7 @@ npm 스크립트: `fb:check-token`, `fb:images`, `fb:validate`, `fb:review`, `fb
 
 - **플랜 작성 세션에게 이미지 프롬프트 규칙을 보여 줘야 한다.** Task 4가 `config.IMAGE_PROMPT_NO_TEXT`와 `config.IMAGE_PROMPT_NO_REAL_SUBJECTS` 두 문구를 프롬프트 안에서 **문구 그대로** 요구하는데, 지금 그 문구를 플랜 작성자에게 알려 주는 자리가 어디에도 없다. `images` 출력과 운영 문서의 플랜 작성 지침이 둘 다 이 두 상수를 그대로 보여 준다.
 - **수는 숫자로, 원문과 같은 단위로.** Task 6의 `역번역수치`는 숫자열 다중집합을 견주므로, 한국어 원문이 `1년치`로 쓰고 현지어 본문이 `cả năm`처럼 말로 쓰면 충실한 역번역에도 되찾을 숫자가 없어 거짓 오류가 난다. `680만 원` 대 `6,800,000원`도 같은 부류다. 플랜 작성 지침에 "수는 숫자로 적고, 단위를 바꾸지 말 것"을 명시한다. 베트남어의 점 천단위(`6.800.000`)는 역번역에서 쉼표로 적어야 한다(검사는 쉼표만 제거한다).
-- **월간 절차의 호출 순서가 고정되어 있다.** `validate_copy` → `backtranslation.worksheet(plan, glossary)` → `backtranslation.load(path, plan=plan, glossary=glossary)`. `worksheet`는 본문이 해당 언어 CTA로 끝나지 않으면 raise하므로 문구 검증이 먼저다. **신선도 보호는 `load`에 `plan`과 `glossary`를 둘 다 넘길 때만 존재한다** — 하나만 넘기면 `ValueError`, 둘 다 안 넘기면 낡은 워크시트가 조용히 통과한다. 그리고 `load` 뒤에 `validate_backtranslation`과 **`validate_copy.validate_back_copy(plan, back, banned)`를 둘 다 돌린다** — 후자를 부르지 않으면 "없는 약속이 현지어로 나가는 것"이라는 안티골에 걸린 **유일한 기계 검사가 존재하지 않는 것과 같다**(Task 7b가 그것 때문에 있다).
+- **월간 절차의 호출 순서가 고정되어 있다.** `validate_copy` → `backtranslation.worksheet(plan, glossary)` → `backtranslation.load(path, plan=plan, glossary=glossary)`. `worksheet`는 본문이 해당 언어 CTA로 끝나지 않으면 raise하므로 문구 검증이 먼저다. **신선도 보호는 `load`에 `plan`과 `glossary`를 둘 다 넘길 때만 존재한다** — 하나만 넘기면 `ValueError`, 둘 다 안 넘기면 낡은 워크시트가 조용히 통과한다. 그리고 `load` 뒤에 `validate_backtranslation`과 **`validate_copy.validate_back_copy(plan, back, banned, glossary)`를 둘 다 돌린다** — 후자를 부르지 않으면 "없는 약속이 현지어로 나가는 것"이라는 안티골에 걸린 **유일한 기계 검사가 존재하지 않는 것과 같다**(Task 7b가 그것 때문에 있다).
 - **플랜 JSON은 `fact_keys`와 `university_names`를 비어 있어도 반드시 쓴다(`[]`).** 키가 없으면 Task 3의 로더가 거부한다.
 - **검토 화면은 `config.month_dir(month)/review.html`에 쓴다.** 이미지는 `month_dir/images/`에 있고 HTML이 그 부모에 놓이므로 상대 경로가 `images/<파일명>`이 된다.
 - **운영 문서는 한계를 숨기지 않고 적는다.** (1) 역번역의 문자 유사도는 부정 뒤집힘·금액 변경·약속 문장 추가를 잡지 못한다 — 실측치로 적는다: 부정 뒤집힘 0.05, 금액 변경 0.01, 약속 추가 0.12이고 충실한 의역의 잡음이 0.08~0.12이므로 **어떤 임계값으로도 가를 수 없다.** 뜻은 검토 화면의 세 단을 사람이 읽어야 확인된다. (2) `banned-phrases.json`의 베트남어·미얀마어·네팔어 문구와 1인칭 제외 낱말은 AI가 작성했고 **원어민 검수를 받지 않았다** — 첫 실제 월 운영 전에 검수가 필요하다. 그래서 Task 7b가 **되번역에 검수된 한국어 목록을 겹쳐 건다**: 이것이 세 현지어 본문에 걸리는 유일한 사람 검수 사전이지만, 목록에 있는 표현만 잡으므로 목록 밖의 약속은 여전히 사람의 눈뿐이다. (3) `주 20시간` 같은 1차 출처를 못 찾은 수치는 `facts.json`에 일부러 넣지 않았으므로 게시물에 쓸 수 없다.
