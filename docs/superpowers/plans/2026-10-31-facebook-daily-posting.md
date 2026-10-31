@@ -375,7 +375,7 @@ git commit -m "feat(facebook): 금지 표현·CTA·대학 맥락 문구 검증 �
 - Create: `scripts/facebook/tests/test_backtranslation.py`
 
 **Interfaces:**
-- Consumes: `plan_model.Plan`, `validate.Finding`
+- Consumes: `plan_model.Plan`, `findings.Finding`
 - Produces:
   - `backtranslation.worksheet(plan: Plan) -> dict` — `{"month": str, "entries": [{"index": int, "language": str, "body_local": str, "back_ko": ""}]}`
   - `backtranslation.load(path: Path) -> dict[int, str]` — index → `back_ko`
@@ -424,7 +424,7 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
 - Create: `scripts/facebook/tests/test_review.py`
 
 **Interfaces:**
-- Consumes: `plan_model.Plan`, `validate.Finding`, `backtranslation.load`
+- Consumes: `plan_model.Plan`, `findings.Finding`, `backtranslation.load`
 - Produces:
   - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], images_dir: Path) -> str` — 완결된 HTML 문서 문자열
 
