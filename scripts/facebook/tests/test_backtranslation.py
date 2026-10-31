@@ -26,6 +26,7 @@ from facebook import config
 from facebook.backtranslation import (
     WorksheetError,
     divergence,
+    divergences,
     load,
     validate_backtranslation,
     worksheet,
@@ -1302,3 +1303,132 @@ def test_시그니처가_계약과_같다():
     assert list(load_parameters) == ["path", "plan", "glossary"]
     assert all(load_parameters[name].kind is inspect.Parameter.KEYWORD_ONLY for name in ("plan", "glossary"))
     assert all(load_parameters[name].default is None for name in ("plan", "glossary"))
+
+
+# --- divergences: 검토 화면이 보여 줄 차이값 --------------------------------------
+# 검토 화면은 `validate_backtranslation`이 경고문에 적는 것과 같은 값을 보여 줘야 한다. 두 숫자가 어긋나면 화면이 믿을
+# 수 없다. 그래서 CTA를 떼는 규칙을 화면 쪽에 따로 쓰지 않고 이 함수로 한 곳에 둔다.
+
+
+def _gaps(plan: Plan, back: dict[int, str]) -> dict[int, float]:
+    return divergences(plan, back, GLOSSARY)
+
+
+def _mixed_back(plan: Plan) -> dict[int, str]:
+    """차이가 제각각인 되번역: 충실한 것(0.0), 의역, 무관한 글."""
+    back = _faithful(plan)
+    back[0], back[1], back[3] = PARAPHRASE_0, UNRELATED, PARAPHRASE_3
+    return back
+
+
+def test_divergences는_CTA를_뗀_원문과_되번역의_차이를_게시물마다_돌려준다():
+    plan = _plan()
+    back = _mixed_back(plan)
+
+    gaps = _gaps(plan, back)
+
+    expected = {post.index: divergence(post.source_ko.removesuffix("\n\n" + CTA), back[post.index]) for post in plan.posts}
+    assert gaps == expected
+    assert set(gaps) == set(range(6)) and all(isinstance(index, int) for index in gaps)
+    assert all(isinstance(value, float) and 0.0 <= value <= 1.0 for value in gaps.values())
+
+
+def test_divergences는_원문에서_CTA를_떼므로_충실한_되번역은_정확히_0이다():
+    # CTA를 떼지 않으면 그 분량만큼 벌어져 0이 아니게 된다.
+    plan = _plan()
+
+    assert _gaps(plan, _faithful(plan)) == {index: 0.0 for index in range(6)}
+
+
+def test_divergences는_원문이_CTA로_끝나지_않으면_원문_전체와_잰다():
+    # validate_backtranslation의 대체 경로(`stripped is None`)와 같아야 한다.
+    plan = _edit(_plan(), 0, source_ko=CTA + "\n\n유학 비자 안내입니다.")
+    back = {**_faithful(plan), 0: "유학 비자 안내입니다."}
+
+    gap = _gaps(plan, back)[0]
+
+    assert gap == divergence(plan.posts[0].source_ko, back[0])
+    assert gap > 0.0
+
+
+def test_divergences는_원문의_CTA_뒤_공백도_validate처럼_무시하고_뗀다():
+    plan = _edit(_plan(), 0, source_ko="유학 비자 안내입니다.\n\n" + CTA + "  \n\n")
+    back = {**_faithful(plan), 0: "유학 비자 안내입니다."}
+
+    assert _gaps(plan, back)[0] == 0.0
+
+
+def test_divergences는_되번역에서는_아무것도_떼지_않는다():
+    plan = _edit(_plan(), 0, source_ko="유학 비자 안내입니다.\n\n" + CTA)
+    back = {**_faithful(plan), 0: "유학 비자 안내입니다.\n\n" + CTA}
+
+    gap = _gaps(plan, back)[0]
+
+    assert gap == divergence("유학 비자 안내입니다.", back[0])
+    assert gap > 0.0
+
+
+def test_divergences의_값은_validate의_역번역차이_경고에_적힌_값과_같다():
+    # 임계값 0은 글자가 하나라도 다르면 경고하고, 경고문에는 측정값이 소수 둘째 자리까지 적힌다.
+    # 원문이 CTA로 끝나는 게시물, 끝나지 않는 게시물, 뒤에 공백이 있는 게시물을 섞어 두 경로가 같은지 본다.
+    plan = _plan()
+    plan = _edit(plan, 2, source_ko=CTA + "\n\n" + plan.posts[2].source_ko.removesuffix("\n\n" + CTA))
+    plan = _edit(plan, 4, source_ko=plan.posts[4].source_ko + "  \n")
+    back = _mixed_back(plan)
+
+    gaps = _gaps(plan, back)
+    warned = {f.post_index: f for f in _check(plan, back, threshold=0.0) if f.code == "역번역차이"}
+
+    assert set(warned) == {index for index, gap in gaps.items() if gap > 0.0}
+    assert len(warned) >= 4  # 이 조합이 비교할 만큼 다양한지
+    for index, finding in warned.items():
+        assert f"글자 기준으로 {gaps[index]:.2f}만큼" in finding.message
+
+
+@pytest.mark.parametrize("blank", ["", "   \n", "。", "\u200b", " . , "], ids=["빈문자열", "공백", "문장부호", "제로폭", "부호와공백"])
+def test_divergences는_비었거나_공백이나_문장부호뿐인_되번역은_키에_넣지_않는다(blank):
+    # 이 게시물에는 validate가 `역번역빈칸` 오류를 낸다. 1.0을 돌려주면 "재 봤더니 최악"으로 읽힌다.
+    plan = _plan()
+
+    gaps = _gaps(plan, {**_faithful(plan), 3: blank})
+
+    assert set(gaps) == {0, 1, 2, 4, 5}
+
+
+def test_divergences는_되번역이_없는_게시물은_키에_넣지_않는다():
+    plan = _plan()
+    back = {index: text for index, text in _faithful(plan).items() if index not in (1, 4)}
+
+    assert set(_gaps(plan, back)) == {0, 2, 3, 5}
+    assert _gaps(plan, {}) == {}
+
+
+def test_divergences는_플랜에_없는_번호를_돌려주지_않는다():
+    plan = _plan()
+
+    assert set(_gaps(plan, {**_faithful(plan), 99: "다른 달의 되번역"})) == set(range(6))
+
+
+@pytest.mark.parametrize(
+    "glossary",
+    [{}, {"cta": {}}, {"cta": {"ko": ""}}, {"cta": {"ko": "。"}}, {"cta": {"vi": "x"}}],
+    ids=["용어집비어있음", "cta비어있음", "ko빈문자열", "ko문장부호", "ko없음"],
+)
+def test_divergences도_CTA가_없거나_비어_있으면_ValueError(glossary):
+    # 조용히 CTA를 떼지 않고 재면 화면의 값이 validate의 값과 달라진다.
+    with pytest.raises(ValueError) as info:
+        divergences(_plan(), _faithful(_plan()), glossary)
+
+    assert "cta.ko" in str(info.value) and _has_hangul(str(info.value))
+
+
+@pytest.mark.parametrize("back", [{"0": "가"}, {0: None}, {0: 5}, {True: "가"}], ids=["문자열키", "null값", "숫자값", "불리언키"])
+def test_divergences도_back의_모양이_틀리면_ValueError(back):
+    with pytest.raises(ValueError) as info:
+        _gaps(_plan(), back)
+
+    assert "load" in str(info.value) and _has_hangul(str(info.value))
+
+
+def test_divergences의_시그니처가_계약과_같다():
+    assert list(inspect.signature(divergences).parameters) == ["plan", "back", "glossary"]

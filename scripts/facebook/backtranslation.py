@@ -4,7 +4,7 @@
 없는 약속을 한다고 해서 둘 중 어느 쪽도 알아채지 못한다. 한국어만 읽는 사람은 한국어 원문 옆에 현지어
 본문의 **한국어 되번역**이 놓여 있으면 알아챌 수 있다. 이 모듈은 그 되번역을 받는 틀이다.
 
-되번역은 API가 하지 않는다. 별도 Claude Code 세션이 워크시트를 채운다. 이 모듈이 하는 일은 셋뿐이다.
+되번역은 API가 하지 않는다. 별도 Claude Code 세션이 워크시트를 채운다. 이 모듈이 하는 일은 넷뿐이다.
 
 1. `worksheet(plan, glossary)`: 채울 워크시트를 낸다. 항목마다 `body_local`만 담고 **한국어 원문은 담지 않는다** —
    되번역하는 쪽이 원문을 보면 베끼기만 하고 되번역이 아니게 된다. `body_local`은 끝의 승인된 상담 문구(CTA)를
@@ -14,6 +14,8 @@
    (`body_hash`)도 확인한다.
 3. `validate_backtranslation(...)`: 모든 게시물의 되번역이 왔는지, 다른 게시물의 것을 베낀 것은 아닌지, 숫자가
    원문과 같은지 보고, 되번역이 한국어 원문에서 글자로 얼마나 벌어졌는지 잰다.
+4. `divergences(plan, back, glossary)`: 검토 화면이 보여 줄 `{게시물 번호: 차이값}`을 낸다. `validate_backtranslation`이
+   경고문에 적는 값과 같은 길(같은 CTA 떼기)로 재서, 화면의 숫자와 경고문의 숫자가 어긋나지 않게 한다.
 
 **뜻이 옳은지는 여기서 판단하지 않는다.** 검토 화면에서 사람이 한국어 원문과 되번역을 나란히 놓고 읽는다.
 여기서 내는 `divergence`는 글자 유사도일 뿐이다. 그래서 다음은 못 잡는다 — 한 낱말의 부정이 뒤집히는 것,
@@ -336,6 +338,31 @@ def _require_back(back: dict) -> None:
     ]
     if bad:
         raise ValueError(f"{shape}. 맞지 않는 항목의 키: {', '.join(map(repr, bad[:5]))}. {fix}")
+
+
+def divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]:
+    """게시물 번호마다 `validate_backtranslation`이 재는 것과 같은 `divergence` 값을 돌려준다. 검토 화면이 쓴다.
+
+    화면이 숫자를 스스로 계산하지 않고 이 함수의 결과를 받는 까닭은, 어긋나면 화면의 숫자와 경고문의 숫자가 다른
+    값을 말하게 되기 때문이다. 그래서 원문에서 CTA를 떼는 길도 `validate_backtranslation`과 같다: 한국어 CTA
+    (`glossary["cta"]["ko"]`)로 끝나면 떼고, 끝나지 않으면 원문 통째로 재며, 되번역에서는 아무것도 떼지 않는다.
+
+    **되번역이 없거나 비어 있는(공백·문장부호뿐인) 게시물은 키에 넣지 않는다.** 그 게시물에는 `역번역누락`·`역번역빈칸`
+    오류가 이미 있고, 1.0을 넣으면 화면이 "재 봤더니 최악"으로 보여 주게 된다. 플랜에 없는 번호는 넣지 않는다.
+    `validate_backtranslation`처럼 입력이 어긋나면(없거나 빈 `cta.ko`, `{정수: 문자열}`이 아닌 `back`) `ValueError`로 멈춘다.
+    """
+    cta_ko = _require_cta(glossary, "ko")
+    _require_back(back)
+
+    measured: dict[int, float] = {}
+    for post in plan.posts:
+        text = back.get(post.index)
+        if text is None or not _comparable(text):
+            continue
+        stripped = _strip_cta(post.source_ko, cta_ko)
+        source = post.source_ko if stripped is None else stripped
+        measured[post.index] = divergence(source, text)
+    return measured
 
 
 def validate_backtranslation(
