@@ -93,10 +93,28 @@ def test_load_token은_환경변수가_공백뿐이면_없는_것으로_본다(i
     "export FB_PAGE_TOKEN=from-file",
     "  FB_PAGE_TOKEN = from-file  ",
     "FB_PAGE_TOKEN=from-file # 만료일 확인",
-], ids=["double-quote", "single-quote", "export", "spaces", "inline-comment"])
+    'FB_PAGE_TOKEN="from-file" # 만료일 확인',
+    "FB_PAGE_TOKEN='from-file'  # 만료일 확인",
+    "FB_PAGE_TOKEN=from-file#만료일확인",
+], ids=["double-quote", "single-quote", "export", "spaces", "inline-comment",
+        "quote-then-comment", "single-quote-then-comment", "comment-without-space"])
 def test_load_token은_dotenv의_일반적인_표기를_해석한다(isolated_token, line):
+    """운영자가 `.env` 한 줄을 쓰는 흔한 방식들. 어느 하나라도 값이 망가지면 바로 다음 단계(§1-4 토큰 점검)가
+    Facebook의 거절을 「토큰이 유효하지 않거나 만료되었습니다」로 보여 주고, 운영자는 멀쩡한 토큰을 계속
+    재발급하는 고리에 갇힌다. 따옴표를 의심할 길이 문서 어디에도 없으므로 **설치 직후 첫 10분**에 끝난다.
+
+    뒤의 셋이 고치기 전에 틀렸던 것이다: 따옴표+메모는 `'"from-file"'`(따옴표가 남았다), 공백 없는 `#`은
+    `'from-file#만료일확인'`이었다.
+    """
     isolated_token.write_text(f"# 페이스북\n\n{line}\n", encoding="utf-8")
     assert config.load_token() == "from-file"
+
+
+def test_load_token은_따옴표_안의_샵은_값으로_읽는다(isolated_token):
+    """주석을 떼는 규칙(첫 `#`부터 버림)이 따옴표 안까지 들어가면, `#`가 든 토큰이 조용히 잘린다.
+    그래서 따옴표로 시작하는 값은 **닫는 따옴표까지가 값**이고 그 안의 `#`는 손대지 않는다."""
+    isolated_token.write_text('FB_PAGE_TOKEN="from#file" # 메모\n', encoding="utf-8")
+    assert config.load_token() == "from#file"
 
 
 def test_load_token은_같은_키가_여러_번이면_마지막_줄을_쓴다(isolated_token):

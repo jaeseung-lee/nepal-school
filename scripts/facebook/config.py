@@ -77,13 +77,30 @@ def month_dir(month: str) -> Path:
     return facebook_dir() / month
 
 
-_INLINE_COMMENT = re.compile(r"\s+#.*$")
+# 따옴표로 시작하는 값: 여는 따옴표부터 **처음 나오는 같은 따옴표**까지가 값이다.
+_QUOTED_VALUE = re.compile(r"""^(?P<quote>["'])(?P<value>[^"']*)(?P=quote)""")
+# 따옴표로 시작하지 않는 값의 줄 끝 주석: **첫 `#`부터** 끝까지. 앞의 공백을 요구하지 않는다 —
+# `FB_PAGE_TOKEN=토큰#메모`처럼 붙여 쓴 `#`를 놓치면 그 글자가 토큰에 섞여 들어간다.
+_INLINE_COMMENT = re.compile(r"#.*$")
 
 
 def _parse_env_value(raw: str) -> str:
+    """`.env` 한 줄에서 `=` 뒤를 값으로 읽는다.
+
+    규칙은 둘이고 **순서가 중요하다.**
+
+    - 값이 따옴표로 시작하면 **닫는 따옴표까지가 값**이고 그 뒤는 버린다. 따옴표 안의 `#`는 값의 일부다.
+    - 따옴표로 시작하지 않으면 **첫 `#`부터 버린다**(앞에 공백이 있든 없든 주석이다).
+
+    따옴표를 벗기는 일이 주석을 떼는 일보다 **먼저** 와야 한다. 거꾸로 하면 `TOKEN="값" # 메모`에서 양 끝이
+    `"`와 `모`라 따옴표 짝이 아니라고 판정하고, 주석만 뗀 뒤 따옴표가 값에 남는다. 그 값으로 Graph API를
+    부르면 Facebook이 거절하고, 운영자는 그것을 「토큰이 만료되었다」로 읽어 멀쩡한 토큰을 다시 발급하는
+    고리에 갇힌다(설치 직후 첫 10분에 일어난다). 두 경우 모두 `tests/test_config.py`가 못박는다.
+    """
     raw = raw.strip()
-    if len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "\"'":
-        return raw[1:-1]
+    quoted = _QUOTED_VALUE.match(raw)
+    if quoted is not None:
+        return quoted.group("value")
     return _INLINE_COMMENT.sub("", raw).strip()
 
 
