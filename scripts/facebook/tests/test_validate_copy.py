@@ -11,7 +11,9 @@
 
 from __future__ import annotations
 
+import copy
 import dataclasses
+import inspect
 import json
 import unicodedata
 from pathlib import Path
@@ -19,6 +21,7 @@ from pathlib import Path
 import pytest
 
 from facebook import config
+from facebook.facts import load_facts
 from facebook.plan_model import Plan, load_plan
 from facebook.validate import BannedPhrasesError, Finding, load_banned_phrases, validate_copy
 
@@ -27,6 +30,7 @@ LANGS = ("ko", "vi", "my", "ne")
 
 GLOSSARY = json.loads(config.GLOSSARY_PATH.read_text(encoding="utf-8"))
 UNIVERSITIES = json.loads(config.UNIVERSITIES_PATH.read_text(encoding="utf-8"))
+FACTS = load_facts(config.FACTS_PATH)
 
 # 사전 JSON의 구역·분류 이름. 파일을 고치는 사람이 보는 이름이므로 테스트도 글자 그대로 쓴다.
 SECTION_ALWAYS = "모든 게시물"
@@ -72,7 +76,7 @@ def _real_banned() -> dict[str, tuple[str, ...]]:
 
 
 def _check(plan: Plan, banned: dict[str, tuple[str, ...]] | None = None) -> list[Finding]:
-    return validate_copy(plan, UNIVERSITIES, _banned() if banned is None else banned, GLOSSARY)
+    return validate_copy(plan, UNIVERSITIES, _banned() if banned is None else banned, GLOSSARY, FACTS)
 
 
 def _brief(findings: list[Finding]) -> list[tuple[int | None, str, str]]:
@@ -183,13 +187,12 @@ def test_금지_문구는_낱말이_아니라_통째로_대조한다():
     [
         ("ko", "합격 보장", "합격보장"),
         ("ko", "합격 보장", "합격\n보장"),
-        ("ko", "MOU", "mou"),
         ("vi", "đảm bảo đỗ", "ĐẢM BẢO   ĐỖ"),
         ("vi", "đảm bảo đỗ", unicodedata.normalize("NFD", "đảm bảo đỗ")),
         ("my", "ဝင်ခွင့် အာမခံ", "ဝင်ခွင့်​အာမခံ"),
         ("ne", "भर्ना ग्यारेन्टी", "भर्नाग्यारेन्टी"),
     ],
-    ids=["ko-띄어쓰기-없음", "ko-줄바꿈", "ko-대소문자", "vi-대소문자-공백", "vi-NFD", "my-ZWSP", "ne-띄어쓰기-없음"],
+    ids=["ko-띄어쓰기-없음", "ko-줄바꿈", "vi-대소문자-공백", "vi-NFD", "my-ZWSP", "ne-띄어쓰기-없음"],
 )
 def test_금지_문구는_띄어쓰기_대소문자_유니코드_표기_차이를_무시하고_찾는다(language, phrase, written):
     # 사전의 비한국어 문구는 검수되지 않았으므로, 띄어쓰기 한 칸 차이로 새지 않게 한다.
@@ -203,6 +206,24 @@ def test_금지_문구는_띄어쓰기_대소문자_유니코드_표기_차이�
     findings = _check(plan, _banned({language: (phrase,)}))
 
     assert [f.code for f in findings] == ["금지표현"]
+
+
+def test_알파벳_약어는_대소문자를_구분해_낱말로만_찾는다():
+    # `MOU`를 대소문자·띄어쓰기를 무시하고 찾으면 "nhóm oung" 같은 글에도 걸린다.
+    banned = _banned(university={"vi": ("MOU",), "ko": ("MOU",)})
+
+    def vi_codes(body: str) -> list[str]:
+        plan = _edit(_plan(), 3, body_local=_with_cta(body, "vi"))
+        return [f.code for f in _check(plan, banned)]
+
+    assert vi_codes("전주기전대학 nhóm oung và mouse.") == []
+    assert vi_codes("전주기전대학 MOUSE.") == []
+    assert vi_codes("전주기전대학 mou.") == []  # 약어는 대문자로 쓴 것만 약어다
+    assert vi_codes("전주기전대학 ký MOU.") == ["대학맥락"]
+    assert vi_codes("전주기전대학 (MOU).") == ["대학맥락"]
+
+    korean = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta("전주기전대학과 MOU를 체결했습니다.", "ko"))
+    assert [f.code for f in _check(korean, banned)] == ["대학맥락"]
 
 
 def test_같은_문구가_여러_번_나와도_문구마다_한_번만_보고한다():
@@ -367,6 +388,57 @@ def test_전문대학_같은_일반_명사는_대학교명_후보가_아니다()
     plan = _edit(_plan(), 0, source_ko=_with_cta("전문대학과 연계되어 있습니다.", "ko"))
 
     assert _check(plan, _real_banned()) == []
+
+
+@pytest.mark.parametrize("name", ["종합대학교", "국립대학교", "4년제대학교"])
+def test_종합대학교_같은_일반_명사는_대학교명_후보가_아니다(name):
+    # `…대학교`가 이름이 아니라 일반 명사로 쓰인 경우. 붙여 쓴 `4년제대학교`는 낱말이 `년제대학교`로 잡힌다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta(f"{name}와 연계되어 있습니다.", "ko"))
+
+    assert _check(plan, _real_banned()) == []
+
+
+# 한국의 대학을 소개하는 글에 흔한 문장. 산학협력단·국제협력처는 대부분의 대학에 있는 부서 이름이고,
+# 연계전공은 학사 용어이며, 합격자 발표는 일정 안내이고, 불합격은 약속의 반대다.
+_UNIVERSITY_PROSE = [
+    "전북대학교 산학협력단이 유학생 지원 프로그램을 운영합니다.",
+    "경기대학교는 연계전공 제도를 운영합니다.",
+    "청주대학교의 국제협력처가 유학생을 담당합니다.",
+    "호남대학교의 합격자 발표는 12월입니다.",
+    "우석대학교에 불합격하더라도 다른 선택이 있습니다.",
+]
+
+
+def test_대학_실무_표현은_대학맥락이_아니다():
+    for sentence in _UNIVERSITY_PROSE:
+        plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+
+        assert _check(plan, _real_banned()) == [], sentence
+
+
+@pytest.mark.parametrize(
+    "sentence",
+    [
+        "경기대학교와 협력 관계를 맺고 있습니다.",
+        "경기대학교와 협력하여 진행합니다.",
+        "경기대학교와 업무협약을 맺었습니다.",
+        "경기대학교와 제휴되어 있습니다.",
+        "경기대학교는 저희 파트너입니다.",
+        "경기대학교와 연계되어 있습니다.",
+        "경기대학교와 연계하여 안내합니다.",
+        "경기대학교 입학을 알선합니다.",
+        "경기대학교와 MOU를 체결했습니다.",
+        "경기대학교 합격을 보장합니다.",
+        "경기대학교 합격 가능성이 높습니다.",
+    ],
+    ids=["협력-관계", "협력하여", "업무협약", "제휴", "파트너", "연계되어", "연계하여", "알선", "MOU", "합격을-보장", "합격-가능"],
+)
+def test_약속이나_관계를_말하는_표현은_대학맥락이다(sentence):
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+
+    codes = {f.code for f in _check(plan, _real_banned())}
+
+    assert "대학맥락" in codes, sentence
 
 
 # --- 용어집 ------------------------------------------------------------------
@@ -544,6 +616,100 @@ def test_수치가_여럿이어도_출처없는수치는_게시물당_하나다(
         assert shown in findings[0].message
 
 
+def test_인용한_사실에_없는_수치는_경고():
+    # 사실을 하나라도 인용하면 모든 수치가 통과하던 구멍. 주 20시간은 1차 출처가 없어 일부러 뺀 수치이고
+    # 장학금 50%는 비용 약속이다. 원문과 번역이 같은 수치를 말하므로 역번역 대조도 못 잡는다.
+    sentence = "유학(D-2) 학생은 주 20시간까지 아르바이트를 할 수 있고 장학금 50%를 받습니다."
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=("part_time_work_permit_required",))
+    assert plan.posts[0].fact_keys
+
+    findings = _check(plan)
+
+    assert _brief(findings) == [(0, "출처없는수치", "warning")]
+    for shown in ("20시간", "50%", "part_time_work_permit_required"):
+        assert shown in findings[0].message
+
+
+def test_수치의_숫자는_인용한_사실에_통째로_들어_있어야_한다():
+    # 사실 값의 `2026`에 `20`이 부분 문자열로 들어 있어도 `주 20시간`의 출처가 되지는 않는다.
+    sentence = "전주기전대학의 연간 평균 등록금은 6,800,000원이고 주 20시간 일합니다."
+    assert "20" in FACTS["tuition_kijeon"].value
+    plan = _edit(_plan(), 3, source_ko=_with_cta(sentence, "ko"))
+
+    findings = _check(plan)
+
+    assert _brief(findings) == [(3, "출처없는수치", "warning")]
+    assert "20시간" in findings[0].message and "6,800,000원" not in findings[0].message
+
+
+@pytest.mark.parametrize(
+    ("key", "sentence"),
+    [
+        ("tuition_kijeon", "전주기전대학의 연간 평균 등록금은 6800000원입니다."),
+        ("tuition_kyonggi", "경기대학교의 연간 평균 등록금은 8,028,841.1원입니다."),
+        ("tuition_kyonggi", "경기대학교의 연간 평균 등록금은 8,028,841원입니다."),
+    ],
+    ids=["쉼표-없이", "소수점", "소수점-버림"],
+)
+def test_천_단위_쉼표는_숫자_비교에서_무시하고_소수점은_그대로_본다(key, sentence):
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=(key,))
+
+    assert _check(plan) == []
+
+
+def test_반올림하거나_단위를_바꾼_수치는_경고한다():
+    # 알려진 거짓 양성: 803은 8028841.1이 아니다. 경고라서 검토 화면에서 사람이 넘긴다.
+    sentence = "경기대학교의 연간 평균 등록금은 약 803만원입니다."
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=("tuition_kyonggi",))
+
+    findings = _check(plan)
+
+    assert _brief(findings) == [(0, "출처없는수치", "warning")]
+    assert "803만원" in findings[0].message
+
+
+def test_소수점_아래가_다른_수치는_경고한다():
+    # 정수부가 같아도 소수가 다르면 다른 수다.
+    sentence = "경기대학교의 연간 평균 등록금은 8,028,841.9원입니다."
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=("tuition_kyonggi",))
+
+    findings = _check(plan)
+
+    assert _brief(findings) == [(0, "출처없는수치", "warning")]
+    assert "8,028,841.9원" in findings[0].message
+
+
+def test_인용한_사실이_여럿이면_어느_하나에든_있으면_통과한다():
+    sentence = "전주기전대학의 연간 평균 등록금은 6,800,000원입니다."
+    plan = _edit(
+        _plan(), 0, source_ko=_with_cta(sentence, "ko"),
+        fact_keys=("part_time_work_permit_required", "tuition_kijeon"),
+    )
+
+    assert _check(plan) == []
+
+
+def test_인용하지_않은_사실에만_있는_수치는_경고한다():
+    assert "6,800,000" in FACTS["tuition_kijeon"].value
+    plan = _edit(_plan(), 0, source_ko=_with_cta("등록금은 6,800,000원입니다.", "ko"), fact_keys=("visa_d2_definition",))
+
+    assert _brief(_check(plan)) == [(0, "출처없는수치", "warning")]
+
+
+def test_facts에_없는_키를_인용해도_수치의_출처로_치지_않는다():
+    # 없는 키 자체는 validate_facts가 사실없음으로 보고한다. 여기서는 그 키를 근거로 삼지 않을 뿐이다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("등록금은 6,800,000원입니다.", "ko"), fact_keys=("없는-키",))
+
+    assert _brief(_check(plan)) == [(0, "출처없는수치", "warning")]
+
+
+@pytest.mark.parametrize("sentence", ["제1원칙은 안전입니다.", "3원색으로 나타냅니다."], ids=["원칙", "원색"])
+def test_원칙_원색의_원은_금액이_아니다(sentence):
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=())
+
+    assert _check(plan) == []
+
+
 # --- 등록금 한정어 -------------------------------------------------------------
 
 
@@ -661,6 +827,71 @@ def test_결과는_게시물_번호순이다():
     ]
 
 
+# --- 입력 가드 ---------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("key", "language", "value"),
+    [
+        ("cta", "my", ""),
+        ("cta", "ko", "   "),
+        ("visa_d2", "my", ""),
+        ("visa_d4", "ne", None),
+        ("company_name", "vi", 5),
+    ],
+    ids=["cta-my-빈-문자열", "cta-ko-공백", "visa_d2-my-빈-문자열", "visa_d4-ne-None", "company_name-vi-숫자"],
+)
+def test_용어집_값이_비면_멈춘다(key, language, value):
+    # 빈 문자열은 `endswith("")`가 늘 참이고 `"" not in text`가 늘 거짓이라 CTA·용어집 검사를 조용히 끈다.
+    glossary = copy.deepcopy(GLOSSARY)
+    glossary[key][language] = value
+
+    with pytest.raises(ValueError, match=rf"{key}\.{language}"):
+        validate_copy(_plan(), UNIVERSITIES, _banned(), glossary, FACTS)
+
+
+@pytest.mark.parametrize(
+    ("drop", "message"),
+    [
+        (lambda g: g.pop("cta"), "cta"),
+        (lambda g: g.pop("visa_d2"), "visa_d2"),
+        (lambda g: g["cta"].pop("ne"), r"cta\.ne"),
+        (lambda g: g["company_name"].pop("ko"), r"company_name\.ko"),
+    ],
+    ids=["cta-항목", "visa_d2-항목", "cta-ne", "company_name-ko"],
+)
+def test_용어집에_항목이나_언어가_빠져도_멈춘다(drop, message):
+    glossary = copy.deepcopy(GLOSSARY)
+    drop(glossary)
+
+    with pytest.raises(ValueError, match=message):
+        validate_copy(_plan(), UNIVERSITIES, _banned(), glossary, FACTS)
+
+
+@pytest.mark.parametrize(
+    "universities",
+    [
+        [{"id": "x"}],
+        [{"id": "x", "name_ko": ""}],
+        [{"id": "x", "name_ko": "  "}],
+        ["경기대학교"],
+        [{"id": "kyonggi", "name_ko": "경기대학교"}, {"id": "x"}],
+    ],
+    ids=["name_ko-없음", "name_ko-빈-문자열", "name_ko-공백", "문자열-항목", "둘째-항목만-나쁨"],
+)
+def test_대학_목록_항목에_name_ko가_없거나_비면_멈춘다(universities):
+    # 빈 이름은 모든 본문에 들어맞아 모든 게시물을 대학명이 나오는 글로 만든다.
+    with pytest.raises(ValueError, match="name_ko"):
+        validate_copy(_plan(), universities, _banned(), GLOSSARY, FACTS)
+
+
+def test_validate_copy는_facts를_마지막_인자로_받는다():
+    # 네 인자로 부르던 호출이 조용히 통과하지 않고 TypeError로 깨지게 한다.
+    assert list(inspect.signature(validate_copy).parameters) == [
+        "plan", "universities", "banned", "glossary", "facts",
+    ]
+
+
 # --- 사전을 읽는 쪽 --------------------------------------------------------------
 
 
@@ -757,28 +988,28 @@ _SAMPLES = [
     ("ko", "합격 보장", "저희를 통하면 합격 보장입니다."),
     ("ko", "취업 보장", "저희와 하면 취업을 보장합니다."),
     ("ko", "비자 발급 보장", "비자 발급을 보장합니다."),
-    ("ko", "무료 유학", "무료 유학의 기회를 드립니다."),
+    ("ko", "비용 보장·무료 유학", "무료 유학의 기회를 드립니다."),
     ("ko", "상담 이후 절차·수수료", "상담 이후 수수료가 발생합니다."),
     ("ko", "협력 대학", "저희 협력 대학을 소개합니다."),
     ("ko", "입학 알선", "저희가 입학을 도와드립니다."),
     ("vi", "합격 보장", "Chúng tôi đảm bảo đỗ cho bạn."),
     ("vi", "취업 보장", "Chúng tôi đảm bảo việc làm sau khi tốt nghiệp."),
     ("vi", "비자 발급 보장", "Chúng tôi đảm bảo visa cho bạn."),
-    ("vi", "무료 유학", "Cơ hội du học miễn phí dành cho bạn."),
+    ("vi", "비용 보장·무료 유학", "Cơ hội du học miễn phí dành cho bạn."),
     ("vi", "상담 이후 절차·수수료", "Phí dịch vụ sẽ được tính sau."),
     ("vi", "협력 대학", "Đây là trường đối tác của chúng tôi."),
     ("vi", "입학 알선", "Chúng tôi hỗ trợ nhập học cho bạn."),
     ("my", "합격 보장", "ကျွန်ုပ်တို့သည် ဝင်ခွင့် အာမခံ ပေးပါသည်။"),
     ("my", "취업 보장", "ကျွန်ုပ်တို့သည် အလုပ်အကိုင် အာမခံ ပေးပါသည်။"),
     ("my", "비자 발급 보장", "ဗီဇာ အာမခံ ရရှိမည်။"),
-    ("my", "무료 유학", "ကျောင်းလခ အခမဲ့ ပညာသင်ခွင့်ရပါမည်။"),
+    ("my", "비용 보장·무료 유학", "ကျောင်းလခ အခမဲ့ ပညာသင်ခွင့်ရပါမည်။"),
     ("my", "상담 이후 절차·수수료", "ဝန်ဆောင်ခ ကောက်ခံပါမည်။"),
     ("my", "협력 대학", "ကျွန်ုပ်တို့၏ မိတ်ဖက် တက္ကသိုလ် ဖြစ်ပါသည်။"),
     ("my", "입학 알선", "ဝင်ခွင့်လျှောက်ရန် ကူညီပေးပါမည်။"),
     ("ne", "합격 보장", "हामी भर्ना ग्यारेन्टी दिन्छौं।"),
     ("ne", "취업 보장", "हामी जागिरको ग्यारेन्टी दिन्छौं।"),
     ("ne", "비자 발급 보장", "भिसा ग्यारेन्टी उपलब्ध छ।"),
-    ("ne", "무료 유학", "निःशुल्क अध्ययनको अवसर।"),
+    ("ne", "비용 보장·무료 유학", "निःशुल्क अध्ययनको अवसर।"),
     ("ne", "상담 이후 절차·수수료", "सेवा शुल्क लाग्नेछ।"),
     ("ne", "협력 대학", "यो हाम्रो साझेदार विश्वविद्यालय हो।"),
     ("ne", "입학 알선", "हामी भर्नामा सहयोग गर्छौं।"),
@@ -795,37 +1026,42 @@ def test_실제_사전은_네_언어의_대표_문구를_잡는다(language, cat
         index = {"vi": 0, "my": 1, "ne": 2}[language]
         plan = _edit(_plan(), index, body_local=_with_cta(sentence, language))
 
-    findings = _check(plan, _real_banned())
+    findings = [f for f in _check(plan, _real_banned()) if f.post_index == index and f.code == "금지표현"]
 
-    assert ("금지표현" in {f.code for f in findings if f.post_index == index}), (language, category, findings)
+    # 표본이 두 분류의 문구에 걸려도 시험 중인 분류의 문구가 하나는 걸려야 한다 — 분류가 사전에서
+    # 빠지면 KeyError로, 그 분류의 문구가 모두 바뀌면 단언 실패로 알게 된다.
+    raw = json.loads(config.BANNED_PHRASES_PATH.read_text(encoding="utf-8"))
+    phrases = raw[SECTION_ALWAYS][language][category]
+    assert any(f"'{phrase}'" in f.message for f in findings for phrase in phrases), (language, category, findings)
+
+
+def _blocked_by_dictionary(plan: Plan) -> list[Finding]:
+    """실제 사전으로 검증했을 때 사전 때문에 나온 항목(금지표현·대학맥락)만."""
+    return [f for f in _check(plan, _real_banned()) if f.code in ("금지표현", "대학맥락")]
 
 
 def test_금지_문구는_승인된_용어집_문자열을_막지_않는다():
     # 사전을 고치다가 CTA·비자명·회사명에 들어 있는 말을 금지해 버리면, 이 문자열을 그대로 쓰는
     # 게시물이 매달 전부 막힌다. 낱말이 아니라 문구로 대조하는 이유와 같은 위험을 데이터에서 고정한다.
-    from facebook.validate import _compact  # 대조에 쓰는 바로 그 정규화
-
-    banned = _real_banned()
+    # 정규화 함수를 거치지 않고 실제 검증에 넣어 본다. 대학명 구역의 사전도 함께 시험하려고 승인된 대학명을 붙인다.
     for term, by_language in GLOSSARY.items():
         for lang in LANGS:
-            text = _compact(by_language[lang])
-            for key in (lang, f"{lang}:대학명"):
-                hits = [phrase for phrase in banned[key] if _compact(phrase) in text]
-                assert not hits, f"용어집 {term}({lang})이 사전 '{key}'의 {hits}에 걸린다: {by_language[lang]!r}"
+            text = f"경기대학교 {by_language[lang]}"
+            if lang == "ko":
+                plan = _edit(_plan(), 0, source_ko=text)
+            else:
+                plan = _edit(_plan(), {"vi": 0, "my": 1, "ne": 2}[lang], body_local=text)
+
+            assert _blocked_by_dictionary(plan) == [], f"용어집 {term}({lang}): {by_language[lang]!r}"
 
 
 def test_한국어_금지_문구는_확정된_사실_문장을_막지_않는다():
     # 검증된 사실을 그대로 옮겨 쓴 원문이 금지 표현이나 대학 맥락 용어에 걸리면, 사실을 쓰는 게시물이
-    # 사전 때문에 막힌다. 한국어 사실 문장만 있으므로 한국어 항목만 본다.
-    from facebook.facts import load_facts
-    from facebook.validate import _compact
+    # 사전 때문에 막힌다. 한국어 사실 문장만 있으므로 원문에 넣어 본다.
+    for key, fact in FACTS.items():
+        plan = _edit(_plan(), 0, source_ko=f"경기대학교 {fact.value}")
 
-    banned = _real_banned()
-    for key, fact in load_facts(config.FACTS_PATH).items():
-        text = _compact(fact.value)
-        for table in ("ko", "ko:대학명"):
-            hits = [phrase for phrase in banned[table] if _compact(phrase) in text]
-            assert not hits, f"사실 {key}가 사전 '{table}'의 {hits}에 걸린다: {fact.value!r}"
+        assert _blocked_by_dictionary(plan) == [], f"사실 {key}: {fact.value!r}"
 
 
 # --- 정상 경로 ----------------------------------------------------------------
@@ -834,6 +1070,6 @@ def test_한국어_금지_문구는_확정된_사실_문장을_막지_않는다(
 def test_픽스처_플랜은_findings가_비어_있다():
     # 실제 사전·용어집·대학 목록으로 돌린다. 승인된 CTA("무료 상담" 포함)가 금지 문구에 걸리면
     # 여기서 깨진다.
-    findings = validate_copy(_plan(), UNIVERSITIES, _real_banned(), GLOSSARY)
+    findings = validate_copy(_plan(), UNIVERSITIES, _real_banned(), GLOSSARY, FACTS)
 
     assert findings == []

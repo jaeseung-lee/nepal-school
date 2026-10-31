@@ -281,16 +281,11 @@ _SECTION_ALWAYS = "모든 게시물"
 _SECTION_UNIVERSITY = "대학명이 나오는 게시물"
 _SECTIONS = (_SECTION_ALWAYS, _SECTION_UNIVERSITY)
 _DICTIONARY_LANGUAGES = ("ko", *LANGUAGES)
-# 대학명 구역의 항목은 `{언어}:대학명` 키로 돌려준다(`vi:대학명`). 모든 게시물 구역은 언어 코드 그대로다.
-_UNIVERSITY_KEY = "{language}:대학명"
-
-
-def _always_key(language: str) -> str:
-    return language
 
 
 def _university_key(language: str) -> str:
-    return _UNIVERSITY_KEY.format(language=language)
+    """대학명 구역의 항목은 `vi:대학명`처럼 돌려준다. 모든 게시물 구역은 언어 코드(`vi`) 그대로다."""
+    return f"{language}:대학명"
 
 
 def _banned_keys() -> tuple[str, ...]:
@@ -363,21 +358,24 @@ def load_banned_phrases(path: Path) -> dict[str, tuple[str, ...]]:
             f"알 수 없는 구역: {unknown or '없음'} (필요한 구역: {', '.join(_SECTIONS)})."
         )
 
-    result: dict[str, tuple[str, ...]] = {}
-    for section, key_of in ((_SECTION_ALWAYS, _always_key), (_SECTION_UNIVERSITY, _university_key)):
-        by_language = raw[section]
-        if not isinstance(by_language, dict):
-            raise BannedPhrasesError(f"금지 표현 사전의 '{section}'은(는) {{언어: {{...}}}} 형태의 객체여야 합니다.")
-        missing = [language for language in _DICTIONARY_LANGUAGES if language not in by_language]
-        unknown = [language for language in by_language if language not in _DICTIONARY_LANGUAGES]
-        if missing or unknown:
-            raise BannedPhrasesError(
-                f"금지 표현 사전의 '{section}'에서 언어가 맞지 않습니다 — 없는 언어: {missing or '없음'}, "
-                f"알 수 없는 언어: {unknown or '없음'} (필요한 언어: {', '.join(_DICTIONARY_LANGUAGES)})."
-            )
-        for language in _DICTIONARY_LANGUAGES:
-            result[key_of(language)] = _parse_phrases(section, language, by_language[language])
-    return result
+    always = _read_section(raw, _SECTION_ALWAYS)
+    university = _read_section(raw, _SECTION_UNIVERSITY)
+    return {**always, **{_university_key(language): phrases for language, phrases in university.items()}}
+
+
+def _read_section(raw: dict, section: str) -> dict[str, tuple[str, ...]]:
+    """사전의 한 구역에서 `{언어: 문구 튜플}`을 읽는다. 언어가 하나라도 빠지거나 낯선 언어가 있으면 멈춘다."""
+    by_language = raw[section]
+    if not isinstance(by_language, dict):
+        raise BannedPhrasesError(f"금지 표현 사전의 '{section}'은(는) {{언어: {{...}}}} 형태의 객체여야 합니다.")
+    missing = [language for language in _DICTIONARY_LANGUAGES if language not in by_language]
+    unknown = [language for language in by_language if language not in _DICTIONARY_LANGUAGES]
+    if missing or unknown:
+        raise BannedPhrasesError(
+            f"금지 표현 사전의 '{section}'에서 언어가 맞지 않습니다 — 없는 언어: {missing or '없음'}, "
+            f"알 수 없는 언어: {unknown or '없음'} (필요한 언어: {', '.join(_DICTIONARY_LANGUAGES)})."
+        )
+    return {language: _parse_phrases(section, language, by_language[language]) for language in _DICTIONARY_LANGUAGES}
 
 
 def validate_copy(
@@ -385,6 +383,7 @@ def validate_copy(
     universities: list[dict],
     banned: dict[str, tuple[str, ...]],
     glossary: dict,
+    facts: dict[str, Fact],
 ) -> list[Finding]:
     """게시물이 *무엇을 말하는지* 검사해 문제를 전부 돌려준다.
 
@@ -394,18 +393,20 @@ def validate_copy(
     - 대학명이 나오는 게시물에 협력·제휴를 떠올리게 하는 표현이 없는지 (오류)
     - 승인 목록 밖의 `…대학교` 이름이 그런 표현과 한 게시물에 있지 않은지 (경고)
     - `D-2`·`D-4`·회사명이 나오면 용어집 표기를 그대로 썼는지 (경고)
-    - `fact_keys`가 빈 게시물의 원문에 금액·시간·비율 수치가 없는지 (경고)
+    - 원문의 금액·시간·비율 수치가 인용한 사실(`fact_keys`)의 값에 들어 있는지 (경고)
     - 등록금 사실(`tuition_*`)을 쓰는 게시물의 원문에 `평균`과 연단위 표시가 있는지 (오류)
 
-    `banned`는 `load_banned_phrases`가 돌려준 값이다. 항목이 하나라도 빠진 사전은 그 검사를 조용히
-    건너뛰게 되므로 `ValueError`로 멈춘다.
+    `banned`는 `load_banned_phrases`가 돌려준 값, `facts`는 `validate_facts`가 받는 것과 같은 사실 모음이다.
+    입력이 비어 있으면 검사가 조용히 꺼지므로 `ValueError`로 멈춘다: 항목이 빠진 사전, 비어 있거나 빠진
+    용어집 값(`endswith("")`는 늘 참), `name_ko`가 없거나 빈 대학 목록 항목(빈 이름은 모든 본문에 들어맞는다).
     """
     missing = [key for key in _banned_keys() if key not in banned]
     if missing:
         raise ValueError(
             f"금지 표현 사전에 항목이 없습니다: {', '.join(missing)}. load_banned_phrases로 읽은 값을 넘기세요."
         )
-    approved = tuple(entry["name_ko"] for entry in universities)
+    _require_glossary(glossary)
+    approved = _approved_names(universities)
 
     findings: list[Finding] = []
     findings += _check_cta(plan, glossary)
@@ -414,9 +415,43 @@ def validate_copy(
     findings += _check_university_context(plan, approved, banned)
     findings += _check_university_candidates(plan, approved, banned)
     findings += _check_glossary_terms(plan, glossary)
-    findings += _check_unsourced_figures(plan)
+    findings += _check_unsourced_figures(plan, facts)
     findings += _check_tuition_qualifier(plan)
     return _ordered(findings)
+
+
+def _require_glossary(glossary: dict) -> None:
+    """CTA와 용어집 토큰 항목이 `ko`와 모든 게시 언어에서 비어 있지 않은 문자열인지 본다.
+
+    빈 문자열은 `text.endswith("")`가 늘 참이고 `"" not in text`가 늘 거짓이라 CTA·용어집 검사를 조용히 끈다.
+    """
+    problems = []
+    for key in ("cta", *(token_key for token_key, _ in _GLOSSARY_TOKENS)):
+        entry = glossary.get(key)
+        for language in _DICTIONARY_LANGUAGES:
+            if not (isinstance(entry, dict) and _non_blank(entry.get(language))):
+                problems.append(f"{key}.{language}")
+    if problems:
+        raise ValueError(
+            f"용어집에 없거나 비어 있는 값이 있습니다: {', '.join(problems)}. 빈 값은 CTA·용어집 검사를 조용히 꺼 "
+            f"버리므로 검증을 멈춥니다. glossary.json을 고치세요."
+        )
+
+
+def _approved_names(universities: list[dict]) -> tuple[str, ...]:
+    """승인된 대학의 한국어 이름들. `name_ko`가 없거나 비면 멈춘다 — 빈 이름은 모든 본문에 들어맞는다."""
+    names = [entry.get("name_ko") if isinstance(entry, dict) else None for entry in universities]
+    bad = [str(position) for position, name in enumerate(names) if not _non_blank(name)]
+    if bad:
+        raise ValueError(
+            f"대학 목록(universities.json)의 {', '.join(bad)}번째(0부터) 항목에 name_ko가 없거나 비어 있습니다. "
+            f"빈 이름은 모든 본문에 들어맞아 모든 게시물을 대학명이 나오는 글로 만듭니다."
+        )
+    return tuple(names)
+
+
+def _non_blank(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
 
 
 def _check_cta(plan: Plan, glossary: dict) -> list[Finding]:
@@ -440,10 +475,27 @@ def _check_cta(plan: Plan, glossary: dict) -> list[Finding]:
     return findings
 
 
+def _is_acronym(phrase: str) -> bool:
+    """`MOU`처럼 알파벳 대문자뿐인 약어."""
+    return phrase.isascii() and phrase.isalpha() and phrase.isupper()
+
+
 def _hits(text: str, phrases: tuple[str, ...]) -> list[str]:
-    """`text`에 통째로 들어 있는 `phrases`의 문구들(사전 순서). 표기 차이는 `_compact`가 지운다."""
+    """`text`에 통째로 들어 있는 `phrases`의 문구들(사전 순서). 표기 차이는 `_compact`가 지운다.
+
+    영문 약어(`MOU`)만 예외로, 대소문자를 구분하고 알파벳 낱말로 떨어져 있을 때만 찾는다. 띄어쓰기를 지우고
+    소문자로 보면 `nhóm oung`의 `m ou`에도 걸린다.
+    """
     haystack = _compact(text)
-    return [phrase for phrase in phrases if _compact(phrase) in haystack]
+    found = []
+    for phrase in phrases:
+        if _is_acronym(phrase):
+            matched = re.search(rf"(?<![A-Za-z]){re.escape(phrase)}(?![A-Za-z])", text) is not None
+        else:
+            matched = _compact(phrase) in haystack
+        if matched:
+            found.append(phrase)
+    return found
 
 
 def _check_banned_phrases(plan: Plan, banned: dict[str, tuple[str, ...]]) -> list[Finding]:
@@ -527,8 +579,10 @@ def _check_university_context(
 
 
 # 대학 이름처럼 보이는 낱말. `대학`으로 끝나는 것까지 넓히지 않는다: `전문대학`·`종합대학` 같은 일반 명사가
-# 걸리고, 픽스처 원문에도 `전문대학`이 있다. `…대학교`는 일반 명사로는 드물어 이름일 가능성이 높다.
+# 걸리고, 픽스처 원문에도 `전문대학`이 있다. `…대학교`는 이름일 가능성이 높지만 일반 명사로 쓰이는 것도 있어
+# (`종합대학교`·`국립대학교`) 그런 낱말은 건너뛴다. 붙여 쓴 `4년제대학교`는 숫자가 빠진 `년제대학교`로 잡힌다.
 _UNIVERSITY_LIKE = re.compile(r"[가-힣]{2,}대학교")
+_GENERIC_UNIVERSITY_WORDS = frozenset({"종합대학교", "국립대학교", "사립대학교", "공립대학교", "년제대학교"})
 
 
 def _check_university_candidates(
@@ -546,7 +600,7 @@ def _check_university_candidates(
         terms = _context_terms(post, banned)
         if not terms:
             continue
-        known = {*approved, *post.university_names}
+        known = {*approved, *post.university_names, *_GENERIC_UNIVERSITY_WORDS}
         candidates = dict.fromkeys(
             name
             for text in (post.source_ko, post.body_local)
@@ -596,32 +650,58 @@ def _check_glossary_terms(plan: Plan, glossary: dict) -> list[Finding]:
 
 
 # 금액·시간·비율처럼 보이는 수치. 연도, 학기 수, 급수 같은 숫자는 여기에 걸리지 않는다.
+# `원` 뒤의 `칙`·`색`은 금액이 아니다(제1원칙, 3원색). `6,800,000원입니다`처럼 한글이 이어지는 금액은 그대로 잡는다.
 _FIGURE = re.compile(
-    r"[₩$¥￥]\s*\d[\d,.]*"                                  # 기호가 앞에 붙는 금액: $500, ¥100,000
-    r"|\d[\d,.]*\s*[만천백억]?\s*(?:원|엔|円|달러|위안)"       # 금액: 6,800,000원, 300만 원, 15만 엔
-    r"|\d[\d,.]*\s*시간"                                    # 시간 수: 주 20시간
-    r"|\d[\d,.]*\s*(?:%|％|퍼센트)"                          # 비율: 95%
+    r"[₩$¥￥]\s*\d[\d,.]*"                                       # 기호가 앞에 붙는 금액: $500, ¥100,000
+    r"|\d[\d,.]*\s*[만천백억]?\s*(?:원(?!칙|색)|엔|円|달러|위안)"    # 금액: 6,800,000원, 300만 원, 15만 엔
+    r"|\d[\d,.]*\s*시간"                                         # 시간 수: 주 20시간
+    r"|\d[\d,.]*\s*(?:%|％|퍼센트)"                               # 비율: 95%
 )
+_THOUSANDS_COMMA = re.compile(r"(?<=\d),(?=\d)")
+_NUMBER = re.compile(r"\d+(?:\.\d+)?")
 
 
-def _check_unsourced_figures(plan: Plan) -> list[Finding]:
-    """`fact_keys`가 빈 게시물의 한국어 원문에 금액·시간·비율 수치가 있으면 경고한다.
+def _numbers(text: str) -> list[str]:
+    """`text` 속의 수를 숫자열로(천 단위 쉼표 제거): `8,028,841.1원` -> `['8028841.1']`."""
+    return _NUMBER.findall(_THOUSANDS_COMMA.sub("", text))
 
-    `validate_facts`는 `fact_keys`만 돌기 때문에 빈 튜플이면 사실 검사가 통째로 건너뛰어진다. 검증되지 않은
-    학비·시간 수치가 아무도 읽지 않는 현지어로 나가는 길이 이것 하나라 따로 막는다. 현지어 숫자 표기까지
-    알아보려 하지 않고 원문만 본다. 연도나 학기 수처럼 정당한 숫자도 있어 오류가 아닌 경고다.
+
+def _check_unsourced_figures(plan: Plan, facts: dict[str, Fact]) -> list[Finding]:
+    """원문의 금액·시간·비율 수치마다, 그 숫자가 인용한 사실(`fact_keys`) 중 하나의 값에 있는지 본다(경고).
+
+    숫자열이 사실 값 속의 수(소수는 정수부도)와 **통째로** 같아야 한다 — 부분 문자열이면 `2026`이 `주 20시간`의 출처가 된다.
+    `fact_keys`가 비면 모든 수치가 출처 없는 수치다. 사실을 하나라도 인용하면 아무 수치나 통과하던 구멍을 막는
+    것으로, 검증되지 않은 학비·아르바이트 시간이 아무도 읽지 않는 현지어로 나가는 길을 닫는다. 현지어 숫자 표기까지
+    알아보려 하지 않고 원문만 본다. 숫자만 보므로 단위는 따지지 않고, 반올림하거나 단위를 바꾼 수치(`803만원`과
+    `8,028,841.1원`)는 걸린다. 연도나 학기 수처럼 정당한 숫자도 있어 오류가 아닌 경고다. 없는 키는 근거로 치지 않는다
+    (그 키는 `validate_facts`가 보고한다).
     """
     findings: list[Finding] = []
     for post in plan.posts:
-        if post.fact_keys:
+        # 소수는 소수점 아래를 버린 정수부도 출처로 친다: 사실 값 `8,028,841.1원`을 `8,028,841원`으로 쓴 것은 같은 수다.
+        sourced = {
+            part
+            for key in post.fact_keys if key in facts
+            for number in _numbers(facts[key].value)
+            for part in (number, number.split(".")[0])
+        }
+        figures = list(dict.fromkeys(
+            match.group().strip()
+            for match in _FIGURE.finditer(post.source_ko)
+            if _numbers(match.group())[0] not in sourced
+        ))
+        if not figures:
             continue
-        figures = list(dict.fromkeys(match.group().strip() for match in _FIGURE.finditer(post.source_ko)))
-        if figures:
-            findings.append(_warning(
-                "출처없는수치", post.index,
-                f"한국어 원문에 수치({', '.join(figures)})가 있는데 fact_keys가 비어 있어 출처를 검증할 수 없습니다. "
-                f"facts.json의 확정된 사실에서 가져온 수치라면 그 키를 fact_keys에 적고, 아니라면 수치를 빼세요.",
-            ))
+        why = (
+            "fact_keys가 비어 있어" if not post.fact_keys
+            else f"인용한 사실({', '.join(post.fact_keys)})의 값에 그 숫자가 없어"
+        )
+        findings.append(_warning(
+            "출처없는수치", post.index,
+            f"한국어 원문에 수치({', '.join(figures)})가 있는데 {why} 출처를 검증할 수 없습니다. "
+            f"facts.json의 확정된 사실에서 가져온 수치라면 그 사실의 키를 fact_keys에 적고, 아니라면 수치를 빼세요. "
+            f"반올림하거나 단위를 바꿔 쓴 수치는 사실 값과 숫자가 달라 걸릴 수 있습니다.",
+        ))
     return findings
 
 
