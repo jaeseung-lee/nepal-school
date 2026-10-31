@@ -390,8 +390,8 @@ def validate_copy(
     - 한국어 원문과 현지어 본문이 모두 승인된 상담 문구(CTA)로 끝나는지 (오류)
     - 금지 표현이 없는지: 원문은 `ko`, 본문은 그 게시물 언어의 사전으로 (오류)
     - `university_names`의 대학이 승인 목록(`universities`의 `name_ko`)에 있고 본문에 그대로 쓰였는지 (오류)
-    - 대학명이 나오는 게시물에 협력·제휴를 떠올리게 하는 표현이 없는지 (오류)
-    - 승인 목록 밖의 `…대학교` 이름이 그런 표현과 한 게시물에 있지 않은지 (경고)
+    - 대학명이 나오는 게시물에서 회사가 스스로 협력·제휴를 말하지 않는지: 관계 어휘와 1인칭 표지가 한 글에 함께 있을 때 (오류)
+    - 승인 목록 밖의 `…대학교` 이름이 같은 조건(관계 어휘 + 1인칭 표지)의 글에 있지 않은지 (경고)
     - `D-2`·`D-4`·회사명이 나오면 용어집 표기를 그대로 썼는지 (경고)
     - 원문의 금액·시간·비율 수치가 인용한 사실(`fact_keys`)의 값에 들어 있는지 (경고)
     - 등록금 사실(`tuition_*`)을 쓰는 게시물의 원문에 `평균`과 연단위 표시가 있는지 (오류)
@@ -412,8 +412,8 @@ def validate_copy(
     findings += _check_cta(plan, glossary)
     findings += _check_banned_phrases(plan, banned)
     findings += _check_universities(plan, approved)
-    findings += _check_university_context(plan, approved, banned)
-    findings += _check_university_candidates(plan, approved, banned)
+    findings += _check_university_context(plan, approved, banned, glossary)
+    findings += _check_university_candidates(plan, approved, banned, glossary)
     findings += _check_glossary_terms(plan, glossary)
     findings += _check_unsourced_figures(plan, facts)
     findings += _check_tuition_qualifier(plan)
@@ -544,23 +544,64 @@ def _named_universities(post: Post, approved: tuple[str, ...]) -> list[str]:
     return list(dict.fromkeys([*post.university_names, *detected]))
 
 
-def _context_terms(post: Post, banned: dict[str, tuple[str, ...]]) -> list[tuple[str, str]]:
-    """게시물의 원문(`ko:대학명`)과 본문(그 게시물 언어의 `:대학명`)에서 찾은 맥락 어휘를 `(출처, 어휘)`로."""
-    found: list[tuple[str, str]] = []
+# 회사가 스스로를 가리키는 1인칭 표지. 대학과의 관계를 말하는 어휘(`협력`·`연계`)는 대학 소개글에도 흔하다 —
+# `산학협력단`, 해외 대학과의 협약, 제휴 할인. 막으려는 것은 **회사가** 맺지 않은 관계를 내세우는 글이므로
+# 관계 어휘가 회사의 1인칭 표지와 같은 글에 있을 때만 본다. 조사나 어미가 붙는 말이라 뒤쪽 경계는 보지 않는다
+# (`저희는`, `हामीले`). `우리나라`·`우리말`(우리 나라·말)과 `당사자`·`당사국`은 1인칭이 아니라서 뺀다.
+_FIRST_PERSON = {
+    "ko": re.compile(r"저희|우리(?!나라|말|글)|당사(?!자|국)"),
+    "vi": re.compile(r"chúng\s+(?:tôi|ta)(?!\w)", re.IGNORECASE),
+    "my": re.compile("ကျွန်ုပ်တို့|ကျွန်တော်တို့|ကျွန်မတို့"),
+    "ne": re.compile("हामी|हाम्रो|हाम्रा|हाम्री"),
+}
+
+
+def _first_person_marker(text: str, language: str, glossary: dict) -> str | None:
+    """`text`에서 회사를 가리키는 표지를 찾아 돌려준다. 없으면 `None`.
+
+    표지는 그 언어의 1인칭 대명사와 회사명이다. 회사명은 용어집의 그 언어 표기이고, 한국어 이름
+    (`정우인재개발원`)만 쓴 글도 같은 회사이므로 함께 본다.
+    """
+    cleaned = "".join(
+        ch for ch in unicodedata.normalize("NFC", text) if unicodedata.category(ch) != "Cf"  # U+200B 등
+    )
+    pronoun = _FIRST_PERSON[language].search(cleaned)
+    if pronoun:
+        return pronoun.group()
+    compact = _compact(text)
+    for name in (glossary["company_name"][language], dict(_GLOSSARY_TOKENS)["company_name"]):
+        if _compact(name) in compact:
+            return name
+    return None
+
+
+def _context_terms(
+    post: Post, banned: dict[str, tuple[str, ...]], glossary: dict
+) -> list[tuple[str, str, str]]:
+    """회사가 말하는 글에서 찾은 맥락 어휘를 `(출처, 어휘, 1인칭 표지)`로.
+
+    원문(`ko:대학명` 사전, 한국어 표지)과 본문(그 게시물 언어의 `:대학명` 사전, 그 언어의 표지)을 따로 본다.
+    그 글에 회사의 1인칭 표지가 없으면 관계 어휘가 있어도 건너뛴다.
+    """
+    found: list[tuple[str, str, str]] = []
     for side, text, language in (
         ("한국어 원문(source_ko)", post.source_ko, "ko"),
         ("현지어 본문(body_local)", post.body_local, post.language),
     ):
-        found += [(side, term) for term in _hits(text, banned[_university_key(language)])]
+        marker = _first_person_marker(text, language, glossary)
+        if marker is None:
+            continue
+        found += [(side, term, marker) for term in _hits(text, banned[_university_key(language)])]
     return found
 
 
 def _check_university_context(
-    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]]
+    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]], glossary: dict
 ) -> list[Finding]:
-    """대학명이 나오는 게시물에 협력·제휴·입학 알선·합격 가능성을 떠올리게 하는 표현이 없는지 본다.
+    """대학명이 나오는 게시물에서 회사가 협력·제휴·입학 알선·합격 가능성을 스스로 말하지 않는지 본다.
 
-    대학 실명은 소개 맥락에서만 쓸 수 있다. `university_names`를 비워 두고 본문에만 대학명을 쓰는 경우도
+    대학 실명은 소개 맥락에서만 쓸 수 있다. 세 가지가 한 글(원문 또는 본문)에 함께 있어야 한다: 대학명,
+    그 사전의 관계 어휘, 회사의 1인칭 표지. `university_names`를 비워 두고 본문에만 대학명을 쓰는 경우도
     놓치지 않도록 본문에서 찾은 승인 목록의 이름도 대학명으로 친다.
     """
     findings: list[Finding] = []
@@ -568,11 +609,11 @@ def _check_university_context(
         named = _named_universities(post, approved)
         if not named:
             continue
-        for side, term in _context_terms(post, banned):
+        for side, term, marker in _context_terms(post, banned, glossary):
             findings.append(_error(
                 "대학맥락", post.index,
-                f"대학명({', '.join(named)})이 나오는 게시물의 {side}에 협력·제휴를 떠올리게 하는 표현 "
-                f"'{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
+                f"대학명({', '.join(named)})이 나오는 게시물의 {side}에서 회사가 스스로({marker}) 협력·제휴를 말하는 것처럼 "
+                f"읽히는 표현 '{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
                 f"연결하지 마세요.",
             ))
     return findings
@@ -586,18 +627,18 @@ _GENERIC_UNIVERSITY_WORDS = frozenset({"종합대학교", "국립대학교", "�
 
 
 def _check_university_candidates(
-    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]]
+    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]], glossary: dict
 ) -> list[Finding]:
-    """승인 목록에도 `university_names`에도 없는 `…대학교` 이름이 맥락 어휘와 한 게시물에 있으면 경고한다.
+    """승인 목록에도 `university_names`에도 없는 `…대학교` 이름이 `대학맥락`과 같은 조건의 글에 있으면 경고한다.
 
     한국의 대학을 소개하는 글에서 실명을 쓰는 것은 허용되므로 이름만으로는 걸지 않는다. 걸리는 것은
-    `서울대학교와 연계되어 있습니다`처럼 목록 밖의 이름이 관계를 말하는 어휘 옆에 있을 때뿐이다 — 승인된
-    이름의 같은 문장은 `대학맥락`이, 선언한 이름은 `대학명목록외`가 이미 오류로 잡는다. 이름 모양만 보는
-    추정이라 오류가 아닌 경고다.
+    `저희는 서울대학교와 연계되어 있습니다`처럼 회사가 관계를 말하는 글(관계 어휘 + 1인칭 표지)에 목록 밖의
+    이름이 있을 때뿐이다 — 승인된 이름의 같은 문장은 `대학맥락`이, 선언한 이름은 `대학명목록외`가 이미 오류로
+    잡는다. 이름 모양만 보는 추정이라 오류가 아닌 경고다.
     """
     findings: list[Finding] = []
     for post in plan.posts:
-        terms = _context_terms(post, banned)
+        terms = _context_terms(post, banned, glossary)
         if not terms:
             continue
         known = {*approved, *post.university_names, *_GENERIC_UNIVERSITY_WORDS}
@@ -607,12 +648,12 @@ def _check_university_candidates(
             for name in _UNIVERSITY_LIKE.findall(text)
             if name not in known
         )
-        shown = ", ".join(dict.fromkeys(f"'{term}'" for _, term in terms))
+        shown = ", ".join(dict.fromkeys(f"'{term}'" for _, term, _ in terms))
         for name in candidates:
             findings.append(_warning(
                 "대학명후보", post.index,
-                f"승인된 대학 목록에 없는 대학명 후보 '{name}'이(가) 협력·제휴를 떠올리게 하는 표현({shown})과 "
-                f"같은 게시물에 있습니다. 목록 밖의 대학은 관계를 말하는 글에 쓸 수 없습니다 — 연결 표현을 빼거나 "
+                f"승인된 대학 목록에 없는 대학명 후보 '{name}'이(가) 회사가 스스로 협력·제휴를 말하는 것처럼 읽히는 표현({shown})과 "
+                f"같은 글에 있습니다. 목록 밖의 대학은 관계를 말하는 글에 쓸 수 없습니다 — 연결 표현을 빼거나 "
                 f"이름을 빼세요. 대학 이름이 아니라면 무시해도 됩니다.",
             ))
     return findings

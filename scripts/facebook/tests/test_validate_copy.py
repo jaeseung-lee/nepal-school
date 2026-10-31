@@ -216,13 +216,14 @@ def test_알파벳_약어는_대소문자를_구분해_낱말로만_찾는다():
         plan = _edit(_plan(), 3, body_local=_with_cta(body, "vi"))
         return [f.code for f in _check(plan, banned)]
 
-    assert vi_codes("전주기전대학 nhóm oung và mouse.") == []
-    assert vi_codes("전주기전대학 MOUSE.") == []
-    assert vi_codes("전주기전대학 mou.") == []  # 약어는 대문자로 쓴 것만 약어다
-    assert vi_codes("전주기전대학 ký MOU.") == ["대학맥락"]
-    assert vi_codes("전주기전대학 (MOU).") == ["대학맥락"]
+    # 1인칭 표지를 곁들여 약어만 변수로 둔다.
+    assert vi_codes("전주기전대학 Chúng tôi nhóm oung và mouse.") == []
+    assert vi_codes("전주기전대학 Chúng tôi MOUSE.") == []
+    assert vi_codes("전주기전대학 Chúng tôi mou.") == []  # 약어는 대문자로 쓴 것만 약어다
+    assert vi_codes("전주기전대학 Chúng tôi ký MOU.") == ["대학맥락"]
+    assert vi_codes("전주기전대학 (MOU), chúng tôi.") == ["대학맥락"]
 
-    korean = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta("전주기전대학과 MOU를 체결했습니다.", "ko"))
+    korean = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta("저희는 전주기전대학과 MOU를 체결했습니다.", "ko"))
     assert [f.code for f in _check(korean, banned)] == ["대학맥락"]
 
 
@@ -259,14 +260,14 @@ def test_대학맥락은_현지어_본문도_본다():
 
 
 def test_대학명이_없는_게시물은_협력_표현이_있어도_대학맥락이_아니다():
-    plan = _edit(_plan(), 0, source_ko=_with_cta("유학(D-2)은 한국과 네팔의 협력 분야와 무관합니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 한국과 네팔의 협력 분야와 무관합니다.", "ko"))
 
     assert _check(plan, _banned(university={"ko": ("협력",)})) == []
 
 
 def test_university_names를_비워도_본문에_승인_대학명이_있으면_대학맥락을_본다():
     # university_names를 빠뜨려도 협력 표현 검사를 건너뛰지 못한다.
-    plan = _edit(_plan(), 0, source_ko=_with_cta("경기대학교와 협력하여 진행합니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 경기대학교와 협력하여 진행합니다.", "ko"))
     assert plan.posts[0].university_names == ()
 
     findings = _check(plan, _banned(university={"ko": ("협력",)}))
@@ -326,13 +327,18 @@ def test_현지어_글자를_곁들여도_한국어_대학명이_그대로_있�
 
 def test_대학교명이_연계_표현과_함께_있으면_경고():
     # 승인 목록 밖의 이름이 연계·협력 같은 말과 한 게시물에 있으면 목록에 없는 대학과의 관계를 말하는 글일 수 있다.
-    related = _edit(_plan(), 0, source_ko=_with_cta("서울대학교와 연계되어 있습니다.", "ko"))
+    related = _edit(_plan(), 0, source_ko=_with_cta("저희는 서울대학교와 연계되어 있습니다.", "ko"))
     assert related.posts[0].university_names == ()
 
     findings = _check(related, _real_banned())
 
     assert _brief(findings) == [(0, "대학명후보", "warning")]
     assert "서울대학교" in findings[0].message and "연계" in findings[0].message
+
+    # 회사가 말하는 문장이 아니면(1인칭 표지가 없으면) 관계 어휘가 있어도 후보로 보지 않는다.
+    third_party = _edit(_plan(), 0, source_ko=_with_cta("서울대학교는 산업체와 연계하여 교육합니다.", "ko"))
+
+    assert _check(third_party, _real_banned()) == []
 
     # 같은 이름이라도 맥락 어휘가 없는 소개는 통과한다. 한국의 대학을 소개하는 글은 허용된다.
     intro = _edit(_plan(), 0, source_ko=_with_cta("서울대학교는 서울에 있는 대학교입니다.", "ko"))
@@ -351,7 +357,7 @@ def test_대학명후보는_현지어_본문의_연계_표현과도_짝지어_�
 
 
 def test_대학명후보는_이름마다_하나씩_보고한다():
-    plan = _edit(_plan(), 0, source_ko=_with_cta("서울대학교와 연세대학교는 서울대학교와 연계됩니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 서울대학교와 연세대학교를 소개하며 서울대학교와 연계됩니다.", "ko"))
 
     findings = _check(plan, _banned(university={"ko": ("연계",)}))
 
@@ -361,7 +367,7 @@ def test_대학명후보는_이름마다_하나씩_보고한다():
 
 def test_승인_목록에_있는_대학명은_대학명후보가_아니다():
     # 승인된 이름의 연계 표현은 대학맥락이 이미 오류로 잡는다. 후보로 또 보고하지 않는다.
-    plan = _edit(_plan(), 0, source_ko=_with_cta("경기대학교와 연계되어 있습니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 경기대학교와 연계되어 있습니다.", "ko"))
 
     findings = _check(plan, _real_banned())
 
@@ -373,7 +379,7 @@ def test_university_names에_적은_대학명은_대학명후보가_아니다():
     plan = _edit(
         _plan(), 3,
         university_names=("서울대학교",),
-        source_ko=_with_cta("서울대학교와 연계되어 있습니다.", "ko"),
+        source_ko=_with_cta("저희는 서울대학교와 연계되어 있습니다.", "ko"),
         body_local=_with_cta("서울대학교 안내.", "vi"),
         fact_keys=(),
     )
@@ -385,7 +391,7 @@ def test_university_names에_적은_대학명은_대학명후보가_아니다():
 
 def test_전문대학_같은_일반_명사는_대학교명_후보가_아니다():
     # 후보 패턴은 `…대학교`뿐이다. 픽스처 원문에도 있는 `전문대학`이 연계 표현 옆에서 걸리면 안 된다.
-    plan = _edit(_plan(), 0, source_ko=_with_cta("전문대학과 연계되어 있습니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 전문대학과 연계되어 있습니다.", "ko"))
 
     assert _check(plan, _real_banned()) == []
 
@@ -393,7 +399,7 @@ def test_전문대학_같은_일반_명사는_대학교명_후보가_아니다()
 @pytest.mark.parametrize("name", ["종합대학교", "국립대학교", "4년제대학교"])
 def test_종합대학교_같은_일반_명사는_대학교명_후보가_아니다(name):
     # `…대학교`가 이름이 아니라 일반 명사로 쓰인 경우. 붙여 쓴 `4년제대학교`는 낱말이 `년제대학교`로 잡힌다.
-    plan = _edit(_plan(), 0, source_ko=_with_cta(f"{name}와 연계되어 있습니다.", "ko"))
+    plan = _edit(_plan(), 0, source_ko=_with_cta(f"저희는 {name}와 연계되어 있습니다.", "ko"))
 
     assert _check(plan, _real_banned()) == []
 
@@ -409,27 +415,204 @@ _UNIVERSITY_PROSE = [
 ]
 
 
+# 대학 자신의 관계를 말하는 문장과 다른 나라 말로 옮긴 부서 이름. 회사가 말하는 문장이 아니라 1인칭 표지가 없다.
+# 비한국어 문장은 AI가 쓴 것이라 어법·용어가 검수되지 않았다 — 확인하는 것은 사전이 이 글들을 막지 않는다는 점이다.
+_UNIVERSITY_PROSE_OTHER = {
+    "ko": [
+        "경기대학교는 해외 대학과 학점교류 협약을 맺고 있습니다.",
+        "경기대학교는 산업체와 협력하여 실무 교육을 운영합니다.",
+        "경기대학교는 지역사회와 연계하여 봉사 프로그램을 운영합니다.",
+        "경기대학교 학생증은 제휴 할인이 됩니다.",
+        # `파트너 대학`이라고 쓰면 주어와 상관없이 모든 게시물 구역이 금지표현으로 건다(협력 대학과 같은 꼴).
+        "청주대학교는 해외 파트너십 프로그램으로 교환학생을 운영합니다.",
+        "경기대학교 국제교류처는 해외 MOU 대학과의 교환학생을 담당합니다.",
+        "전북대학교 산학협력단은 연계전공 학생을 지원합니다.",
+    ],
+    "vi": [
+        "전북대학교 có Đoàn hợp tác công nghiệp - đại học hỗ trợ du học sinh.",
+        "경기대학교 vận hành chương trình chuyên ngành liên kết.",
+        "Phòng Hợp tác Quốc tế của 청주대학교 phụ trách du học sinh.",
+        "Kết quả trúng tuyển của 호남대학교 được công bố vào tháng 12.",
+        "Dù không trúng tuyển 우석대학교, bạn vẫn còn lựa chọn khác.",
+    ],
+    "my": [
+        "전북대학교 ၏ စက်မှုလက်မှုပူးပေါင်းဆောင်ရွက်ရေးဌာနက နိုင်ငံခြားသားကျောင်းသားများကို ကူညီပါသည်။",
+        "청주대학교 ၏ နိုင်ငံတကာ ပူးပေါင်းဆောင်ရွက်ရေးရုံးက ကျောင်းသားများကို တာဝန်ယူသည်။",
+        "경기대학교 တွင် ချိတ်ဆက်ပညာရပ်များ ရှိသည်။",
+    ],
+    "ne": [
+        "전북대학교 को उद्योग-विश्वविद्यालय सहकार्य एकाइले विदेशी विद्यार्थीलाई सहयोग गर्छ।",
+        "청주대학교 को अन्तर्राष्ट्रिय सहकार्य कार्यालयले विद्यार्थीलाई सहयोग गर्छ।",
+        "경기대학교 ले साझेदार उद्योगसँग मिलेर काम गर्छ।",
+    ],
+}
+
+
 def test_대학_실무_표현은_대학맥락이_아니다():
     for sentence in _UNIVERSITY_PROSE:
         plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
 
         assert _check(plan, _real_banned()) == [], sentence
 
+    # 대학 자신의 관계, 제휴 할인, 다른 나라 말로 옮긴 부서 이름도 같다.
+    for language, sentences in _UNIVERSITY_PROSE_OTHER.items():
+        for sentence in sentences:
+            if language == "ko":
+                plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+            else:
+                plan = _edit(_plan(), {"vi": 0, "my": 1, "ne": 2}[language], body_local=_with_cta(sentence, language))
+
+            assert _check(plan, _real_banned()) == [], (language, sentence)
+
+    # 합격자 발표와 불합격은 회사가 말하더라도 약속이 아니다. `합격` 낱말 자체는 맥락 어휘에 넣지 않는다.
+    for sentence in (
+        "저희는 호남대학교의 합격자 발표 일정을 안내합니다.",
+        "저희는 우석대학교에 불합격하더라도 다른 선택이 있다고 안내합니다.",
+    ):
+        plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+
+        assert _check(plan, _real_banned()) == [], sentence
+
+
+def test_대학맥락은_1인칭_주체가_있어야_발화한다():
+    def codes(sentence: str) -> set[str]:
+        plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+        return {f.code for f in _check(plan, _real_banned())}
+
+    # 대학명 + 관계 어휘만으로는 통과한다: 대학 자신의 관계이거나 부서 이름이다.
+    for sentence in (
+        "경기대학교와 협력하고 있습니다.",
+        "경기대학교 학생증은 제휴 할인이 됩니다.",
+        "청주대학교는 글로벌 파트너 대학과 교환학생을 운영합니다.",
+        "경기대학교는 학점교류 협약을 맺고 있습니다.",
+    ):
+        assert "대학맥락" not in codes(sentence), sentence
+
+    # 회사가 스스로를 가리키는 표지(저희·우리·당사·회사명)가 붙을 때만 오류다.
+    for sentence in (
+        "저희는 경기대학교와 협력하고 있습니다.",
+        "우리는 경기대학교와 협력하고 있습니다.",
+        "당사는 경기대학교와 협력하고 있습니다.",
+        "정우인재개발원은 경기대학교와 협력하고 있습니다.",
+    ):
+        assert "대학맥락" in codes(sentence), sentence
+
+    # 1인칭처럼 보이지만 아닌 낱말: 우리나라, 당사자.
+    for sentence in (
+        "우리나라의 경기대학교는 산업체와 협력하고 있습니다.",
+        "당사자는 경기대학교와 협력하는 기관에 문의합니다.",
+    ):
+        assert "대학맥락" not in codes(sentence), sentence
+
+    # 1인칭 표지가 있어도 대학명이 없으면 이 규칙의 대상이 아니다.
+    assert "대학맥락" not in codes("저희는 한국의 여러 기관과 협력하고 있습니다.")
+
+    # 메시지는 무엇이 회사의 표지로 읽혔는지 알려 준다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("당사는 경기대학교와 협력하고 있습니다.", "ko"))
+    message = next(f.message for f in _check(plan, _real_banned()) if f.code == "대학맥락")
+
+    assert "당사" in message and "협력" in message
+
+
+def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
+    # (언어, 게시물 번호, 표지 없는 문장, 표지가 있는 문장들). 3~5번 게시물은 전주기전대학을 다루는 vi·my·ne 글이다.
+    cases = {
+        "vi": (3, "전주기전대학 hợp tác quốc tế.", [
+            "Chúng tôi hợp tác với 전주기전대학.",
+            "Chúng ta hợp tác với 전주기전대학.",
+            unicodedata.normalize("NFD", "Chúng tôi") + " hợp tác với 전주기전대학.",
+            f"{GLOSSARY['company_name']['vi']} hợp tác với 전주기전대학.",
+            "정우인재개발원 hợp tác với 전주기전대학.",
+        ]),
+        "my": (4, "전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး။", [
+            "ကျွန်ုပ်တို့သည် 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+            "ကျွန်ုပ်\u200bတို့သည် 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+            "ကျွန်တော်တို့ 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+            "ကျွန်မတို့ 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+            f"{GLOSSARY['company_name']['my']} 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+        ]),
+        "ne": (5, "전주기전대학 सहकार्य कार्यालय।", [
+            "हामी 전주기전대학 सँग सहकार्य गर्छौं।",
+            "हामीले 전주기전대학 सँग सहकार्य गर्छौं।",
+            "हाम्रो 전주기전대학 सँग सहकार्य छ।",
+            "हाम्रा 전주기전대학 सँग सहकार्य छन्।",
+            "हाम्री 전주기전대학 सँग सहकार्य छ।",
+            f"{GLOSSARY['company_name']['ne']} 전주기전대학 सँग सहकार्य गर्छ।",
+        ]),
+    }
+
+    def fired(index: int, language: str, sentence: str) -> bool:
+        plan = _edit(_plan(), index, body_local=_with_cta(sentence, language))
+        return any(f.code == "대학맥락" and f.post_index == index for f in _check(plan, _real_banned()))
+
+    for language, (index, bare, marked) in cases.items():
+        assert not fired(index, language, bare), (language, bare)
+        for sentence in marked:
+            assert fired(index, language, sentence), (language, sentence)
+
+    # 한국어 표지(저희)는 현지어 본문의 표지가 아니다. `chúng tan`(그것들이 녹는다)은 `chúng ta`가 아니다.
+    assert not fired(3, "vi", "저희 hợp tác với 전주기전대학.")
+    assert not fired(3, "vi", "전주기전대학 chúng tan hợp tác.")
+
+    # 한국어 원문에서만 1인칭이 있으면 항목은 원문 쪽 하나뿐이다. 본문은 본문의 표지로 따로 판정한다.
+    plan = _edit(
+        _plan(), 3, fact_keys=(),
+        source_ko=_with_cta("저희는 전주기전대학과 협력합니다.", "ko"),
+        body_local=_with_cta("전주기전대학 hợp tác quốc tế.", "vi"),
+    )
+    findings = [f for f in _check(plan, _real_banned()) if f.code == "대학맥락"]
+
+    assert len(findings) == 1
+    assert "한국어 원문" in findings[0].message and "현지어 본문" not in findings[0].message
+
+
+def test_회사명_표지는_용어집의_그_언어_표기를_따른다():
+    # 용어집 표기에 한국어 이름이 들어 있지 않아도 그 표기로 쓴 글은 회사가 말하는 글이다.
+    glossary = copy.deepcopy(GLOSSARY)
+    glossary["company_name"]["vi"] = "Jeongwoo HRD Institute"
+    plan = _edit(_plan(), 3, body_local=_with_cta("Jeongwoo HRD Institute hợp tác với 전주기전대학.", "vi"))
+
+    findings = validate_copy(plan, UNIVERSITIES, _real_banned(), glossary, FACTS)
+
+    assert [f.code for f in findings if f.post_index == 3 and f.code == "대학맥락"] == ["대학맥락"]
+
+
+def test_1인칭_없는_협력_대학_표현은_금지표현이_걸린다():
+    # 대학맥락이 1인칭을 요구하는 대신 주어 없는 `협력 대학` 꼴은 모든 게시물 구역이 잡는다. 네 언어 모두에 있다.
+    raw = json.loads(config.BANNED_PHRASES_PATH.read_text(encoding="utf-8"))
+    cases = {
+        "ko": "협력 대학입니다.",
+        "vi": "Đây là trường đối tác.",
+        "my": "မိတ်ဖက် တက္ကသိုလ် ဖြစ်ပါသည်။",
+        "ne": "यो साझेदार विश्वविद्यालय हो।",
+    }
+    for language, sentence in cases.items():
+        if language == "ko":
+            plan, index = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko")), 0
+        else:
+            index = {"vi": 0, "my": 1, "ne": 2}[language]
+            plan = _edit(_plan(), index, body_local=_with_cta(sentence, language))
+
+        findings = [f for f in _check(plan, _real_banned()) if f.post_index == index and f.code == "금지표현"]
+        phrases = raw[SECTION_ALWAYS][language]["협력 대학"]
+
+        assert any(f"'{phrase}'" in f.message for f in findings for phrase in phrases), (language, findings)
+
 
 @pytest.mark.parametrize(
     "sentence",
     [
-        "경기대학교와 협력 관계를 맺고 있습니다.",
-        "경기대학교와 협력하여 진행합니다.",
-        "경기대학교와 업무협약을 맺었습니다.",
-        "경기대학교와 제휴되어 있습니다.",
+        "저희는 경기대학교와 협력 관계를 맺고 있습니다.",
+        "저희는 경기대학교와 협력하여 진행합니다.",
+        "저희는 경기대학교와 업무협약을 맺었습니다.",
+        "저희는 경기대학교와 제휴되어 있습니다.",
         "경기대학교는 저희 파트너입니다.",
-        "경기대학교와 연계되어 있습니다.",
-        "경기대학교와 연계하여 안내합니다.",
-        "경기대학교 입학을 알선합니다.",
-        "경기대학교와 MOU를 체결했습니다.",
-        "경기대학교 합격을 보장합니다.",
-        "경기대학교 합격 가능성이 높습니다.",
+        "저희는 경기대학교와 연계되어 있습니다.",
+        "저희는 경기대학교와 연계하여 안내합니다.",
+        "저희는 경기대학교 입학을 알선합니다.",
+        "저희는 경기대학교와 MOU를 체결했습니다.",
+        "저희는 경기대학교 합격을 보장합니다.",
+        "저희는 경기대학교 합격 가능성이 높다고 봅니다.",
     ],
     ids=["협력-관계", "협력하여", "업무협약", "제휴", "파트너", "연계되어", "연계하여", "알선", "MOU", "합격을-보장", "합격-가능"],
 )
@@ -791,7 +974,7 @@ def test_같은_게시물_안에서는_검사_순서를_따른다():
     # (등록금한정어는 fact_keys가 비면 걸릴 수 없어 따로 본다 — 등록금한정어는_같은_게시물의_다른_검사_뒤에_온다.)
     plan = _edit(
         _plan(), 3, fact_keys=(), university_names=("서울대학교",),
-        source_ko="전주기전대학의 연간 평균등록금은 6,800,000원이고 합격 보장이며 부산대학교와 협력합니다.",  # CTA 없음
+        source_ko="저희는 전주기전대학의 연간 평균등록금 6,800,000원과 합격 보장을, 부산대학교와 협력을 말합니다.",  # CTA 없음
         body_local=_with_cta("Visa D-2 và 전주기전대학.", "vi"),  # 용어집 표기 아님
     )
     banned = _banned(always={"ko": ("합격 보장",)}, university={"ko": ("협력",)})
