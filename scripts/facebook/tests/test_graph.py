@@ -780,6 +780,8 @@ LEAK_SCENARIOS = [
 # 사진 예약에서는 성공 응답이라 예외가 없다. 토큰 점검에서만 의미가 있는 경우.
 TOKEN_CHECK_ONLY_SCENARIOS = [
     pytest.param(FakeResponse(200, {"name": SENTINEL, "id": PAGE}), id="페이지-이름이-토큰"),
+    # 돌아온 id는 "다른 페이지가 돌아왔습니다" 안내에 그대로 실린다. 이름과 똑같이 가려져야 한다.
+    pytest.param(FakeResponse(200, {"id": SENTINEL, "name": "x"}), id="페이지-id가-토큰"),
 ]
 
 
@@ -820,6 +822,42 @@ def test_assert_schedulable_메시지에도_토큰이_없다():
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(NOW, NOW)
     assert_no_leak(caught.value)
+
+
+def token_fragments(token: str, length: int = 8) -> set[str]:
+    """토큰에서 잘라 낸 `length`자 토막 전부. 하나라도 메시지에 남으면 가리기가 새는 것이다."""
+    return {token[start:start + length] for start in range(len(token) - length + 1)}
+
+
+@pytest.mark.parametrize("make_response", [
+    pytest.param(lambda body: FakeResponse(502, text=body, json_error=ValueError("Expecting value")), id="JSON이-아닌-본문"),
+    pytest.param(lambda body: FakeResponse(400, {"error": body}), id="error가-문자열"),
+])
+def test_토큰이_발췌_경계에_걸쳐도_토큰_조각이_남지_않는다(make_response):
+    # 가리기보다 자르기가 먼저 일어나면 경계에 걸친 토큰의 앞부분만 남아 세 모양 어디에도 맞지 않는 조각이 메시지에 실린다.
+    # (프록시·WAF의 오류 페이지가 Authorization 헤더를 되풀이하는 경우.) 가린 뒤에 자르면 남을 조각이 없다.
+    body = "A" * (_N - 20) + SENTINEL
+    session = token_session(page=make_response(body))
+    try:
+        rendered = graph.check_token(SENTINEL, PAGE, session=session).message
+    except graph.GraphError as exc:
+        rendered = "".join(f"{item}{item!r}" for item in chain(exc))
+    assert SENTINEL not in rendered
+    assert not [piece for piece in token_fragments(SENTINEL) if piece in rendered]
+
+
+def test_응답_발췌_한도는_합당한_범위_안이다():
+    # 한도가 터무니없이 크면 응답 본문이 통째로 운영자 메시지에 붙고(가려야 할 범위도 그만큼 넓어진다),
+    # 너무 작으면 무슨 일이 있었는지 알 단서가 사라진다. 다른 발췌 시험은 상수를 읽어 쓰므로 값 자체는 여기서만 묶는다.
+    assert 100 <= graph._EXCERPT_LENGTH <= 300
+
+
+def test_거절_예외도_토큰을_가리는_자리를_지난다():
+    # `_Rejected`는 토큰이 범위에 있는 `_send` 안에서 만들어진다. 만드는 길 자체가 가리기를 지나야,
+    # 나중에 누가 메시지나 reason에 응답 본문을 덧붙여도 토큰이 새지 않는다.
+    rejected = graph._rejected(SENTINEL, f"거절 {SENTINEL}", reason=f"이유 {SENTINEL}", invalid_token=False)
+    assert SENTINEL not in str(rejected) and SENTINEL not in rejected.reason
+    assert "거절 ***" in str(rejected) and rejected.reason == "이유 ***"
 
 
 def test_빈_토큰이어도_메시지가_망가지지_않는다(image):

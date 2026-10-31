@@ -5,9 +5,13 @@
 - **`requests`는 모듈 수준에서 가져오지 않는다.** 검증 경로와 CLI의 비네트워크 서브커맨드가 `requests` 없이도 돌아야 한다.
   세션은 인자(`session`)로 받고, 진짜 `requests.Session`은 CLI가 만들어 넣는다. 테스트는 가짜 세션을 넣는다.
 - **토큰은 함수 인자로만 받고 `Authorization: Bearer` 헤더에만 싣는다.** URL·쿼리·본문에는 절대 넣지 않는다 —
-  `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. 이 규칙에는 예외가 없다. 이 모듈이 만드는 모든 `GraphError`는 `_error`를 거쳐
-  메시지에서 토큰 문자열을 `***`로 가리고, 원래 예외(연결 오류 등)를 `__cause__`/`__context__`로 달지 않는다
-  (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 메시지는 버그 리포트에 그대로 붙여도 안전해야 한다.
+  `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. 이 규칙에는 예외가 없다. 토큰을 인자로 받는 함수가 만드는 모든
+  `GraphError`는 `_error` 또는 `_rejected`를 거쳐 메시지에서 토큰 문자열을 `***`로 가린다. 외부에서 온 글자를 자르기보다
+  **가리기를 먼저** 한다(`_excerpt`가 토큰을 받는 이유다 — 잘린 조각은 어느 모양과도 맞지 않아 가려지지 않는다).
+  남은 세 자리(`_require_aware`와 `assert_schedulable`의 거절)는 **토큰을 애초에 인자로 받지 않고** 메시지를 시각만으로
+  만들므로 가릴 토큰이 없다. 또 **Facebook 호출에서 올라온 예외는 `__cause__`/`__context__`로 달지 않는다**
+  (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 토큰이 닿을 수 없는 예외만 원인을 남긴다: 이미지 파일을 열지 못한
+  `OSError`는 경로만 들고 있고 그 원인이 고치는 데 도움이 되므로 `from exc`로 남긴다. 메시지는 버그 리포트에 그대로 붙여도 안전해야 한다.
 - **verb는 정해져 있다.** `check_token`은 `session.get`, `schedule_photo_post`는 `session.post`. 바꿀 수 있게 하지 않는다.
 - **모든 호출은 `config.GRAPH_TIMEOUT`을 명시적으로 넘긴다.** 사진 한 장에서 영원히 멈추는 것보다 크게 실패하는 편이 낫다.
 - **오류 응답은 두 모양이다.** HTTP가 2xx가 아니면서 `error` 객체가 있는 경우와, HTTP 200인데 본문에 `error` 객체가 있는
@@ -148,24 +152,37 @@ def _scrub(text: str, token: str) -> str:
 
 
 def _error(token: str, message: str, *, maybe_created: bool = False) -> GraphError:
-    """이 모듈의 모든 `GraphError`는 여기를 지나 토큰이 가려진다."""
+    """토큰을 받는 함수가 만드는 `GraphError`는 여기를 지나 토큰이 가려진다(`_Rejected`는 `_rejected`)."""
     return GraphError(_scrub(message, token), maybe_created=maybe_created)
+
+
+def _rejected(token: str, message: str, *, reason: str, invalid_token: bool) -> "_Rejected":
+    """`_Rejected`를 만드는 **유일한** 길. `_error`와 같은 자리에서 메시지와 `reason`을 함께 가린다.
+
+    `_Rejected`는 토큰이 범위에 있는 `_send` 안에서 만들어진다. 생성자를 직접 부르지 말 것 — 여기를 지나지 않으면
+    나중에 누가 메시지에 응답 본문을 덧붙이는 순간 토큰이 샌다.
+    """
+    return _Rejected(_scrub(message, token), reason=_scrub(reason, token), invalid_token=invalid_token)
 
 
 def _url(path: str) -> str:
     return f"{GRAPH_HOST}/{config.GRAPH_VERSION}/{path}"
 
 
-def _excerpt(text: object) -> str:
-    """메시지에 싣기 좋게 공백을 하나로 모으고 앞부분만 남긴다."""
-    collapsed = " ".join(str(text).split())
+def _excerpt(text: object, token: str) -> str:
+    """메시지에 싣기 좋게 토큰을 가리고, 공백을 하나로 모으고, 앞부분만 남긴다.
+
+    **가리기가 자르기보다 먼저다.** 거꾸로 하면 자르는 경계에 걸친 토큰의 앞부분만 남아 `_scrub`의 어느 모양과도
+    맞지 않는 조각이 메시지에 실린다(프록시나 WAF의 오류 페이지가 `Authorization` 헤더를 되풀이하는 경우).
+    """
+    collapsed = " ".join(_scrub(str(text), token).split())
     return collapsed if len(collapsed) <= _EXCERPT_LENGTH else collapsed[:_EXCERPT_LENGTH] + "…"
 
 
-def _api_error_text(error: object) -> str:
+def _api_error_text(error: object, token: str) -> str:
     """응답의 `error` 값을 한 줄로: `메시지 [code 190, subcode 463, fbtrace_id …]`. API가 쓴 말을 그대로 싣는다."""
     if not isinstance(error, dict):
-        return _excerpt(error)
+        return _excerpt(error, token)
     labels = (("code", "code"), ("error_subcode", "subcode"), ("fbtrace_id", "fbtrace_id"))
     details = [f"{label} {error[key]}" for key, label in labels if error.get(key) is not None]
     message = error.get("message") or "메시지 없음"
@@ -189,20 +206,21 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
         try:
             body = response.json()
         except ValueError:
-            problem = f"{what}에 대한 Facebook의 응답이 JSON이 아닙니다 (HTTP {status}). 응답 앞부분: {_excerpt(response.text)}"
+            problem = f"{what}에 대한 Facebook의 응답이 JSON이 아닙니다 (HTTP {status}). 응답 앞부분: {_excerpt(response.text, token)}"
         else:
             if not isinstance(body, dict):
-                problem = f"{what}에 대한 Facebook의 응답이 JSON 객체가 아닙니다 (HTTP {status}). 응답 앞부분: {_excerpt(response.text)}"
+                problem = f"{what}에 대한 Facebook의 응답이 JSON 객체가 아닙니다 (HTTP {status}). 응답 앞부분: {_excerpt(response.text, token)}"
             elif "error" not in body and not 200 <= status < 300:
                 # 거절한다는 말(error 객체)도 없이 실패 상태만 왔다: Facebook이 무엇을 했는지 알 수 없다.
-                problem = f"{what} 요청이 실패했습니다 (HTTP {status}). 응답에 오류 내용이 없습니다. 응답 앞부분: {_excerpt(response.text)}"
+                problem = f"{what} 요청이 실패했습니다 (HTTP {status}). 응답에 오류 내용이 없습니다. 응답 앞부분: {_excerpt(response.text, token)}"
     if problem is not None:
         raise _error(token, problem + (_MAYBE_CREATED if may_create else ""), maybe_created=may_create)
 
     if "error" in body:
         error = body["error"]
-        reason = _scrub(_api_error_text(error), token)
-        raise _Rejected(
+        reason = _api_error_text(error, token)
+        raise _rejected(
+            token,
             f"{what} 요청을 Facebook이 거절했습니다 (HTTP {status}): {reason}",
             reason=reason,
             invalid_token=isinstance(error, dict) and error.get("code") == _INVALID_TOKEN_CODE,
@@ -284,6 +302,9 @@ def check_token(token: str, page_id: str, *, session: _Session) -> TokenStatus:
     returned_id = page.get("id")
     if not isinstance(returned_id, str) or not returned_id:
         raise _error(token, "페이지 정보 조회 응답에 id가 없거나 형식이 예상과 다릅니다. 토큰 종류나 Graph API 버전을 확인하세요.")
+    # 돌아온 id도 응답에서 온 글자다: 안내문에 그대로 싣기 전에 이름과 똑같이 가린다. 여기서 한 번 가려 두면
+    # 아래로는 가려진 값만 흐른다(이 값은 비교에도 쓰이지만, 토큰을 품은 id가 page_id와 같을 길은 없다).
+    returned_id = _scrub(returned_id, token)
     name = page.get("name")
     page_name = _scrub(name, token) if isinstance(name, str) and name else None
     if returned_id != page_id:
