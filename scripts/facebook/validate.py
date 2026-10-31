@@ -390,8 +390,8 @@ def validate_copy(
     - 한국어 원문과 현지어 본문이 모두 승인된 상담 문구(CTA)로 끝나는지 (오류)
     - 금지 표현이 없는지: 원문은 `ko`, 본문은 그 게시물 언어의 사전으로 (오류)
     - `university_names`의 대학이 승인 목록(`universities`의 `name_ko`)에 있고 본문에 그대로 쓰였는지 (오류)
-    - 대학명이 나오는 게시물에서 회사가 스스로 협력·제휴를 말하지 않는지: 관계 어휘와 1인칭 표지가 한 글에 함께 있을 때 (오류)
-    - 승인 목록 밖의 `…대학교` 이름이 같은 조건(관계 어휘 + 1인칭 표지)의 글에 있지 않은지 (경고)
+    - 대학명이 나오는 게시물에서 회사가 스스로 협력·제휴를 말하지 않는지: 관계 어휘와 1인칭 표지가 한 문장에 함께 있을 때 (오류)
+    - 승인 목록 밖의 `…대학교` 이름이 같은 조건(관계 어휘 + 1인칭 표지가 한 문장)의 글에 있지 않은지 (경고)
     - `D-2`·`D-4`·회사명이 나오면 용어집 표기를 그대로 썼는지 (경고)
     - 원문의 금액·시간·비율 수치가 인용한 사실(`fact_keys`)의 값에 들어 있는지 (경고)
     - 등록금 사실(`tuition_*`)을 쓰는 게시물의 원문에 `평균`과 연단위 표시가 있는지 (오류)
@@ -546,7 +546,7 @@ def _named_universities(post: Post, approved: tuple[str, ...]) -> list[str]:
 
 # 회사가 스스로를 가리키는 1인칭 표지. 대학과의 관계를 말하는 어휘(`협력`·`연계`)는 대학 소개글에도 흔하다 —
 # `산학협력단`, 해외 대학과의 협약, 제휴 할인. 막으려는 것은 **회사가** 맺지 않은 관계를 내세우는 글이므로
-# 관계 어휘가 회사의 1인칭 표지와 같은 글에 있을 때만 본다. 조사나 어미가 붙는 말이라 뒤쪽 경계는 보지 않는다
+# 관계 어휘가 회사의 1인칭 표지와 **같은 문장**에 있을 때만 본다. 조사나 어미가 붙는 말이라 뒤쪽 경계는 보지 않는다
 # (`저희는`, `हामीले`). `우리나라`·`우리말`(우리 나라·말)과 `당사자`·`당사국`은 1인칭이 아니라서 뺀다.
 _FIRST_PERSON = {
     "ko": re.compile(r"저희|우리(?!나라|말|글)|당사(?!자|국)"),
@@ -554,6 +554,13 @@ _FIRST_PERSON = {
     "my": re.compile("ကျွန်ုပ်တို့|ကျွန်တော်တို့|ကျွန်မတို့"),
     "ne": re.compile("हामी|हाम्रो|हाम्रा|हाम्री"),
 }
+# 문장 끝으로 보는 글자: 마침표·느낌표·물음표, 일본식 마침표, 줄바꿈, 데바나가리 다리(।)와 미얀마어 문장 끝(။).
+# 정규화(`_compact`)는 줄바꿈을 지우므로 문장은 정규화 **전에** 가른다.
+_SENTENCE_END = re.compile(r"[.!?。\n।။]+")
+
+
+def _sentences(text: str) -> list[str]:
+    return [sentence for sentence in _SENTENCE_END.split(text) if sentence.strip()]
 
 
 def _first_person_marker(text: str, language: str, glossary: dict) -> str | None:
@@ -577,22 +584,25 @@ def _first_person_marker(text: str, language: str, glossary: dict) -> str | None
 
 def _context_terms(
     post: Post, banned: dict[str, tuple[str, ...]], glossary: dict
-) -> list[tuple[str, str, str]]:
-    """회사가 말하는 글에서 찾은 맥락 어휘를 `(출처, 어휘, 1인칭 표지)`로.
+) -> list[tuple[str, str, str, str]]:
+    """회사가 말하는 문장에서 찾은 맥락 어휘를 `(출처, 어휘, 1인칭 표지, 문장)`으로.
 
-    원문(`ko:대학명` 사전, 한국어 표지)과 본문(그 게시물 언어의 `:대학명` 사전, 그 언어의 표지)을 따로 본다.
-    그 글에 회사의 1인칭 표지가 없으면 관계 어휘가 있어도 건너뛴다.
+    원문(`ko:대학명` 사전, 한국어 표지)과 본문(그 게시물 언어의 `:대학명` 사전, 그 언어의 표지)을 따로 보고,
+    각각 **문장마다** 판정한다 — 관계 어휘와 회사의 1인칭 표지가 같은 문장에 있어야 한다. 한 글 안의 다른 문장에
+    표지가 있다고 해서 `산학협력단` 같은 부서 이름이 걸리면 안 된다. 같은 어휘는 출처마다 한 번만 돌려준다.
     """
-    found: list[tuple[str, str, str]] = []
+    found: dict[tuple[str, str], tuple[str, str]] = {}
     for side, text, language in (
         ("한국어 원문(source_ko)", post.source_ko, "ko"),
         ("현지어 본문(body_local)", post.body_local, post.language),
     ):
-        marker = _first_person_marker(text, language, glossary)
-        if marker is None:
-            continue
-        found += [(side, term, marker) for term in _hits(text, banned[_university_key(language)])]
-    return found
+        for sentence in _sentences(text):
+            marker = _first_person_marker(sentence, language, glossary)
+            if marker is None:
+                continue
+            for term in _hits(sentence, banned[_university_key(language)]):
+                found.setdefault((side, term), (marker, sentence.strip()))
+    return [(side, term, marker, sentence) for (side, term), (marker, sentence) in found.items()]
 
 
 def _check_university_context(
@@ -600,21 +610,22 @@ def _check_university_context(
 ) -> list[Finding]:
     """대학명이 나오는 게시물에서 회사가 협력·제휴·입학 알선·합격 가능성을 스스로 말하지 않는지 본다.
 
-    대학 실명은 소개 맥락에서만 쓸 수 있다. 세 가지가 한 글(원문 또는 본문)에 함께 있어야 한다: 대학명,
-    그 사전의 관계 어휘, 회사의 1인칭 표지. `university_names`를 비워 두고 본문에만 대학명을 쓰는 경우도
-    놓치지 않도록 본문에서 찾은 승인 목록의 이름도 대학명으로 친다.
+    대학 실명은 소개 맥락에서만 쓸 수 있다. 대학명은 글 어디에 있어도 되고(이름을 소개한 뒤 다음 문장에서 관계를
+    주장하는 글이 있다), 관계 어휘와 회사의 1인칭 표지는 같은 문장에 있어야 한다. `university_names`를 비워
+    두고 본문에만 대학명을 쓰는 경우도 놓치지 않도록 본문에서 찾은 승인 목록의 이름도 대학명으로 친다.
     """
     findings: list[Finding] = []
     for post in plan.posts:
         named = _named_universities(post, approved)
         if not named:
             continue
-        for side, term, marker in _context_terms(post, banned, glossary):
+        for side, term, marker, sentence in _context_terms(post, banned, glossary):
+            shown = sentence if len(sentence) <= 60 else sentence[:60] + "…"
             findings.append(_error(
                 "대학맥락", post.index,
                 f"대학명({', '.join(named)})이 나오는 게시물의 {side}에서 회사가 스스로({marker}) 협력·제휴를 말하는 것처럼 "
-                f"읽히는 표현 '{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
-                f"연결하지 마세요.",
+                f"읽히는 표현 '{term}'이(가) 있습니다 — 문장: '{shown}'. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·"
+                f"입학 알선·합격 가능성과 연결하지 마세요.",
             ))
     return findings
 
@@ -632,8 +643,8 @@ def _check_university_candidates(
     """승인 목록에도 `university_names`에도 없는 `…대학교` 이름이 `대학맥락`과 같은 조건의 글에 있으면 경고한다.
 
     한국의 대학을 소개하는 글에서 실명을 쓰는 것은 허용되므로 이름만으로는 걸지 않는다. 걸리는 것은
-    `저희는 서울대학교와 연계되어 있습니다`처럼 회사가 관계를 말하는 글(관계 어휘 + 1인칭 표지)에 목록 밖의
-    이름이 있을 때뿐이다 — 승인된 이름의 같은 문장은 `대학맥락`이, 선언한 이름은 `대학명목록외`가 이미 오류로
+    `저희는 서울대학교와 연계되어 있습니다`처럼 회사가 관계를 말하는 문장(관계 어휘 + 1인칭 표지)이 있는 글에
+    목록 밖의 이름이 있을 때뿐이다 — 승인된 이름의 같은 문장은 `대학맥락`이, 선언한 이름은 `대학명목록외`가 이미 오류로
     잡는다. 이름 모양만 보는 추정이라 오류가 아닌 경고다.
     """
     findings: list[Finding] = []
@@ -648,7 +659,7 @@ def _check_university_candidates(
             for name in _UNIVERSITY_LIKE.findall(text)
             if name not in known
         )
-        shown = ", ".join(dict.fromkeys(f"'{term}'" for _, term, _ in terms))
+        shown = ", ".join(dict.fromkeys(f"'{term}'" for _, term, _, _ in terms))
         for name in candidates:
             findings.append(_warning(
                 "대학명후보", post.index,

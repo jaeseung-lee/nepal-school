@@ -365,6 +365,19 @@ def test_대학명후보는_이름마다_하나씩_보고한다():
     assert "서울대학교" in findings[0].message and "연세대학교" in findings[1].message
 
 
+def test_대학명후보도_같은_문장의_1인칭과_관계어휘로만_발화한다():
+    # 소개하는 문장(저희)과 관계 어휘(연계)가 다른 문장이면 목록 밖의 이름이 있어도 경고하지 않는다.
+    apart = _edit(
+        _plan(), 0,
+        source_ko=_with_cta("저희는 한국 대학을 소개합니다. 서울대학교는 산업체와 연계하여 교육합니다.", "ko"),
+    )
+    assert _check(apart, _real_banned()) == []
+
+    together = _edit(_plan(), 0, source_ko=_with_cta("서울대학교를 소개합니다. 저희가 연계하는 학교입니다.", "ko"))
+
+    assert _brief(_check(together, _real_banned())) == [(0, "대학명후보", "warning")]
+
+
 def test_승인_목록에_있는_대학명은_대학명후보가_아니다():
     # 승인된 이름의 연계 표현은 대학맥락이 이미 오류로 잡는다. 후보로 또 보고하지 않는다.
     plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 경기대학교와 연계되어 있습니다.", "ko"))
@@ -511,7 +524,7 @@ def test_대학맥락은_1인칭_주체가_있어야_발화한다():
     plan = _edit(_plan(), 0, source_ko=_with_cta("당사는 경기대학교와 협력하고 있습니다.", "ko"))
     message = next(f.message for f in _check(plan, _real_banned()) if f.code == "대학맥락")
 
-    assert "당사" in message and "협력" in message
+    assert "스스로(당사)" in message and "협력" in message
 
 
 def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
@@ -564,6 +577,65 @@ def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
 
     assert len(findings) == 1
     assert "한국어 원문" in findings[0].message and "현지어 본문" not in findings[0].message
+
+
+def test_1인칭과_관계어휘가_다른_문장이면_발화하지_않는다():
+    # 회사 목소리로 한국의 대학을 소개하는 것이 이 페이지의 목적이다. 소개하는 문장과 대학 부서 이름이 한 글에 있어도
+    # 같은 문장이 아니면 막지 않는다.
+    korean = _edit(
+        _plan(), 0,
+        source_ko=_with_cta("저희는 한국 대학을 소개합니다. 전북대학교 산학협력단은 유학생을 지원합니다.", "ko"),
+    )
+    assert _check(korean, _real_banned()) == []
+
+    vietnamese = _edit(
+        _plan(), 0,
+        body_local=_with_cta("Chúng tôi giới thiệu 전북대학교. Phòng Hợp tác Quốc tế hỗ trợ du học sinh.", "vi"),
+    )
+    assert _check(vietnamese, _real_banned()) == []
+
+    # 문장 끝으로 보는 글자는 모두 문장을 가른다. 공백만이면 한 문장이라 발화한다.
+    def korean_codes(joiner: str) -> list[str]:
+        sentence = f"저희는 한국 대학을 소개합니다{joiner}전북대학교 산학협력단은 유학생을 지원합니다"
+        plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+        return [f.code for f in _check(plan, _real_banned())]
+
+    for end in (".", "!", "?", "。", "\n", "।", "။"):
+        assert korean_codes(end) == [], repr(end)
+    assert korean_codes(" ") == ["대학맥락"]
+
+    # 다른 나라 글의 문장 끝(데바나가리 `।`, 미얀마어 `။`)도 같다.
+    def local_codes(index: int, language: str, first: str, second: str, joiner: str) -> list[str]:
+        plan = _edit(_plan(), index, body_local=_with_cta(f"{first}{joiner}{second}", language))
+        return [f.code for f in _check(plan, _real_banned()) if f.post_index == index]
+
+    ne = (5, "ne", "हामी 전주기전대학 को परिचय दिन्छौं", "सहकार्य कार्यालयले सहयोग गर्छ")
+    my = (4, "my", "ကျွန်ုပ်တို့သည် 전주기전대학 ကို မိတ်ဆက်ပေးပါသည်", "ပူးပေါင်းဆောင်ရွက်ရေးဌာနက ကူညီသည်")
+    for case, end in ((ne, "।"), (my, "။")):
+        assert local_codes(*case, end) == [], case[1]
+        assert local_codes(*case, " ") == ["대학맥락"], case[1]
+
+
+def test_같은_문장에_1인칭과_관계어휘가_있으면_대학명이_다른_문장에_있어도_발화한다():
+    # 대학명은 글 어디에 있어도 된다: 이름을 소개하고 다음 문장에서 관계를 주장하는 경우.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("경기대학교를 소개합니다. 저희가 협력하는 대학입니다.", "ko"))
+
+    findings = _check(plan, _real_banned())
+
+    assert _brief(findings) == [(0, "대학맥락", "error")]
+    assert "경기대학교" in findings[0].message and "저희가 협력하는 대학입니다" in findings[0].message
+
+    # 한 문장에 둘 다 있는 경우도 발화한다.
+    single = _edit(_plan(), 0, source_ko=_with_cta("저희는 경기대학교와 협력하고 있습니다.", "ko"))
+
+    assert [f.code for f in _check(single, _real_banned())] == ["대학맥락"]
+
+
+def test_같은_관계_어휘가_회사가_말하는_여러_문장에_있어도_한_번만_보고한다():
+    sentence = "저희는 경기대학교와 협력합니다. 저희는 또 경기대학교와 협력합니다."
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
+
+    assert [f.code for f in _check(plan, _real_banned())] == ["대학맥락"]
 
 
 def test_회사명_표지는_용어집의_그_언어_표기를_따른다():
