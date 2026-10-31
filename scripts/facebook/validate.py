@@ -1,20 +1,27 @@
-"""월간 플랜의 구조 검증.
+"""월간 플랜의 검증.
 
-`validate_structure`는 게시물 수·언어 로테이션·소재 배치·게시일(연속성, 플랜의 달)·이미지 파일(경로,
-확장자, 존재, 크기, 중복)·이미지 프롬프트의 필수 지시 문구를, `validate_facts`는 게시물이 쓰는
-사실의 존재와 **게시일 기준** 유효기한을 본다. 둘 다 멈추지 않고 발견한 문제를 전부 모아
+세 가지를 본다. `validate_structure`는 게시물 수·언어 로테이션·소재 배치·게시일(연속성, 플랜의 달)·
+이미지 파일(경로, 확장자, 존재, 크기, 중복)·이미지 프롬프트의 필수 지시 문구를, `validate_facts`는
+게시물이 쓰는 사실의 존재와 **게시일 기준** 유효기한을, `validate_copy`는 게시물이 **무엇을 말하는지**를
+본다: 승인된 상담 문구(CTA)로 끝나는지, 금지 표현이 없는지, 대학 실명이 승인 목록 안에 있고 협력·제휴로
+이어지지 않는지, 용어집 표기를 지켰는지, 출처 없는 수치가 없는지. 셋 다 멈추지 않고 발견한 문제를 전부 모아
 `Finding` 목록으로 돌려준다. 호출하는 쪽(CLI)이 오류가 하나라도 있으면 다음 단계로 넘기지 않는다.
 
-게시물이 *무엇을 말하는지*(금지 표현·CTA·대학명 맥락)와 역번역 대조는 여기서 보지 않는다.
+원문과 현지어 본문의 뜻이 같은지(역번역 대조)는 여기서 보지 않고, 글자 유사도도 계산하지 않는다.
 파일은 `stat`만 한다 — 내용을 열어 JPEG/PNG 형식인지까지는 확인하지 않는다.
 
 결과 순서는 항상 같다. 게시물에 매이지 않는 항목(`post_index`가 `None`)이 먼저 오고, 그다음
-게시물 번호 오름차순이며, 같은 게시물 안에서는 검사한 순서(언어 → 소재 배치 → 월·날짜 → 이미지 → 프롬프트)다.
+게시물 번호 오름차순이며, 같은 게시물 안에서는 검사한 순서다.
+`validate_structure`는 언어 → 소재 배치 → 월·날짜 → 이미지 → 프롬프트,
+`validate_copy`는 CTA → 금지 표현 → 대학명 → 대학 맥락 → 용어집 → 출처 없는 수치다.
 """
 
 from __future__ import annotations
 
+import json
+import re
 import stat
+import unicodedata
 from dataclasses import dataclass
 from datetime import timedelta
 from pathlib import Path
@@ -28,7 +35,7 @@ from .config import (
     MAX_IMAGE_BYTES,
 )
 from .facts import Fact
-from .plan_model import Plan
+from .plan_model import Plan, Post
 
 
 @dataclass(frozen=True)
@@ -43,6 +50,16 @@ def _error(code: str, post_index: int | None, message: str) -> Finding:
     return Finding("error", code, post_index, message)
 
 
+def _warning(code: str, post_index: int | None, message: str) -> Finding:
+    return Finding("warning", code, post_index, message)
+
+
+def _ordered(findings: list[Finding]) -> list[Finding]:
+    """게시물에 매이지 않는 항목을 앞에, 그다음 게시물 번호순으로. 정렬이 안정적이라 같은 게시물의
+    항목은 검사한 순서를 지킨다."""
+    return sorted(findings, key=lambda f: -1 if f.post_index is None else f.post_index)
+
+
 def validate_structure(plan: Plan, images_dir: Path) -> list[Finding]:
     """플랜의 구조를 검사해 문제를 전부 돌려준다. 이미지는 `images_dir / post.image_file`에서 찾는다."""
     findings: list[Finding] = []
@@ -52,8 +69,7 @@ def validate_structure(plan: Plan, images_dir: Path) -> list[Finding]:
     findings += _check_dates(plan)
     findings += _check_images(plan, images_dir)
     findings += _check_prompts(plan)
-    # 정렬은 안정적이다: 같은 게시물의 항목은 위에서 검사한 순서를 지킨다.
-    return sorted(findings, key=lambda f: -1 if f.post_index is None else f.post_index)
+    return _ordered(findings)
 
 
 def validate_facts(plan: Plan, facts: dict[str, Fact]) -> list[Finding]:
@@ -249,5 +265,312 @@ def _check_prompts(plan: Plan) -> list[Finding]:
                 "프롬프트삽화", post.index,
                 f"이미지 프롬프트에 삽화 지시 '{IMAGE_PROMPT_NO_REAL_SUBJECTS}'가 없습니다. "
                 f"실존 인물·실제 캠퍼스·회사 시설처럼 보이는 장면이 나오면 실제 기록 사진으로 읽힐 수 있습니다.",
+            ))
+    return findings
+
+
+# --- 문구 검증 ----------------------------------------------------------------
+
+
+class BannedPhrasesError(Exception):
+    """금지 표현 사전 파일의 내용이 규칙에 맞지 않을 때."""
+
+
+# 사전 파일의 구역 이름. 파일을 고치는 사람이 보는 이름이라 한국어다.
+_SECTION_ALWAYS = "모든 게시물"
+_SECTION_UNIVERSITY = "대학명이 나오는 게시물"
+_SECTIONS = (_SECTION_ALWAYS, _SECTION_UNIVERSITY)
+_DICTIONARY_LANGUAGES = ("ko", *LANGUAGES)
+# 대학명 구역의 항목은 `{언어}:대학명` 키로 돌려준다(`vi:대학명`). 모든 게시물 구역은 언어 코드 그대로다.
+_UNIVERSITY_KEY = "{language}:대학명"
+
+
+def _always_key(language: str) -> str:
+    return language
+
+
+def _university_key(language: str) -> str:
+    return _UNIVERSITY_KEY.format(language=language)
+
+
+def _banned_keys() -> tuple[str, ...]:
+    return (*_DICTIONARY_LANGUAGES, *(_university_key(language) for language in _DICTIONARY_LANGUAGES))
+
+
+def _compact(text: str) -> str:
+    """금지 표현을 대조하려고 표기 차이를 지운다: 대소문자, 띄어쓰기·줄바꿈, 보이지 않는 서식 문자
+    (미얀마어 글에 흔한 U+200B 등), 같은 글자의 NFC/NFD 표기.
+
+    사전의 비한국어 문구는 검수를 받지 않았으므로 띄어쓰기 한 칸 차이로 새지 않게 한다. 문구는 이 정규화를
+    거친 뒤에도 **통째로** 들어 있어야 걸린다 — 낱말 단위 대조가 아니다.
+    """
+    squeezed = unicodedata.normalize("NFC", _normalize(text))
+    return "".join(ch for ch in squeezed if ch != " " and unicodedata.category(ch) != "Cf")
+
+
+def _parse_phrases(section: str, language: str, labels: object) -> tuple[str, ...]:
+    where = f"금지 표현 사전의 '{section}' > '{language}'"
+    if not (isinstance(labels, dict) and labels):
+        raise BannedPhrasesError(
+            f"{where}에 문구가 하나도 없습니다. 이 언어의 검사가 통째로 사라지므로 "
+            f"{{분류: [문구, ...]}} 형태로 하나 이상 적어야 합니다."
+        )
+    phrases: list[str] = []
+    for label, entries in labels.items():
+        if not (isinstance(entries, list) and entries):
+            raise BannedPhrasesError(f"{where} > '{label}'은(는) 비어 있지 않은 문구 목록이어야 합니다.")
+        for entry in entries:
+            if not (isinstance(entry, str) and _compact(entry)):
+                # 비어 있는 문구는 모든 본문에 들어맞아 게시물 전부를 막는다.
+                raise BannedPhrasesError(
+                    f"{where} > '{label}'에 문구가 아닌 값이 있습니다: {entry!r} "
+                    f"(공백이나 보이지 않는 글자뿐인 문자열도 안 됩니다)."
+                )
+            phrases.append(entry)
+    return tuple(dict.fromkeys(phrases))  # 겹치는 문구는 한 번만, 적은 순서는 그대로
+
+
+def load_banned_phrases(path: Path) -> dict[str, tuple[str, ...]]:
+    """금지 표현 사전을 읽어 `{키: 문구 튜플}`로 돌려준다. 규칙에 어긋나면 `BannedPhrasesError`.
+
+    키는 `ko`·`vi`·`my`·`ne`(모든 게시물에 적용)와 `ko:대학명`·`vi:대학명`·`my:대학명`·`ne:대학명`
+    (대학명이 나오는 게시물에만 적용)이다. 파일은 구역 → 언어 → 분류 → 문구 목록이며, 분류는 사람이 읽으라고
+    적은 이름이라 여기서 펴서 버린다. 어떤 언어든 문구가 하나도 없으면 그 언어의 검사가 조용히 사라지므로
+    읽는 단계에서 멈춘다.
+    """
+    try:
+        text = path.read_text(encoding="utf-8")
+    except FileNotFoundError as e:
+        raise BannedPhrasesError(f"금지 표현 사전을 찾을 수 없습니다: {path}") from e
+    except OSError as e:
+        raise BannedPhrasesError(f"금지 표현 사전을 읽을 수 없습니다(경로와 권한을 확인하세요): {path}") from e
+    except UnicodeDecodeError as e:
+        raise BannedPhrasesError(f"금지 표현 사전이 UTF-8 텍스트가 아닙니다: {path}") from e
+    try:
+        raw = json.loads(text)
+    except json.JSONDecodeError as e:
+        raise BannedPhrasesError(f"금지 표현 사전이 올바른 JSON이 아닙니다: {path} ({e})") from e
+    if not isinstance(raw, dict):
+        raise BannedPhrasesError(
+            f"금지 표현 사전의 최상위는 {{구역: {{...}}}} 형태의 객체여야 합니다: {path}"
+        )
+
+    missing = [section for section in _SECTIONS if section not in raw]
+    unknown = [section for section in raw if section not in _SECTIONS]
+    if missing or unknown:
+        raise BannedPhrasesError(
+            f"금지 표현 사전의 구역이 맞지 않습니다 — 없는 구역: {missing or '없음'}, "
+            f"알 수 없는 구역: {unknown or '없음'} (필요한 구역: {', '.join(_SECTIONS)})."
+        )
+
+    result: dict[str, tuple[str, ...]] = {}
+    for section, key_of in ((_SECTION_ALWAYS, _always_key), (_SECTION_UNIVERSITY, _university_key)):
+        by_language = raw[section]
+        if not isinstance(by_language, dict):
+            raise BannedPhrasesError(f"금지 표현 사전의 '{section}'은(는) {{언어: {{...}}}} 형태의 객체여야 합니다.")
+        missing = [language for language in _DICTIONARY_LANGUAGES if language not in by_language]
+        unknown = [language for language in by_language if language not in _DICTIONARY_LANGUAGES]
+        if missing or unknown:
+            raise BannedPhrasesError(
+                f"금지 표현 사전의 '{section}'에서 언어가 맞지 않습니다 — 없는 언어: {missing or '없음'}, "
+                f"알 수 없는 언어: {unknown or '없음'} (필요한 언어: {', '.join(_DICTIONARY_LANGUAGES)})."
+            )
+        for language in _DICTIONARY_LANGUAGES:
+            result[key_of(language)] = _parse_phrases(section, language, by_language[language])
+    return result
+
+
+def validate_copy(
+    plan: Plan,
+    universities: list[dict],
+    banned: dict[str, tuple[str, ...]],
+    glossary: dict,
+) -> list[Finding]:
+    """게시물이 *무엇을 말하는지* 검사해 문제를 전부 돌려준다.
+
+    - 한국어 원문과 현지어 본문이 모두 승인된 상담 문구(CTA)로 끝나는지 (오류)
+    - 금지 표현이 없는지: 원문은 `ko`, 본문은 그 게시물 언어의 사전으로 (오류)
+    - `university_names`의 대학이 승인 목록(`universities`의 `name_ko`)에 있고 본문에 그대로 쓰였는지 (오류)
+    - 대학명이 나오는 게시물에 협력·제휴를 떠올리게 하는 표현이 없는지 (오류)
+    - `D-2`·`D-4`·회사명이 나오면 용어집 표기를 그대로 썼는지 (경고)
+    - `fact_keys`가 빈 게시물의 원문에 금액·시간·비율 수치가 없는지 (경고)
+
+    `banned`는 `load_banned_phrases`가 돌려준 값이다. 항목이 하나라도 빠진 사전은 그 검사를 조용히
+    건너뛰게 되므로 `ValueError`로 멈춘다.
+    """
+    missing = [key for key in _banned_keys() if key not in banned]
+    if missing:
+        raise ValueError(
+            f"금지 표현 사전에 항목이 없습니다: {', '.join(missing)}. load_banned_phrases로 읽은 값을 넘기세요."
+        )
+    approved = tuple(entry["name_ko"] for entry in universities)
+
+    findings: list[Finding] = []
+    findings += _check_cta(plan, glossary)
+    findings += _check_banned_phrases(plan, banned)
+    findings += _check_universities(plan, approved)
+    findings += _check_university_context(plan, approved, banned)
+    findings += _check_glossary_terms(plan, glossary)
+    findings += _check_unsourced_figures(plan)
+    return _ordered(findings)
+
+
+def _check_cta(plan: Plan, glossary: dict) -> list[Finding]:
+    """한국어 원문과 현지어 본문이 각자 언어의 승인된 CTA로 **끝나는지** 본다(뒤쪽 공백은 무시).
+
+    원문에도 요구하는 이유: 역번역 대조는 현지어 본문을 한국어로 되번역해 원문과 견주는데, CTA가 한쪽에만
+    있으면 모든 게시물의 차이가 같은 분량만큼 부풀어 임계값이 의미를 잃는다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        for side, text, language in (
+            ("현지어 본문(body_local)", post.body_local, post.language),
+            ("한국어 원문(source_ko)", post.source_ko, "ko"),
+        ):
+            cta = glossary["cta"][language]
+            if not text.rstrip().endswith(cta):
+                findings.append(_error(
+                    "CTA없음", post.index,
+                    f"{side}이(가) 승인된 상담 문구로 끝나지 않습니다. 맨 끝에 다음 문구를 그대로 두세요: {cta}",
+                ))
+    return findings
+
+
+def _hits(text: str, phrases: tuple[str, ...]) -> list[str]:
+    """`text`에 통째로 들어 있는 `phrases`의 문구들(사전 순서). 표기 차이는 `_compact`가 지운다."""
+    haystack = _compact(text)
+    return [phrase for phrase in phrases if _compact(phrase) in haystack]
+
+
+def _check_banned_phrases(plan: Plan, banned: dict[str, tuple[str, ...]]) -> list[Finding]:
+    findings: list[Finding] = []
+    for post in plan.posts:
+        for side, text, language in (
+            ("한국어 원문(source_ko)", post.source_ko, "ko"),
+            ("현지어 본문(body_local)", post.body_local, post.language),
+        ):
+            for phrase in _hits(text, banned[language]):
+                findings.append(_error(
+                    "금지표현", post.index,
+                    f"{side}에 금지 표현 '{phrase}'이(가) 있습니다. 게시물은 무료 상담 안내까지만 말합니다 — "
+                    f"합격·취업·비자 보장, 비용 약속, 협력 관계, 상담 이후 절차는 쓰지 않습니다. 이 표현을 빼고 다시 쓰세요.",
+                ))
+    return findings
+
+
+def _check_universities(plan: Plan, approved: tuple[str, ...]) -> list[Finding]:
+    """`university_names`의 이름이 승인 목록에 있는지, 있다면 현지어 본문에 한국어 이름 그대로 쓰였는지 본다.
+
+    음차나 의역만 있으면 본문에서 이름을 찾을 수 없어 맥락 검사가 성립하지 않으므로 한국어 이름을 요구한다.
+    현지어 설명을 곁들이는 것은 괜찮아서 같음이 아니라 포함을 본다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        for name in post.university_names:
+            if name not in approved:
+                findings.append(_error(
+                    "대학명목록외", post.index,
+                    f"대학명 '{name}'은(는) 승인된 대학 목록(universities.json)에 없습니다. "
+                    f"목록에 있는 한국어 실명만 쓸 수 있습니다.",
+                ))
+            elif name not in post.body_local:
+                findings.append(_error(
+                    "대학명본문없음", post.index,
+                    f"university_names에 적은 '{name}'이(가) 현지어 본문에 한국어 이름 그대로 나오지 않습니다. "
+                    f"음차나 의역만 쓰면 맥락을 검사할 수 없으니 한국어 이름을 그대로 넣고 현지어 설명은 곁들이세요.",
+                ))
+    return findings
+
+
+def _named_universities(post: Post, approved: tuple[str, ...]) -> list[str]:
+    """게시물이 다루는 대학: 플랜이 적은 이름, 그리고 적지 않았어도 원문·본문에 쓰인 승인 목록의 이름."""
+    detected = [name for name in approved if name in post.source_ko or name in post.body_local]
+    return list(dict.fromkeys([*post.university_names, *detected]))
+
+
+def _check_university_context(
+    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]]
+) -> list[Finding]:
+    """대학명이 나오는 게시물에 협력·제휴·입학 알선·합격 가능성을 떠올리게 하는 표현이 없는지 본다.
+
+    대학 실명은 소개 맥락에서만 쓸 수 있다. `university_names`를 비워 두고 본문에만 대학명을 쓰는 경우도
+    놓치지 않도록 본문에서 찾은 승인 목록의 이름도 대학명으로 친다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        named = _named_universities(post, approved)
+        if not named:
+            continue
+        for side, text, language in (
+            ("한국어 원문(source_ko)", post.source_ko, "ko"),
+            ("현지어 본문(body_local)", post.body_local, post.language),
+        ):
+            for term in _hits(text, banned[_university_key(language)]):
+                findings.append(_error(
+                    "대학맥락", post.index,
+                    f"대학명({', '.join(named)})이 나오는 게시물의 {side}에 협력·제휴를 떠올리게 하는 표현 "
+                    f"'{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
+                    f"연결하지 마세요.",
+                ))
+    return findings
+
+
+# 용어집 항목 → 본문에 그 용어를 쓰고 있음을 알리는 식별 토큰. 토큰이 없는 게시물은 그 용어를 쓰지 않은 것이다.
+_GLOSSARY_TOKENS = (
+    ("visa_d2", "D-2"),
+    ("visa_d4", "D-4"),
+    ("company_name", "정우인재개발원"),
+)
+# 하이픈 모양이 다른 글자(비분리 하이픈, 엔 대시 등). 토큰을 찾을 때만 보통 하이픈으로 본다.
+_DASHES = str.maketrans(dict.fromkeys(map(ord, "‐‑‒–—―−"), "-"))
+
+
+def _check_glossary_terms(plan: Plan, glossary: dict) -> list[Finding]:
+    """본문에 용어의 식별 토큰이 있으면 그 언어의 용어집 표기가 통째로 있어야 한다(경고).
+
+    용어를 의역해 토큰 없이 쓰면 이 검사를 빠져나간다. 경고인 이유다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        text = post.body_local.translate(_DASHES).casefold()
+        for key, token in _GLOSSARY_TOKENS:
+            if token.casefold() not in text:
+                continue
+            expected = glossary[key][post.language]
+            if expected not in post.body_local:
+                findings.append(_warning(
+                    "용어불일치", post.index,
+                    f"현지어 본문에 '{token}'이(가) 있는데 용어집({key})의 {post.language} 표기 '{expected}'가 없습니다. "
+                    f"용어집 표기를 그대로 쓰세요.",
+                ))
+    return findings
+
+
+# 금액·시간·비율처럼 보이는 수치. 연도, 학기 수, 급수 같은 숫자는 여기에 걸리지 않는다.
+_FIGURE = re.compile(
+    r"[₩$¥￥]\s*\d[\d,.]*"                                  # 기호가 앞에 붙는 금액: $500, ¥100,000
+    r"|\d[\d,.]*\s*[만천백억]?\s*(?:원|엔|円|달러|위안)"       # 금액: 6,800,000원, 300만 원, 15만 엔
+    r"|\d[\d,.]*\s*시간"                                    # 시간 수: 주 20시간
+    r"|\d[\d,.]*\s*(?:%|％|퍼센트)"                          # 비율: 95%
+)
+
+
+def _check_unsourced_figures(plan: Plan) -> list[Finding]:
+    """`fact_keys`가 빈 게시물의 한국어 원문에 금액·시간·비율 수치가 있으면 경고한다.
+
+    `validate_facts`는 `fact_keys`만 돌기 때문에 빈 튜플이면 사실 검사가 통째로 건너뛰어진다. 검증되지 않은
+    학비·시간 수치가 아무도 읽지 않는 현지어로 나가는 길이 이것 하나라 따로 막는다. 현지어 숫자 표기까지
+    알아보려 하지 않고 원문만 본다. 연도나 학기 수처럼 정당한 숫자도 있어 오류가 아닌 경고다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        if post.fact_keys:
+            continue
+        figures = list(dict.fromkeys(match.group().strip() for match in _FIGURE.finditer(post.source_ko)))
+        if figures:
+            findings.append(_warning(
+                "출처없는수치", post.index,
+                f"한국어 원문에 수치({', '.join(figures)})가 있는데 fact_keys가 비어 있어 출처를 검증할 수 없습니다. "
+                f"facts.json의 확정된 사실에서 가져온 수치라면 그 키를 fact_keys에 적고, 아니라면 수치를 빼세요.",
             ))
     return findings

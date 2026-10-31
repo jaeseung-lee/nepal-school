@@ -55,6 +55,10 @@ FACTS_PATH = facebook_dir() / "facts.json"
 GLOSSARY_PATH = facebook_dir() / "glossary.json"
 UNIVERSITIES_PATH = facebook_dir() / "universities.json"
 
+# 금지 표현 사전은 생성 산출물이 아니라 코드와 함께 커밋하는 정책 파일이라 `output/`이 아닌 코드 옆에 둔다.
+# CLI는 이 경로를 직접 적지 말고 이 상수를 쓴다.
+BANNED_PHRASES_PATH = ROOT / "scripts" / "facebook" / "data" / "banned-phrases.json"
+
 _MONTH_PATTERN = re.compile(r"[0-9]{4}-(0[1-9]|1[0-2])")
 
 

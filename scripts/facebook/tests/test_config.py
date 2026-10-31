@@ -26,6 +26,13 @@ def test_산출물_경로는_output_facebook_아래다():
         assert path.parent == config.facebook_dir()
 
 
+def test_금지_표현_사전은_산출물이_아니라_코드_옆_data_폴더에_있다():
+    # 생성물이 아니라 코드와 함께 커밋하는 정책 파일이므로 output/ 밑이 아니다. CLI는 이 상수로 찾는다.
+    assert config.BANNED_PHRASES_PATH == config.ROOT / "scripts" / "facebook" / "data" / "banned-phrases.json"
+    assert config.BANNED_PHRASES_PATH.is_file()
+    assert config.facebook_dir() not in config.BANNED_PHRASES_PATH.parents
+
+
 def test_month_dir은_월_폴더를_돌려준다():
     assert config.month_dir("2026-11") == config.facebook_dir() / "2026-11"
 
