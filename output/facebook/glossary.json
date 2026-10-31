@@ -1,0 +1,26 @@
+{
+  "visa_d2": {
+    "ko": "유학(D-2)",
+    "vi": "Thị thực du học (D-2)",
+    "my": "ပညာသင်ဗီဇာ (D-2)",
+    "ne": "अध्ययन भिसा (D-2)"
+  },
+  "visa_d4": {
+    "ko": "일반연수(D-4)",
+    "vi": "Thị thực đào tạo chung (D-4)",
+    "my": "အထွေထွေသင်တန်းဗီဇာ (D-4)",
+    "ne": "सामान्य तालिम भिसा (D-4)"
+  },
+  "company_name": {
+    "ko": "정우인재개발원",
+    "vi": "Jeongwoo Human Resource Development Institute (정우인재개발원)",
+    "my": "Jeongwoo Human Resource Development Institute (정우인재개발원)",
+    "ne": "Jeongwoo Human Resource Development Institute (정우인재개발원)"
+  },
+  "cta": {
+    "ko": "상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+    "vi": "Tư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+    "my": "အကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+    "ne": "परामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।"
+  }
+}
