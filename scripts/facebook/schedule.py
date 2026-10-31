@@ -19,10 +19,19 @@
   쓸 때는 임시 파일에 쓴 뒤 바꿔 끼워, 쓰다 끊겨도 앞 원장이 반쪽 파일이 되지 않는다. 그리고 **읽지 못한 원장을 빈 원장으로
   보지 않는다**(`LedgerError`로 멈춘다): 그러면 이미 예약한 게시물이 전부 다시 예약된다. 같은 이유로 **첫 요청 전에**
   원장을 쓸 수 있는지 확인하고, 예약을 만든 뒤 적지 못하면 그 자리에서 멈춘다(기록할 수 없는 예약을 더 만들지 않는다).
-- **예약 창 검사에는 여유 5분을 더한다**(`SAFETY_MARGIN`). Meta의 창(지금부터 10분 ~ 75일)은 `config`에 있고 Meta의
-  값이다. 5분은 우리 값이라 여기에 두고 한곳에 섞지 않는다 — 섞으면 다음 사람이 Meta의 값을 우리 값으로 착각한다.
-  `now`는 시험 때문에 주입받으므로 건별로 다시 읽을 수 없고, 30건을 올리는 시간(건별 타임아웃 60초)이 `now`와 마지막
-  요청 사이에 쌓인다. 정확히 10분짜리 예약은 도착할 때쯤 10분 미만이 되어 Facebook이 거절하므로 창 경계에 붙여 보내지 않는다.
+- **한 번에 한 실행만 돈다.** 운영자가 실제로 저지를 실수는 "멈춘 것 같아서 다른 탭에서 다시 돌렸다"이고, 두 실행이 같은
+  원장을 읽으면 원장에 없는 모든 건을 양쪽이 올린다(`maybe_created`로도 막히지 않는다). 그래서 원장 옆의 잠금 파일
+  (`scheduled.json.lock`)에 `fcntl.flock(LOCK_EX | LOCK_NB)`을 건다. 못 잡으면 아무것도 올리지 않고 한국어로 멈춘다.
+  `dry_run`도 잡는다(실제 실행이 원장을 바꾸는 동안 읽으면 거짓 목록을 보인다). `flock`은 프로세스가 죽으면 저절로 풀리므로
+  운영자가 지울 파일이 생기지 않는다(잠금 파일 자체는 빈 파일로 남고 지울 필요가 없다). `fcntl`은 유닉스 전용이다 — 이
+  도구는 Mac에서 돈다.
+- **예약 창은 Meta의 것과 우리 것을 따로 검사한다.** Meta의 창(지금부터 10분 ~ 75일)과 타임존 검사는 `config`의 값으로
+  `graph.assert_schedulable`이 한다 — **진짜 `now`를 넘긴다.** 그래야 그 메시지의 "지금"이 참이다(운영자 글에 구현 사정을
+  설명하는 문장을 덧붙이지 않는다). 가까운 쪽의 여유 5분(`SAFETY_MARGIN`)은 우리 값이라 이 모듈이 자기 검사와 자기 메시지로
+  본다 — 섞으면 다음 사람이 Meta의 값을 우리 값으로 착각한다. `now`는 시험 때문에 주입받으므로 건별로 다시 읽을 수 없고, 30건을
+  올리는 시간(건별 타임아웃 60초)이 `now`와 마지막 요청 사이에 쌓인다. 정확히 10분짜리 예약은 도착할 때쯤 10분 미만이 되어
+  Facebook이 거절하므로 창 경계에 붙여 보내지 않는다. 먼 쪽(75일)에는 여유가 없다: 시간이 걸리면 오히려 창 안으로 들어온다.
+  메시지의 시각은 모두 `publish_at`의 오프셋으로 적는다(운영자가 `plan.json`에 적은 시각과 바로 견주도록).
 - **`Outcome`은 플랜의 게시물마다 하나이고 플랜 순서다.** `post_id`는 원장의 값과 같다(사진 id 또는 `UNKNOWN_RESULT`).
   모양은 넷이다 — 예약됨: `ok=True`, 사진 id / `dry_run`의 예정: `ok=True`, `post_id=None` / 실패: `ok=False`,
   `post_id=None`, `error` / **결과 불명: `ok=False`, `post_id=UNKNOWN_RESULT`, `error`** — 호출하는 쪽은 이 넷째를
@@ -33,20 +42,21 @@
 
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 import re
-from contextlib import suppress
+from contextlib import contextmanager, suppress
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Iterator
 
 from . import config, graph
 from .findings import Finding
 from .plan_model import Plan, Post
 
-# 예약 창 검사에 더하는 여유. Meta의 창 상수(`config.SCHEDULE_MIN_LEAD` 등)는 그대로 두고, 우리가 두는 여유는 여기서만 읽는다.
+# 가까운 쪽 예약 창(`config.SCHEDULE_MIN_LEAD`, Meta의 값)에 더하는 우리의 여유. 이 모듈의 `_window_problem`만 읽는다.
 SAFETY_MARGIN = timedelta(minutes=5)
 
 # 원장에서 "요청은 나갔지만 예약이 만들어졌는지 모른다"를 뜻하는 값. 운영자가 파일에서 이 글자를 찾아 고치므로 바꾸지 말 것.
@@ -141,6 +151,42 @@ def _record(path: Path, ledger: dict[int, str], index: int, value: str) -> None:
         ) from exc
 
 
+@contextmanager
+def _exclusive(ledger_path: Path) -> Iterator[None]:
+    """원장 옆 잠금 파일에 배타 잠금을 건다. 이미 다른 실행이 쥐고 있으면 기다리지 않고 `LedgerError`.
+
+    `flock`은 잠금을 쥔 프로세스가 죽으면 운영체제가 풀어 주므로 멈춘 잠금이 남지 않는다. 폴더를 만들지 않는다.
+    """
+    lock_path = ledger_path.with_name(ledger_path.name + ".lock")
+    try:
+        handle = open(lock_path, "a")
+    except OSError as exc:
+        raise LedgerError(
+            f"원장 폴더에 잠금 파일 {lock_path}을(를) 만들 수 없어 예약을 시작하지 않았습니다 ({type(exc).__name__}: {exc}). "
+            f"폴더가 있는지, 쓰기 권한이 있는지 확인하세요."
+        ) from exc
+    try:
+        try:
+            fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise LedgerError(
+                "다른 예약 실행이 같은 원장을 쓰고 있어 아무것도 올리지 않고 멈춥니다. 멈춘 것처럼 보여도 다른 터미널이나 탭에서 "
+                "돌고 있을 수 있으니, 그 실행이 끝날 때까지 기다리세요. 두 실행이 같은 원장을 읽으면 원장에 없는 게시물을 양쪽이 "
+                "모두 올립니다. 그 실행이 끝났거나 중단됐다면 잠금은 저절로 풀렸으니 다시 실행하면 됩니다."
+            ) from None
+        except OSError as exc:
+            raise LedgerError(
+                f"원장 잠금을 걸 수 없어 예약을 시작하지 않았습니다 ({type(exc).__name__}: {exc}). 같은 원장을 두 실행이 동시에 쓰면 "
+                f"게시물이 두 번 올라가므로 잠금 없이는 시작하지 않습니다."
+            ) from exc
+        yield
+    finally:
+        try:
+            fcntl.flock(handle, fcntl.LOCK_UN)
+        finally:
+            handle.close()
+
+
 def _unknown_guidance(path: Path, index: int) -> str:
     return (
         f'원장 {path}의 "{index}" 줄이 "{UNKNOWN_RESULT}"입니다. 페이스북 페이지의 예약된 게시물에서 이 게시물을 찾아보세요. '
@@ -160,17 +206,43 @@ def _require_no_errors(findings: Iterable[Finding]) -> None:
         )
 
 
+def _minutes(delta: timedelta) -> str:
+    return f"{delta.total_seconds() / 60:g}분"
+
+
+def _window_problem(publish_at: datetime, now: datetime) -> str | None:
+    """`publish_at`이 예약 창 밖이면 한국어 이유. 안이면 None.
+
+    가까운 쪽은 Meta의 최소(10분)에 우리 여유를 더한 `earliest_lead`까지를 이 함수가 자기 메시지로 거절한다. 그 밖(지난 시각,
+    너무 먼 시각, 타임존 없음)은 **진짜 `now`로** `graph.assert_schedulable`이 거절한다. 시각은 `publish_at`의 오프셋으로 적는다.
+    """
+    if publish_at.utcoffset() is not None and now.utcoffset() is not None:
+        now = now.astimezone(publish_at.tzinfo)
+        # UTC로 바꿔 뺀다: 같은 tzinfo 객체끼리 빼면 파이썬이 오프셋을 무시하고 벽시계를 뺀다(DST가 접히는 구간에서 틀린다).
+        now_utc = now.astimezone(timezone.utc)
+        lead = publish_at.astimezone(timezone.utc) - now_utc
+        earliest_lead = config.SCHEDULE_MIN_LEAD + SAFETY_MARGIN
+        if timedelta(0) <= lead < earliest_lead:
+            earliest = (now_utc + earliest_lead).astimezone(publish_at.tzinfo)
+            return (
+                f"예약 시각 {publish_at.isoformat()}이(가) 너무 가깝습니다. 지금은 {now.isoformat()}이고, 예약은 지금부터 "
+                f"{_minutes(earliest_lead)} 뒤인 {earliest.isoformat()} 이후로만 받습니다. Facebook은 지금부터 "
+                f"{_minutes(config.SCHEDULE_MIN_LEAD)} 뒤부터 받지만, 올리는 데 시간이 걸려 요청이 도착할 때쯤 그보다 가까워지면 "
+                f"거절하므로 {_minutes(SAFETY_MARGIN)}을 더 띄워 둡니다. 예약 시각을 늦추세요."
+            )
+    try:
+        graph.assert_schedulable(publish_at, now)
+    except graph.GraphError as exc:
+        return str(exc)
+    return None
+
+
 def _problem_before_sending(post: Post, image_path: Path, now: datetime) -> str | None:
     """요청을 보내기 전에 알 수 있는 문제(예약 창 밖, 이미지 파일 없음)를 한국어로. 없으면 None. 둘 다 있으면 둘 다 적는다."""
     problems = []
-    try:
-        graph.assert_schedulable(post.publish_at, now + SAFETY_MARGIN)
-    except graph.GraphError as exc:
-        # graph의 메시지는 "지금"을 검사에 넘긴 시각(now + 여유)으로 적는다. 풀어 주지 않으면 12:00에 실행한 사람이 "지금 12:05"를 본다.
-        problems.append(
-            f"{exc} (안전 여유: 위 메시지의 '지금'은 실제 현재 시각 {now.isoformat()}에 여유 "
-            f"{SAFETY_MARGIN.total_seconds() / 60:g}분을 더한 시각입니다. 예약 창은 이 여유를 포함해 검사합니다.)"
-        )
+    window = _window_problem(post.publish_at, now)
+    if window is not None:
+        problems.append(window)
     if not image_path.is_file():
         problems.append(f"이미지 파일이 없습니다: {image_path}. 파일을 넣은 뒤 다시 실행하세요.")
     return " ".join(problems) or None
@@ -221,9 +293,16 @@ def run(
 
     `findings`에 오류가 있으면 아무것도 호출하지 않고 `ValueError`(`dry_run`이어도). `dry_run`이면 요청도 원장 쓰기도 없이
     같은 검사(원장, 예약 창, 이미지 파일)만 하고, 보낼 건을 `ok=True, post_id=None`으로 돌려준다.
-    한 건이 실패해도 나머지를 계속한다. 원장을 믿을 수 없으면 `LedgerError`로 멈춘다.
+    한 건이 실패해도 나머지를 계속한다. 원장을 믿을 수 없거나 다른 실행이 원장을 쥐고 있으면 `LedgerError`로 멈춘다.
     """
     _require_no_errors(findings)
+    with _exclusive(ledger_path):
+        return _run_locked(plan, images_dir, ledger_path, token=token, session=session, now=now, dry_run=dry_run)
+
+
+def _run_locked(
+    plan: Plan, images_dir: Path, ledger_path: Path, *, token: str, session: graph._Session, now: datetime, dry_run: bool
+) -> list[Outcome]:
     ledger = load_ledger(ledger_path)
     if not dry_run:
         # 첫 요청 전에: 적을 곳이 없는데 예약부터 만들면, 다시 돌릴 때 같은 사진이 또 올라간다.

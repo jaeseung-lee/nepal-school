@@ -14,9 +14,13 @@
 from __future__ import annotations
 
 import dataclasses
+import errno
+import fcntl
 import json
 import os
+import signal
 import socket
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -511,15 +515,20 @@ def test_이미지_파일이_없으면_호출하지_않고_실패로_기록되�
     assert all(o.ok for o in again)
 
 
-# ── 여유 시간 ────────────────────────────────────────────────────────────────
-# Meta의 창은 10분이고 여유는 이 모듈의 5분이다. 합쳐서 지금부터 15분 뒤가 가장 이른 예약이다.
+# ── 예약 창 ──────────────────────────────────────────────────────────────────
+# 가까운 쪽: Meta의 10분에 우리 여유 5분을 더해 지금부터 15분 뒤가 가장 이르다. 이 모듈이 자기 검사와 자기 메시지로 거절한다.
+# 지난 쪽·먼 쪽·타임존: Meta의 창 그대로이며 **진짜 `now`로** `graph.assert_schedulable`이 거절한다. 여유는 가까운 쪽에만 있다.
+
+NEAR_MESSAGE = (
+    "예약 시각 2026-10-31T12:12:00+09:00이(가) 너무 가깝습니다. 지금은 2026-10-31T12:00:00+09:00이고, 예약은 지금부터 "
+    "15분 뒤인 2026-10-31T12:15:00+09:00 이후로만 받습니다. Facebook은 지금부터 10분 뒤부터 받지만, 올리는 데 시간이 걸려 "
+    "요청이 도착할 때쯤 그보다 가까워지면 거절하므로 5분을 더 띄워 둡니다. 예약 시각을 늦추세요."
+)
 
 
 def test_지금부터_15분_뒤_예약은_받고_14분_59초_뒤_예약은_호출_없이_거절한다(env):
-    # `now`를 그대로 넘기면 14분 59초는 Meta의 창(10분)을 통과하므로, 이 한 줄이 여유가 실제로 더해졌는지 가른다.
-    just_in = with_publish_at(env.plan, 0, NOW + timedelta(minutes=15))
-    just_out = with_publish_at(env.plan, 1, NOW + timedelta(minutes=14, seconds=59))
-    plan = dataclasses.replace(env.plan, posts=(just_in.posts[0], just_out.posts[1], *env.plan.posts[2:]))
+    # 여유 없이 Meta의 10분만 보면 14분 59초도 통과하므로, 이 한 쌍이 여유가 실제로 걸려 있는지 가른다.
+    plan = with_publish_at(with_publish_at(env.plan, 0, NOW + timedelta(minutes=15)), 1, NOW + timedelta(minutes=14, seconds=59))
     session = FakeSession()
     outcomes = env.run(session, plan=plan)
     assert env.post(0).image_file in session.uploaded
@@ -527,13 +536,61 @@ def test_지금부터_15분_뒤_예약은_받고_14분_59초_뒤_예약은_호�
     assert outcomes[0].ok and not outcomes[1].ok
 
 
-def test_창_거절_메시지는_지금이_여유가_더해진_시각이라고_풀어_준다(env):
-    # graph의 메시지는 "지금"을 now + 여유로 적는다(12:05). 풀어 주지 않으면 12:00에 실행한 사람이 시계를 의심한다.
-    # 실제 현재 시각은 이 설명에만 나온다(graph는 여유가 더해진 시각만 안다).
+def test_가까운_쪽_거절_메시지_전문(env):
+    # 운영자가 읽는 글이다: 실제 현재 시각, 가장 이른 허용 시각, 창 경계에 붙여 보내지 않는 이유. 구현 사정을 설명하는 문장은 없다.
     outcomes = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, NOW + timedelta(minutes=12)))
+    assert outcomes[0].error == NEAR_MESSAGE
+
+
+@pytest.mark.parametrize("minutes", [0, 9, 12], ids=["지금과같음", "Meta의10분미만", "여유구간"])
+def test_가까운_예약은_Meta의_10분_안이든_여유_구간이든_같은_메시지로_15분_뒤를_알린다(env, minutes):
+    # graph의 "10분 뒤(12:10) 이후로만 가능" 메시지로 새면 운영자가 12:10으로 고쳤다가 한 번 더 거절당한다.
+    outcomes = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, NOW + timedelta(minutes=minutes)))
     error = outcomes[0].error
-    assert (NOW + timedelta(minutes=5)).isoformat() in error  # graph가 적은 "지금"
-    assert NOW.isoformat() in error and "여유 5분" in error  # 이 모듈이 풀어 준 진짜 현재 시각
+    assert f"지금은 {NOW.isoformat()}이고" in error
+    assert f"15분 뒤인 {(NOW + timedelta(minutes=15)).isoformat()} 이후로만 받습니다" in error
+
+
+@pytest.mark.parametrize(
+    "when",
+    [pytest.param(NOW + timedelta(minutes=12), id="너무가까움"), pytest.param(NOW - timedelta(hours=1), id="지난시각"),
+     pytest.param(NOW + timedelta(days=76), id="75일넘음")],
+)
+def test_거절_메시지의_지금은_주입한_now_그대로이고_여유가_더해진_거짓_지금이_없다(env, when):
+    error = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, when))[0].error
+    assert NOW.isoformat() in error
+    assert (NOW + schedule.SAFETY_MARGIN).isoformat() not in error  # now + 여유를 "지금"으로 적은 글이 없다
+
+
+@pytest.mark.parametrize(
+    "when",
+    [pytest.param(NOW + timedelta(minutes=12), id="너무가까움"), pytest.param(NOW - timedelta(hours=1), id="지난시각"),
+     pytest.param(NOW + timedelta(days=76), id="75일넘음")],
+)
+def test_거절_메시지의_시각은_plan에_적은_시각과_같은_오프셋으로_적힌다(env, when):
+    # CLI가 UTC 같은 다른 시간대의 now를 넘겨도 운영자는 plan.json에 적은 +09:00 시각과 바로 견줄 수 있어야 한다.
+    now_utc = NOW.astimezone(timezone.utc)
+    error = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, when), now=now_utc)[0].error
+    assert NOW.isoformat() in error
+    assert "+00:00" not in error
+
+
+def test_먼_쪽_경계는_여유_없이_Meta의_75일_그대로다(env):
+    # 가까운 쪽 여유가 먼 쪽을 5분 늘려 놓으면 75일 + 몇 분짜리 예약이 로컬 검사를 통과해 Facebook에서 거절당한다.
+    plan = with_publish_at(with_publish_at(env.plan, 0, NOW + timedelta(days=75)), 1, NOW + timedelta(days=75, seconds=1))
+    session = FakeSession()
+    outcomes = env.run(session, plan=plan)
+    assert env.post(0).image_file in session.uploaded
+    assert env.post(1).image_file not in session.uploaded
+    assert outcomes[0].ok and not outcomes[1].ok
+
+
+def test_타임존_없는_now는_graph의_타임존_메시지로_거절되고_요청은_나가지_않는다(env):
+    session = FakeSession()
+    outcomes = env.run(session, now=NOW.replace(tzinfo=None))
+    assert session.calls == []
+    assert not any(o.ok for o in outcomes)
+    assert all("타임존" in o.error for o in outcomes)
 
 
 # ── 검증 관문 ────────────────────────────────────────────────────────────────
@@ -554,10 +611,10 @@ def test_오류_finding이_있으면_아무것도_호출하지_않고_ValueError
     assert "검증을 다시 돌려" in message  # 할 일: 검증을 다시 돌려 오류를 없앤다
 
 
-def test_오류_finding_관문은_원장을_만들지도_않는다(env):
+def test_오류_finding_관문은_원장도_잠금_파일도_만들지_않는다(env):
     with pytest.raises(ValueError):
         env.run(FakeSession(), findings=[ERROR_A])
-    assert not env.ledger.exists()
+    assert list(env.ledger.parent.glob("scheduled.json*")) == []
 
 
 @pytest.mark.parametrize("dry_run", [False, True], ids=["실제실행", "dry_run"])
@@ -570,6 +627,79 @@ def test_경고만_있으면_정상_진행한다(env, dry_run):
 
 def test_finding이_없으면_정상_진행한다(env):
     assert all(o.ok for o in env.run(FakeSession(), findings=[]))
+
+
+# ── 동시 실행 잠금 ───────────────────────────────────────────────────────────
+# "멈춘 것 같아서 다른 탭에서 다시 돌렸다": 두 실행이 같은 원장을 읽으면 원장에 없는 건을 양쪽이 올린다.
+
+
+@contextmanager
+def no_hanging(seconds: int = 5):
+    """잠금을 기다리며 영원히 멈추는 구현이 시험 묶음 전체를 멈추지 않도록, 늦으면 실패시킨다(유닉스 전용, fcntl과 같다)."""
+
+    def give_up(signum, frame):
+        raise AssertionError(f"{seconds}초 안에 끝나지 않았습니다 — 잠금을 기다리며 멈춘 것으로 보입니다")
+
+    previous = signal.signal(signal.SIGALRM, give_up)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, previous)
+
+
+@pytest.fixture
+def lock_path(env) -> Path:
+    return env.ledger.with_name("scheduled.json.lock")  # 원장과 같은 자리, 같은 이름 + .lock
+
+
+@pytest.mark.parametrize("dry_run", [False, True], ids=["실제실행", "dry_run"])
+def test_다른_실행이_잠금을_쥐고_있으면_session을_부르지_않고_기다리지_않고_멈춘다(env, monkeypatch, dry_run):
+    # 다른 실행이 쥐고 있는 것을 흉내 낸다. 기다리는 요청(LOCK_NB 없음)은 시험을 멈추는 대신 곧바로 AssertionError다.
+    attempts = []
+
+    def flock(handle, operation):
+        attempts.append(operation)
+        if operation & fcntl.LOCK_UN:
+            return
+        if not operation & fcntl.LOCK_NB:
+            raise AssertionError("LOCK_NB 없이 잠금을 기다리려 합니다 — 실제로는 다른 실행이 끝날 때까지 영원히 멈춥니다")
+        raise BlockingIOError(errno.EAGAIN, "Resource temporarily unavailable")
+
+    monkeypatch.setattr(schedule.fcntl, "flock", flock)
+    session = FakeSession()
+    with pytest.raises(schedule.LedgerError) as info:
+        env.run(session, dry_run=dry_run)
+    assert session.calls == []
+    assert any(op & fcntl.LOCK_EX for op in attempts)  # 잠금을 시도했다
+    assert not env.ledger.exists()  # 원장도 건드리지 않았다
+    message = str(info.value)
+    assert "다른 예약 실행" in message and "기다리" in message and has_hangul(message)
+
+
+@pytest.mark.parametrize("dry_run", [False, True], ids=["실제실행", "dry_run"])
+def test_진짜_잠금이_걸려_있으면_두_번째_실행은_멈추고_풀리면_돌아간다(env, lock_path, dry_run):
+    with open(lock_path, "a") as other_run:
+        fcntl.flock(other_run, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        session = FakeSession()
+        with no_hanging(), pytest.raises(schedule.LedgerError):
+            env.run(session, dry_run=dry_run)
+        assert session.calls == []
+        assert not env.ledger.exists()
+    # 쥐고 있던 쪽이 끝나면(닫히면) 운영체제가 풀어 준다. 지울 파일도, 기다릴 이유도 남지 않는다.
+    with no_hanging():
+        outcomes = env.run(FakeSession(), dry_run=dry_run)
+    assert all(o.ok for o in outcomes)
+
+
+def test_잠금은_예외로_끝나도_풀린다(env, lock_path):
+    with pytest.raises(RuntimeError) as info:
+        env.run(FakeSession({1: RuntimeError("예상하지 못한 오류")}))
+    # `info`가 트레이스백(과 그 프레임의 파일 핸들)을 붙들고 있다: finally에서 풀지 않으면 여기서 잠금이 잡히지 않는다.
+    with open(lock_path, "a") as probe:
+        fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    assert info.value is not None
 
 
 # ── 원장 쓰기 안전 ───────────────────────────────────────────────────────────
