@@ -447,10 +447,10 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
 **Interfaces:**
 - Consumes: `plan_model.Plan`, `findings.Finding`, `backtranslation.load`
 - Produces:
-  - `backtranslation.divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]` — 게시물 index → 차이값. `validate_backtranslation`과 **같은 CTA 제거 경로**를 쓴다(비공개 도우미를 공유하고 떼는 규칙을 두 번 쓰지 않는다). 역번역이 없거나 빈 게시물은 키에 넣지 않는다.
+  - `backtranslation.divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]` — 게시물 index → 차이값. `validate_backtranslation`과 **같은 CTA 제거 경로**를 쓴다 — 떼는 규칙을 두 번 쓰지 않는다. 검토 화면이 세 번째 호출자이므로 그 도우미는 **공개**여야 한다(`comparison_source`). 모듈 사이로 밑줄 이름을 가져오는 것이 더 나쁘다. 역번역이 없거나 빈 게시물은 키에 넣지 않는다.
   - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path, *, cta_ko: str) -> str` — 완결된 HTML 문서 문자열. `cta_ko`는 **필수**다: 워크시트가 현지어 쪽 CTA를 떼므로 되번역에는 CTA가 없고, 원문 쪽에서도 떼지 않으면 모든 카드 끝에 CTA가 강조되어 "강조가 있다"는 사실이 아무 뜻도 갖지 못한다. 기본값을 두면 Task 10이 빼먹었을 때 아무것도 실패하지 않고 강조만 조용히 무의미해지므로 기본값을 두지 않는다
 
-레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 되번역 한국어 / 현지어 본문** 세 단을 같은 너비로 나란히 둔다. 순서가 이것인 이유는 두 한국어가 서로 이웃해야 눈이 바로 견줄 수 있기 때문이다 — 현지어 단은 참고용이라 끝에 둔다. 그리고 **두 한국어 단에서 서로 다른 낱말을 강조 표시한다.** Task 6이 실측한 대로 부정 뒤집힘은 글자 유사도 0.03~0.05에 묻히고, 다섯 문장짜리 두 단락을 사람이 맞대어 읽으며 `입니다` → `이 아닙니다`를 잡아내는 일은 사람이 가장 못하는 일이다. 충실한 의역의 글자 유사도가 0.88~0.92이므로 강조는 전체의 10~20%에 그치고, 독자의 눈은 그 대목으로 간다. 임계값으로 걸러 내거나 잡음이라고 숨기지 않는다 — 숨기면 뒤집힌 부정이 그 안에 들어간다. 카드에는 `fact_keys`와 `university_names`도 한 줄로 적어 그 게시물이 무엇에 기대어 있다고 주장하는지 보이게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
+레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 되번역 한국어 / 현지어 본문** 세 단을 같은 너비로 나란히 둔다. 순서가 이것인 이유는 두 한국어가 서로 이웃해야 눈이 바로 견줄 수 있기 때문이다 — 현지어 단은 참고용이라 끝에 둔다. 그리고 **두 한국어 단에서 서로 다른 낱말을 강조 표시한다.** Task 6이 실측한 대로 부정 뒤집힘은 글자 유사도 0.03~0.05에 묻히고, 다섯 문장짜리 두 단락을 사람이 맞대어 읽으며 `입니다` → `이 아닙니다`를 잡아내는 일은 사람이 가장 못하는 일이다. **실측치(검토자·구현자):** 다섯 문장 글에 부정 뒤집힘 하나면 5~10%가 칠해지고 한 낱말 칩 하나가 뚜렷하게 보인다. 충실한 의역은 27~33%에 칩 3~4개다. 그런데 **의역과 뒤집힘이 붙어 있으면 67~77%가 칠해지고 문장 경계를 넘는 큰 칩 하나가 되어, 그 안에서 어느 낱말이 뜻을 바꿨는지 알 수 없다.** 임계값으로 걸러 내거나 잡음이라고 숨기지는 **않는다** — 어떤 필터든 거의 같은 글에서 꺼지고 뒤집힌 부정이 숨는 곳이 바로 그 거의 같은 글이다(변이 검사로 실증됐다). 대신 **구분한다:** `insert`·`delete`·`replace`를 다르게 보이게 하고 칩이 문장을 넘지 않게 끊는다. 안내가 찾으라고 하는 "없는 약속 추가"와 "한정어 누락"이 바로 `insert`와 `delete`이므로, 한 가지 노란색이면 그 둘이 의역 잡음과 구별되지 않고 독자는 노란색을 "또 의역"으로 읽게 된다. 카드에는 `fact_keys`와 `university_names`도 한 줄로 적어 그 게시물이 무엇에 기대어 있다고 주장하는지 보이게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -488,6 +488,16 @@ def test_강조_안의_글자도_이스케이프된다():
 def test_인용한_사실_키와_대학명이_카드에_들어간다():
 def test_cta_ko_없이는_render를_부를_수_없다():
     # 기본값이 있으면 빼먹어도 아무것도 실패하지 않고 강조만 조용히 무의미해진다
+def test_더해진_문장과_빠진_문장이_바뀐_문장과_다르게_보인다():
+    # insert·delete·replace가 한 가지 노란색으로 섞이면, 안내가 찾으라고 한
+    # "없는 약속 추가"와 "한정어 누락"이 의역 잡음과 구별되지 않는다
+def test_강조는_문장을_넘어가지_않는다():
+    # 의역과 뒤집힌 부정이 붙어 있으면 한 칩이 다음 문장까지 삼킨다(실측 67~77%)
+def test_측정값이_없는_이유를_단정하지_않는다():
+    # 되번역이 눈앞에 보이는데 "되번역이 없거나 비어 있음"이라고 적으면 안 된다
+def test_문장부호만_있는_되번역도_비어_있다고_본다():
+    # review와 backtranslation의 빈칸 판정이 어긋나면 한 카드의 두 줄이 서로 모순된다
+def test_플랜에_없는_divergences_키는_오류다():
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -504,7 +514,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
-Expected: PASS (19 passed)
+Expected: PASS (브리프가 지정한 24개를 포함해 `test_review.py` 전부)
 
 - [ ] **Step 5: Commit**
 
