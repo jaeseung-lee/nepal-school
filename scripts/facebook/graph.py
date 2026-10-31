@@ -8,6 +8,8 @@
   `requests`의 오류 메시지와 로그에는 URL이 실리기 때문이다. 이 규칙에는 예외가 없다. 토큰을 인자로 받는 함수가 만드는 모든
   `GraphError`는 `_error` 또는 `_rejected`를 거쳐 메시지에서 토큰 문자열을 `***`로 가린다. 외부에서 온 글자를 자르기보다
   **가리기를 먼저** 한다(`_excerpt`가 토큰을 받는 이유다 — 잘린 조각은 어느 모양과도 맞지 않아 가려지지 않는다).
+  **운영자가 준 글자도 같은 대접을 받는다**: `_require_object_id`의 모양 거절은 입력을 되풀이하므로 `token`을 받아
+  `_error`를 거친다(id 자리에 토큰을 붙여 넣는 혼동은 충분히 일어난다).
   남은 네 자리(`_require_aware`의 한 곳과 `assert_schedulable`의 세 거절)는 **토큰을 애초에 인자로 받지 않고** 메시지를 시각만으로
   만들므로 가릴 토큰이 없다. 또 **Facebook 호출에서 올라온 예외는 `__cause__`/`__context__`로 달지 않는다**
   (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 토큰이 닿을 수 없는 예외만 원인을 남긴다: 이미지 파일을 열지 못한
@@ -189,19 +191,23 @@ def _url(path: str) -> str:
 _OBJECT_ID = re.compile(r"[0-9]+(_[0-9]+)?")
 
 
-def _require_object_id(value: str, name: str) -> None:
+def _require_object_id(value: str, name: str, token: str) -> None:
     """URL 경로에 들어갈 id의 모양을 강제한다. 어긋나면 **요청을 보내지 않고** `GraphError`.
 
     이 모듈에서 **사용자가 준 글자가 URL 경로에 닿는 자리**는 `delete_post`·`read_photo_caption`뿐이다(나머지는
     `config.PAGE_ID`를 쓴다). `me/feed`나 `?`·`/`가 섞인 값을 그대로 이어 붙이면 **엔드포인트 자체가 바뀐다** —
     운영자가 지우려던 것과 다른 것을 지우게 된다. 이스케이프로 "안전하게 보내는" 쪽을 고르지 않는다: 모양이
     다르면 그것은 우리가 만든 사진 id가 아니므로 보낼 이유가 없다.
+
+    **`token`을 받는 까닭:** 거절 메시지에 입력을 되풀이한다. 운영자가 id 자리에 토큰을 붙여 넣는 혼동은
+    충분히 일어나고, 그때 날글자로 찍으면 그 글은 버그 리포트로 그대로 옮겨진다. `_excerpt`가 가린 뒤 자른다.
     """
     if not isinstance(value, str) or not _OBJECT_ID.fullmatch(value):
-        raise GraphError(
-            f"{name} '{value}'은(는) 페이스북 게시물 id의 모양이 아닙니다. 숫자이거나 숫자_숫자"
+        raise _error(
+            token,
+            f"{name} '{_excerpt(value, token)}'은(는) 페이스북 게시물 id의 모양이 아닙니다. 숫자이거나 숫자_숫자"
             f"(예: 61595913932801_122100000000000001) 형태여야 하고, 올릴 때 화면에 찍힌 값을 그대로 적어야 합니다. "
-            f"아무 요청도 보내지 않았습니다."
+            f"아무 요청도 보내지 않았습니다.",
         )
 
 
@@ -482,7 +488,7 @@ def read_photo_caption(token: str, photo_id: str, *, session: _Session) -> str |
     읽지 못하면 `GraphError`다. 부르는 쪽은 **읽지 못한 것을 "같다"로 다루지 말아야 한다** — 이 값은 "지워도 되는
     글인가"를 가리는 데 쓰이고, 모를 때 지우지 않는 것이 유일하게 안전한 기본값이다.
     """
-    _require_object_id(photo_id, "사진 id")
+    _require_object_id(photo_id, "사진 id", token)
     body = _send(session.get, _url(photo_id), token, "게시물 본문 조회", params={"fields": "name"})
     caption = body.get("name")
     if not isinstance(caption, str) or not caption.strip():
@@ -503,7 +509,7 @@ def delete_post(token: str, post_id: str, *, session: _Session) -> None:
     **`success: true`가 아니면 실패로 본다.** 지워졌다고 잘못 말하면 운영자는 페이스북을 다시 보지 않고, 그
     테스트 글은 날짜가 되면 실제로 공개된다. 모를 때는 사람에게 넘기는 쪽이 맞는 답이다.
     """
-    _require_object_id(post_id, "사진 id")
+    _require_object_id(post_id, "사진 id", token)
     body = _send(session.post, _url(post_id), token, "게시물 삭제", data={"method": "delete"})
     if body.get("success") is not True:
         raise _error(

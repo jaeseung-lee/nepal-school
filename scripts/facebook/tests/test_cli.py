@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import json
+import os
 import socket
 import stat
 import subprocess
@@ -923,7 +924,9 @@ def test_test_post는_답을_받지_못하면_권한_이야기를_하지_않는�
     assert cli.main(["test-post"], session=session) == 2
     text = shown(capsys)
     assert "올라갔을 수 있" in text
-    assert "권한" not in text
+    # 권한 안내가 섞이지 않아야 한다. (임시 폴더 이름에 이 시험의 이름이 들어가므로 "권한"이라는 글자
+    # 하나로는 걸 수 없다 — 권한 안내가 실제로 쓰는 말로 건다.)
+    assert "권한 세 개" not in text and "pages_manage_posts" not in text
     assert "직접 지우세요" in text
 
 
@@ -955,12 +958,14 @@ def test_test_post는_올린_글을_적어_두고_다시_돌리면_거절한다(
     assert cli.main(["test-post"], session=first) == 0
     recorded = json.loads(record_path().read_text(encoding="utf-8"))
     assert recorded["사진 id"] == TEST_PHOTO_ID
+    shown(capsys)  # **첫 실행의 출력을 여기서 비운다.** `capsys`는 누적이라, 비우지 않으면 아래 단언이
+    #               첫 실행이 찍은 사진 id와 `--delete` 안내로 채워져 거절 메시지가 아무 말을 안 해도 통과한다.
 
     second = FakeSession()
     assert cli.main(["test-post"], session=second) == 2
     assert second.uploaded == []  # 둘째 글이 조용히 쌓이지 않는다
     text = shown(capsys)
-    assert recorded["사진 id"] in text
+    assert recorded["사진 id"] in text  # 거절만 하고 id를 숨기면 지울 길을 알려 주지 않는 것이다
     assert "--delete" in text
 
 
@@ -991,6 +996,237 @@ def test_test_post_delete가_실패하면_기록을_지우지_않는다(토큰):
     assert record_path().exists()
 
 
+def test_test_post_delete는_공백만_다른_본문은_같게_본다(토큰):
+    """줄바꿈이 어떻게 저장돼 돌아올지 보증되지 않는다. 공백의 종류·개수만 다른 것은 같은 글이다."""
+    session = caption_session(cli.TEST_POST_MESSAGE.replace("\n", "   "), script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 0
+    assert len(session.posts) == 1
+
+
+@pytest.mark.parametrize(
+    "caption",
+    [
+        cli.TEST_POST_MESSAGE + "\n무료 상담 신청하세요.",
+        cli.TEST_POST_MESSAGE[:30],
+        cli.TEST_POST_MESSAGE * 2,
+        "안내 " + cli.TEST_POST_MESSAGE,
+    ],
+)
+def test_test_post_delete는_가까운_오답도_지우지_않는다(caption, 토큰, capsys):
+    """대조를 "부분 포함이면 같다"로 느슨하게 하면 **비슷한 글**을 지우게 된다 — 이 대조가 막는 사고가
+    바로 그것이다. 멀쩡히 다른 글(위의 다른 시험)보다 이 가까운 오답들이 경계를 지킨다."""
+    session = caption_session(caption, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    assert session.posts == []
+    assert "직접 지우세요" in shown(capsys)
+
+
+# ── test-post: 보내기 **전에** 적는다 (N-a·N-b) ──────────────────────────────
+
+
+class WatchingSession(FakeSession):
+    """POST가 나가는 순간 기록 파일이 어떤 상태였는지 적어 두는 세션(순서를 재는 자리)."""
+
+    def __init__(self, script: dict | None = None, **kwargs):
+        super().__init__(script, **kwargs)
+        self.record_when_sent: list[dict | None] = []
+
+    def post(self, url, **kwargs):
+        path = record_path()
+        self.record_when_sent.append(json.loads(path.read_text(encoding="utf-8")) if path.exists() else None)
+        return super().post(url, **kwargs)
+
+
+def test_test_post는_보내기_전에_기록을_적는다(토큰):
+    """Task 9의 `_mark_before_sending`과 같은 이유다: 요청이 **나간 뒤에** 적으면 그 사이에 죽는 경우가
+    덮이지 않는다. 보내기 전에 적으면 (1) 적지 못했을 때 "아무것도 보내지 않았습니다"가 참이 되고
+    (2) 결과를 몰라도 기록이 남아 재실행이 거절한다."""
+    session = WatchingSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})
+    assert cli.main(["test-post"], session=session) == 0
+    (before,) = session.record_when_sent
+    assert before is not None  # 보내기 전에 이미 적혀 있다
+    assert not before["사진 id"]  # 아직 id는 모른다 — 자리표시다
+    assert json.loads(record_path().read_text(encoding="utf-8"))["사진 id"] == TEST_PHOTO_ID  # 성공 뒤 덮는다
+
+
+def test_test_post는_기록을_적지_못하면_아무것도_보내지_않는다(토큰, capsys):
+    """이 길이 N-b였다: 보낸 **뒤에** 적다 실패하면 도구가 "페이스북에는 아무것도 보내지 않았습니다"라고
+    거짓을 말하고 사진 id도 잃었다. 보내기 전에 적으면 그 말이 참이 된다."""
+    folder = config.facebook_dir()
+    folder.mkdir(parents=True, exist_ok=True)
+    folder.chmod(0o500)
+    try:
+        try:
+            (folder / "쓰기확인.tmp").write_text("x", encoding="utf-8")
+        except OSError:
+            pass
+        else:
+            pytest.skip("이 사용자는 읽기 전용 폴더에도 쓸 수 있다(root)")
+        session = FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})
+        assert cli.main(["test-post"], session=session) == 2
+    finally:
+        folder.chmod(0o700)
+    assert session.posts == []  # 진짜로 아무것도 보내지 않았다
+    text = shown(capsys)
+    assert "아무것도 보내지 않았습니다" in text  # 그러므로 이 말은 참이다
+    assert has_hangul(text) and "Errno" not in text
+
+
+def test_test_post는_결과를_모르면_기록을_남겨_다시_돌리기를_막는다(토큰, capsys):
+    """원래 N3이 말한 바로 그 경우다 — 올라갔는지 확신이 없어 한 번 더 돌리는 것."""
+    first = FakeSession({0: TimeoutError("read timed out")})
+    assert cli.main(["test-post"], session=first) == 2
+    assert not json.loads(record_path().read_text(encoding="utf-8"))["사진 id"]
+    shown(capsys)
+
+    second = FakeSession()
+    assert cli.main(["test-post"], session=second) == 2
+    assert second.uploaded == []  # 올라갔는지 모르는 채 둘째 글을 쌓지 않는다
+    text = shown(capsys)
+    assert schedule.UNKNOWN_RESULT in text  # 무슨 상태인지 말해 준다
+    assert str(record_path()) in text  # 확인한 뒤 지울 파일을 말해 준다
+
+
+def test_test_post는_확정_거절에는_기록을_남기지_않는다(토큰, capsys):
+    """Facebook이 분명히 거절했으면 아무것도 만들어지지 않았다. 자리표시를 남기면 권한을 고친 뒤
+    다시 돌릴 때 "지난번 글이 남아 있다"고 막는다(`schedule.py`의 `_forget`과 같은 이유다)."""
+    session = FakeSession({0: FakeResponse(403, {"error": {"message": "Permissions error", "code": 200}})})
+    assert cli.main(["test-post"], session=session) == 2
+    assert not record_path().exists()
+    assert "권한" in shown(capsys)
+
+
+def test_test_post는_id를_적지_못해도_올라갔다는_것과_사진_id를_말한다(토큰, capsys, monkeypatch):
+    """성공 뒤 갱신이 실패하는 경우만 남는다. 그때 글은 **살아 있으므로** id를 반드시 찍어야 한다 —
+    id가 없으면 운영자는 그 글을 지울 수 없고, 30일 뒤 실제로 공개된다."""
+    real = cli._write_record
+    calls: list[dict] = []
+
+    def flaky(record):
+        calls.append(record)
+        if len(calls) == 1:
+            return real(record)
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(cli, "_write_record", flaky)
+    session = FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})
+    assert cli.main(["test-post"], session=session) == 2
+    text = shown(capsys)
+    assert TEST_PHOTO_ID in text
+    assert "아무것도 보내지 않았습니다" not in text  # 나간 뒤에 그 말을 하면 거짓이다
+    assert "--delete" in text  # 지우는 법까지 말해 준다
+
+
+# ── test-post: 기록 파일이 깨졌을 때 (N-f) ───────────────────────────────────
+
+
+def write_record_raw(raw: str) -> None:
+    record_path().parent.mkdir(parents=True, exist_ok=True)
+    record_path().write_text(raw, encoding="utf-8")
+
+
+@pytest.mark.parametrize("raw", ["{", "", "[]", '{"예약 시각": "x"}', '﻿{"사진 id": "100200300_1"}'])
+def test_기록이_깨졌으면_종료코드_2로_멈추고_할_일을_말한다(raw, 토큰, capsys):
+    """종료 코드 1은 문서의 표에서 "플랜·본문·역번역에 고칠 것이 있다"는 뜻이다. 이것은 그것이 아니다."""
+    write_record_raw(raw)
+    session = FakeSession()
+    assert cli.main(["test-post"], session=session) == 2
+    assert session.uploaded == []
+    text = shown(capsys)
+    assert str(record_path()) in text  # 어느 파일인지
+    assert "지운 뒤" in text  # 무엇을 할지
+
+
+def test_기록이_깨져도_명시한_id는_지울_수_있다(토큰, capsys):
+    """제일 나쁜 경우를 막는다: **살아 있는 글을 지우려는데 파일 하나 때문에 막힌다.** 문서는 id를
+    적어도 된다고 가르치고, 그 길은 기록 파일을 필요로 하지 않는다."""
+    write_record_raw("{")
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", TEST_PHOTO_ID], session=session) == 0
+    assert len(session.posts) == 1
+    text = shown(capsys)
+    assert "지웠습니다" in text
+    assert str(record_path()) in text  # 깨진 파일 이야기를 삼키지도 않는다
+
+
+def test_기록에_사진_id가_없으면_파일이_없다고_말하지_않는다(토큰, capsys):
+    write_record_raw('{"사진 id": ""}')
+    session = FakeSession({})
+    assert cli.main(["test-post", "--delete"], session=session) == 2
+    assert session.gets == [] and session.posts == []
+    text = shown(capsys)
+    assert "사진 id가 없습니다" in text
+    assert str(record_path()) in text
+
+
+def test_기록_쓰기가_끊겨도_앞_내용이_남는다(토큰, monkeypatch):
+    """원장과 같은 방식(임시 파일 + 교체)이어야 한다. `write_text`는 쓰다 끊기면 빈 파일을 남기고,
+    그 빈 파일은 위 시험이 보는 "깨진 기록" 상태다."""
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+    before = record_path().read_text(encoding="utf-8")
+
+    def refuse(*args, **kwargs):
+        raise OSError("바꿔 끼우다 끊겼다")
+
+    # `monkeypatch.undo()`를 부르지 않는다 — 이 픽스처는 `_격리`와 **같은 인스턴스**라서 `config.ROOT`를
+    # 임시 폴더로 돌려놓은 것까지 함께 되돌린다(그러면 아래 단언이 진짜 저장소를 본다).
+    monkeypatch.setattr(os, "replace", refuse)
+    with pytest.raises(OSError):
+        cli._write_record({"사진 id": "100200300_2"})
+    assert record_path().read_text(encoding="utf-8") == before
+    assert list(record_path().parent.glob("*.tmp")) == []  # 임시 파일도 남기지 않는다
+
+
+# ── test-post 지우기: 느슨한 자리들 (N-h) ────────────────────────────────────
+
+
+def test_명시한_id를_지워도_기록이_다른_글을_가리키면_기록은_남는다(토큰):
+    """기록을 무조건 치우면 적어 둔 글(아직 페이스북에 있는 글)을 잊는다."""
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+    other = "61595913932801_122100000000000123"
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", other], session=session) == 0
+    assert json.loads(record_path().read_text(encoding="utf-8"))["사진 id"] == TEST_PHOTO_ID
+
+
+def test_본문을_읽다_예상하지_못한_오류가_나면_직접_지우라고_말한다(토큰, capsys):
+    """`main`의 일반 안전망으로 떨어지면 "개발자에게 보여 주세요"로 끝난다 — 운영자가 할 일은
+    페이스북에서 눈으로 확인하는 것이다."""
+    session = FakeSession({}, page=RuntimeError("설명할 수 없는 오류"))
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    assert session.posts == []
+    assert "직접 지우세요" in shown(capsys)
+
+
+def test_지우다_예상하지_못한_오류가_나면_보내지_않았다고_말하지_않는다(토큰, capsys):
+    """삭제 요청은 이미 나갔다. 그 뒤에 "아무것도 보내지 않았습니다"라고 말하면 거짓이고, 운영자는
+    페이스북을 다시 보지 않는다."""
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: RuntimeError("설명할 수 없는 오류")})
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    assert len(session.posts) == 1
+    text = shown(capsys)
+    assert "아무것도 보내지 않았습니다" not in text
+    assert "알 수 없" in text
+
+
+def test_지운_뒤_기록을_치우지_못해도_지웠다고_말하고_그_파일을_알려_준다(토큰, capsys, monkeypatch):
+    """삭제는 성공했다. 여기서 `main`의 안전망으로 떨어지면 지운 뒤에 "아무것도 보내지 않았습니다"가
+    나온다."""
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+    shown(capsys)
+
+    def refuse(*args, **kwargs):
+        raise OSError("지울 수 없다")
+
+    monkeypatch.setattr(Path, "unlink", refuse)  # `undo()`는 부르지 않는다(위 시험의 주석과 같은 이유)
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete"], session=session) == 0
+    text = shown(capsys)
+    assert "지웠습니다" in text
+    assert "아무것도 보내지 않았습니다" not in text
+    assert str(record_path()) in text
+
+
 # ── schedule: 검증 오류가 토큰 안내에 묻히지 않는다 (m7) ─────────────────────
 
 
@@ -1002,6 +1238,30 @@ def test_schedule은_검증_오류가_있고_토큰이_없으면_종료코드_1�
     text = shown(capsys)
     assert "역번역금지표현" in text
     assert has_hangul(text)
+
+
+def test_schedule은_검증_오류가_없고_토큰만_없으면_종료코드_2다(env, capsys):
+    """위의 다시 던지기는 **검증 오류가 있을 때만** 하는 일이다. 오류가 0건이면 원래 토큰 안내(코드 2)가
+    그대로 나와야 한다 — 그러지 않으면 토큰이 없는 운영자가 "플랜을 고치세요"라는 말을 듣는다."""
+    fill_worksheet(env)
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession()) == 2
+    text = shown(capsys)
+    assert config.TOKEN_ENV_NAME in text
+    assert "검증 오류" not in text
+
+
+def test_schedule의_검증_오류_안내는_토큰이_왜_없는지도_전한다(env, capsys, monkeypatch):
+    """토큰 실패는 한 가지가 아니다(설정 없음·셸과 `.env`가 다름·`.env`가 UTF-8이 아님). 원래 예외가
+    말하는 것을 버리고 "설정되어 있지 않습니다"로 뭉개면, 플랜을 고친 뒤 **한 번 더** 돌려야 비로소
+    진짜 원인을 보게 된다."""
+    fill_worksheet(env, edit=lambda index, text: text + " 취업을 보장합니다." if index == 1 else text)
+    config.ENV_PATH.write_text(f"{config.TOKEN_ENV_NAME}=파일에-적힌-값\n", encoding="utf-8")
+    monkeypatch.setenv(config.TOKEN_ENV_NAME, "셸에-있는-다른-값")
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession()) == 1
+    text = shown(capsys)
+    assert "역번역금지표현" in text  # 먼저 고칠 것은 여전히 플랜이다
+    assert "서로 다릅니다" in text  # 그런데 토큰이 왜 없는지도 그대로 전한다
+    assert "파일에-적힌-값" not in text and "셸에-있는-다른-값" not in text  # 값은 싣지 않는다
 
 
 # ── 그림을 넣기 전 단계 ─────────────────────────────────────────────────────
@@ -1292,11 +1552,35 @@ def test_운영_문서가_그림_전_단계의_npm_오류_덩어리를_설명한
     doc = doc_text()
     assert "`npm ERR! code 1` 덩어리" in doc
     assert "그 단계에서는 정상이고" in doc
+    # npm 버전에 따라 이 덩어리는 아예 안 찍힌다(측정: npm 11.10.1). 단정하면 그것이 거짓이 된다.
+    assert "찍을 수 있습니다" in doc
 
 
 def test_운영_문서의_테스트_글_지우기가_본문_대조와_기록을_적는다():
-    """운영자가 아는 것: 엉뚱한 id는 지워지지 않는다, id를 적지 않아도 된다, 지우기 전에는 새로 못 올린다."""
+    """운영자가 아는 것 넷. **짧은 조각으로 못박지 않는다** — `"--delete"`(문서에 세 번)나
+    `"본문"`(스물여덟 번)은 이 문단을 통째로 지워도 참이므로 못이 아니다(변이로 확인했다).
+    문단이 사라지면 함께 사라지는 말로 건다."""
     doc = doc_text()
-    assert "--delete" in doc
-    assert "본문" in doc
+    assert "본문을 읽어 테스트 글과 같은지 대조" in doc  # 엉뚱한 id는 지워지지 않는다
+    assert "id를 적지 않으면" in doc  # id를 적지 않아도 된다
+    assert "테스트 글이 두 건 쌓이지 않게" in doc  # 지우기 전에는 새로 못 올린다
+    # 손으로 지운 뒤에는 이 파일도 지운다. `"test-post.json"`만으로는 못이 아니다 — 1번 항목에도 그 이름이
+    # 있어서 이 문단을 지워도 통과한다(변이로 확인했다. 이 부류의 다섯째다).
+    assert "손으로 지웠을 때는" in doc
     assert "test-post.json" in doc
+
+
+def test_운영_문서가_거절과_답을_못_받은_것을_가려_말한다():
+    """N2가 코드에서 가른 둘을 문서도 가려 말해야 한다. 라운드 2의 이 문서 수정에는 시험이 없었다 —
+    지워도 아무것도 빨개지지 않았다."""
+    doc = doc_text()
+    assert "거절당했다고 나오면" in doc  # 글은 올라가지 않았다 → 권한을 본다
+    assert "권한 문제가 아닙니다" in doc  # 답을 못 받았다 → 눈으로 확인한다
+
+
+def test_운영_문서가_결과_불명_기록을_어떻게_치우는지_적는다():
+    """보내기 전에 적으므로, 결과를 모른 채 끝나면 `결과 불명` 기록이 남아 다음 실행을 막는다.
+    그 상태에서 무엇을 해야 하는지가 문서에 없으면 운영자는 막힌 채로 멈춘다."""
+    doc = doc_text()
+    assert "결과 불명" in doc
+    assert "눈으로 확인한 뒤 이 파일을 지우고 다시 실행" in doc

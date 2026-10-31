@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import ast
 import dataclasses
 import socket
 import subprocess
@@ -29,7 +30,7 @@ JST = timezone(timedelta(hours=9))
 NOW = datetime(2026, 11, 1, 12, 0, tzinfo=JST)
 PUBLISH_AT = datetime(2026, 11, 1, 19, 0, tzinfo=JST)
 PUBLISH_UNIX = "1793527200"  # 2026-11-01T10:00:00Z. `date -u`와 파이썬 두 갈래로 따로 계산한 값
-MESSAGE = "본문 Xin chào"
+CAPTION = "본문 Xin chào"
 
 ALL_PERMISSIONS = ("pages_manage_posts", "pages_read_engagement", "pages_show_list")
 
@@ -607,14 +608,14 @@ POST_ID = "100200300_122100000000000001"
 
 
 def caption_session(outcome=None) -> FakeSession:
-    return FakeSession({("GET", f"{BASE}/{POST_ID}"): outcome if outcome is not None else FakeResponse(200, {"name": MESSAGE})})
+    return FakeSession({("GET", f"{BASE}/{POST_ID}"): outcome if outcome is not None else FakeResponse(200, {"name": CAPTION})})
 
 
 def test_read_photo_caption은_fields_name으로_읽는다():
     """사진 노드에서 읽을 수 있는 캡션 필드는 `name`이다(`message`는 읽기 필드가 아니다).
     출처: https://developers.facebook.com/docs/graph-api/reference/photo/"""
     session = caption_session()
-    assert graph.read_photo_caption(SENTINEL, POST_ID, session=session) == MESSAGE
+    assert graph.read_photo_caption(SENTINEL, POST_ID, session=session) == CAPTION
     (call,) = session.calls
     assert (call.verb, call.url) == ("GET", f"{BASE}/{POST_ID}")
     assert call.kwargs["params"] == {"fields": "name"}
@@ -641,7 +642,14 @@ def test_read_photo_caption이_돌려주는_글도_토큰을_가린_값이다():
 # ── id 모양 ──────────────────────────────────────────────────────────────────
 
 
-NOT_IDS = ("me/feed", f"{POST_ID}/likes", "me", "../me", f"{POST_ID}?fields=name", "", "100 200", "100-200")
+# **가까운 오답을 일부러 넣는다.** 모양 검사가 느슨해지는 길은 "아무 글자나 통과"가 아니라 한 글자씩
+# 넓어지는 쪽이다 — 앞의 `/`(절대 경로로 바뀐다), 퍼센트 인코딩된 구분자(서버가 디코드하면 경로가 된다),
+# `.`과 `..`(상위로 올라간다), 그리고 `\d`가 받아 주는 전각·아랍 숫자(URL에 실리면 우리 id가 아니다).
+NOT_IDS = (
+    "me/feed", f"{POST_ID}/likes", "me", "../me", f"{POST_ID}?fields=name", "", "100 200", "100-200",
+    "/100200300", "100200300/", "100%2F200", "100200300%2Flikes", "..", ".", ".100200300",
+    "１２３", "١٢٣", "100200300\n", "100200300#x", "100200300;x",
+)
 
 
 @pytest.mark.parametrize("object_id", NOT_IDS)
@@ -663,10 +671,54 @@ def test_read_photo_caption도_같은_모양_검사를_한다(object_id):
     assert session.calls == []
 
 
-@pytest.mark.parametrize("object_id", ("100200300", "100200300_122100000000000001", "1"))
+def test_토큰을_받는_함수는_날_GraphError를_만들지_않는다():
+    """모듈 머리말의 약속을 **구조로** 못박는다: `raise GraphError(...)`를 그대로 쓰는 자리는 토큰을 인자로
+    받지 않는 함수뿐이다(`_require_aware` 한 곳과 `assert_schedulable`의 세 거절 — 메시지를 시각만으로
+    만든다). 토큰을 받는 함수는 `_error`/`_rejected`를 지나야 가려진다.
+
+    이 시험이 없어서 `_require_object_id`가 머리말을 거짓으로 만든 채 한 라운드를 통과했다. 값이 새는 것보다
+    **보안 불변식을 문서가 거짓으로 보증하는 것**이 나쁘다.
+    """
+    tree = ast.parse(Path(graph.__file__).read_text(encoding="utf-8"))
+    offenders = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.FunctionDef):
+            continue
+        if not any(arg.arg == "token" for arg in node.args.args + node.args.kwonlyargs):
+            continue
+        for inner in ast.walk(node):
+            if isinstance(inner, ast.Raise) and isinstance(inner.exc, ast.Call):
+                if getattr(inner.exc.func, "id", None) in {"GraphError", "_Rejected"}:
+                    offenders.append(f"{node.name}() {inner.lineno}줄")
+    assert offenders == []
+
+
+@pytest.mark.parametrize("call", ("delete_post", "read_photo_caption"))
+def test_id_모양_오류도_토큰을_가린다(call):
+    """**토큰을 인자로 받는 함수가 만드는 모든 `GraphError`는 토큰을 가린다**(모듈 머리말의 약속).
+
+    운영자가 `--delete` 뒤에 사진 id 대신 토큰을 붙여 넣는 혼동은 충분히 일어난다. 그때 모양 검사가
+    입력을 그대로 되풀이하면 **토큰이 화면에 찍히고** 그 글은 버그 리포트로 그대로 옮겨진다.
+    """
+    session = FakeSession({})
+    with pytest.raises(graph.GraphError) as caught:
+        getattr(graph, call)(SENTINEL, SENTINEL, session=session)
+    assert session.calls == []
+    assert SENTINEL not in str(caught.value)
+    assert "***" in str(caught.value)
+
+
+def test_id_모양_오류_메시지는_긴_입력을_그대로_싣지_않는다():
+    """붙여넣기 사고는 짧지 않다. 화면을 덮지 않게 앞부분만 싣는다(가리기가 자르기보다 먼저다)."""
+    with pytest.raises(graph.GraphError) as caught:
+        graph.delete_post(SENTINEL, "x" * 500, session=FakeSession({}))
+    assert len(str(caught.value)) < 450  # 자르지 않으면 500자가 그대로 실려 670자쯤이 된다
+
+
+@pytest.mark.parametrize("object_id", ("100200300", "100200300_122100000000000001", "1", "0", "00123_0"))
 def test_멀쩡한_id는_그대로_지나간다(object_id):
-    session = FakeSession({("GET", f"{BASE}/{object_id}"): FakeResponse(200, {"name": MESSAGE})})
-    assert graph.read_photo_caption(SENTINEL, object_id, session=session) == MESSAGE
+    session = FakeSession({("GET", f"{BASE}/{object_id}"): FakeResponse(200, {"name": CAPTION})})
+    assert graph.read_photo_caption(SENTINEL, object_id, session=session) == CAPTION
 
 
 # ── delete_post ──────────────────────────────────────────────────────────────
@@ -716,29 +768,29 @@ def test_schedule_photo_post가_caption과_published_false와_scheduled_publish_
     https://developers.facebook.com/docs/graph-api/reference/photo/
     """
     session = photo_session()
-    graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+    graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     (call,) = session.calls
     # 전송되는 값은 문자열이다(멀티파트 필드). 파이썬 False를 그대로 넘기면 requests가 "False"로 적는다.
     # 정확한 모양을 못 박아 두어야 토큰이나 다른 필드가 몰래 끼어들지도 못한다.
-    assert call.kwargs["data"] == {"caption": MESSAGE, "published": "false", "scheduled_publish_time": PUBLISH_UNIX}
+    assert call.kwargs["data"] == {"caption": CAPTION, "published": "false", "scheduled_publish_time": PUBLISH_UNIX}
 
 
 def test_예약_시각은_정수_유닉스_초이고_오프셋과_상관없이_같은_순간이면_같다(image):
     for publish_at in (PUBLISH_AT, PUBLISH_AT.astimezone(timezone.utc), PUBLISH_AT.astimezone(timezone(timedelta(hours=-8)))):
         session = photo_session()
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, publish_at, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, publish_at, session=session)
         assert session.calls[0].kwargs["data"]["scheduled_publish_time"] == PUBLISH_UNIX
 
 
 def test_1초_미만은_버리고_초_단위로_보낸다(image):
     session = photo_session()
-    graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT.replace(microsecond=999999), session=session)
+    graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT.replace(microsecond=999999), session=session)
     assert session.calls[0].kwargs["data"]["scheduled_publish_time"] == PUBLISH_UNIX
 
 
 def test_schedule_photo_post는_POST로_페이지의_photos에_보내고_토큰은_헤더에만_싣는다(image):
     session = photo_session()
-    graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+    graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     (call,) = session.calls
     assert (call.verb, call.url) == ("POST", f"{BASE}/{PAGE}/photos")
     assert call.kwargs["headers"] == {"Authorization": f"Bearer {SENTINEL}"}
@@ -752,7 +804,7 @@ def test_이미지는_source_필드로_이름과_형식과_내용을_실어_보�
         path = tmp_path / filename
         path.write_bytes(b"bytes-of-" + filename.encode())
         session = photo_session()
-        graph.schedule_photo_post(SENTINEL, PAGE, path, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, path, CAPTION, PUBLISH_AT, session=session)
         upload = session.calls[0].upload
         assert upload["fields"] == ["source"]
         assert upload["filename"] == filename           # 경로가 아니라 파일 이름만
@@ -765,33 +817,33 @@ def test_알_수_없는_확장자는_octet_stream으로_보낸다(tmp_path):
     path = tmp_path / "photo.unknownext"
     path.write_bytes(b"x")
     session = photo_session()
-    graph.schedule_photo_post(SENTINEL, PAGE, path, MESSAGE, PUBLISH_AT, session=session)
+    graph.schedule_photo_post(SENTINEL, PAGE, path, CAPTION, PUBLISH_AT, session=session)
     assert session.calls[0].upload["content_type"] == "application/octet-stream"
 
 
 def test_요청이_실패해도_이미지_파일은_닫힌다(image):
     session = photo_session(OSError("boom"))
     with pytest.raises(graph.GraphError):
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     assert session.calls[0].upload["handle"].closed
 
 
 def test_성공하면_응답의_id를_문자열로_돌려준다(image):
     session = photo_session(FakeResponse(200, {"id": "1234567890", "post_id": "100200300_555"}))
-    assert graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session) == "1234567890"
+    assert graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session) == "1234567890"
 
 
 def test_돌려주는_사진_id도_토큰을_가린_값이다(image):
     # Task 9가 이 반환값을 원장 파일에 적는다. 응답이 토큰을 id로 되돌려 주면 토큰이 디스크에 남는다.
     # 메시지만 가리고 반환값을 가리지 않으면 "토큰은 어디에도 나타나지 않는다"는 규칙에 구멍이 하나 남는다.
     session = photo_session(FakeResponse(200, {"id": SENTINEL}))
-    returned = graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+    returned = graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     assert SENTINEL not in returned
     assert not [piece for piece in token_fragments(SENTINEL) if piece in returned]
     # 실제 사진 id는 숫자와 밑줄(`<page>_<post>`)뿐이라 토큰 모양을 부분 문자열로 품을 수 없다: 가리기가
     # 멀쩡한 id를 건드리지 않는다.
     plain = photo_session(FakeResponse(200, {"id": "100200300_555"}))
-    assert graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=plain) == "100200300_555"
+    assert graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=plain) == "100200300_555"
 
 
 @pytest.mark.parametrize("response", [
@@ -802,7 +854,7 @@ def test_돌려주는_사진_id도_토큰을_가린_값이다(image):
 ])
 def test_API가_오류를_주면_GraphError에_한국어_설명(image, response):
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     message = str(caught.value)
     assert has_hangul(message)
     assert caught.value.maybe_created is False  # Facebook이 분명히 거절했다: 다시 시도해도 중복이 아니다
@@ -821,7 +873,7 @@ def test_5xx에_error_객체가_있으면_결과를_알_수_없는_실패다(ima
     response = FakeResponse(status, {"error": {"message": "An unexpected error has occurred. Please retry your request later.",
                                                "type": "OAuthException", "code": 2, "fbtrace_id": "TRACE5"}})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert caught.value.maybe_created is True
     message = str(caught.value)
     assert has_hangul(message)
@@ -884,7 +936,7 @@ def test_모든_호출은_리다이렉트를_따라가지_않는다(image):
     read = token_session()
     graph.check_token(SENTINEL, PAGE, session=read)
     write = photo_session()
-    graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=write)
+    graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=write)
     for session in (read, write):
         for call in session.calls:
             assert call.kwargs["allow_redirects"] is False
@@ -893,14 +945,14 @@ def test_모든_호출은_리다이렉트를_따라가지_않는다(image):
 @pytest.mark.parametrize("status", [200, 201, 299])
 def test_2xx는_모두_성공으로_본다(image, status):
     session = photo_session(FakeResponse(status, {"id": "9001"}))
-    assert graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session) == "9001"
+    assert graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session) == "9001"
 
 
 @pytest.mark.parametrize("status", [199, 300, 301, 404])
 def test_2xx가_아니면_본문이_멀쩡해도_실패다(image, status):
     session = photo_session(FakeResponse(status, {"id": "9001"}))
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     assert f"HTTP {status}" in str(caught.value)
 
 
@@ -911,7 +963,7 @@ def test_오류_객체_없이_실패한_상태는_4xx여도_쓰기에서는_결�
     # 불명이다: 모르면 사람이 한 번 확인하는 쪽이 같은 사진을 두 번 올리는 것보다 싸다.
     session = photo_session(FakeResponse(status, {"ok": False}, text='{"ok": false}'))
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     assert caught.value.maybe_created is True
     message = str(caught.value)
     assert f"요청이 실패했습니다 (HTTP {status}). 응답에 오류 내용이 없습니다" in message
@@ -921,7 +973,7 @@ def test_오류_객체_없이_실패한_상태는_4xx여도_쓰기에서는_결�
 def test_빈_error_객체도_거절이다(image):
     # error 키가 있으면 내용이 비어도 Facebook이 거절한 것이다. 성공으로 읽고 id를 찾다가 엉뚱한 메시지를 내면 안 된다.
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(FakeResponse(200, {"error": {}})))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(FakeResponse(200, {"error": {}})))
     assert "거절했습니다" in str(caught.value) and "메시지 없음" in str(caught.value)
     assert caught.value.maybe_created is False
 
@@ -929,7 +981,7 @@ def test_빈_error_객체도_거절이다(image):
 @pytest.mark.parametrize("raised", [RuntimeError("버그"), KeyError("x"), TypeError("잘못된 인자")])
 def test_OSError가_아닌_예외는_네트워크_문제로_둔갑시키지_않고_그대로_올라간다(image, raised):
     with pytest.raises(type(raised)):
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(raised))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(raised))
     with pytest.raises(type(raised)):
         graph.check_token(SENTINEL, PAGE, session=token_session(page=raised))
 
@@ -937,27 +989,27 @@ def test_OSError가_아닌_예외는_네트워크_문제로_둔갑시키지_않�
 def test_JSON_객체가_아닌_응답은_상태와_본문_앞부분을_말한다(image):
     response = FakeResponse(200, ["id"], text='["id"]')
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert '사진 예약 게시에 대한 Facebook의 응답이 JSON 객체가 아닙니다 (HTTP 200). 응답 앞부분: ["id"]' in str(caught.value)
 
 
 def test_JSON이_아닌_응답의_메시지는_상태와_본문_앞부분을_말한다(image):
     response = FakeResponse(200, text="ok", json_error=ValueError("Expecting value"))
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "사진 예약 게시에 대한 Facebook의 응답이 JSON이 아닙니다 (HTTP 200). 응답 앞부분: ok" in str(caught.value)
 
 
 def test_json_해석에서_ValueError가_아닌_예외는_가리지_않고_올라간다(image):
     response = FakeResponse(200, json_error=RuntimeError("버그"))
     with pytest.raises(RuntimeError):
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
 
 
 def test_error가_딕셔너리가_아니어도_GraphError(image):
     response = FakeResponse(400, {"error": "Something went wrong"})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "Something went wrong" in str(caught.value) and has_hangul(str(caught.value))
     assert caught.value.maybe_created is False
 
@@ -965,20 +1017,20 @@ def test_error가_딕셔너리가_아니어도_GraphError(image):
 def test_code가_0이어도_적는다(image):
     response = FakeResponse(400, {"error": {"message": "m", "code": 0}})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "m [code 0]" in str(caught.value)
 
 
 def test_error에_message가_없어도_GraphError이고_없다고_적는다(image):
     response = FakeResponse(400, {"error": {"code": 2}})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "code 2" in str(caught.value) and "메시지 없음" in str(caught.value)
 
 
 def test_오류_객체_없이_HTTP_상태만_실패면_상태_코드를_말한다(image):
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT,
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT,
                                   session=photo_session(FakeResponse(500, {"ok": False}, text='{"ok": false}')))
     assert '요청이 실패했습니다 (HTTP 500). 응답에 오류 내용이 없습니다. 응답 앞부분: {"ok": false}' in str(caught.value)
     assert caught.value.maybe_created is True  # error 객체 없이 실패 상태만 왔다: Facebook이 무엇을 했는지 모른다
@@ -1000,7 +1052,7 @@ def test_오류_객체_없이_HTTP_상태만_실패면_상태_코드를_말한�
 def test_응답을_믿을_수_없으면_GraphError이고_예약이_만들어졌을_수_있다고_알린다(image, outcome):
     # 요청은 나갔는데 결과를 모르는 경우다. 그냥 다시 돌리면 같은 게시물이 두 번 예약될 수 있으므로 안내가 있어야 한다.
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(outcome))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(outcome))
     message = str(caught.value)
     assert caught.value.maybe_created is True  # 코드가 가르는 신호. 메시지 문장은 운영자용이다
     assert has_hangul(message) and "만들어졌을 수" in message and "예약된 게시물" in message
@@ -1009,7 +1061,7 @@ def test_응답을_믿을_수_없으면_GraphError이고_예약이_만들어졌�
 @pytest.mark.parametrize("body", [{}, {"id": ""}, {"id": None}, {"id": 9001}, {"post_id": "1_2"}], ids=["id-없음", "빈-id", "None", "숫자", "post_id만"])
 def test_성공_응답에_id가_없으면_그렇다고_말한다(image, body):
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(FakeResponse(200, body)))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(FakeResponse(200, body)))
     assert "성공(HTTP 2xx)으로 응답했지만 응답에 생성된 id가 없습니다" in str(caught.value)
     assert caught.value.maybe_created is True
 
@@ -1018,7 +1070,7 @@ def test_JSON이_아닌_응답은_본문_앞부분과_상태를_보여_준다(im
     html = "<html>" + "x" * 500 + "</html>"
     response = FakeResponse(502, text=html, json_error=ValueError("Expecting value"))
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     message = str(caught.value)
     assert "HTTP 502" in message
     assert html[:_N] + "…" in message and html[: _N + 1] not in message  # 통째로 싣지 않고 앞부분만
@@ -1026,7 +1078,7 @@ def test_JSON이_아닌_응답은_본문_앞부분과_상태를_보여_준다(im
 
 def test_연결_실패_메시지에는_예외_종류와_내용이_있다(image):
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(TimeoutError("Read timed out")))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(TimeoutError("Read timed out")))
     message = str(caught.value)
     assert "사진 예약 게시 요청을 Facebook에 보내지 못했습니다 (TimeoutError: Read timed out)" in message
     assert "인터넷 연결을 확인하세요" in message
@@ -1036,7 +1088,7 @@ def test_이미지_파일을_열_수_없으면_요청_없이_GraphError(tmp_path
     session = photo_session()
     missing = tmp_path / "없는-파일.jpg"
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, missing, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, missing, CAPTION, PUBLISH_AT, session=session)
     message = str(caught.value)
     assert has_hangul(message) and str(missing) in message and "FileNotFoundError" in message
     assert "파일이 있는지, 읽을 권한이 있는지 확인하세요" in message
@@ -1052,7 +1104,7 @@ def test_타임존_없는_예약_시각은_요청_없이_GraphError(image):
     session = photo_session()
     naive = PUBLISH_AT.replace(tzinfo=None)
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, naive, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, naive, session=session)
     assert has_hangul(str(caught.value)) and "타임존" in str(caught.value) and "publish_at" in str(caught.value)
     assert session.calls == []
     assert caught.value.maybe_created is False
@@ -1091,7 +1143,7 @@ def assert_no_leak(exc: BaseException):
 def test_토큰_값이_예외_메시지에_들어가지_않는다(image, outcome):
     session = photo_session(outcome)
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
     assert_no_leak(caught.value)
     # 이 시험이 헛돌지 않는다는 보증: 토큰은 실제로 요청 헤더에 실려 나갔고, 시험 장치가 그것을 볼 수 있다.
     assert session.calls[0].kwargs["headers"]["Authorization"] == f"Bearer {SENTINEL}"
@@ -1167,7 +1219,7 @@ def test_빈_토큰이어도_메시지가_망가지지_않는다(image):
     # "abc".replace("", "***")는 글자 사이사이에 별표를 끼워 넣는다. 지우기가 빈 문자열에는 일어나지 않아야 한다.
     response = FakeResponse(400, {"error": {"message": "An access token is required", "code": 104}})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post("", PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post("", PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "An access token is required" in str(caught.value) and "***" not in str(caught.value)
 
 
@@ -1180,7 +1232,7 @@ def test_토큰에_특수문자가_있으면_URL에_인코딩되어_실린_모�
     leaky = OSError(f"Max retries exceeded with url: /v26.0/debug_token?input_token={quote(SPECIAL_TOKEN, safe='')}"
                     f"&access_token={quote_plus(SPECIAL_TOKEN)} raw={SPECIAL_TOKEN}")
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SPECIAL_TOKEN, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(leaky))
+        graph.schedule_photo_post(SPECIAL_TOKEN, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(leaky))
     for form in forms:
         assert form not in str(caught.value) and form not in repr(caught.value)
     assert str(caught.value).count("***") == 3
@@ -1194,21 +1246,21 @@ def test_인코딩된_모양이_원문을_부분_문자열로_품어도_조각�
     assert quote(token, safe="").startswith(token)
     leaky = OSError(f"Max retries exceeded with url: /x?input_token={quote(token, safe='')}&raw={token}")
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(token, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(leaky))
+        graph.schedule_photo_post(token, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(leaky))
     assert "/x?input_token=***&raw=***" in str(caught.value)
 
 
 def test_토큰이_메시지에_있으면_별표로_가린다(image):
     response = FakeResponse(400, {"error": {"message": f"bad {SENTINEL}", "code": 190}})
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(response))
     assert "bad ***" in str(caught.value)
 
 
 def test_연결_예외는_GraphError에_달려_나가지_않는다(image):
     # 원래 예외는 호출 스택에 토큰(요청 객체·헤더)을 들고 있을 수 있다. 메시지뿐 아니라 연쇄도 끊는다.
     with pytest.raises(graph.GraphError) as caught:
-        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(OSError(LEAKY_ERROR)))
+        graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=photo_session(OSError(LEAKY_ERROR)))
     assert caught.value.__cause__ is None and caught.value.__context__ is None
 
 

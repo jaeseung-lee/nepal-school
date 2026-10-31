@@ -47,7 +47,9 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
+from contextlib import suppress
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -457,19 +459,76 @@ def _record_path() -> Path:
     return config.facebook_dir() / TEST_POST_RECORD_FILE
 
 
+def _write_record(record: dict) -> None:
+    """기록을 **원자적으로** 쓴다(임시 파일에 쓰고 바꿔 끼운다 — 원장 `_write_ledger`와 같은 방식이다).
+
+    `write_text`로 바로 쓰면 쓰다 끊긴 자리에 **빈 파일**이 남고, 빈 파일은 다음 실행이 "알아볼 수 없는
+    기록"으로 보고 멈추는 상태다. 실패는 `OSError`로 올린다 — 보내기 전인지 뒤인지에 따라 부르는 쪽이
+    **서로 다른 말**을 해야 하므로 여기서 문장을 만들지 않는다.
+    """
+    path = _record_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(path.name + ".tmp")
+    try:
+        temp.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        os.replace(temp, path)
+    except OSError:
+        with suppress(OSError):
+            temp.unlink(missing_ok=True)
+        raise
+
+
+def _forget_record() -> str | None:
+    """만들어진 것이 없다고 **확정**됐을 때 먼저 적어 둔 표시를 치운다(`schedule.py`의 `_forget`과 같은 자리).
+
+    치우지 못하면 덧붙일 한 줄을 돌려준다. 이것 때문에 거절 안내를 멈추지는 않는다 — 운영자가 먼저 알아야
+    하는 것은 거절 쪽이다.
+    """
+    try:
+        _record_path().unlink(missing_ok=True)
+        return None
+    except OSError as exc:
+        return f"(적어 둔 표시 {_record_path()}를 치우지 못했습니다({type(exc).__name__}) — 이 파일을 손으로 지우세요.)"
+
+
+def _record_broken(why: str) -> str:
+    """기록 파일을 알아볼 수 없을 때의 안내. **무엇을 할지**가 반드시 들어간다."""
+    return (
+        f"테스트 글 기록 파일을 {why}: {_record_path()}\n"
+        f"페이스북 페이지의 '예약된 게시물'에서 [테스트]로 시작하는 글을 눈으로 확인하세요. 그 글이 있으면 직접 "
+        f"지우고, 어느 쪽이든 이 파일을 지운 뒤 다시 실행하세요(이 파일은 올려 둔 테스트 글 한 건만 적어 두는 "
+        f"자리이고 원장이 아닙니다). 사진 id를 알고 있다면 npm run fb:test-post -- --delete <사진 id>로 "
+        f"이 파일 없이도 지울 수 있습니다."
+    )
+
+
+def _record_id(record: dict | None) -> str | None:
+    """기록이 가리키는 사진 id. **보내기 전에 적은 자리표시에는 id가 없다**(그래서 `None`·`""`도 "없음"이다)."""
+    value = (record or {}).get("사진 id")
+    return value if isinstance(value, str) and value else None
+
+
 def _read_record() -> dict | None:
-    """적어 둔 테스트 글. 파일이 없으면 `None`, 알아볼 수 없으면 `_Stop`."""
+    """적어 둔 테스트 글. 파일이 없으면 `None`, 알아볼 수 없으면 `_Stop`.
+
+    **종료 코드는 2다.** 1은 문서의 표에서 "플랜·본문·역번역에 고칠 것이 있다"는 뜻이고 이것은 그것이
+    아니다(그래서 `_read_json`을 쓰지 않는다).
+    """
     path = _record_path()
     if not path.exists():
         return None
-    record = _read_json(path, "테스트 글 기록")
-    if not isinstance(record, dict) or not isinstance(record.get("사진 id"), str):
-        raise _Stop(
-            f"테스트 글 기록을 알아볼 수 없습니다: {path}\n"
-            f'이 파일에는 {{"사진 id": "...", "예약 시각": "..."}} 한 줄이 들어 있어야 합니다. 페이스북 페이지의 '
-            f"'예약된 게시물'에서 테스트 글을 눈으로 확인해 지운 뒤, 이 파일을 지우고 다시 실행하세요.",
-            2,
-        )
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        raise _Stop(_record_broken("UTF-8 텍스트로 읽을 수 없습니다"), 2) from None
+    except OSError as exc:
+        raise _Stop(_record_broken(f"읽을 수 없습니다({type(exc).__name__})"), 2) from None
+    try:
+        record = json.loads(text)
+    except json.JSONDecodeError:
+        raise _Stop(_record_broken("올바른 JSON으로 읽을 수 없습니다"), 2) from None
+    if not isinstance(record, dict) or "사진 id" not in record or not isinstance(record["사진 id"], (str, type(None))):
+        raise _Stop(_record_broken('{"사진 id": "..."} 모양이 아닙니다'), 2) from None
     return record
 
 
@@ -493,8 +552,26 @@ def _test_post_delete(args: _Args, token: str, session) -> int:
     그래서 **모르면 지우지 않는다**(fail-closed): 본문을 읽지 못했거나, 글이 없거나, 다르면 멈추고 사람에게
     넘긴다. 실제 왕복을 시험할 수 없는 경로이므로 안전한 기본값이 하나뿐이다.
     """
-    record = _read_record()
-    target = args.delete_id or (record or {}).get("사진 id")
+    if args.delete_id:
+        # **깨진 기록 파일이 살아 있는 글을 지우는 길을 막지 않는다.** 명시한 id로 지우는 길은 이 파일을
+        # 필요로 하지 않고, 막히는 쪽이 제일 나쁘다 — 지우지 못한 테스트 글은 날짜가 되면 공개된다.
+        # 그래도 파일 이야기는 삼키지 않는다: 치울 것이 남아 있다는 뜻이므로 화면에 한 줄 전한다.
+        try:
+            record = _read_record()
+        except _Stop as stop:
+            print(f"(참고) {stop.message}", file=sys.stderr)
+            record = None
+    else:
+        record = _read_record()
+    target = args.delete_id or _record_id(record)
+    if not target and record is not None:
+        raise _Stop(
+            f"적어 둔 기록({_record_path()})에 사진 id가 없습니다 — 올리다 결과를 받지 못해 "
+            f"'{schedule.UNKNOWN_RESULT}'으로 남은 줄입니다. 그 글이 올라갔는지는 도구가 알 수 없습니다.\n"
+            f"페이스북 페이지의 '예약된 게시물'에서 [테스트]로 시작하는 글을 눈으로 확인하세요. 있으면 직접 "
+            f"지우고, 어느 쪽이든 이 파일을 지우고 다시 실행하세요.",
+            2,
+        )
     if not target:
         raise _Stop(
             "지울 사진 id를 적어 주세요: npm run fb:test-post -- --delete <사진 id>\n"
@@ -538,10 +615,23 @@ def _test_post_delete(args: _Args, token: str, session) -> int:
             f"없습니다. 페이스북 페이지의 '예약된 게시물'을 눈으로 확인하고, 남아 있으면 직접 지우세요.",
             2,
         ) from None
-    if record is not None and record.get("사진 id") == target:
-        _record_path().unlink(missing_ok=True)  # 지운 것이 확인됐을 때만 기록을 치운다
+    # 지운 것이 확인됐을 때만, 그리고 **기록이 가리키는 바로 그 글**일 때만 기록을 치운다. 무조건 치우면
+    # 다른 id를 지운 운영자가 적어 둔 글(아직 페이스북에 있는 글)을 잊는다.
+    note = None
+    if _record_id(record) == target:
+        try:
+            _record_path().unlink(missing_ok=True)
+        except OSError as exc:
+            # 지우기는 이미 성공했다. 여기서 `main`의 안전망으로 떨어지면 지운 **뒤에** "페이스북에는
+            # 아무것도 보내지 않았습니다"가 나온다 — 그것이 이 라운드가 없애는 거짓말이다.
+            note = (
+                f"다만 적어 둔 기록을 치우지 못했습니다({type(exc).__name__}). {_record_path()}를 손으로 지우세요 "
+                f"— 그러지 않으면 다음 번 올리기가 '지난번 글이 남아 있다'며 멈춥니다."
+            )
     print(f"테스트 글을 지웠습니다 (사진 id {target}).")
     print("페이스북 페이지의 '예약된 게시물' 목록에서 그 글이 사라졌는지 눈으로 확인하세요.")
+    if note:
+        print(note)
     return 0
 
 
@@ -562,6 +652,14 @@ def _test_post(args: _Args, session) -> int:
         return _test_post_delete(args, token, session)
 
     record = _read_record()
+    if record is not None and _record_id(record) is None:
+        raise _Stop(
+            f"지난번 테스트 글이 **올라갔는지 알 수 없는 상태**로 남아 있습니다 ('{schedule.UNKNOWN_RESULT}', "
+            f"{_record_path()}). 두 건이 쌓이지 않게 아무것도 올리지 않았습니다.\n"
+            f"페이스북 페이지의 '예약된 게시물'에서 [테스트]로 시작하는 글을 눈으로 확인하세요. 있으면 직접 "
+            f"지우고, 어느 쪽이든 이 파일을 지우고 다시 실행하세요.",
+            2,
+        )
     if record is not None:
         raise _Stop(
             f"지난번 테스트 글이 아직 남아 있습니다 (사진 id {record['사진 id']}, 예약 시각 "
@@ -580,7 +678,31 @@ def _test_post(args: _Args, session) -> int:
     now = _now()
     publish_at = now + TEST_POST_LEAD
     try:
+        # 시각은 도구가 정하므로(지금부터 30일) 여기서 창을 벗어나는 일은 없다. 벗어난다면 그것은 상수가
+        # 잘못됐다는 뜻이고, "Facebook이 거절했다"는 말과 섞지 않는다.
         graph.assert_schedulable(publish_at, now)
+    except graph.GraphError as exc:
+        raise _Stop(
+            f"{exc}\n테스트 글의 예약 시각은 도구가 정합니다 — 이 글을 그대로 개발자에게 보여 주세요. "
+            f"페이스북에는 아무것도 보내지 않았습니다.",
+            2,
+        ) from None
+
+    # **보내기 전에 적는다.** Task 9의 `_mark_before_sending`과 같은 이유다: 요청이 나간 뒤에 적으면
+    # 그 사이에 죽는 경우가 덮이지 않는다. 이 순서가 두 가지를 한 번에 참으로 만든다 —
+    # (1) 적지 못하면 **진짜로** 아무것도 보내지 않았으므로 그렇게 말할 수 있고,
+    # (2) 보낸 뒤 결과를 모르더라도 기록이 남아 재실행이 둘째 글을 쌓지 않는다.
+    try:
+        _write_record({"사진 id": None, "상태": schedule.UNKNOWN_RESULT, "예약 시각": publish_at.isoformat()})
+    except OSError as exc:
+        raise _Stop(
+            f"올리기 전에 {_record_path()}에 표시를 적지 못해 여기서 멈춥니다({type(exc).__name__}). "
+            f"페이스북에는 아무것도 보내지 않았습니다 — 폴더와 쓰기 권한, 디스크 공간을 확인한 뒤 다시 "
+            f"실행하세요.",
+            2,
+        ) from None
+
+    try:
         post_id = graph.schedule_photo_post(
             token, config.PAGE_ID, image, TEST_POST_MESSAGE, publish_at, session=session
         )
@@ -592,28 +714,41 @@ def _test_post(args: _Args, session) -> int:
             raise _Stop(
                 f"{exc}\n테스트 글이 올라갔을 수 있는데 사진 id를 받지 못해 이 도구로는 지울 수 없습니다. "
                 f"페이스북 페이지의 '예약된 게시물'에서 [테스트]로 시작하는 글을 눈으로 확인하고, 있으면 직접 "
-                f"지우세요. (올라갔다면 그것만으로 '이 토큰으로 글을 올릴 수 있다'는 증명은 된 것입니다.)",
+                f"지우세요. (올라갔다면 그것만으로 '이 토큰으로 글을 올릴 수 있다'는 증명은 된 것입니다.)\n"
+                f"{_record_path()}에 '{schedule.UNKNOWN_RESULT}'으로 적어 두었습니다 — 눈으로 확인한 뒤 이 파일을 "
+                f"지우고 다시 실행하세요. 그때까지 이 명령은 둘째 글을 올리지 않습니다.",
                 2,
             ) from None
+        # 거절이 확정됐으면 만들어진 것이 없다. 먼저 적은 표시를 치워야 권한을 고친 뒤 바로 다시 돌릴 수 있다.
+        forget = _forget_record()
         raise _Stop(
-            f"{exc}\nFacebook이 분명히 거절했으므로 테스트 글은 올라가지 않았습니다. 이 토큰으로는 글을 올릴 수 "
-            f"없을 수 있습니다 — 권한 세 개({', '.join(graph.REQUIRED_PERMISSIONS)})를 다시 확인하세요. 절차는 "
-            f"{_DOC}의 '최초 1회 준비'에 있습니다.",
+            f"{exc}\n요청이 거절됐거나 나가지 못했으므로 테스트 글은 올라가지 않았습니다. 이 토큰으로는 글을 "
+            f"올릴 수 없을 수 있습니다 — 권한 세 개({', '.join(graph.REQUIRED_PERMISSIONS)})를 다시 확인하세요. "
+            f"절차는 {_DOC}의 '최초 1회 준비'에 있습니다." + (f"\n{forget}" if forget else ""),
             2,
         ) from None
     except (Exception, KeyboardInterrupt) as exc:
         raise _Stop(
             f"테스트 글을 올리는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
-            f"페이스북 페이지의 '예약된 게시물'을 눈으로 확인하세요 — 글이 올라갔을 수도 있습니다.",
+            f"페이스북 페이지의 '예약된 게시물'을 눈으로 확인하세요 — 글이 올라갔을 수도 있습니다. "
+            f"{_record_path()}에 '{schedule.UNKNOWN_RESULT}'으로 적어 두었습니다(확인한 뒤 이 파일을 지우세요).",
             2,
         ) from None
 
     path = _record_path()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps({"사진 id": post_id, "예약 시각": publish_at.isoformat()}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    try:
+        _write_record({"사진 id": post_id, "예약 시각": publish_at.isoformat()})
+    except OSError as exc:
+        # **글은 살아 있다.** 그러므로 여기서 가장 중요한 것은 사진 id다 — 그것이 없으면 운영자는 이 글을
+        # 지울 수 없고, 30일 뒤 실제로 공개된다. 기록 파일 이야기는 그다음이다.
+        raise _Stop(
+            f"테스트 글 1건이 예약됐습니다 — 사진 id {post_id} "
+            f"(예약 시각 {publish_at.strftime('%Y-%m-%d %H:%M')}).\n"
+            f"그런데 그 id를 {path}에 적지 못했습니다({type(exc).__name__}). **이 id를 손으로 적어 두세요.** "
+            f"눈으로 확인한 뒤 이렇게 지웁니다:  npm run fb:test-post -- --delete {post_id}\n"
+            f"(그 파일은 '{schedule.UNKNOWN_RESULT}'으로 남아 있습니다. 글을 지운 뒤 그 파일도 지우세요.)",
+            2,
+        ) from None
     print(f"테스트 글 1건을 예약했습니다 (사진 id {post_id}).")
     print(f"  예약 시각: {publish_at.strftime('%Y-%m-%d %H:%M')} (지금부터 {TEST_POST_LEAD.days}일 뒤)")
     print(f"  그림: {image}")
@@ -856,15 +991,19 @@ def _schedule(args: _Args, session) -> int:
 
     try:
         token = _token()
-    except _Stop:
+    except _Stop as stop:
         # 검증 오류가 있는데 토큰까지 없으면 **먼저 고칠 것은 플랜**이다. 토큰 안내(코드 2)로 끝내면 문서가
         # "실행이 안 됐다 → 모르겠으면 개발자에게"로 보내는데, 실제로 고칠 것은 화면 위의 오류다.
         # **관문은 옮기지 않는다**: `findings`는 그대로 `schedule.run`에 흘러가고, 그 안의 검증 관문이
         # "검증하지 않은 플랜은 발행되지 않는다"를 지키는 자리로 남는다.
         if errors:
+            # 토큰이 없는 까닭은 한 가지가 아니다(설정 없음·셸과 `.env`가 서로 다름·`.env`가 UTF-8이 아님).
+            # "설정되어 있지 않습니다"로 뭉개면 플랜을 고친 뒤 **한 번 더** 돌려야 진짜 원인을 보게 된다.
+            # 그래서 원래 예외가 말하는 것을 그대로 전한다(순서만 바꾼다 — 먼저 고칠 것은 플랜이다).
             raise _Stop(
-                f"위에 적힌 검증 오류 {errors}건을 먼저 고치세요. 오류가 남아 있으면 예약은 시작되지 않습니다. "
-                f"({config.TOKEN_ENV_NAME}도 설정되어 있지 않습니다 — 플랜을 고친 뒤 다시 실행하면 그때 안내합니다.)",
+                f"위에 적힌 검증 오류 {errors}건을 먼저 고치세요. 오류가 남아 있으면 예약은 시작되지 않습니다.\n"
+                f"토큰도 아직 준비되지 않았습니다 — 플랜을 고친 뒤 다시 실행하면 이 안내가 다시 나옵니다:\n"
+                f"{stop.message}",
                 1,
             ) from None
         raise

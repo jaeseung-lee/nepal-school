@@ -608,7 +608,7 @@ git commit -m "feat(facebook): 되번역에 검수된 한국어 금지 목록을
   - `graph.TokenStatus` — frozen dataclass: `ok: bool`, `page_name: str | None`, `missing_permissions: tuple[str, ...]`, `message: str`
   - `graph.check_token(token: str, page_id: str, *, session) -> TokenStatus`
   - `graph.assert_schedulable(publish_at: datetime, now: datetime) -> None` — 창 밖이면 `GraphError`
-  - `graph.schedule_photo_post(token: str, page_id: str, image_path: Path, message: str, publish_at: datetime, *, session) -> str` — 반환값은 생성된 photo/post id
+  - `graph.schedule_photo_post(token: str, page_id: str, image_path: Path, caption: str, publish_at: datetime, *, session) -> str` — 반환값은 생성된 photo/post id
 
 **플랫폼 사실은 이미 확인됐다 — 다시 조사하지 말 것.** Graph API `v26.0`. 본인이 관리하는 페이지에 글을 올리는 데는 App Review가 필요하지 않다. 필요한 권한은 `pages_manage_posts`, `pages_read_engagement`, `pages_show_list` 세 개다. 예약 발행은 `published=false` + `scheduled_publish_time`(유닉스 초)이고 창은 **10분 뒤부터 75일 뒤까지**다. 이 값들은 `config`에 상수로 있다.
 
