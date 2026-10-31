@@ -53,7 +53,7 @@
   - `config.SCHEDULE_MIN_LEAD: timedelta` (10분), `config.SCHEDULE_MAX_LEAD: timedelta` (75일)
   - `config.DEFAULT_POST_TIME_JST: time`, `config.LANGUAGE_OFFSET_MINUTES: dict[str, int]` (기본 전부 0)
   - `config.MAX_IMAGE_BYTES: int` = `8 * 1024 * 1024`
-  - `config.load_token() -> str` — `.env`의 `FB_PAGE_TOKEN`을 읽는다. 없으면 한국어 메시지로 `RuntimeError`. 토큰 값을 로그에 남기지 않는다.
+  - `config.load_token() -> str` — `.env`의 `FB_PAGE_TOKEN` 또는 같은 이름의 환경변수에서 읽는다. 둘 다 값을 주고 서로 다르면 한국어 메시지로 `RuntimeError`. 둘 다 없어도 `RuntimeError`. 토큰 값을 로그에 남기지 않는다.
   - `facts.Fact` — frozen dataclass: `key: str`, `value: str`, `source_url: str`, `verified_by: str`, `verified_on: date`, `expires_on: date`; 메서드 `is_valid_on(day: date) -> bool`
   - `facts.FactsError(Exception)`
   - `facts.load_facts(path: Path) -> dict[str, Fact]`
