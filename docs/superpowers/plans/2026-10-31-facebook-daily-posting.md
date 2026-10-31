@@ -316,6 +316,9 @@ def test_대학명_소개_맥락만_있으면_통과():
 def test_universities_목록에_없는_대학명을_쓰면_오류():
 def test_용어집_용어가_다르게_표기되면_경고():
     # severity == "warning"
+def test_출처없는_수치가_본문에_있으면_경고():
+    # fact_keys가 비었는데 source_ko에 금액·시간 수치가 있으면 code == "출처없는수치", severity == "warning"
+def test_fact_keys가_있으면_수치가_있어도_통과():
 def test_픽스처_플랜은_findings가_비어_있다():
     # 실제 glossary.json의 CTA("무료 상담" 포함)가 금지 문구에 걸리지 않음을 고정한다
 ```
@@ -332,7 +335,7 @@ CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
-Expected: PASS (8 passed)
+Expected: PASS (10 passed)
 
 - [ ] **Step 5: Commit**
 
