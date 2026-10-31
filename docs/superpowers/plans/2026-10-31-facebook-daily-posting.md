@@ -450,7 +450,7 @@ git commit -m "feat(facebook): 역번역 워크시트와 차이 대조 추가"
   - `backtranslation.divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, float]` — 게시물 index → 차이값. `validate_backtranslation`과 **같은 CTA 제거 경로**를 쓴다(비공개 도우미를 공유하고 떼는 규칙을 두 번 쓰지 않는다). 역번역이 없거나 빈 게시물은 키에 넣지 않는다.
   - `review.render(plan: Plan, findings: list[Finding], back: dict[int, str], divergences: dict[int, float], images_dir: Path) -> str` — 완결된 HTML 문서 문자열
 
-레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 현지어 본문 / 되번역 한국어** 세 단을 같은 너비로 나란히 두고, 한국어 원문과 되번역을 서로 붙여 눈이 바로 견주게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
+레이아웃: 상단에 오류·경고 요약, 그 아래 게시물을 게시일 순으로. 각 게시물은 왼쪽에 이미지, 오른쪽에 **한국어 원문 / 되번역 한국어 / 현지어 본문** 세 단을 같은 너비로 나란히 둔다. 순서가 이것인 이유는 두 한국어가 서로 이웃해야 눈이 바로 견줄 수 있기 때문이다 — 현지어 단은 참고용이라 끝에 둔다. 그리고 **두 한국어 단에서 서로 다른 낱말을 강조 표시한다.** Task 6이 실측한 대로 부정 뒤집힘은 글자 유사도 0.03~0.05에 묻히고, 다섯 문장짜리 두 단락을 사람이 맞대어 읽으며 `입니다` → `이 아닙니다`를 잡아내는 일은 사람이 가장 못하는 일이다. 충실한 의역의 글자 유사도가 0.88~0.92이므로 강조는 전체의 10~20%에 그치고, 독자의 눈은 그 대목으로 간다. 임계값으로 걸러 내거나 잡음이라고 숨기지 않는다 — 숨기면 뒤집힌 부정이 그 안에 들어간다. 카드에는 `fact_keys`와 `university_names`도 한 줄로 적어 그 게시물이 무엇에 기대어 있다고 주장하는지 보이게 한다. 이미지 아래에 `image_prompt`를 그대로 적는다(글자 금지·실존 인물 금지 지시가 형식만 맞고 내용이 어긋나는 경우를 사람이 보는 유일한 자리다). 이미지는 HTML 파일이 놓이는 자리(`images_dir.parent`) 기준 상대 경로로 걸어 파일을 열면 바로 보이게 한다.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -479,6 +479,13 @@ def test_본문이_HTML_이스케이프된다():
     # body_local에 "<script>" → 출력에 "&lt;script&gt;"
 def test_되번역과_프롬프트와_finding_메시지도_이스케이프된다():
     # 사람이 채우는 칸과 기계가 만든 메시지 모두 이스케이프된다
+def test_원문과_되번역의_다른_낱말이_강조된다():
+    # "…입니다" → "…이 아닙니다": 바뀐 낱말이 양쪽 단의 강조 표시 안에 들어간다
+def test_같은_글이면_강조가_하나도_없다():
+def test_빠진_문장은_원문_쪽에만_강조된다():
+def test_강조_안의_글자도_이스케이프된다():
+    # 다른 낱말이 "<script>"여도 강조 표시 안에서 마크업이 되지 않는다
+def test_인용한_사실_키와_대학명이_카드에_들어간다():
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -488,12 +495,14 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 
 - [ ] **Step 3: Implement `divergences` in `backtranslation.py`, then `render(...) -> str` in `scripts/facebook/review.py`**
 
-템플릿 엔진을 들이지 않고 f-string과 `html.escape`로 조립한다. 미얀마 문자와 데바나가리가 깨지지 않도록 `<meta charset="utf-8">`와 시스템 폰트 스택을 넣는다. 상대 경로는 `os.path.relpath(images_dir / post.image_file, start=images_dir.parent)`로 만들고 구분자를 `/`로 맞춘다.
+템플릿 엔진을 들이지 않고 f-string과 `html.escape`로 조립한다. 미얀마 문자와 데바나가리가 깨지지 않도록 `<meta charset="utf-8">`와 시스템 폰트 스택을 넣는다. 상대 경로는 `os.path.relpath(images_dir / post.image_file, start=images_dir.parent)`로 만들고 구분자를 `/`로 맞춘다. 낱말 강조는 `difflib.SequenceMatcher`를 **공백으로 끊은 낱말 목록**에 걸어 `replace`·`delete`·`insert` 구간을 표시한다(글자 단위로 하면 한국어 조사마다 쪼개져 읽을 수 없다). 강조 대상 문자열도 반드시 이스케이프한다.
+
+그리고 `divergences`가 되풀이하고 있는 CTA 제거 폴백 두 줄을 `validate_backtranslation`과 **공유 도우미로 뽑는다.** 둘이 어긋나면 화면에 검증기와 다른 숫자가 뜨고, 그러면 화면이 무의미하다. 전체 스위트가 `validate_backtranslation`의 동작을 지키므로 동작 보존 리팩터로 하면 된다.
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
-Expected: PASS (13 passed)
+Expected: PASS (18 passed)
 
 - [ ] **Step 5: Commit**
 
