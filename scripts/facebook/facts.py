@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import json
-import re
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -40,16 +39,11 @@ _FIELDS = (
     ("expires_on", "유효기한"),
 )
 
-_DATE_PATTERN = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-
-
 def _parse_date(key: str, label: str, text: str) -> date:
-    if _DATE_PATTERN.fullmatch(text):
-        try:
-            return date.fromisoformat(text)
-        except ValueError:
-            pass
-    raise FactsError(f"사실 '{key}'의 {label}이(가) 올바른 날짜(YYYY-MM-DD)가 아닙니다: {text!r}")
+    try:
+        return date.fromisoformat(text)
+    except ValueError:
+        raise FactsError(f"사실 '{key}'의 {label}이(가) 올바른 날짜(YYYY-MM-DD)가 아닙니다: {text!r}") from None
 
 
 def _parse_fact(key: str, entry: object) -> Fact:
