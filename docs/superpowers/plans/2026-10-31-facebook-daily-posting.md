@@ -461,6 +461,9 @@ def test_오류가_있으면_상단_요약에_표시된다():
 def test_상단_요약이_경고도_빠짐없이_싣는다():
     # 역번역중복은 뒤쪽 게시물에만 붙으므로, 가장 앞선 게시물의 카드만 보는 사람은
     # 자기 되번역이 다른 게시물과 똑같다는 사실을 요약에서만 알 수 있다
+def test_상단_요약은_코드별로_묶고_건수와_게시물_번호를_싣는다():
+    # 역번역중복은 흠 없는 한 달에도 20건쯤 난다(소재마다 2건). 같은 코드 20줄이
+    # 요약을 채우면 다른 finding이 묻히므로, 코드마다 한 줄로 건수와 번호를 싣는다
 def test_게시물에_달린_finding이_그_게시물_자리에도_표시된다():
     # post_index=2의 error가 2번 게시물 블록 안에 코드와 메시지로 나타난다
     # (요약에만 있으면 긴 목록에서 지나친다)
@@ -490,7 +493,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.review'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_review.py -v`
-Expected: PASS (12 passed)
+Expected: PASS (13 passed)
 
 - [ ] **Step 5: Commit**
 

@@ -165,7 +165,7 @@ def load(path: Path, *, plan: Plan | None = None, glossary: dict | None = None) 
     항목의 `index`는 정수여야 하고 같은 번호가 둘이면 멈춘다(뒤의 것이 조용히 이기면 앞의 되번역이 사라진 줄 모르고
     지나간다). `back_ko`는 문자열이어야 하지만 **비어 있어도 된다** — 비었는지는 `validate_backtranslation`이
     게시물 번호와 함께 보고한다. 워크시트의 그 밖의 필드(`language`, `body_local`)는 읽지 않는다. `month`는 아래처럼
-`plan`을 받을 때만 읽는다 — 그때는 `month`가 있어야 하고, `plan` 없이는 손으로 만든 워크시트에 없어도 읽힌다.
+    `plan`을 받을 때만 읽는다 — 그때는 `month`가 있어야 하고, `plan` 없이는 손으로 만든 워크시트에 없어도 읽힌다.
 
     `plan`과 `glossary`를 **둘 다** 넘기면 먼저 워크시트의 `month`가 `plan.month`와 같은지 본다 — 지난달 워크시트는
     번호가 겹쳐 `역번역플랜밖`이 나지 않고 "본문이 바뀌었다"로 오진되기 때문이다. 이어서 항목마다 `body_hash`를 지금
