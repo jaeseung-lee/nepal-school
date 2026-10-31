@@ -82,5 +82,12 @@ output/outreach/
 # 면접 인쇄물 빌드 중간 산출물
 scripts/interview-sheets/.build/
 
+# 페이스북 월간 게시 이미지(ChatGPT 생성본). plan.json·facts.json은 커밋한다.
+output/facebook/*/images/
+
+# Python 캐시
+__pycache__/
+.pytest_cache/
+
 # SDD 작업 공간(계획 실행 중 산출물)
 .superpowers/
