@@ -638,6 +638,19 @@ def test_성공하면_응답의_id를_문자열로_돌려준다(image):
     assert graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session) == "1234567890"
 
 
+def test_돌려주는_사진_id도_토큰을_가린_값이다(image):
+    # Task 9가 이 반환값을 원장 파일에 적는다. 응답이 토큰을 id로 되돌려 주면 토큰이 디스크에 남는다.
+    # 메시지만 가리고 반환값을 가리지 않으면 "토큰은 어디에도 나타나지 않는다"는 규칙에 구멍이 하나 남는다.
+    session = photo_session(FakeResponse(200, {"id": SENTINEL}))
+    returned = graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
+    assert SENTINEL not in returned
+    assert not [piece for piece in token_fragments(SENTINEL) if piece in returned]
+    # 실제 사진 id는 숫자와 밑줄(`<page>_<post>`)뿐이라 토큰 모양을 부분 문자열로 품을 수 없다: 가리기가
+    # 멀쩡한 id를 건드리지 않는다.
+    plain = photo_session(FakeResponse(200, {"id": "100200300_555"}))
+    assert graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=plain) == "100200300_555"
+
+
 @pytest.mark.parametrize("response", [
     pytest.param(FakeResponse(400, {"error": {"message": "(#100) Invalid parameter", "type": "OAuthException", "code": 100,
                                                "error_subcode": 1366046, "fbtrace_id": "TRACE9"}}), id="HTTP-오류와-error-객체"),
@@ -687,6 +700,31 @@ def test_토큰_점검의_5xx도_거절이_아니라_처리_실패로_적는다(
     assert "(#1) An unknown error occurred" in status.message and "code 1" in status.message
     assert "유효하지 않" not in status.message and "만료" not in status.message  # 토큰 탓이라고 단정하지 않는다
     assert len(session.calls) == 1
+
+
+def test_5xx는_오류_코드가_무엇이든_토큰에_대한_판정을_내지_않는다():
+    # 5xx는 Facebook 쪽에서 처리에 실패한 것이므로 그 응답에 실린 코드가 무엇이든 토큰에 대해 아무것도 증명하지
+    # 않는다. 토큰에 대한 결론("유효하지 않다", "새로 발급받으라")은 4xx에서만 낸다 — 증명하지 않은 것을
+    # 단정하지 않는다는 원칙을 토큰 판정에도 적용한 것이다. 멀쩡한 토큰을 버리게 만들면 안 된다.
+    response = FakeResponse(500, {"error": {"message": "Error validating access token", "code": 190}})
+    session = token_session(page=response)
+    status = graph.check_token(SENTINEL, PAGE, session=session)
+    assert status.ok is False and status.page_name is None and status.missing_permissions == ()
+    assert status.message.startswith("토큰을 확인하지 못했습니다. ")
+    assert "페이지 정보 조회 요청을 Facebook 쪽에서 처리하지 못했습니다 (HTTP 500)" in status.message
+    assert "유효하지 않" not in status.message and "만료" not in status.message
+    assert "새로 발급" not in status.message  # 토큰을 바꾸라고 시키지 않는다
+    assert "Error validating access token" in status.message and "code 190" in status.message  # 한 말은 그대로 보여 준다
+    assert len(session.calls) == 1
+
+
+def test_4xx의_토큰_무효_판정은_그대로다():
+    # 반대쪽을 함께 묶어 둔다: 4xx에서는 code 190이 토큰에 대한 판정이고, 그 판정이 사라지면 안 된다.
+    response = FakeResponse(400, {"error": {"message": "Error validating access token", "code": 190}})
+    status = graph.check_token(SENTINEL, PAGE, session=token_session(page=response))
+    assert status.ok is False
+    assert "유효하지 않" in status.message or "만료" in status.message
+    assert "새로 발급" in status.message and config.TOKEN_ENV_NAME in status.message
 
 
 def test_모든_호출은_리다이렉트를_따라가지_않는다(image):

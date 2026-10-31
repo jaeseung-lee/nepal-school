@@ -59,6 +59,7 @@ _PERMISSION_HELP = {
 }
 
 # Graph API가 "토큰이 유효하지 않다(만료·폐기·형식 오류)"를 알릴 때 쓰는 오류 코드.
+# **4xx에서만 뜻을 가진다**(`_send` 참고): 5xx에 같은 코드가 실려 와도 토큰에 대한 판정으로 읽지 않는다.
 _INVALID_TOKEN_CODE = 190
 # 사람이 읽는 메시지에 싣는 응답 본문의 최대 길이.
 _EXCERPT_LENGTH = 200
@@ -238,11 +239,12 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
     if "error" in body:
         error = body["error"]
         reason = _api_error_text(error, token)
-        # 5xx는 거절이 아니다: Facebook이 요청을 받아 처리하다 자기 쪽에서 실패한 것이다(Graph의 code 1·2가 그렇게
-        # 돌아오고 Meta의 안내는 재시도다). 사진 업로드는 멱등이 아니므로 그 사이에 게시물이 만들어졌을 수 있어
-        # 쓰기 요청에서는 **결과 불명**으로 다룬다. 4xx(잘못된 인자·만료된 토큰·요청 한도)와 2xx는 확정 거절이다:
-        # Facebook이 일을 하기 전에 물렀다. 운영자에게 하는 말도 둘을 가른다 — "거절했습니다"는 "아무것도 만들어지지
-        # 않았다"로 읽히고, 5xx에서 그것은 바로 틀린 결론이다.
+        # 5xx는 거절이 아니다: Facebook이 요청을 받아 처리하다 자기 쪽에서 실패한 것이다. 사진 업로드는 멱등이
+        # 아니므로 그 사이에 게시물이 만들어졌을 수 있어 쓰기 요청에서는 **결과 불명**으로 다룬다. 4xx(잘못된
+        # 인자·만료된 토큰·요청 한도)와 2xx는 확정 거절이다: Facebook이 일을 하기 전에 물렀다. 운영자에게 하는
+        # 말도 둘을 가른다 — "거절했습니다"는 "아무것도 만들어지지 않았다"로 읽히고, 5xx에서 그것은 바로 틀린
+        # 결론이다. 가르는 기준은 **상태 코드뿐**이다: 어떤 오류 코드가 일시 장애인지를 여기에 적지 않는다
+        # (1차 출처 없이 적은 숫자 목록은 틀렸을 때 아무도 고치지 않는다).
         server_side = status >= 500
         verdict = "Facebook 쪽에서 처리하지 못했습니다" if server_side else "Facebook이 거절했습니다"
         maybe_created = may_create and server_side
@@ -250,7 +252,11 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
             token,
             f"{what} 요청을 {verdict} (HTTP {status}): {reason}" + (_MAYBE_CREATED if maybe_created else ""),
             reason=reason,
-            invalid_token=isinstance(error, dict) and error.get("code") == _INVALID_TOKEN_CODE,
+            # **토큰에 대한 판정은 4xx에서만 낸다.** 5xx는 Facebook 쪽 처리 실패이므로 그 응답에 실린 코드가
+            # 무엇이든(190이라도) 토큰에 대해 아무것도 증명하지 않는다. 5xx에서 "토큰이 무효"라고 단정하면
+            # 멀쩡한 토큰을 버리고 새로 발급하게 된다 — `check_token`이 답을 못 받은 요청을 `ok=False`로
+            # 돌려주지 않는 것과 같은 이유다.
+            invalid_token=not server_side and isinstance(error, dict) and error.get("code") == _INVALID_TOKEN_CODE,
             maybe_created=maybe_created,
         )
     return body
@@ -419,4 +425,8 @@ def schedule_photo_post(
         raise _error(
             token, "사진 예약 게시 요청에 성공(HTTP 2xx)으로 응답했지만 응답에 생성된 id가 없습니다." + _MAYBE_CREATED, maybe_created=True
         )
-    return post_id
+    # 돌아온 id도 응답에서 온 글자다. `check_token`의 id와 같은 자리를 지나게 한다 — **Task 9가 이 반환값을 원장
+    # 파일에 적으므로**, 응답이 토큰을 id로 되돌려 주면 토큰이 디스크에 남는다. "일어날 법하지 않다"는 예외 조항이
+    # 이 규칙에는 없다. 실제 사진 id는 숫자와 밑줄(`<page>_<post>`)뿐이라 토큰 모양을 부분 문자열로 품을 수 없어
+    # 멀쩡한 id는 그대로 지나간다.
+    return _scrub(post_id, token)
