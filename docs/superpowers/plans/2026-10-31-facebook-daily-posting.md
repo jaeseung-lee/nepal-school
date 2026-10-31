@@ -604,7 +604,7 @@ git commit -m "feat(facebook): 되번역에 검수된 한국어 금지 목록을
 **Interfaces:**
 - Consumes: `config.PAGE_ID`, `config.GRAPH_VERSION`, `config.SCHEDULE_MIN_LEAD`, `config.SCHEDULE_MAX_LEAD`
 - Produces:
-  - `graph.GraphError(Exception)`
+  - `graph.GraphError(Exception)` — `maybe_created: bool = False`를 갖는다. 요청을 **보낸 뒤** 결과를 알 수 없는 실패(타임아웃, 본문이 JSON이 아님, 200인데 id 없음)에만 `True`다. Task 9가 "보냈는데 모른다"와 "보내지 못했다"를 **메시지 글자가 아니라 코드로** 가르는 데 쓴다 — 원장에 없는 게시물을 재실행이 다시 올리면 같은 날 같은 사진이 두 번 나간다
   - `graph.TokenStatus` — frozen dataclass: `ok: bool`, `page_name: str | None`, `missing_permissions: tuple[str, ...]`, `message: str`
   - `graph.check_token(token: str, page_id: str, *, session) -> TokenStatus`
   - `graph.assert_schedulable(publish_at: datetime, now: datetime) -> None` — 창 밖이면 `GraphError`
@@ -638,12 +638,14 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.graph'`
 
 - [ ] **Step 3: Implement `scripts/facebook/graph.py`**
 
-업로드는 `POST /{page-id}/photos` 에 멀티파트로 보내고 `published=false`, `scheduled_publish_time=<unix seconds>`를 함께 싣는다. 권한 확인은 `/me/permissions`. 모든 예외 메시지는 한국어로 쓰고 토큰 문자열을 절대 포함하지 않는다.
+업로드는 `POST /{page-id}/photos` 에 멀티파트로 보내고 `published`는 **문자열 `"false"`**로, `scheduled_publish_time=<unix seconds>`를 함께 싣는다(파이썬 `False`는 폼 데이터에서 `"False"`로 나가고 Graph가 그것을 어떻게 읽을지는 걸 도박이 아니다). 모든 예외 메시지는 한국어로 쓰고 토큰 문자열을 절대 포함하지 않는다.
+
+**토큰 점검은 `/me/permissions`가 아니다 — 1차 출처로 확인했다.** Graph API overview가 `/me`는 "the object ID of the person **or Page** whose access token is currently being used"로 풀린다고 적고, `permissions`는 **User 노드의 edge**다. 페이지 토큰으로 부르면 `/{page-id}/permissions`가 되고 그런 edge는 없다. Page 노드에 읽을 수 있는 `tasks` 필드도 없다(`tasks`는 `/{page_id}/assigned_users`의 쓰기 파라미터다). 대신: (1) **본 검사는 `GET /{page_id}?fields=id,name`** — 토큰이 유효하고, 의도한 페이지를 가리키며, `page_name`을 준다. 돌아온 `id`가 인자와 다르면 그 자체로 `ok=False`이고 메시지가 **실제로 어느 페이지의 토큰인지** 댄다(운영자가 실제로 저지르는 실수는 다른 페이지 토큰을 붙여 넣는 것이다). (2) **스코프는 최선 노력** — `GET /debug_token`을 시도하되 Meta가 앱 토큰이나 앱 개발자 토큰을 요구하므로 비즈니스 시스템 사용자 토큰으로는 될 수도 안 될 수도 있다. **실패해도 `ok`를 거짓으로 만들지 않고 `missing_permissions`를 추측으로 채우지 않는다.** (3) `message`가 **과장하지 않는다**: 스코프를 확인하지 못했으면 그렇게 적고, 진짜 증명은 운영 문서가 이미 정해 둔 것 — 테스트 예약 1건을 눈으로 보고 지우는 것 — 임을 가리킨다. 초록불이 "올릴 수 있다"를 뜻하게 두면 안 된다. 우리가 증명한 것은 읽을 수 있다는 것뿐이다.
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_graph.py -v`
-Expected: PASS (10 passed)
+Expected: PASS (브리프가 지정한 10개를 포함해 `test_graph.py` 전부)
 
 - [ ] **Step 5: Commit**
 
@@ -668,6 +670,8 @@ git commit -m "feat(facebook): Graph API 클라이언트와 토큰 점검 추가
   - `schedule.run(plan: Plan, findings: list[Finding], images_dir: Path, ledger_path: Path, *, token: str, session, now: datetime, dry_run: bool) -> list[Outcome]` — `findings`에 severity `"error"`가 하나라도 있으면 **아무것도 호출하지 않고** 한국어 `ValueError`를 낸다. `dry_run`일 때도 그렇다.
 
 `ledger_path`는 `config.month_dir(month) / "scheduled.json"`. 한 건 성공할 때마다 즉시 기록한다 — 도중에 끊겨도 다음 실행이 이어받는다.
+
+**Task 8에서 넘어온 것 둘.** (1) **`now`를 새로 읽고 여유를 둔다.** 창은 정확히 10분에서 포함이지만 실제 호출은 `now`보다 몇 초 뒤에 도착하므로 **정확히 10분짜리 예약은 Facebook이 거절한다.** 창 상수는 Meta의 것이므로 바꾸지 말고, 여유는 여기서 둔다. (2) **`GraphError.maybe_created`로 재시도를 가른다.** `True`면 요청이 나갔고 예약이 만들어졌을 수 있으므로 **재실행이 그 게시물을 다시 올리면 안 된다** — 원장에 "결과 불명"으로 적고 사람이 페이스북에서 확인하게 한다. `False`면 안 나갔으므로 재시도해도 안전하다.
 
 `findings` 인자는 장식이 아니라 **구조적 관문**이다. 검증을 통과하지 않은 플랜이 발행되는 경로가 있으면 Task 4~7의 검사 전부가 선택 사항이 된다. 시그니처가 findings를 요구하면 호출자가 검증을 건너뛴 사실이 코드에 드러난다. 경고(warning)는 막지 않는다 — 설계대로다.
 
