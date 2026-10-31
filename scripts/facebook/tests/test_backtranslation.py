@@ -1123,11 +1123,23 @@ def test_역번역이_다른_게시물과_똑같으면_경고():
 
     findings = _check(plan, {**backs, 4: backs[3], 5: backs[3]})
 
-    # 짝마다 하나씩, 나중 게시물에 붙는다: (3, 4)는 4번에, (3, 5)와 (4, 5)는 5번에.
-    assert _brief(findings) == [(4, "역번역중복", "warning")] + [(5, "역번역중복", "warning")] * 2
+    # 나중 게시물마다 가장 먼저 같은 것을 적은 3번과 짝지어 하나씩: 4번 -> 3번, 5번 -> 3번. 4번과 5번은 짝짓지 않는다.
+    assert _brief(findings) == [(4, "역번역중복", "warning"), (5, "역번역중복", "warning")]
     assert findings[0].severity == "warning" and findings[0].code == "역번역중복"
     assert "3번과 4번" in findings[0].message and "3번과 5번" in findings[1].message
-    assert "4번과 5번" in findings[2].message and _has_hangul(findings[0].message)
+    assert not any("4번과 5번" in f.message for f in findings) and _has_hangul(findings[0].message)
+
+
+def test_같은_역번역이_많아도_먼저_적은_게시물과만_짝지어_n_1건만_낸다():
+    # 한 답을 한 달 치에 복사하면 쌍마다 낼 때 435건이다. 덮어쓴 29건만 나오고 모두 0번과 짝지어진다.
+    posts = tuple(dataclasses.replace(_plan().posts[0], index=i) for i in range(30))
+    plan = dataclasses.replace(_plan(), posts=posts)
+    back = {i: "같은 답입니다." for i in range(30)}
+
+    duplicates = [f for f in _check(plan, back) if f.code == "역번역중복"]
+
+    assert [f.post_index for f in duplicates] == list(range(1, 30))
+    assert all(f"게시물 0번과 {f.post_index}번" in f.message for f in duplicates)
 
 
 def test_역번역중복은_공백과_문장부호와_대소문자를_빼고_견준다():

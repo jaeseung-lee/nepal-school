@@ -42,7 +42,8 @@
 
 복사: 한 소재의 세 게시물은 `source_ko`가 글자까지 같다. 그래서 한 게시물의 되번역을 다른 게시물에 복사해도 숫자와
 글자 비교는 모두 통과하고, 충실한 되번역 셋은 서로 닮아야 하므로 사람 눈에도 띄지 않는다. 공백·문장부호·대소문자를
-뺀 되번역이 플랜의 두 게시물에서 똑같으면 `역번역중복` **경고**를 나중 게시물에 붙인다. 충실한 되번역 셋이 우연히
+뺀 되번역이 플랜의 두 게시물에서 똑같으면 `역번역중복` **경고**를 나중 게시물에 붙인다. 같은 되번역은 가장 먼저
+적은 게시물과만 짝짓는다 — 한 답을 한 달 치(30건)에 복사해도 29건이지 435건이 아니다. 충실한 되번역 셋이 우연히
 같은 문장이 되는 일도 있을 수 있어 오류로 막지는 않는다. 비었거나 없는 되번역은 견주지 않는다.
 
 CTA: 모든 원문과 현지어 본문은 승인된 상담 문구로 끝나야 한다(`validate_copy`가 강제). 공통 CTA는 차이와
@@ -336,8 +337,9 @@ def validate_backtranslation(
     - 숫자열의 종류와 개수는 같은데 나오는 순서가 다르면 `역번역수치순서` (경고). `역번역수치`와 함께 나오지 않는다
     - `divergence`가 `threshold`를 **넘으면** `역번역차이` (경고, 같으면 아니다)
     - 플랜의 두 게시물의 되번역이 (공백·문장부호·대소문자를 뺀 뒤) 똑같으면 `역번역중복` (경고) — 두 번호를 모두 대고
-      나중 게시물에 붙인다. 비었거나 없는 되번역은 견주지 않는다. 한 소재의 세 게시물은 원문이 같아서 복사한 되번역은
-      숫자와 글자 비교를 모두 통과하기 때문이다
+      나중 게시물에 붙인다. 같은 되번역은 **가장 먼저 적은 게시물**과만 짝지으므로 n개가 같으면 n-1건이다. 비었거나
+      없는 되번역은 견주지 않는다. 한 소재의 세 게시물은 원문이 같아서 복사한 되번역은 숫자와 글자 비교를 모두
+      통과하기 때문이다
 
     비교 대상은 한국어 원문이다 — 현지어 본문이 아니다. 원문은 끝의 한국어 CTA(`glossary["cta"]["ko"]`)를 뗀 뒤에
     숫자와 글자를 견준다(`worksheet`가 되번역할 본문에서 CTA를 뗐으므로 짝이 맞는다). 원문이 CTA로 끝나지 않으면
@@ -411,17 +413,20 @@ def validate_backtranslation(
                 f"부정이 바뀐 것은 걸리지 않습니다.",
             ))
 
-    kept = [post.index for post in plan.posts if post.index in comparable_back]
-    for position, later in enumerate(kept):
-        for earlier in kept[:position]:
-            if comparable_back[earlier] == comparable_back[later]:
-                findings.append(_warning(
-                    "역번역중복", later,
-                    f"게시물 {earlier}번과 {later}번의 역번역이 (공백·문장부호·대소문자를 빼면) 똑같습니다. 한 소재의 세 "
-                    f"게시물은 한국어 원문이 같아 역번역을 복사해도 숫자와 글자 비교를 모두 통과하므로, 한쪽을 실제로 "
-                    f"되번역하지 않고 다른 쪽을 옮겨 적었을 수 있습니다. 두 현지어 본문이 같은 뜻이라 되번역이 우연히 "
-                    f"같게 나온 것인지 두 본문을 각각 읽어 확인하세요.",
-                ))
+    # 같은 되번역은 가장 먼저 적은 게시물 하나와만 짝짓는다. 쌍마다 내면 n개가 같을 때 n(n-1)/2건이 나와 다른 결과를 묻는다.
+    first_with: dict[str, int] = {}  # 정규화한 되번역 -> 그것을 처음 적은 게시물 번호
+    for post in plan.posts:
+        if post.index not in comparable_back:
+            continue
+        earlier = first_with.setdefault(comparable_back[post.index], post.index)
+        if earlier != post.index:
+            findings.append(_warning(
+                "역번역중복", post.index,
+                f"게시물 {earlier}번과 {post.index}번의 역번역이 (공백·문장부호·대소문자를 빼면) 똑같습니다. 한 소재의 세 "
+                f"게시물은 한국어 원문이 같아 역번역을 복사해도 숫자와 글자 비교를 모두 통과하므로, 한쪽을 실제로 "
+                f"되번역하지 않고 다른 쪽을 옮겨 적었을 수 있습니다. 두 현지어 본문이 같은 뜻이라 되번역이 우연히 "
+                f"같게 나온 것인지 두 본문을 각각 읽어 확인하세요.",
+            ))
 
     known = {post.index for post in plan.posts}
     for index in sorted(index for index in back if index not in known):
