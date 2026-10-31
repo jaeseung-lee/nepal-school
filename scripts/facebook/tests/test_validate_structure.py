@@ -16,7 +16,7 @@ import pytest
 
 from facebook import config
 from facebook.facts import Fact
-from facebook.plan_model import Plan, load_plan
+from facebook.plan_model import Plan, Post, load_plan
 from facebook.validate import Finding, validate_facts, validate_structure
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
@@ -67,20 +67,28 @@ def _shift(plan: Plan, start: int, days: int) -> Plan:
     return dataclasses.replace(plan, posts=posts)
 
 
+def _renumbered(posts: list[Post], first_publish_at: datetime) -> tuple[Post, ...]:
+    """게시물을 주어진 순서대로 0부터 번호를 다시 매기고, 게시일도 첫 게시일부터 하루씩 다시 잡는다.
+
+    번호만 다시 매기면 빠진 자리만큼 날짜가 벌어져 의도하지 않은 `날짜연속` 오류가 따라온다.
+    게시일을 함께 다시 잡으므로, 이 도우미가 만든 플랜은 번호도 날짜도 끊김이 없다.
+    """
+    return tuple(
+        dataclasses.replace(p, index=i, publish_at=first_publish_at + timedelta(days=i))
+        for i, p in enumerate(posts)
+    )
+
+
 def _without(plan: Plan, index: int) -> Plan:
-    """`index`번 게시물을 빼고 남은 게시물을 0부터 다시 매긴다(로더가 받아들이는 모양을 유지)."""
+    """`index`번 게시물을 빼고 남은 게시물의 번호와 게시일을 이어 붙인다(로더가 받아들이는 모양)."""
     kept = [p for p in plan.posts if p.index != index]
-    return dataclasses.replace(plan, posts=tuple(dataclasses.replace(p, index=i) for i, p in enumerate(kept)))
+    return dataclasses.replace(plan, posts=_renumbered(kept, kept[0].publish_at))
 
 
 def _arranged(plan: Plan, order: list[int]) -> Plan:
     """`order`의 순서대로 게시물을 다시 늘어놓는다. 번호와 게시일은 자리(슬롯)를 따라가므로
     날짜는 계속 하루씩 이어지고, 달라지는 것은 어느 소재의 어느 언어가 어느 자리에 있느냐뿐이다."""
-    posts = tuple(
-        dataclasses.replace(plan.posts[old], index=slot, publish_at=plan.posts[slot].publish_at)
-        for slot, old in enumerate(order)
-    )
-    return dataclasses.replace(plan, posts=posts)
+    return dataclasses.replace(plan, posts=_renumbered([plan.posts[old] for old in order], plan.posts[0].publish_at))
 
 
 def _only(plan: Plan, index: int, **changes) -> Plan:
@@ -146,12 +154,12 @@ def test_소재마다_세_언어가_vi_my_ne_순서로_있어야_한다(tmp_path
 
     findings = validate_structure(plan, images)
 
-    missing = [f for f in findings if f.code == "언어누락"]
-    assert [f.post_index for f in missing] == [0]  # 그 소재의 첫 게시물에 붙는다
-    assert missing[0].severity == "error"
-    assert "visa-d2" in missing[0].message and "my" in missing[0].message
-    assert "tuition-kijeon" not in missing[0].message
-    assert _at(findings, "소재분산") == []  # 남은 게시물은 이어 붙어 있다 — 언어 문제와는 별개다
+    # 5건이라 게시물수도 걸린다. 남은 게시물은 날짜도 이어지고 소재별로 이어 붙어 있어 그 밖의 항목은 없다.
+    assert _pairs(findings) == [(None, "게시물수"), (0, "언어누락")]  # 언어누락은 그 소재의 첫 게시물에 붙는다
+    missing = findings[1]
+    assert missing.severity == "error"
+    assert "visa-d2" in missing.message and "my" in missing.message
+    assert "tuition-kijeon" not in missing.message
 
 
 def test_같은_언어가_겹치면_빠진_언어를_알려준다(tmp_path):
@@ -233,9 +241,12 @@ def test_소재분산은_언어_오류와_따로_판정한다(tmp_path):
 
     findings = validate_structure(plan, images)
 
-    assert _at(findings, "언어누락") == [0]  # visa-d2: vi, ne — my가 없다
-    assert _at(findings, "소재분산") == [0, 1]  # visa-d2(0,2)와 tuition-kijeon(1,3,4) 모두 흩어짐
-    assert _at(findings, "언어순서") == []
+    assert _pairs(findings) == [
+        (None, "게시물수"),  # 5건
+        (0, "언어누락"),  # visa-d2: vi, ne — my가 없다
+        (0, "소재분산"),  # visa-d2는 0, 2번
+        (1, "소재분산"),  # tuition-kijeon은 1, 3, 4번
+    ]  # 언어순서는 없다 — 두 오류는 따로 판정한다
 
 
 @pytest.mark.parametrize(
@@ -491,18 +502,24 @@ def test_두_지시가_모두_없으면_둘_다_보고한다(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "prompt",
+    ("prompt", "code"),
     [
-        "A student, flat illustration. No text. No real people, no real campuses, no company facilities.",
-        "A student, flat illustration. No text, no letters, no logos. No real people.",
+        (
+            "A student, flat illustration. No text. No real people, no real campuses, no company facilities.",
+            "프롬프트글자",
+        ),
+        (
+            "A student, flat illustration. No text, no letters, no logos. No real people.",
+            "프롬프트삽화",
+        ),
     ],
     ids=["글자금지-일부만", "삽화금지-일부만"],
 )
-def test_필수_지시는_문구_전체가_있어야_인정한다(tmp_path, prompt):
+def test_필수_지시는_문구_전체가_있어야_인정한다(tmp_path, prompt, code):
     plan, images = _setup(tmp_path)
     plan = _edit(plan, 0, image_prompt=prompt)
 
-    assert len(validate_structure(plan, images)) == 1
+    assert _pairs(validate_structure(plan, images)) == [(0, code)]  # 일부만 쓴 쪽의 코드만 나온다
 
 
 def test_프롬프트_지시는_대소문자와_줄바꿈·공백_수에_상관없이_찾는다(tmp_path):
