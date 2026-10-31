@@ -319,6 +319,12 @@ def test_용어집_용어가_다르게_표기되면_경고():
 def test_출처없는_수치가_본문에_있으면_경고():
     # fact_keys가 비었는데 source_ko에 금액·시간 수치가 있으면 code == "출처없는수치", severity == "warning"
 def test_fact_keys가_있으면_수치가_있어도_통과():
+def test_등록금_사실을_인용하면_평균과_연단위_한정어가_있어야_한다():
+    # fact_keys에 tuition_* 가 있는데 source_ko에 "평균"이 없거나
+    # "1년"/"연간" 중 아무것도 없으면 code == "등록금한정어", severity == "error"
+def test_대학교명이_연계_표현과_함께_있으면_경고():
+    # 허용목록 밖의 "...대학교" + 맥락 어휘가 같은 게시물에 있으면
+    # code == "대학명후보", severity == "warning". 맥락 어휘 없는 단순 소개는 통과한다
 def test_픽스처_플랜은_findings가_비어_있다():
     # 실제 glossary.json의 CTA("무료 상담" 포함)가 금지 문구에 걸리지 않음을 고정한다
 ```
@@ -335,7 +341,7 @@ CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
-Expected: PASS (10 passed)
+Expected: PASS (12 passed)
 
 - [ ] **Step 5: Commit**
 
