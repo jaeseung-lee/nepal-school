@@ -89,6 +89,9 @@ output/facebook/*/images/
 output/facebook/*/*.lock
 output/facebook/*/*.tmp
 
+# 올려 둔 테스트 글 1건의 기록(사진 id). 그 맥에서만 뜻이 있는 값이라 커밋하지 않는다.
+output/facebook/test-post.json
+
 # Python 캐시
 __pycache__/
 .pytest_cache/

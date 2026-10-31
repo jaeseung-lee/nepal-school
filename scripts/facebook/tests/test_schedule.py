@@ -395,7 +395,7 @@ def test_각_게시물의_현지어_본문과_이미지와_시각을_올린다(e
     for post, call in zip(env.plan.posts, session.calls):
         assert call.url == PHOTOS_URL
         assert call.headers == {"Authorization": f"Bearer {SENTINEL}"}
-        assert call.data["message"] == post.body_local
+        assert call.data["caption"] == post.body_local  # Meta가 `message`를 deprecated로 적었다
         assert call.data["scheduled_publish_time"] == str(int(post.publish_at.timestamp()))
         assert call.filename == post.image_file
         assert call.content == f"이미지-{post.index}".encode()

@@ -600,10 +600,76 @@ def test_tzinfo가_붙어_있어도_오프셋을_알_수_없으면_타임존이_
     assert "타임존이 없습니다" in str(caught.value)
 
 
-# ── delete_post ──────────────────────────────────────────────────────────────
+# ── read_photo_caption ───────────────────────────────────────────────────────
 
 
 POST_ID = "100200300_122100000000000001"
+
+
+def caption_session(outcome=None) -> FakeSession:
+    return FakeSession({("GET", f"{BASE}/{POST_ID}"): outcome if outcome is not None else FakeResponse(200, {"name": MESSAGE})})
+
+
+def test_read_photo_caption은_fields_name으로_읽는다():
+    """사진 노드에서 읽을 수 있는 캡션 필드는 `name`이다(`message`는 읽기 필드가 아니다).
+    출처: https://developers.facebook.com/docs/graph-api/reference/photo/"""
+    session = caption_session()
+    assert graph.read_photo_caption(SENTINEL, POST_ID, session=session) == MESSAGE
+    (call,) = session.calls
+    assert (call.verb, call.url) == ("GET", f"{BASE}/{POST_ID}")
+    assert call.kwargs["params"] == {"fields": "name"}
+    assert_token_only_in_header(session)
+
+
+def test_read_photo_caption은_글이_없으면_None이다():
+    for body in ({}, {"name": ""}, {"name": "   "}, {"name": 12}, {"id": POST_ID}):
+        assert graph.read_photo_caption(SENTINEL, POST_ID, session=caption_session(FakeResponse(200, body))) is None
+
+
+def test_read_photo_caption은_읽지_못하면_GraphError다():
+    session = caption_session(FakeResponse(400, {"error": {"message": "Unsupported get request", "code": 100}}))
+    with pytest.raises(graph.GraphError) as caught:
+        graph.read_photo_caption(SENTINEL, POST_ID, session=session)
+    assert SENTINEL not in str(caught.value)
+
+
+def test_read_photo_caption이_돌려주는_글도_토큰을_가린_값이다():
+    session = caption_session(FakeResponse(200, {"name": f"본문 {SENTINEL}"}))
+    assert SENTINEL not in graph.read_photo_caption(SENTINEL, POST_ID, session=session)
+
+
+# ── id 모양 ──────────────────────────────────────────────────────────────────
+
+
+NOT_IDS = ("me/feed", f"{POST_ID}/likes", "me", "../me", f"{POST_ID}?fields=name", "", "100 200", "100-200")
+
+
+@pytest.mark.parametrize("object_id", NOT_IDS)
+def test_delete_post는_id가_숫자와_밑줄이_아니면_부르지도_않는다(object_id):
+    """사용자가 준 글자가 URL 경로에 들어가는 자리다. `me/feed`는 엔드포인트 자체를 바꾼다.
+    실제 사진 id는 숫자이거나 `<page>_<post>`뿐이다."""
+    session = FakeSession({})  # 어떤 경로를 불러도 AssertionError로 크게 실패한다
+    with pytest.raises(graph.GraphError) as caught:
+        graph.delete_post(SENTINEL, object_id, session=session)
+    assert session.calls == []
+    assert has_hangul(str(caught.value))
+
+
+@pytest.mark.parametrize("object_id", NOT_IDS)
+def test_read_photo_caption도_같은_모양_검사를_한다(object_id):
+    session = FakeSession({})
+    with pytest.raises(graph.GraphError):
+        graph.read_photo_caption(SENTINEL, object_id, session=session)
+    assert session.calls == []
+
+
+@pytest.mark.parametrize("object_id", ("100200300", "100200300_122100000000000001", "1"))
+def test_멀쩡한_id는_그대로_지나간다(object_id):
+    session = FakeSession({("GET", f"{BASE}/{object_id}"): FakeResponse(200, {"name": MESSAGE})})
+    assert graph.read_photo_caption(SENTINEL, object_id, session=session) == MESSAGE
+
+
+# ── delete_post ──────────────────────────────────────────────────────────────
 
 
 def delete_session(outcome=None) -> FakeSession:
@@ -620,12 +686,13 @@ def test_delete_post는_method_delete를_POST로_보내고_토큰은_헤더에�
     assert_token_only_in_header(session)
 
 
-def test_delete_post는_success가_아니면_실패로_보고_직접_지우라고_말한다():
+def test_delete_post는_success가_아니면_실패로_본다():
+    """운영자에게 무엇을 하라고 말하는 것은 CLI의 몫이다(한곳에서 말한다). 이 모듈은 사실만 말한다."""
     for body in ({"success": False}, {}, {"id": POST_ID}):
         session = delete_session(FakeResponse(200, body))
         with pytest.raises(graph.GraphError) as caught:
             graph.delete_post(SENTINEL, POST_ID, session=session)
-        assert "직접 지우세요" in str(caught.value)
+        assert "성공을 확인해 주지 않았습니다" in str(caught.value)
 
 
 def test_delete_post의_거절은_Facebook의_말을_그대로_싣는다():
@@ -640,13 +707,20 @@ def test_delete_post의_거절은_Facebook의_말을_그대로_싣는다():
 # ── schedule_photo_post ──────────────────────────────────────────────────────
 
 
-def test_schedule_photo_post가_published_false와_scheduled_publish_time을_보낸다(image):
+def test_schedule_photo_post가_caption과_published_false와_scheduled_publish_time을_보낸다(image):
+    """본문은 **`caption`**으로 보낸다. Meta의 `/{page-id}/photos` 레퍼런스가 `message`를
+    "Deprecated. Please use the caption param instead."로 적었고, 같은 문서가 사진 노드의 읽기 필드
+    `name`을 "The user-provided caption given to this photo"로 적는다 — `caption`으로 보내야
+    `--delete`의 본문 대조(`fields=name`)가 문서로 정의된 왕복이 된다.
+    출처: https://developers.facebook.com/docs/graph-api/reference/page/photos/ ·
+    https://developers.facebook.com/docs/graph-api/reference/photo/
+    """
     session = photo_session()
     graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=session)
     (call,) = session.calls
     # 전송되는 값은 문자열이다(멀티파트 필드). 파이썬 False를 그대로 넘기면 requests가 "False"로 적는다.
     # 정확한 모양을 못 박아 두어야 토큰이나 다른 필드가 몰래 끼어들지도 못한다.
-    assert call.kwargs["data"] == {"message": MESSAGE, "published": "false", "scheduled_publish_time": PUBLISH_UNIX}
+    assert call.kwargs["data"] == {"caption": MESSAGE, "published": "false", "scheduled_publish_time": PUBLISH_UNIX}
 
 
 def test_예약_시각은_정수_유닉스_초이고_오프셋과_상관없이_같은_순간이면_같다(image):

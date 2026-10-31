@@ -37,6 +37,9 @@ DOC = REPO / "docs" / "facebook-운영.md"
 
 MONTH = "2026-11"
 SENTINEL = "EAAZ-SENTINEL-not-a-real-token-7c41e9d2b8"
+# 페이스북이 돌려주는 사진 id의 모양(`<page>_<post>`). 가짜 세션이 기본으로 돌려주는 `photo-<파일이름>`은
+# 이 모양이 아니므로, 지우기까지 가는 시험은 이 값을 쓴다 — `graph`가 URL 경로에 넣기 전에 모양을 본다.
+TEST_PHOTO_ID = "61595913932801_122100000000000777"
 JST = timezone(timedelta(hours=9))
 NOW = datetime(2026, 10, 31, 12, 0, tzinfo=JST)  # 픽스처의 첫 게시(11-01 19:00)보다 31시간 앞. 여섯 건 모두 예약 창 안이다.
 
@@ -81,7 +84,8 @@ def photo_id(filename: str) -> str:
 class FakeSession:
     """`script`: {POST 호출 번호(0부터): FakeResponse | 던질 예외}. 없는 번호는 성공한다.
 
-    `page`는 `check-token`이 부르는 GET의 답이다. GET을 쓰지 않는 시험에서는 부르면 크게 실패한다.
+    `page`는 이 세션이 받는 **GET의 답**이다: `check-token`의 페이지 조회, `test-post --delete`의 본문 조회.
+    GET을 쓰지 않는 시험에서는 부르면 크게 실패한다.
     """
 
     def __init__(self, script: dict | None = None, *, page=None):
@@ -111,6 +115,12 @@ class FakeSession:
         if isinstance(self.page, BaseException):
             raise self.page
         return self.page
+
+
+def caption_session(caption: str | None = None, *, script: dict | None = None) -> FakeSession:
+    """`test-post --delete`가 부르는 본문 조회(GET)에 답하는 세션. `caption=None`이면 글이 없는 사진이다."""
+    body = {} if caption is None else {"name": caption}
+    return FakeSession(script, page=FakeResponse(200, body))
 
 
 def page_session(*, returned_id: str | None = None, name: str = "정우인재개발원") -> FakeSession:
@@ -766,11 +776,11 @@ def test_test_post는_손으로_만들_파일_없이_한_건을_예약한다(토
     비개발자는 건너뛰고, 건너뛰면 30건이 전부 거절되는 달을 예약을 시도하다 처음 알게 된다.
     그러므로 플랜도, 그림도, 워크시트도, 원장도, 달 폴더도 **없이** 돌아야 한다.
     """
-    session = FakeSession()
+    session = FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})
     assert cli.main(["test-post"], session=session) == 0
     assert session.uploaded == [config.TEST_POST_IMAGE_PATH.name]
     text = shown(capsys)
-    assert photo_id(config.TEST_POST_IMAGE_PATH.name) in text  # 지울 때 쓸 사진 id를 찍는다
+    assert TEST_PHOTO_ID in text  # 지울 때 쓸 사진 id를 찍는다
     assert "--delete" in text
     assert "예약된 게시물" in text  # 눈으로 확인할 곳
     assert list(tmp_path.rglob("scheduled.json")) == []  # 원장을 쓰지 않는다
@@ -785,7 +795,9 @@ def test_test_post는_예약_창_안의_시각으로_보낸다(토큰):
     assert data["published"] == "false"
     publish_at = datetime.fromtimestamp(int(data["scheduled_publish_time"]), tz=JST)
     assert NOW + config.SCHEDULE_MIN_LEAD < publish_at < NOW + config.SCHEDULE_MAX_LEAD
-    assert data["message"] == cli.TEST_POST_MESSAGE
+    # 본문은 `caption`으로 간다(`message`는 Meta가 deprecated로 적었다).
+    assert data["caption"] == cli.TEST_POST_MESSAGE
+    assert "message" not in data
 
 
 def test_test_post의_본문은_테스트임을_밝히고_금지_문구가_없다():
@@ -822,10 +834,10 @@ def test_test_post는_토큰이_없으면_종료코드_2다(capsys):
 
 
 def test_test_post_delete는_그래프_API로_그_게시물만_지운다(토큰, capsys):
-    session = FakeSession({0: FakeResponse(200, {"success": True})})
-    assert cli.main(["test-post", "--delete", "61595913932801_122100000000000001"], session=session) == 0
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", TEST_PHOTO_ID], session=session) == 0
     assert session.uploaded == []  # 지우는 길에 새 글을 올리지 않는다
-    assert session.posts[0]["url"].endswith("/61595913932801_122100000000000001")
+    assert session.posts[0]["url"].endswith("/" + TEST_PHOTO_ID)
     assert session.posts[0]["data"] == {"method": "delete"}
     assert "지웠습니다" in shown(capsys)
 
@@ -849,6 +861,147 @@ def test_delete는_test_post에만_쓸_수_있다(capsys):
 def test_test_post도_SystemExit을_삼키지_않는다(토큰):
     with pytest.raises(SystemExit):
         cli.main(["test-post"], session=FakeSession({0: SystemExit(3)}))
+
+
+# ── test-post: 지우기 전에 그 글인지 본다 (N1) ───────────────────────────────
+
+
+def test_test_post_delete는_본문이_테스트_글과_같을_때만_지운다(토큰, capsys):
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "61595913932801_122100000000000001"], session=session) == 0
+    assert len(session.posts) == 1  # 본문을 읽은 뒤에 한 번만 지운다
+    assert session.gets  # 읽지 않고 지우지 않는다
+    assert "지웠습니다" in shown(capsys)
+
+
+def test_test_post_delete는_본문이_다르면_아무것도_지우지_않는다(토큰, capsys):
+    """진짜 달 게시물의 id는 `scheduled.json`의 `"결과"`에 같은 모양으로 들어 있고 문서 §4는 그 파일을
+    열어 고치라고 가르친다. 잘못 붙여 넣은 id를 그대로 지우면 그 게시물은 원장에 남은 채 조용히 영영
+    나가지 않는다 — 이 시스템에서 가장 비싼 사고다."""
+    session = caption_session("11월 1일 안내입니다. 무료 상담을 신청하세요.", script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "61595913932801_122100000000000009"], session=session) == 2
+    assert session.posts == []  # 지우기를 아예 보내지 않는다
+    text = shown(capsys)
+    assert "직접 지우세요" in text
+    assert "61595913932801_122100000000000009" in text
+
+
+@pytest.mark.parametrize("caption", [None, "", "   "])
+def test_test_post_delete는_본문이_없으면_지우지_않는다(caption, 토큰, capsys):
+    """모를 때 지우지 않는 것이 유일하게 안전한 기본값이다(실제 왕복을 시험할 수 없다)."""
+    session = caption_session(caption, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    assert session.posts == []
+    assert "직접 지우세요" in shown(capsys)
+
+
+def test_test_post_delete는_본문을_읽지_못하면_지우지_않는다(토큰, capsys):
+    session = FakeSession({}, page=FakeResponse(400, {"error": {"message": "Unsupported get request", "code": 100}}))
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    assert session.posts == []
+    text = shown(capsys)
+    assert "직접 지우세요" in text
+    assert has_hangul(text)
+
+
+def test_test_post_delete는_id_모양이_아니면_아무_요청도_보내지_않는다(토큰, capsys):
+    """`--delete "me/feed"`는 엔드포인트를 바꾼다. 모양 검사가 그것을 먼저 막는다."""
+    session = FakeSession({})
+    assert cli.main(["test-post", "--delete", "me/feed"], session=session) == 2
+    assert session.gets == [] and session.posts == []
+    assert has_hangul(shown(capsys))
+
+
+# ── test-post: 답을 못 받은 것과 거절을 가른다 (N2·N5) ───────────────────────
+
+
+def test_test_post는_답을_받지_못하면_권한_이야기를_하지_않는다(토큰, capsys):
+    """`maybe_created`가 참이면 글이 올라갔을 수 있다. 그 자리에서 "권한이 없다"고 말하면 같은 화면이
+    서로 반대인 두 말을 하고, 운영자는 올라간 글을 찾아보지 않는다. 게다가 id가 없어 `--delete`로
+    지울 수도 없다."""
+    session = FakeSession({0: TimeoutError("read timed out")})
+    assert cli.main(["test-post"], session=session) == 2
+    text = shown(capsys)
+    assert "올라갔을 수 있" in text
+    assert "권한" not in text
+    assert "직접 지우세요" in text
+
+
+def test_test_post는_확정_거절에는_권한을_확인하라고_말한다(토큰, capsys):
+    session = FakeSession({0: FakeResponse(403, {"error": {"message": "Permissions error", "code": 200}})})
+    assert cli.main(["test-post"], session=session) == 2
+    text = shown(capsys)
+    assert "권한" in text
+    assert "올라갔을 수 있" not in text
+
+
+def test_test_post_delete가_답을_못_받으면_지워졌는지_모른다고_말한다(토큰, capsys):
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: TimeoutError("read timed out")})
+    assert cli.main(["test-post", "--delete", "100200300_1"], session=session) == 2
+    text = shown(capsys)
+    assert "알 수 없" in text
+    assert "직접 지우세요" in text
+
+
+# ── test-post: 다시 돌려도 조용히 쌓이지 않는다 (N3) ─────────────────────────
+
+
+def record_path():
+    return config.facebook_dir() / cli.TEST_POST_RECORD_FILE
+
+
+def test_test_post는_올린_글을_적어_두고_다시_돌리면_거절한다(토큰, capsys):
+    first = FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})
+    assert cli.main(["test-post"], session=first) == 0
+    recorded = json.loads(record_path().read_text(encoding="utf-8"))
+    assert recorded["사진 id"] == TEST_PHOTO_ID
+
+    second = FakeSession()
+    assert cli.main(["test-post"], session=second) == 2
+    assert second.uploaded == []  # 둘째 글이 조용히 쌓이지 않는다
+    text = shown(capsys)
+    assert recorded["사진 id"] in text
+    assert "--delete" in text
+
+
+def test_test_post_delete는_id를_적지_않으면_적어_둔_글을_지운다(토큰, capsys):
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+    assert json.loads(record_path().read_text(encoding="utf-8"))["사진 id"] == TEST_PHOTO_ID
+
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete"], session=session) == 0
+    assert session.posts[0]["url"].endswith("/" + TEST_PHOTO_ID)
+    assert not record_path().exists()  # 지운 뒤에는 기록도 없다
+    # 그래서 다음 달에 다시 쓸 수 있다.
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+
+
+def test_test_post_delete는_적어_둔_것도_없고_id도_없으면_멈춘다(토큰, capsys):
+    session = FakeSession({})
+    assert cli.main(["test-post", "--delete"], session=session) == 2
+    assert session.gets == [] and session.posts == []
+    assert has_hangul(shown(capsys))
+
+
+def test_test_post_delete가_실패하면_기록을_지우지_않는다(토큰):
+    """지워졌는지 모르는 채 기록을 지우면 잊은 글을 되찾을 길이 없어진다."""
+    assert cli.main(["test-post"], session=FakeSession({0: FakeResponse(200, {"id": TEST_PHOTO_ID})})) == 0
+    session = caption_session(cli.TEST_POST_MESSAGE, script={0: TimeoutError("read timed out")})
+    assert cli.main(["test-post", "--delete"], session=session) == 2
+    assert record_path().exists()
+
+
+# ── schedule: 검증 오류가 토큰 안내에 묻히지 않는다 (m7) ─────────────────────
+
+
+def test_schedule은_검증_오류가_있고_토큰이_없으면_종료코드_1이다(env, capsys):
+    """고칠 것은 플랜이다. 토큰이 없다고 코드 2로 끝내면 문서가 "개발자에게 보여 주세요"로 보낸다.
+    관문은 그대로 `schedule.run` 안에 있다 — `findings`는 여전히 그 함수로 흘러간다."""
+    fill_worksheet(env, edit=lambda index, text: text + " 취업을 보장합니다." if index == 1 else text)
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession()) == 1
+    text = shown(capsys)
+    assert "역번역금지표현" in text
+    assert has_hangul(text)
 
 
 # ── 그림을 넣기 전 단계 ─────────────────────────────────────────────────────
@@ -1129,3 +1282,17 @@ def test_운영_문서가_env는_UTF_8로_저장하라고_적는다():
     doc = doc_text()
     assert "UTF-8" in doc
     assert ".env" in doc
+
+
+def test_운영_문서가_그림_전_단계의_npm_오류_덩어리를_설명한다():
+    """그 단계의 `validate`는 늘 종료 코드 1로 끝나므로 npm이 자기 오류 덩어리를 찍는다.
+    문서가 127만 설명하고 이것을 설명하지 않으면 읽는 쪽이 멈춘 것으로 본다."""
+    assert "npm ERR! code 1" in doc_text()
+
+
+def test_운영_문서의_테스트_글_지우기가_본문_대조와_기록을_적는다():
+    """운영자가 아는 것: 엉뚱한 id는 지워지지 않는다, id를 적지 않아도 된다, 지우기 전에는 새로 못 올린다."""
+    doc = doc_text()
+    assert "--delete" in doc
+    assert "본문" in doc
+    assert "test-post.json" in doc

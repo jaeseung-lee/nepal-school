@@ -12,7 +12,10 @@
   만들므로 가릴 토큰이 없다. 또 **Facebook 호출에서 올라온 예외는 `__cause__`/`__context__`로 달지 않는다**
   (그 예외가 요청 객체나 헤더를 들고 있을 수 있다). 토큰이 닿을 수 없는 예외만 원인을 남긴다: 이미지 파일을 열지 못한
   `OSError`는 경로만 들고 있고 그 원인이 고치는 데 도움이 되므로 `from exc`로 남긴다. 메시지는 버그 리포트에 그대로 붙여도 안전해야 한다.
-- **verb는 정해져 있다.** `check_token`은 `session.get`, `schedule_photo_post`는 `session.post`. 바꿀 수 있게 하지 않는다.
+- **verb는 정해져 있다.** `check_token`·`read_photo_caption`은 `session.get`, `schedule_photo_post`·`delete_post`는
+  `session.post`. 바꿀 수 있게 하지 않는다. 삭제도 `POST`에 `method=delete`로 보내 세션에 바라는 것을 둘로 묶어 둔다.
+- **사용자가 준 글자가 URL 경로에 닿는 자리는 둘뿐이고**(`delete_post`·`read_photo_caption`의 id) 둘 다
+  `_require_object_id`로 모양을 강제한다. 모양이 다르면 그것은 우리가 만든 사진 id가 아니므로 보내지 않는다.
 - **모든 호출은 `config.GRAPH_TIMEOUT`을 명시적으로 넘긴다.** 사진 한 장에서 영원히 멈추는 것보다 크게 실패하는 편이 낫다.
 - **오류 응답은 두 모양이다.** HTTP가 2xx가 아니면서 `error` 객체가 있는 경우와, HTTP 200인데 본문에 `error` 객체가 있는
   경우. 둘 다 같은 대접을 받는다. JSON이 아닌 본문, JSON 객체가 아닌 본문도 `JSONDecodeError`가 새어 나가지 않고
@@ -39,6 +42,7 @@
 from __future__ import annotations
 
 import mimetypes
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -179,6 +183,26 @@ def _rejected(token: str, message: str, *, reason: str, invalid_token: bool, may
 
 def _url(path: str) -> str:
     return f"{GRAPH_HOST}/{config.GRAPH_VERSION}/{path}"
+
+
+# Graph 객체 id의 모양: 숫자이거나 `<page>_<post>`다(`schedule_photo_post`의 반환값 설명 참고).
+_OBJECT_ID = re.compile(r"[0-9]+(_[0-9]+)?")
+
+
+def _require_object_id(value: str, name: str) -> None:
+    """URL 경로에 들어갈 id의 모양을 강제한다. 어긋나면 **요청을 보내지 않고** `GraphError`.
+
+    이 모듈에서 **사용자가 준 글자가 URL 경로에 닿는 자리**는 `delete_post`·`read_photo_caption`뿐이다(나머지는
+    `config.PAGE_ID`를 쓴다). `me/feed`나 `?`·`/`가 섞인 값을 그대로 이어 붙이면 **엔드포인트 자체가 바뀐다** —
+    운영자가 지우려던 것과 다른 것을 지우게 된다. 이스케이프로 "안전하게 보내는" 쪽을 고르지 않는다: 모양이
+    다르면 그것은 우리가 만든 사진 id가 아니므로 보낼 이유가 없다.
+    """
+    if not isinstance(value, str) or not _OBJECT_ID.fullmatch(value):
+        raise GraphError(
+            f"{name} '{value}'은(는) 페이스북 게시물 id의 모양이 아닙니다. 숫자이거나 숫자_숫자"
+            f"(예: 61595913932801_122100000000000001) 형태여야 하고, 올릴 때 화면에 찍힌 값을 그대로 적어야 합니다. "
+            f"아무 요청도 보내지 않았습니다."
+        )
 
 
 def _excerpt(text: object, token: str) -> str:
@@ -404,12 +428,19 @@ def assert_schedulable(publish_at: datetime, now: datetime) -> None:
 
 
 def schedule_photo_post(
-    token: str, page_id: str, image_path: Path, message: str, publish_at: datetime, *, session: _Session
+    token: str, page_id: str, image_path: Path, caption: str, publish_at: datetime, *, session: _Session
 ) -> str:
     """사진 한 장과 본문을 `publish_at`에 게시되도록 예약하고, 생성된 사진 id를 돌려준다 (`session.post` 한 번).
 
     페이지의 `/photos`에 멀티파트로 보내며 `published=false`와 `scheduled_publish_time`(유닉스 초)을 함께 싣는다.
     예약 창은 **검사하지 않는다**(`now`를 받지 않는다) — 부르기 전에 `assert_schedulable`을 거쳐야 한다.
+
+    **본문은 `caption`으로 보낸다.** Meta의 `/{page-id}/photos` 레퍼런스가 `message`를 "Deprecated. Please use the
+    caption param instead."로 적었다. 같은 글을 사진 노드에서 다시 읽을 때의 필드는 `name`이고 그 설명이
+    "The user-provided caption given to this photo"이므로, `caption`으로 보내는 것이 `read_photo_caption`의 대조를
+    **문서로 정의된 왕복**으로 만든다(우리가 실제 왕복을 시험할 수 없는 경로라 이것이 중요하다).
+    출처: https://developers.facebook.com/docs/graph-api/reference/page/photos/ ·
+    https://developers.facebook.com/docs/graph-api/reference/photo/
     """
     _require_aware("publish_at", publish_at)
     try:
@@ -425,7 +456,7 @@ def schedule_photo_post(
             session.post, _url(f"{page_id}/photos"), token, "사진 예약 게시",
             may_create=True,
             # 멀티파트 필드는 문자열이다. False를 그대로 넘기면 requests가 "False"로 적는다.
-            data={"message": message, "published": "false", "scheduled_publish_time": str(int(publish_at.timestamp()))},
+            data={"caption": caption, "published": "false", "scheduled_publish_time": str(int(publish_at.timestamp()))},
             files={"source": (image_path.name, handle, content_type)},
         )
     post_id = body.get("id")
@@ -440,19 +471,42 @@ def schedule_photo_post(
     return _scrub(post_id, token)
 
 
+def read_photo_caption(token: str, photo_id: str, *, session: _Session) -> str | None:
+    """사진 노드의 본문(캡션)을 읽어 돌려준다. 글이 없으면 `None` (`session.get` 한 번: `GET /{photo_id}?fields=name`).
+
+    **필드 이름은 `name`이다.** Meta의 사진 노드 레퍼런스에서 읽을 수 있는 필드 목록에 `name`이 있고 설명이
+    "The user-provided caption given to this photo"다. `message`는 **읽을 수 있는 필드가 아니다**(생성 파라미터
+    표에만, 그것도 deprecated로 나온다) — `fields=message`로 물으면 아무것도 읽지 못한다.
+    출처: https://developers.facebook.com/docs/graph-api/reference/photo/
+
+    읽지 못하면 `GraphError`다. 부르는 쪽은 **읽지 못한 것을 "같다"로 다루지 말아야 한다** — 이 값은 "지워도 되는
+    글인가"를 가리는 데 쓰이고, 모를 때 지우지 않는 것이 유일하게 안전한 기본값이다.
+    """
+    _require_object_id(photo_id, "사진 id")
+    body = _send(session.get, _url(photo_id), token, "게시물 본문 조회", params={"fields": "name"})
+    caption = body.get("name")
+    if not isinstance(caption, str) or not caption.strip():
+        return None
+    # 응답에서 온 글자다. 메시지에 실릴 수 있으니 `check_token`의 이름·id와 같은 자리를 지나게 한다.
+    return _scrub(caption, token)
+
+
 def delete_post(token: str, post_id: str, *, session: _Session) -> None:
     """게시물(사진) 하나를 지운다 (`session.post` 한 번: `POST /{post_id}`에 `method=delete`).
 
     HTTP `DELETE` 대신 `method=delete`를 쓴다 — `_Session` 프로토콜이 `get`·`post`만 요구하므로 이 모듈이 세션에
     바라는 것이 늘어나지 않는다. 쓰는 곳은 테스트 글 1건을 눈으로 확인한 뒤 지우는 길 하나뿐이다.
 
+    **이 함수는 대상이 무엇인지 보지 않는다.** 무엇을 지워도 되는지는 부르는 쪽이 판정한다
+    (`read_photo_caption`으로 본문을 대조한다) — 여기서 하는 것은 id 모양 검사까지다.
+
     **`success: true`가 아니면 실패로 본다.** 지워졌다고 잘못 말하면 운영자는 페이스북을 다시 보지 않고, 그
-    테스트 글은 날짜가 되면 실제로 공개된다. 모를 때는 직접 지우라고 말하는 쪽이 맞는 답이다.
+    테스트 글은 날짜가 되면 실제로 공개된다. 모를 때는 사람에게 넘기는 쪽이 맞는 답이다.
     """
+    _require_object_id(post_id, "사진 id")
     body = _send(session.post, _url(post_id), token, "게시물 삭제", data={"method": "delete"})
     if body.get("success") is not True:
         raise _error(
             token,
-            f"게시물 삭제 요청에 Facebook이 성공을 확인해 주지 않았습니다. 응답 앞부분: {_excerpt(body, token)}. "
-            f"페이스북 페이지의 예약된 게시물 목록에서 그 게시물이 남아 있는지 눈으로 확인하고, 남아 있으면 직접 지우세요.",
+            f"게시물 삭제 요청에 Facebook이 성공을 확인해 주지 않았습니다. 응답 앞부분: {_excerpt(body, token)}.",
         )

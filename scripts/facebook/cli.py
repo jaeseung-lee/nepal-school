@@ -93,6 +93,12 @@ TEST_POST_MESSAGE = (
 # 예약 글은 그 시각까지 공개되지 않는다. 너무 가까우면 눈으로 확인하기 전에 공개될 수 있다.
 TEST_POST_LEAD = timedelta(days=30)
 
+# 올려 둔 테스트 글을 적어 두는 자리. **원장이 아니다** — 원장은 "그 달의 게시물 가운데 무엇을 올렸는가"이고
+# 이 1건은 그 달의 게시물이 아니다(원장에 적으면 `_off_plan`이 매달 "플랜에 없는 줄"로 센다). 그래서 달 폴더
+# 밖(`output/facebook/`)에 한 줄만 둔다. 이것이 없으면 올라갔는지 확신하지 못한 운영자가 한 번 더 돌려
+# **두 건을 예약해 두고 id는 나중 것만 손에 쥔다.**
+TEST_POST_RECORD_FILE = "test-post.json"
+
 
 class _Stop(Exception):
     """여기서 멈추고 이 글을 보여 주고 이 종료 코드로 끝낸다. 코드 0은 표준 출력, 나머지는 표준 오류로 나간다."""
@@ -155,11 +161,11 @@ def _usage() -> str:
         "  npm run fb:schedule -- --month 2026-11               연습 실행(아무것도 올리지 않는다)",
         "  npm run fb:schedule -- --month 2026-11 --confirm     실제로 예약한다",
         "  npm run fb:test-post                                 테스트 글 1건을 올려 본다(달을 받지 않는다)",
-        "  npm run fb:test-post -- --delete <사진 id>            그 테스트 글을 지운다",
+        "  npm run fb:test-post -- --delete                     그 테스트 글을 지운다(id를 적어도 된다)",
         "",
         "명령: " + ", ".join(COMMANDS),
         "옵션: --month YYYY-MM (test-post 말고는 필수)  ·  --confirm (schedule에서만, 실제로 올릴 때)",
-        "      --delete <사진 id> (test-post에서만)",
+        "      --delete [사진 id] (test-post에서만. 올린 글만 지웁니다 — 지우기 전에 본문을 대조합니다)",
         "",
         "종료 코드: 0 성공 · 1 플랜·본문·역번역에 고칠 것이 있음 · 2 실행이 안 됨(사용법·토큰·페이스북·원장)",
         f"월간 절차 전체는 {_DOC}에 있습니다.",
@@ -171,7 +177,8 @@ class _Args:
     command: str
     month: str  # `test-post`에서는 빈 문자열이다(달 폴더를 쓰지 않는다)
     confirm: bool
-    delete: str | None = None
+    delete: bool = False  # `--delete`를 적었는가
+    delete_id: str | None = None  # 그 뒤에 id를 적었는가(적지 않으면 적어 둔 글을 지운다)
 
 
 def _parse(argv: list[str]) -> _Args:
@@ -186,16 +193,18 @@ def _parse(argv: list[str]) -> _Args:
 
     month: str | None = None
     confirm = False
-    delete: str | None = None
+    delete = False
+    delete_id: str | None = None
     position = 0
     while position < len(rest):
         argument = rest[position]
         if argument in ("-h", "--help"):
             return _help()
         if argument == "--delete":
-            if position + 1 >= len(rest):
-                raise _Stop("--delete 뒤에 지울 사진 id를 적어 주세요 (올릴 때 화면에 찍힌 그 값입니다).", 2)
-            delete, position = rest[position + 1], position + 2
+            # id는 적지 않아도 된다(적어 둔 글을 지운다). 뒤따르는 말이 옵션이면 id가 아니다.
+            delete, position = True, position + 1
+            if position < len(rest) and not rest[position].startswith("-"):
+                delete_id, position = rest[position], position + 1
             continue
         if argument == "--month":
             if position + 1 >= len(rest):
@@ -210,7 +219,7 @@ def _parse(argv: list[str]) -> _Args:
             continue
         raise _Stop(f"'{argument}'은(는) 이 도구가 아는 옵션이 아닙니다.\n\n{_usage()}", 2)
 
-    if delete is not None and command != "test-post":
+    if delete and command != "test-post":
         raise _Stop(
             f"--delete는 test-post 명령에만 씁니다. '{command}'은(는) 페이스북에서 아무것도 지우지 않습니다. "
             f"예약한 게시물을 지우려면 페이스북 페이지의 예약된 게시물 목록에서 직접 지우세요.",
@@ -223,7 +232,7 @@ def _parse(argv: list[str]) -> _Args:
                 "명령이라 그 달의 플랜·그림·원장을 읽지도, 쓰지도 않습니다. --month를 빼고 다시 실행하세요.",
                 2,
             )
-        return _Args(command=command, month="", confirm=confirm, delete=delete)
+        return _Args(command=command, month="", confirm=confirm, delete=delete, delete_id=delete_id)
     if month is None:
         raise _Stop(
             f"--month가 없습니다. 어느 달의 게시물인지 적어 주세요 (예: --month 2026-11).\n\n{_usage()}", 2
@@ -238,7 +247,7 @@ def _parse(argv: list[str]) -> _Args:
         config.month_dir(month)  # 달 형식 판정은 config 한 곳에 둔다
     except ValueError as exc:
         raise _Stop(str(exc), 2) from None
-    return _Args(command=command, month=month, confirm=confirm, delete=None)
+    return _Args(command=command, month=month, confirm=confirm)
 
 
 def _help() -> _Args:
@@ -443,33 +452,124 @@ def _check_token(args: _Args, session) -> int:
     return 0
 
 
+def _record_path() -> Path:
+    """올려 둔 테스트 글을 적어 두는 파일. 달 폴더 밖이고 원장이 아니다(`TEST_POST_RECORD_FILE` 참고)."""
+    return config.facebook_dir() / TEST_POST_RECORD_FILE
+
+
+def _read_record() -> dict | None:
+    """적어 둔 테스트 글. 파일이 없으면 `None`, 알아볼 수 없으면 `_Stop`."""
+    path = _record_path()
+    if not path.exists():
+        return None
+    record = _read_json(path, "테스트 글 기록")
+    if not isinstance(record, dict) or not isinstance(record.get("사진 id"), str):
+        raise _Stop(
+            f"테스트 글 기록을 알아볼 수 없습니다: {path}\n"
+            f'이 파일에는 {{"사진 id": "...", "예약 시각": "..."}} 한 줄이 들어 있어야 합니다. 페이스북 페이지의 '
+            f"'예약된 게시물'에서 테스트 글을 눈으로 확인해 지운 뒤, 이 파일을 지우고 다시 실행하세요.",
+            2,
+        )
+    return record
+
+
+def _same_text(left: str, right: str) -> bool:
+    """두 글이 같은가. 공백의 종류와 개수만 다른 것은 같게 본다(줄바꿈이 어떻게 저장될지 보증되지 않는다).
+
+    그 밖에는 **글자 그대로** 같아야 한다. 느슨하게 보면 "비슷한 글"을 지우게 되고, 이 대조가 막는 사고가
+    바로 그것이다.
+    """
+    return " ".join(left.split()) == " ".join(right.split())
+
+
+def _test_post_delete(args: _Args, token: str, session) -> int:
+    """테스트 글을 지운다. **그 글이 테스트 글일 때만** 지운다.
+
+    왜 대조가 필요한가: 진짜 달 게시물의 id가 `scheduled.json`의 `"결과"`에 **같은 모양**으로 들어 있고, 운영
+    문서는 그 파일을 열어 손으로 고치라고 가르친다. 잘못 붙여 넣은 id를 그대로 지우면 (1) 진짜 예약 게시물이
+    사라지고 (2) 도구는 "지웠습니다"라고 말하고 (3) 원장에는 그 줄이 남아 이후 모든 실행이 "이미 예약돼
+    건너뜀"으로 세므로 (4) **그 게시물은 조용히 영영 나가지 않는다.**
+
+    그래서 **모르면 지우지 않는다**(fail-closed): 본문을 읽지 못했거나, 글이 없거나, 다르면 멈추고 사람에게
+    넘긴다. 실제 왕복을 시험할 수 없는 경로이므로 안전한 기본값이 하나뿐이다.
+    """
+    record = _read_record()
+    target = args.delete_id or (record or {}).get("사진 id")
+    if not target:
+        raise _Stop(
+            "지울 사진 id를 적어 주세요: npm run fb:test-post -- --delete <사진 id>\n"
+            "올릴 때 화면에 찍힌 값입니다. 올려 둔 테스트 글을 적어 둔 기록도 없습니다"
+            f"({_record_path()}가 없습니다) — 이미 지웠다면 더 할 일이 없습니다.",
+            2,
+        )
+    try:
+        caption = graph.read_photo_caption(token, target, session=session)
+    except graph.GraphError as exc:
+        raise _Stop(
+            f"{exc}\n본문을 읽지 못해 **아무것도 지우지 않았습니다.** 페이스북 페이지의 '예약된 게시물'에서 "
+            f"테스트 글([테스트]로 시작하는 글)을 눈으로 확인하고 직접 지우세요.",
+            2,
+        ) from None
+    except (Exception, KeyboardInterrupt) as exc:
+        raise _Stop(
+            f"테스트 글의 본문을 읽는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
+            f"아무것도 지우지 않았습니다. 페이스북 페이지의 '예약된 게시물'에서 눈으로 확인하고 직접 지우세요.",
+            2,
+        ) from None
+    if caption is None or not _same_text(caption, TEST_POST_MESSAGE):
+        raise _Stop(
+            f"사진 id {target}의 본문이 테스트 글의 본문과 달라 **아무것도 지우지 않았습니다.**\n"
+            f"이 도구는 저장소에 든 테스트 글만 지웁니다. 그 달의 게시물 id(원장 {LEDGER_FILE}의 \"결과\" 값)를 "
+            f"잘못 붙여넣지 않았는지 보세요 — 그것을 지우면 그 게시물은 원장에 남은 채 영영 나가지 않습니다.\n"
+            f"정말 지워야 하는 글이라면 페이스북 페이지의 '예약된 게시물'에서 눈으로 확인하고 직접 지우세요.",
+            2,
+        )
+    try:
+        graph.delete_post(token, target, session=session)
+    except graph.GraphError as exc:
+        raise _Stop(
+            f"{exc}\n지워졌는지 알 수 없습니다. 페이스북 페이지의 '예약된 게시물'을 눈으로 확인하고, 그 글이 "
+            f"남아 있으면 직접 지우세요.",
+            2,
+        ) from None
+    except (Exception, KeyboardInterrupt) as exc:
+        raise _Stop(
+            f"테스트 글을 지우는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). 지워졌는지 알 수 "
+            f"없습니다. 페이스북 페이지의 '예약된 게시물'을 눈으로 확인하고, 남아 있으면 직접 지우세요.",
+            2,
+        ) from None
+    if record is not None and record.get("사진 id") == target:
+        _record_path().unlink(missing_ok=True)  # 지운 것이 확인됐을 때만 기록을 치운다
+    print(f"테스트 글을 지웠습니다 (사진 id {target}).")
+    print("페이스북 페이지의 '예약된 게시물' 목록에서 그 글이 사라졌는지 눈으로 확인하세요.")
+    return 0
+
+
 def _test_post(args: _Args, session) -> int:
-    """테스트 글 1건을 올리거나(`--delete` 없이) 그 1건을 지운다(`--delete <사진 id>`).
+    """테스트 글 1건을 올리거나(`--delete` 없이) 그 1건을 지운다(`--delete [사진 id]`).
 
     이것이 **"이 토큰으로 글을 올릴 수 있다"는 유일한 증명**이다(`check-token`은 읽기만 증명한다). 그래서
     운영자가 손으로 만들 것이 하나도 없어야 한다 — 플랜도, 그림도, 되번역도, 원장도 쓰지 않고, 달 폴더를
     만들지도 않는다. 본문과 그림은 저장소가 들고 있다.
 
     **원장에 적지 않는다.** 원장은 "그 달의 게시물 가운데 무엇을 이미 올렸는가"를 적는 파일이고, 이 1건은 그
-    달의 게시물이 아니다. 대신 사진 id를 찍고 그것으로 지우는 명령을 그 자리에 보여 준다.
+    달의 게시물이 아니다. 대신 원장이 아닌 자리(`TEST_POST_RECORD_FILE`)에 사진 id를 적어 두어, 다시 돌렸을
+    때 둘째 글이 조용히 쌓이지 않게 하고 id를 잊어도 지울 수 있게 한다.
     """
     token = _token()
     session = session or _real_session()
-    if args.delete is not None:
-        try:
-            graph.delete_post(token, args.delete, session=session)
-        except graph.GraphError as exc:
-            raise _Stop(str(exc), 2) from None
-        except (Exception, KeyboardInterrupt) as exc:
-            raise _Stop(
-                f"테스트 글을 지우는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
-                f"페이스북 페이지의 예약된 게시물 목록에서 그 글이 남아 있는지 눈으로 확인하세요.",
-                2,
-            ) from None
-        print(f"테스트 글을 지웠습니다 (사진 id {args.delete}).")
-        print("페이스북 페이지의 예약된 게시물 목록에서 그 글이 사라졌는지 눈으로 확인하세요.")
-        return 0
+    if args.delete:
+        return _test_post_delete(args, token, session)
 
+    record = _read_record()
+    if record is not None:
+        raise _Stop(
+            f"지난번 테스트 글이 아직 남아 있습니다 (사진 id {record['사진 id']}, 예약 시각 "
+            f"{record.get('예약 시각', '모름')}). 두 건이 쌓이지 않게 아무것도 올리지 않았습니다.\n"
+            f"먼저 그 글을 지우세요:  npm run fb:test-post -- --delete\n"
+            f"페이스북에서 이미 손으로 지웠다면 {_record_path()}를 지운 뒤 다시 실행하세요.",
+            2,
+        )
     image = config.TEST_POST_IMAGE_PATH
     if not image.exists():
         raise _Stop(
@@ -485,29 +585,50 @@ def _test_post(args: _Args, session) -> int:
             token, config.PAGE_ID, image, TEST_POST_MESSAGE, publish_at, session=session
         )
     except graph.GraphError as exc:
+        # **`maybe_created`로 갈라야 한다.** 답을 못 받은 것(시간 초과·알아볼 수 없는 응답)을 "권한이 없다"로
+        # 말하면 한 화면이 서로 반대인 두 말을 하고(graph의 메시지는 "만들어졌을 수 있다"고 적는다), 운영자는
+        # 올라간 글을 찾아보지 않는다. 그 경우에는 id를 받지 못했으므로 `--delete`로 지울 수도 없다.
+        if exc.maybe_created:
+            raise _Stop(
+                f"{exc}\n테스트 글이 올라갔을 수 있는데 사진 id를 받지 못해 이 도구로는 지울 수 없습니다. "
+                f"페이스북 페이지의 '예약된 게시물'에서 [테스트]로 시작하는 글을 눈으로 확인하고, 있으면 직접 "
+                f"지우세요. (올라갔다면 그것만으로 '이 토큰으로 글을 올릴 수 있다'는 증명은 된 것입니다.)",
+                2,
+            ) from None
         raise _Stop(
-            f"{exc}\n테스트 글이 올라가지 않았다면 이 토큰으로는 글을 올릴 수 없습니다. 권한 세 개"
-            f"({', '.join(graph.REQUIRED_PERMISSIONS)})를 다시 확인하세요 — 절차는 {_DOC}의 '최초 1회 준비'에 있습니다.",
+            f"{exc}\nFacebook이 분명히 거절했으므로 테스트 글은 올라가지 않았습니다. 이 토큰으로는 글을 올릴 수 "
+            f"없을 수 있습니다 — 권한 세 개({', '.join(graph.REQUIRED_PERMISSIONS)})를 다시 확인하세요. 절차는 "
+            f"{_DOC}의 '최초 1회 준비'에 있습니다.",
             2,
         ) from None
     except (Exception, KeyboardInterrupt) as exc:
         raise _Stop(
             f"테스트 글을 올리는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
-            f"페이스북 페이지의 예약된 게시물 목록을 눈으로 확인하세요 — 글이 올라갔을 수도 있습니다.",
+            f"페이스북 페이지의 '예약된 게시물'을 눈으로 확인하세요 — 글이 올라갔을 수도 있습니다.",
             2,
         ) from None
 
+    path = _record_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps({"사진 id": post_id, "예약 시각": publish_at.isoformat()}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(f"테스트 글 1건을 예약했습니다 (사진 id {post_id}).")
     print(f"  예약 시각: {publish_at.strftime('%Y-%m-%d %H:%M')} (지금부터 {TEST_POST_LEAD.days}일 뒤)")
     print(f"  그림: {image}")
-    print("  원장에는 아무것도 적지 않았습니다. 이 1건은 그 달의 게시물이 아닙니다.")
+    print(f"  적어 둔 곳: {path} (원장에는 아무것도 적지 않았습니다. 이 1건은 그 달의 게시물이 아닙니다.)")
     print()
     print(
         "눈으로 확인할 것: 페이스북 페이지의 '예약된 게시물' 목록에 이 글이 보이는지. 보이면 이 토큰으로 글을 "
         "올릴 수 있다는 것이 증명된 것입니다. 미얀마 문자와 데바나가리가 네모로 보이지 않는지도 같이 보세요."
     )
     print("확인한 뒤 지우세요(그대로 두면 위 시각에 실제로 공개됩니다):")
-    print(f"  npm run fb:test-post -- --delete {post_id}")
+    print("  npm run fb:test-post -- --delete")
+    print(
+        "  (id를 적지 않으면 위에 적어 둔 그 글을 지웁니다. id를 적어도 되고, 어느 쪽이든 지우기 전에 본문이 "
+        "테스트 글과 같은지 확인합니다 — 다르면 아무것도 지우지 않습니다.)"
+    )
     return 0
 
 
@@ -731,9 +852,22 @@ def _schedule(args: _Args, session) -> int:
     plan = _load_plan(paths)
     data = _load_data()
     findings, _back = _validate_all(plan, paths, data)
-    _print_findings(findings, warnings_in_full=False)
+    errors = _print_findings(findings, warnings_in_full=False)
 
-    token = _token()
+    try:
+        token = _token()
+    except _Stop:
+        # 검증 오류가 있는데 토큰까지 없으면 **먼저 고칠 것은 플랜**이다. 토큰 안내(코드 2)로 끝내면 문서가
+        # "실행이 안 됐다 → 모르겠으면 개발자에게"로 보내는데, 실제로 고칠 것은 화면 위의 오류다.
+        # **관문은 옮기지 않는다**: `findings`는 그대로 `schedule.run`에 흘러가고, 그 안의 검증 관문이
+        # "검증하지 않은 플랜은 발행되지 않는다"를 지키는 자리로 남는다.
+        if errors:
+            raise _Stop(
+                f"위에 적힌 검증 오류 {errors}건을 먼저 고치세요. 오류가 남아 있으면 예약은 시작되지 않습니다. "
+                f"({config.TOKEN_ENV_NAME}도 설정되어 있지 않습니다 — 플랜을 고친 뒤 다시 실행하면 그때 안내합니다.)",
+                1,
+            ) from None
+        raise
     session = session or _real_session()
     print()
     if args.confirm:
