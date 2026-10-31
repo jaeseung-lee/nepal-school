@@ -118,3 +118,9 @@ def test_load_token은_토큰이_없으면_한국어_안내와_함께_RuntimeErr
     with pytest.raises(RuntimeError, match="FB_PAGE_TOKEN") as e:
         config.load_token()
     assert ".env" in str(e.value) and "환경변수" in str(e.value)
+
+
+def test_Graph_API_요청_타임아웃은_연결과_응답_두_값이고_둘_다_양수다():
+    # 모든 네트워크 호출이 이 값을 명시적으로 넘긴다(tests/test_graph.py). 값이 None이거나 0이면 timeout이 없는 것과 같다.
+    connect, read = config.GRAPH_TIMEOUT
+    assert connect > 0 and read > 0

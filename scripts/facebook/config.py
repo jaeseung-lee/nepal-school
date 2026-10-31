@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 PAGE_ID = "61595913932801"
 GRAPH_VERSION = "v26.0"
+# Graph API 요청에서 기다리는 최대 시간(초): (연결, 응답). 모든 호출이 이 값을 명시적으로 넘긴다.
+# 사진 한 장에서 멈춘 채 한 달치 예약 전체가 끝나지 않는 것보다, 소리 내어 실패하고 다음 건으로 넘어가는 편이 낫다.
+# 단, 두 값 모두 소켓이 한 번 기다리는 시간이지 요청 전체의 상한은 아니다(requests의 timeout 규칙).
+GRAPH_TIMEOUT: tuple[float, float] = (10.0, 60.0)
 
 # 언어 순서는 베트남어 -> 미얀마어 -> 네팔어로 고정한다.
 LANGUAGES: tuple[str, str, str] = ("vi", "my", "ne")
