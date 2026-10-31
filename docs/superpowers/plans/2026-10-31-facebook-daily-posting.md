@@ -316,6 +316,8 @@ def test_대학명_소개_맥락만_있으면_통과():
 def test_universities_목록에_없는_대학명을_쓰면_오류():
 def test_용어집_용어가_다르게_표기되면_경고():
     # severity == "warning"
+def test_픽스처_플랜은_findings가_비어_있다():
+    # 실제 glossary.json의 CTA("무료 상담" 포함)가 금지 문구에 걸리지 않음을 고정한다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -330,7 +332,7 @@ CTA 존재는 `glossary["cta"][language]` 문자열이 `body_local` 끝부분에
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_copy.py -v`
-Expected: PASS (7 passed)
+Expected: PASS (8 passed)
 
 - [ ] **Step 5: Commit**
 
@@ -558,7 +560,7 @@ git commit -m "feat(facebook): 예약 실행과 재실행 안전 원장 추가"
 
 **Interfaces:**
 - Consumes: 모든 선행 모듈
-- Produces: `cli.main(argv: list[str]) -> int` — 서브커맨드 `check-token`, `images`, `backtranslate-template`, `validate`, `review`, `schedule`. 전부 `--month YYYY-MM`을 받는다. `schedule`은 기본이 dry-run이고 실제 예약은 `--confirm`이 있어야 한다. 반환값 0=성공, 1=검증 오류, 2=실행 오류.
+- Produces: `cli.main(argv: list[str], *, session=None) -> int`  (`session`이 None이면 그때 `requests`를 지연 임포트해 실제 세션을 만든다 — 테스트는 가짜 세션을 넣는다) — 서브커맨드 `check-token`, `images`, `backtranslate-template`, `validate`, `review`, `schedule`. 전부 `--month YYYY-MM`을 받는다. `schedule`은 기본이 dry-run이고 실제 예약은 `--confirm`이 있어야 한다. 반환값 0=성공, 1=검증 오류, 2=실행 오류.
 
 `images` 서브커맨드는 플랜의 이미지 프롬프트 30개와 저장할 파일명을 그대로 출력한다 — 사업주가 ChatGPT에 붙여넣는 용도다.
 
