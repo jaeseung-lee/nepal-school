@@ -248,6 +248,8 @@ def test_소재마다_세_언어가_vi_my_ne_순서로_있어야_한다():
     # 한 소재의 my 게시물을 빼면 code == "언어누락"
 def test_게시물_수가_3의_배수가_아니면_오류():
 def test_게시일이_하루씩_연속하지_않으면_오류():
+def test_게시일이_plan_month_밖이면_오류():
+    # 2026-11 플랜에 2026-12-01 게시물 → code == "월밖"
 def test_이미지_파일이_없으면_오류():
 def test_이미지가_0바이트면_오류():
 def test_이미지_확장자가_jpg_png가_아니면_오류():
@@ -276,7 +278,7 @@ Expected: FAIL — `ImportError: cannot import name 'validate_structure'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_validate_structure.py -v`
-Expected: PASS (13 passed)
+Expected: PASS (14 passed)
 
 - [ ] **Step 5: Commit**
 
