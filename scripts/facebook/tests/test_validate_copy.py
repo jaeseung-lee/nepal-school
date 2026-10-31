@@ -221,6 +221,10 @@ def test_알파벳_약어는_대소문자를_구분해_낱말로만_찾는다():
     assert vi_codes("전주기전대학 Chúng tôi MOUSE.") == []
     assert vi_codes("전주기전대학 Chúng tôi mou.") == []  # 약어는 대문자로 쓴 것만 약어다
     assert vi_codes("전주기전대학 Chúng tôi ký MOU.") == ["대학맥락"]
+    assert vi_codes("전주기전대학 Chúng tôi ký M O U.") == ["대학맥락"]  # 띄어 쓴 약어
+    assert vi_codes("전주기전대학 Chúng tôi ký M.O.U.") == ["대학맥락"]
+    assert vi_codes("전주기전대학 Chúng tôi ký ＭＯＵ.") == ["대학맥락"]  # 전각
+    assert vi_codes("전주기전대학 Chúng tôi TEAM OUT, I'M OUT.") == []  # 다른 낱말의 일부
     assert vi_codes("전주기전대학 (MOU), chúng tôi.") == ["대학맥락"]
 
     korean = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta("저희는 전주기전대학과 MOU를 체결했습니다.", "ko"))
@@ -501,19 +505,29 @@ def test_대학맥락은_1인칭_주체가_있어야_발화한다():
     ):
         assert "대학맥락" not in codes(sentence), sentence
 
-    # 회사가 스스로를 가리키는 표지(저희·우리·당사·회사명)가 붙을 때만 오류다.
+    # 회사가 스스로를 가리키는 표지(저희·우리·당사·회사명)가 붙을 때만 오류다. 우리는 주어·화제·소유 조사가 붙은 꼴이다.
     for sentence in (
         "저희는 경기대학교와 협력하고 있습니다.",
         "우리는 경기대학교와 협력하고 있습니다.",
+        "우리가 경기대학교와 협력하고 있습니다.",
+        "우리도 경기대학교와 협력하고 있습니다.",
+        "경기대학교와의 협력은 우리의 일입니다.",
+        "경기대학교는 우리를 통해 협력합니다.",
         "당사는 경기대학교와 협력하고 있습니다.",
         "정우인재개발원은 경기대학교와 협력하고 있습니다.",
     ):
         assert "대학맥락" in codes(sentence), sentence
 
-    # 1인칭처럼 보이지만 아닌 낱말: 우리나라, 당사자.
+    # 1인칭처럼 보이지만 아닌 말: 우리나라, 당사자, 해당사항, 담당사원, `우리 나라`·`우리 사회`·`우리 유학생`, 우리은행.
     for sentence in (
         "우리나라의 경기대학교는 산업체와 협력하고 있습니다.",
         "당사자는 경기대학교와 협력하는 기관에 문의합니다.",
+        "해당사항이 없으면 경기대학교 산학협력단에 문의하세요.",
+        "담당사원이 경기대학교 국제협력처를 안내합니다.",
+        "우리 나라의 경기대학교는 산업체와 협력하여 교육합니다.",
+        "우리 유학생들이 경기대학교 산학협력단의 지원을 받습니다.",
+        "경기대학교는 우리 사회와 협력하는 대학입니다.",
+        "우리은행 계좌로 경기대학교 산학협력단 등록금을 납부합니다.",
     ):
         assert "대학맥락" not in codes(sentence), sentence
 
@@ -532,13 +546,13 @@ def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
     cases = {
         "vi": (3, "전주기전대학 hợp tác quốc tế.", [
             "Chúng tôi hợp tác với 전주기전대학.",
-            "Chúng ta hợp tác với 전주기전대학.",
             unicodedata.normalize("NFD", "Chúng tôi") + " hợp tác với 전주기전대학.",
             f"{GLOSSARY['company_name']['vi']} hợp tác với 전주기전대학.",
             "정우인재개발원 hợp tác với 전주기전대학.",
         ]),
         "my": (4, "전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး။", [
             "ကျွန်ုပ်တို့သည် 전주기전대학 နှင့် ပူးပေါင်းသည်။",
+            "ကျွန်ုပ်တို့၏ 전주기전대학 နှင့် ပူးပေါင်းမှု ရှိသည်။",
             "ကျွန်ုပ်\u200bတို့သည် 전주기전대학 နှင့် ပူးပေါင်းသည်။",
             "ကျွန်တော်တို့ 전주기전대학 နှင့် ပူးပေါင်းသည်။",
             "ကျွန်မတို့ 전주기전대학 နှင့် ပူးပေါင်းသည်။",
@@ -563,9 +577,31 @@ def test_대학맥락_1인칭_판정은_네_언어_모두_돈다():
         for sentence in marked:
             assert fired(index, language, sentence), (language, sentence)
 
-    # 한국어 표지(저희)는 현지어 본문의 표지가 아니다. `chúng tan`(그것들이 녹는다)은 `chúng ta`가 아니다.
+    # 한국어 표지(저희)는 현지어 본문의 표지가 아니다. `chúng tan`(그것들이 녹는다)은 `chúng tôi`가 아니다.
     assert not fired(3, "vi", "저희 hợp tác với 전주기전대학.")
     assert not fired(3, "vi", "전주기전대학 chúng tan hợp tác.")
+
+    # 글을 읽는 사람까지 아우르는 `chúng ta`(우리 모두)는 회사가 아니다. 회사를 가리키는 것은 배타적 `chúng tôi`뿐이다.
+    assert not fired(3, "vi", "Chúng ta hãy cùng tìm hiểu chương trình hợp tác của 전주기전대학.")
+
+    # 네팔어: 나라·민족·"우리 모두"를 말하는 `हामी`·`हाम्रो`는 회사가 아니다. 회사가 하는 말(`हामी`, `हाम्रो` + 다른 말)은 그대로 걸린다.
+    for generic in (
+        "हाम्रो देशका विद्यार्थीहरूका लागि 전주기전대학 सहकार्य कार्यक्रम।",
+        "हाम्रा देशका विद्यार्थीका लागि 전주기전대학 सहकार्य कार्यक्रम।",
+        "हामी नेपालीहरूका लागि 전주기전대학 सहकार्य कार्यक्रम।",
+        "हामी सबै 전주기전대학 सहकार्य कार्यक्रम हेर्न सक्छौं।",
+    ):
+        assert not fired(5, "ne", generic), generic
+    assert fired(5, "ne", "हामी नेपालीहरूसँग 전주기전대학 सहकार्य गर्छौं भन्छौं, तर हामी गर्छौं।")
+
+    # 미얀마어: "우리나라"·"우리 미얀마 사람들"을 말하는 대명사는 회사가 아니다.
+    for generic in (
+        "ကျွန်တော်တို့ မြန်မာတွေအတွက် 전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး အစီအစဉ်။",
+        "ကျွန်ုပ်တို့၏ နိုင်ငံရှိ 전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး အစီအစဉ်။",
+        "ကျွန်ုပ်တို့နိုင်ငံက 전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး အစီအစဉ်။",
+        "ကျွန်ုပ်တို့ အားလုံး 전주기전대학 ပူးပေါင်းဆောင်ရွက်ရေး အစီအစဉ်ကို လေ့လာကြပါစို့။",
+    ):
+        assert not fired(4, "my", generic), generic
 
     # 한국어 원문에서만 1인칭이 있으면 항목은 원문 쪽 하나뿐이다. 본문은 본문의 표지로 따로 판정한다.
     plan = _edit(
@@ -600,7 +636,7 @@ def test_1인칭과_관계어휘가_다른_문장이면_발화하지_않는다()
         plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
         return [f.code for f in _check(plan, _real_banned())]
 
-    for end in (".", "!", "?", "。", "\n", "।", "။"):
+    for end in (". ", "!", "?", "。", "\n", "।", "။"):
         assert korean_codes(end) == [], repr(end)
     assert korean_codes(" ") == ["대학맥락"]
 
@@ -614,6 +650,19 @@ def test_1인칭과_관계어휘가_다른_문장이면_발화하지_않는다()
     for case, end in ((ne, "।"), (my, "။")):
         assert local_codes(*case, end) == [], case[1]
         assert local_codes(*case, " ") == ["대학맥락"], case[1]
+
+
+def test_날짜와_주소와_소수의_마침표는_문장을_끊지_않는다():
+    # 마침표는 숫자 뒤가 아니고 뒤에 공백이나 글의 끝이 올 때만 문장 끝이다. 한국어 날짜(`2026. 11. 1.`), 주소(`www.a.kr`),
+    # 소수(`8,028,841.1`) 안에서 끊으면 같은 문장의 1인칭과 관계 어휘가 갈라져 회사의 주장이 사라진다.
+    for sentence in (
+        "저희는 2026. 11. 1.부터 경기대학교와 협력합니다",
+        "저희는 www.kyonggi.ac.kr 의 경기대학교와 협약을 맺었습니다",
+        "저희가 안내하는 경기대학교 등록금은 8,028,841.1원이고 협력 관계는 2026년부터입니다",
+    ):
+        plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=())
+
+        assert "대학맥락" in {f.code for f in _check(plan, _real_banned())}, sentence
 
 
 def test_같은_문장에_1인칭과_관계어휘가_있으면_대학명이_다른_문장에_있어도_발화한다():
@@ -647,6 +696,27 @@ def test_회사명_표지는_용어집의_그_언어_표기를_따른다():
     findings = validate_copy(plan, UNIVERSITIES, _real_banned(), glossary, FACTS)
 
     assert [f.code for f in findings if f.post_index == 3 and f.code == "대학맥락"] == ["대학맥락"]
+
+
+def test_합격을_보장한다는_말은_모든_게시물_구역이_한_번만_잡는다():
+    # `합격을 보장`은 모든 게시물 구역에 있다. 대학명 구역에 또 두면 같은 말에 항목이 둘 생긴다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("저희는 경기대학교 합격을 보장합니다.", "ko"))
+
+    assert [f.code for f in _check(plan, _real_banned())] == ["금지표현"]
+
+
+def test_대학명_구역의_문구는_모든_게시물_구역에_이미_있는_말을_되풀이하지_않는다():
+    banned = _real_banned()
+    for language in LANGS:
+        for phrase in banned[f"{language}:대학명"]:
+            if language == "ko":
+                plan = _edit(_plan(), 0, source_ko=phrase)
+            else:
+                plan = _edit(_plan(), {"vi": 0, "my": 1, "ne": 2}[language], body_local=phrase)
+
+            repeated = [f for f in _check(plan, banned) if f.code == "금지표현"]
+
+            assert repeated == [], f"{language}: '{phrase}'은(는) 모든 게시물 구역이 이미 금지한다"
 
 
 def test_1인칭_없는_협력_대학_표현은_금지표현이_걸린다():
@@ -683,10 +753,9 @@ def test_1인칭_없는_협력_대학_표현은_금지표현이_걸린다():
         "저희는 경기대학교와 연계하여 안내합니다.",
         "저희는 경기대학교 입학을 알선합니다.",
         "저희는 경기대학교와 MOU를 체결했습니다.",
-        "저희는 경기대학교 합격을 보장합니다.",
         "저희는 경기대학교 합격 가능성이 높다고 봅니다.",
     ],
-    ids=["협력-관계", "협력하여", "업무협약", "제휴", "파트너", "연계되어", "연계하여", "알선", "MOU", "합격을-보장", "합격-가능"],
+    ids=["협력-관계", "협력하여", "업무협약", "제휴", "파트너", "연계되어", "연계하여", "알선", "MOU", "합격-가능"],
 )
 def test_약속이나_관계를_말하는_표현은_대학맥락이다(sentence):
     plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"))
@@ -958,7 +1027,11 @@ def test_facts에_없는_키를_인용해도_수치의_출처로_치지_않는�
     assert _brief(_check(plan)) == [(0, "출처없는수치", "warning")]
 
 
-@pytest.mark.parametrize("sentence", ["제1원칙은 안전입니다.", "3원색으로 나타냅니다."], ids=["원칙", "원색"])
+@pytest.mark.parametrize(
+    "sentence",
+    ["제1원칙은 안전입니다.", "3원색으로 나타냅니다.", "2026 원서 접수가 시작됩니다."],
+    ids=["원칙", "원색", "원서"],
+)
 def test_원칙_원색의_원은_금액이_아니다(sentence):
     plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=())
 
