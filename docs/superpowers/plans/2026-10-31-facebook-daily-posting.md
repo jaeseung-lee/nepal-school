@@ -504,7 +504,9 @@ git commit -m "feat(facebook): 한국어 대조 검토 화면 생성 추가"
   - `graph.assert_schedulable(publish_at: datetime, now: datetime) -> None` — 창 밖이면 `GraphError`
   - `graph.schedule_photo_post(token: str, page_id: str, image_path: Path, message: str, publish_at: datetime, *, session) -> str` — 반환값은 생성된 photo/post id
 
-구현 전에 Meta 현행 레퍼런스에서 권한명과 예약 창 상한을 재확인할 것 (스펙 "플랫폼" 절).
+**플랫폼 사실은 이미 확인됐다 — 다시 조사하지 말 것.** Graph API `v26.0`. 본인이 관리하는 페이지에 글을 올리는 데는 App Review가 필요하지 않다. 필요한 권한은 `pages_manage_posts`, `pages_read_engagement`, `pages_show_list` 세 개다. 예약 발행은 `published=false` + `scheduled_publish_time`(유닉스 초)이고 창은 **10분 뒤부터 75일 뒤까지**다. 이 값들은 `config`에 상수로 있다.
+
+`graph.py`는 **모듈 수준에서 `requests`를 import하지 않는다.** 검증 경로(Task 4~7)와 CLI의 비네트워크 서브커맨드가 `requests` 없이도 돌아야 하고, 테스트는 가짜 세션을 넣으므로 `requests`를 필요로 하지 않는다. 타입 힌트가 필요하면 문자열 주석으로 쓴다.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -519,6 +521,8 @@ def test_schedule_photo_post가_published_false와_scheduled_publish_time을_보
     # 가짜 session이 받은 payload를 검사. published == False, 유닉스 초
 def test_API가_오류를_주면_GraphError에_한국어_설명():
 def test_토큰_값이_예외_메시지에_들어가지_않는다():
+def test_graph는_requests를_모듈_수준에서_import하지_않는다():
+    # sys.modules에서 requests를 지운 뒤 importlib.reload(graph)가 성공한다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -533,7 +537,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.graph'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_graph.py -v`
-Expected: PASS (9 passed)
+Expected: PASS (10 passed)
 
 - [ ] **Step 5: Commit**
 
@@ -551,13 +555,15 @@ git commit -m "feat(facebook): Graph API 클라이언트와 토큰 점검 추가
 - Create: `scripts/facebook/tests/test_schedule.py`
 
 **Interfaces:**
-- Consumes: `graph.schedule_photo_post`, `graph.assert_schedulable`, `plan_model.Plan`
+- Consumes: `graph.schedule_photo_post`, `graph.assert_schedulable`, `plan_model.Plan`, `findings.Finding`
 - Produces:
   - `schedule.Outcome` — frozen dataclass: `index: int`, `ok: bool`, `post_id: str | None`, `error: str | None`
   - `schedule.load_ledger(path: Path) -> dict[int, str]` — 이미 예약된 index → post_id
-  - `schedule.run(plan: Plan, images_dir: Path, ledger_path: Path, *, token: str, session, now: datetime, dry_run: bool) -> list[Outcome]`
+  - `schedule.run(plan: Plan, findings: list[Finding], images_dir: Path, ledger_path: Path, *, token: str, session, now: datetime, dry_run: bool) -> list[Outcome]` — `findings`에 severity `"error"`가 하나라도 있으면 **아무것도 호출하지 않고** 한국어 `ValueError`를 낸다. `dry_run`일 때도 그렇다.
 
-`ledger_path`는 `output/facebook/YYYY-MM/scheduled.json`. 한 건 성공할 때마다 즉시 기록한다 — 도중에 끊겨도 다음 실행이 이어받는다.
+`ledger_path`는 `config.month_dir(month) / "scheduled.json"`. 한 건 성공할 때마다 즉시 기록한다 — 도중에 끊겨도 다음 실행이 이어받는다.
+
+`findings` 인자는 장식이 아니라 **구조적 관문**이다. 검증을 통과하지 않은 플랜이 발행되는 경로가 있으면 Task 4~7의 검사 전부가 선택 사항이 된다. 시그니처가 findings를 요구하면 호출자가 검증을 건너뛴 사실이 코드에 드러난다. 경고(warning)는 막지 않는다 — 설계대로다.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -570,6 +576,8 @@ def test_이미_원장에_있는_index는_건너뛴다():
 def test_일부_실패해도_나머지를_계속_시도한다():
 def test_예약창_밖인_게시물은_호출하지_않고_실패로_기록된다():
 def test_원장이_없으면_빈_dict():
+def test_오류_finding이_있으면_아무것도_호출하지_않고_ValueError():
+    # dry_run=True일 때도 그렇다. 경고만 있으면 정상 진행한다
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -584,7 +592,7 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'facebook.schedule'`
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/test_schedule.py -v`
-Expected: PASS (6 passed)
+Expected: PASS (7 passed)
 
 - [ ] **Step 5: Commit**
 
@@ -627,6 +635,8 @@ npm 스크립트: `fb:check-token`, `fb:images`, `fb:validate`, `fb:review`, `fb
 ```python
 def test_validate_오류가_있으면_종료코드_1():
 def test_schedule은_confirm_없이는_dry_run이다():
+def test_schedule은_검증_오류가_있으면_종료코드_1로_멈춘다():
+    # 모든 검증기를 먼저 돌려 그 findings를 schedule.run에 넘긴다. 가짜 session은 호출되지 않는다
     # 가짜 session이 한 번도 호출되지 않는다
 def test_알_수_없는_서브커맨드는_종료코드_2와_한국어_메시지():
 def test_month_인자가_없으면_오류():
