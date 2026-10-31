@@ -21,8 +21,9 @@
   치지 않는다.
 - **칠하는 원문은 `validate_backtranslation`이 재는 원문과 같다.** 되번역 워크시트는 끝의 승인된 상담 문구(CTA)를 떼고
   나가므로 되번역에는 CTA가 없다. 원문의 CTA까지 견주면 모든 게시물 끝에 늘 같은 표시가 생겨 "표시가 있다"가 아무것도
-  알려 주지 못한다. `cta_ko`를 받으면 `backtranslation.comparison_source`(CTA 떼기 규칙이 있는 유일한 곳)로 같은 방식으로
-  떼고, 떼어 낸 꼬리는 글자 그대로 회색으로 보여 준다. **호출하는 쪽은 `cta_ko`를 넘겨야 한다** — 안 넘기면 CTA도 견준다.
+  알려 주지 못한다. `backtranslation.comparison_source`(CTA 떼기 규칙이 있는 유일한 곳)로 같은 방식으로 떼고, 떼어 낸
+  꼬리는 글자 그대로 회색으로 보여 준다. **`cta_ko`는 필수 키워드 인자이고 기본값이 없다.** 기본값이 있으면 빼먹은
+  호출이 조용히 CTA를 되번역과 견주어 강조가 아무것도 알려 주지 못하게 된다 — 검사가 스스로 꺼지는 것이다.
 - **차이값은 받은 것을 그대로 보여 준다.** `render`는 `divergence`를 계산하지 않는다. 숫자가 `validate_backtranslation`의
   경고문과 어긋나지 않게 `backtranslation.divergences`가 한 곳에서 잰다. 값에 따라 색을 달리하지도 않는다 — 낮은 값을
   초록으로 칠하면 "읽지 않아도 된다"는 신호가 되는데, 위의 측정이 바로 그 신호가 틀렸음을 보였다.
@@ -169,15 +170,9 @@ _HOWTO = """<aside class="howto">
 <li><strong>금액</strong>·기간·시간·날짜·인원이 바뀐 곳</li>
 <li>원문에 없는 <strong>약속</strong>·보장·조건이 덧붙은 곳, 원문에 있던 단서(‘평균’, ‘~일 수 있습니다’)가 빠진 곳</li>
 </ul>
-<p><mark class="diff">노란 표시</mark>는 <strong>두 한국어 단에서 서로 다른 낱말</strong>입니다. 원문 쪽은 되번역에 없거나 바뀐 낱말, 되번역 쪽은 원문에 없거나 바뀐 낱말입니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 먼저 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다.{cta_note}</p>
+<p><mark class="diff">노란 표시</mark>는 <strong>두 한국어 단에서 서로 다른 낱말</strong>입니다. 원문 쪽은 되번역에 없거나 바뀐 낱말, 되번역 쪽은 원문에 없거나 바뀐 낱말입니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 먼저 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다. 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다.</p>
 <p class="caveat">‘글자 차이’ 숫자는 두 한국어 글의 글자 유사도일 뿐 뜻을 재지 않습니다. 부정이 뒤집히거나 금액이 바뀌어도 낮게 나오고, 뜻이 같은 의역도 높게 나옵니다. 숫자가 낮다는 것은 읽지 않아도 되는 근거가 아닙니다.</p>
 </aside>"""
-
-_HOWTO_CTA_NOTE = " 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다."
-
-
-def _howto(has_cta: bool) -> str:
-    return _HOWTO.replace("{cta_note}", _HOWTO_CTA_NOTE if has_cta else "")
 
 
 def _e(value: object) -> str:
@@ -362,10 +357,10 @@ def _card(
     back_text: str | None,
     gap: float | None,
     images_dir: Path,
-    cta_ko: str | None,
+    cta_ko: str,
 ) -> str:
     # 견주는 원문은 `validate_backtranslation`이 재는 원문과 같다. 떼어 낸 CTA 꼬리는 칠하지 않고 그대로 보여 준다.
-    compared = post.source_ko if cta_ko is None else comparison_source(post.source_ko, cta_ko)
+    compared = comparison_source(post.source_ko, cta_ko)
     tail = post.source_ko[len(compared):]
     if _is_blank(back_text):  # 견줄 되번역이 없으면 칠할 것도 없다
         source_html, back_html = _e(compared), ""
@@ -412,7 +407,7 @@ def render(
     divergences: dict[int, float],
     images_dir: Path,
     *,
-    cta_ko: str | None = None,
+    cta_ko: str,
 ) -> str:
     """검토 화면의 완결된 HTML 문서를 문자열로 돌려준다. 파일을 읽거나 쓰지 않는다.
 
@@ -421,17 +416,19 @@ def render(
     **다시 재지 않고** 받은 값을 보여 준다. 되번역이 없거나 비어 있어 `divergences`에 번호가 없는 게시물은 0이 아니라
     "측정하지 않음"으로 보인다.
 
-    `cta_ko`는 용어집의 한국어 CTA(`glossary["cta"]["ko"]`)다. **넘기면** 낱말 강조가 `validate_backtranslation`과 같은
-    원문(끝의 CTA를 뗀 것)을 되번역과 견주고 떼어 낸 꼬리는 칠하지 않는다. **안 넘기면** CTA까지 견주어, 되번역에 없는
-    CTA가 모든 게시물 끝에 칠해진다. 비어 있는 값은 `ValueError` — 빈 CTA는 원문 전체를 "꼬리"로 만들어 강조를 조용히 끈다.
+    `cta_ko`는 용어집의 한국어 CTA(`glossary["cta"]["ko"]`)이고 **반드시 넘겨야 한다**(키워드 전용, 기본값 없음 —
+    빼먹으면 `TypeError`). 낱말 강조가 `validate_backtranslation`과 같은 원문(끝의 CTA를 뗀 것)을 되번역과 견주고 떼어 낸
+    꼬리는 칠하지 않고 회색으로 보여 준다. 기본값이 없는 까닭: 있다면 빼먹은 호출이 조용히 CTA를 견주어 되번역에 없는
+    CTA가 모든 게시물 끝에 칠해진다. 문자열이 아니거나 비어 있는 값(`None` 포함)은 `ValueError` — 빈 CTA는 원문 전체를
+    "꼬리"로 만들어 강조를 조용히 끈다.
 
     게시물은 게시 시각 순으로(같으면 번호 순으로) 놓는다. `images_dir`는 `<달 폴더>/images`로, 이미지의 `src`는
     그 부모(HTML이 놓일 달 폴더) 기준 상대 경로다.
     """
-    if cta_ko is not None and not (isinstance(cta_ko, str) and cta_ko.strip()):
+    if not (isinstance(cta_ko, str) and cta_ko.strip()):
         raise ValueError(
-            f"cta_ko가 비어 있습니다 (받은 값: {cta_ko!r}). 빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 강조가 조용히 "
-            f"꺼집니다. 용어집의 cta.ko를 넘기거나, CTA를 견주려면 아예 넘기지 마세요."
+            f"cta_ko가 비어 있거나 문자열이 아닙니다 (받은 값: {cta_ko!r}). 빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 "
+            f"강조가 조용히 꺼집니다. 용어집의 cta.ko를 넘기세요."
         )
     titles = {topic.topic_id: topic.title_ko for topic in plan.topics}
     by_post: dict[int | None, list[Finding]] = {}
@@ -460,7 +457,7 @@ def render(
         f"<title>페이스북 게시물 검토 {month}</title>\n<style>{_STYLE}</style>\n</head>\n<body>\n"
         f'<header class="page-head"><h1>페이스북 게시물 검토 <span class="month">{month}</span></h1>'
         f'<p class="meta">게시물 {len(plan.posts)}건 · 게시일 순</p></header>\n'
-        f"<main>\n{_howto(cta_ko is not None)}\n"
+        f"<main>\n{_HOWTO}\n"
         f"{_summary(findings, {post.index for post in plan.posts})}\n"
         f'<section id="posts">\n{cards}\n</section>\n</main>\n</body>\n</html>\n'
     )

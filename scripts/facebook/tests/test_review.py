@@ -33,6 +33,9 @@ from facebook.review import render
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
 IMAGES_DIR = Path("output/facebook/2026-11/images")  # 이미지가 실제로 있을 필요는 없다. render는 파일을 열지 않는다.
 
+# 용어집의 한국어 CTA(`cta.ko`)와 같은 문구. 픽스처의 원문이 이것으로 끝난다.
+CTA = "상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요."
+
 # 6개 게시물에 서로 다른, 글자에서 나올 수 없는 차이값(되번역이 원문과 똑같아도 이 값이 나와야 한다).
 GAPS = {0: 0.07, 1: 0.20, 2: 0.33, 3: 0.46, 4: 0.59, 5: 0.72}
 
@@ -137,6 +140,7 @@ def _back(plan: Plan) -> dict[int, str]:
 
 def _output(plan=None, findings=(), back=None, gaps=None, images_dir=IMAGES_DIR, **render_kwargs) -> str:
     plan = _plan() if plan is None else plan
+    render_kwargs.setdefault("cta_ko", CTA)  # `render`는 `cta_ko`를 반드시 받는다. 시험 입력은 보통의 CTA를 넘긴다.
     return render(
         plan, list(findings), _back(plan) if back is None else back, dict(GAPS) if gaps is None else gaps, images_dir,
         **render_kwargs,
@@ -826,7 +830,7 @@ def test_입력을_바꾸지_않는다():
     back, gaps = _back(plan), dict(GAPS)
     before = (list(findings), dict(back), dict(gaps))
 
-    render(plan, findings, back, gaps, IMAGES_DIR)
+    render(plan, findings, back, gaps, IMAGES_DIR, cta_ko=CTA)
 
     assert (findings, back, gaps) == before
 
@@ -834,7 +838,7 @@ def test_입력을_바꾸지_않는다():
 def test_시그니처가_계약과_같다():
     parameters = inspect.signature(render).parameters
     assert list(parameters) == ["plan", "findings", "back", "divergences", "images_dir", "cta_ko"]
-    assert parameters["cta_ko"].kind is inspect.Parameter.KEYWORD_ONLY and parameters["cta_ko"].default is None
+    assert parameters["cta_ko"].kind is inspect.Parameter.KEYWORD_ONLY and parameters["cta_ko"].default is inspect.Parameter.empty
     assert config.LANGUAGES == ("vi", "my", "ne")  # 언어 이름 표가 이 세 언어를 모두 덮는지 아래에서 본다
     assert set(review._LANGUAGE_NAMES) >= set(config.LANGUAGES)
 
@@ -973,9 +977,10 @@ def test_강조해도_원문_글자와_줄바꿈이_그대로다():
 
 
 def test_여러_낱말에_걸친_강조는_사이의_줄바꿈도_한_표시_안에_둔다():
-    card = _diff_card("앞입니다.\n\n빠진 문단\n\n입니다 뒤.", "앞입니다. 입니다 뒤.")
+    card = _diff_card("앞입니다.\n\n빠진\n문단  둘\n\n입니다 뒤.", "앞입니다. 입니다 뒤.")
 
-    assert _marks(_col(card, "source")) == [("빠진 문단", "delete")]
+    # 구간 안의 줄바꿈과 겹친 공백은 그대로다(낱말마다 끊기거나 한 칸으로 접히지 않는다).
+    assert _marks(_col(card, "source")) == [("빠진\n문단  둘", "delete")]
 
 
 def test_강조_안의_글자도_이스케이프된다():
@@ -1024,9 +1029,7 @@ def test_표시가_무엇인지_안내한다():
 # --- 강조와 CTA ---------------------------------------------------------------
 # 되번역 워크시트는 끝의 승인된 상담 문구(CTA)를 떼고 나가므로 되번역에는 CTA가 없다. 원문의 CTA를 되번역과 견주면
 # 모든 게시물의 끝에 늘 같은 표시가 생겨 "표시가 있다"가 아무것도 알려 주지 못한다. `validate_backtranslation`이 원문에서
-# CTA를 떼고 재는 것과 같은 규칙(`backtranslation.comparison_source`)으로 뗀다.
-
-CTA = "상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요."
+# CTA를 떼고 재는 것과 같은 규칙(`backtranslation.comparison_source`)으로 뗀다. 그래서 `render`는 `cta_ko`를 반드시 받는다.
 
 
 def test_cta_ko를_주면_원문_끝의_CTA는_강조하지_않는다():
@@ -1039,13 +1042,24 @@ def test_cta_ko를_주면_원문_끝의_CTA는_강조하지_않는다():
     assert _col(card, "source").find(class_="cta").text() == f"\n\n{CTA}"
 
 
-def test_cta_ko를_안_주면_원문의_CTA도_견준다():
-    # 호출하는 쪽이 CTA를 넘기지 않았을 때의 모습이다. 숨기지 않고 보인다.
-    body = "비자는 신청할 수 있습니다."
+def test_cta_ko_없이는_render를_부를_수_없다():
+    # `cta_ko`에 기본값이 없는 까닭을 코드로 적어 둔다. 기본값(예: None)이 있으면 CTA를 넘기는 것을 잊은 호출이 아무
+    # 오류 없이 돌아가고, 그때 강조는 되번역에 없는 CTA를 모든 게시물 끝에서 칠한다 — "표시가 있다"가 아무것도 알려 주지
+    # 못하게 되는데도 아무도 알아채지 못한다. 검사가 조용히 꺼지는 것이다. 빼먹은 호출이 `TypeError`로 멈추는 것이
+    # 이 파이프라인이 원하는 방향이다. (TypeError 자체가 흥미로운 것이 아니라 이 규칙을 시험으로 말해 두려는 것이다.)
+    plan = _plan()
+    args = (plan, [], _back(plan), dict(GAPS), IMAGES_DIR)
 
-    card = _diff_card(f"{body}\n\n{CTA}", body)
+    with pytest.raises(TypeError) as info:
+        render(*args)
+    assert "cta_ko" in str(info.value)
 
-    assert _marks(_col(card, "source")) == [(CTA, "delete")]
+    with pytest.raises(TypeError):
+        render(*args, CTA)  # 키워드 전용이라 자리로도 넘길 수 없다
+
+    parameter = inspect.signature(render).parameters["cta_ko"]
+    assert parameter.kind is inspect.Parameter.KEYWORD_ONLY and parameter.default is inspect.Parameter.empty
+    assert "<html" in render(*args, cta_ko=CTA)  # 넘기면 된다
 
 
 def test_CTA를_떼고도_본문의_다른_낱말은_강조한다():
@@ -1075,22 +1089,23 @@ def test_되번역에_CTA가_적혀_있으면_되번역_쪽에서_강조된다()
     assert _marks(_col(card, "back")) == [(CTA, "insert")]
 
 
-@pytest.mark.parametrize("blank", ["", "  \n", 5], ids=["빈문자열", "공백", "문자열아님"])
+@pytest.mark.parametrize("blank", ["", "  \n", 5, None], ids=["빈문자열", "공백", "문자열아님", "None"])
 def test_cta_ko가_비어_있으면_ValueError(blank):
-    # 빈 CTA는 "끝이 같은가"가 늘 참이라 원문 전체가 떼어 낼 꼬리가 되어 강조가 조용히 꺼진다.
+    # 빈 CTA는 "끝이 같은가"가 늘 참이라 원문 전체가 떼어 낼 꼬리가 되어 강조가 조용히 꺼진다. `None`을 명시해서
+    # 넘기는 것도 기본값을 둔 것과 같으므로 받아들이지 않는다.
     with pytest.raises(ValueError) as info:
         _output(cta_ko=blank)
 
     assert "cta_ko" in str(info.value)
 
 
-def test_cta_ko를_안_줘도_렌더된다_기본은_None():
-    assert "<mark" in _output()  # 기본 입력은 되번역이 원문과 달라 표시가 있다
+def test_안내가_회색_상담_문구를_설명한다():
+    assert "회색" in _doc().find(class_="howto").text()
 
 
-def test_안내는_cta_ko를_받았을_때만_회색_상담_문구를_설명한다():
-    assert "회색" in _doc(cta_ko=CTA).find(class_="howto").text()
-    assert "회색" not in _doc().find(class_="howto").text()
+def test_픽스처의_원문은_이_시험의_CTA로_끝난다():
+    # 기본 시험 입력(`_output`)이 실제 용어집 CTA와 같은 문구를 넘기므로, 이 전제가 깨지면 아래 시험들이 다른 경로를 탄다.
+    assert all(post.source_ko.endswith("\n\n" + CTA) for post in _plan().posts)
 
 
 def test_CTA_꼬리가_없으면_cta_표시도_없다():
@@ -1163,10 +1178,10 @@ def _assert_nothing_injected(output: str) -> None:
 @pytest.mark.parametrize(
     "source, back, cta_ko, where",
     [
-        (f"앞 {PROBE} 뒤 가", f"앞 {PROBE} 뒤 나", None, "표시보다 앞"),
-        (f"가 앞 {PROBE} 뒤", f"나 앞 {PROBE} 뒤", None, "마지막 표시 뒤"),
-        (f"앞 {PROBE} 뒤", f"앞 {PROBE} 뒤", None, "표시가 하나도 없음"),
-        (f"앞 {PROBE} 뒤", None, None, "되번역이 없음"),
+        (f"앞 {PROBE} 뒤 가", f"앞 {PROBE} 뒤 나", CTA, "표시보다 앞"),
+        (f"가 앞 {PROBE} 뒤", f"나 앞 {PROBE} 뒤", CTA, "마지막 표시 뒤"),
+        (f"앞 {PROBE} 뒤", f"앞 {PROBE} 뒤", CTA, "표시가 하나도 없음"),
+        (f"앞 {PROBE} 뒤", None, CTA, "되번역이 없음"),
         (f"본문입니다.\n\n{PROBE}", "본문입니다.", PROBE, "떼어 낸 CTA 꼬리"),
     ],
     ids=["표시앞", "표시뒤", "표시없음", "되번역없음", "CTA꼬리"],
