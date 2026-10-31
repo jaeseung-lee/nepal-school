@@ -69,9 +69,46 @@ def test_facts_파일이_로드된다():
     assert facts, "facts.json이 비어 있다"
 
 
+def test_유효기한_실패_안내는_고장이_아니라_갱신하라고_말한다():
+    """등록금 사실 11건의 `expires_on`이 모두 2027-02-28이다(직접 셈: 사실 15건 가운데 11건이 그날, 4건이 2027-10-31). 그날이 지나면 **코드를 하나도 고치지 않아도**
+    정규 명령이 빨개진다. 유효기한 장치 자체는 옳다 — 사실은 늙고, 늙은 수치가 아무도 읽지 못하는 현지어로
+    나가는 것이 이 도구의 최우선 안티골이다.
+
+    문제는 그때 운영자가 받는 **말**이다. 문서 §5-6(「도구 자체가 고장 난 것 같다」)이 "하나라도 실패하면 그
+    출력을 그대로 개발자에게 보여 주고 예약은 하지 마세요"로 보내므로, 운영자가 보는 그림은 "도구가 고장
+    났다"이고 실제 상황은 "등록금 공시를 갱신할 때가 됐다"다. 1인 운영에 보여 줄 개발자는 없다.
+
+    그래서 실패 메시지가 **무엇이 만료됐는지와 무엇을 하면 되는지**를 말하는지 본다. 문서 쪽 짝은
+    `tests/test_cli.py`가 못박는다.
+    """
+    message = _expired_message({"tuition_kyonggi": date(2027, 2, 28)})
+    assert "tuition_kyonggi" in message and "2027-02-28" in message  # 무엇이 만료됐는지
+    for needle in ("도구가 고장 난 것이 아닙니다", "다시 확인", "expires_on", "예약하지 마세요"):
+        assert needle in message, needle
+
+
+def _expired_message(expired: dict[str, date]) -> str:
+    """유효기한이 지난 사실 때문에 이 묶음이 빨개질 때 운영자가 읽는 글.
+
+    "도구가 고장 났다"가 아니라 "사실이 늙었다"로 읽혀야 한다. 첫 건에서 멈추지 않고 만료된 사실을 전부
+    대는 것도 같은 이유다 — 열두 건을 한 건씩 열두 번 만나게 하지 않는다.
+    """
+    what = ", ".join(f"{key}(expires_on {day.isoformat()})" for key, day in sorted(expired.items()))
+    return (
+        f"유효기한이 지난 사실 {len(expired)}건: {what}. "
+        f"**사실의 유효기간이 지난 것이고 도구가 고장 난 것이 아닙니다.** 1차 출처에서 그 수치를 다시 확인해 "
+        f"output/facebook/facts.json의 값과 expires_on을 갱신하세요. 갱신하기 전에는 그 사실을 쓴 게시물을 "
+        f"예약하지 마세요."
+    )
+
+
 def test_모든_사실이_오늘_유효하다():
-    for key, f in load_facts(config.FACTS_PATH).items():
-        assert f.is_valid_on(date.today()), f"{key} 유효기한 지남"
+    expired = {
+        key: f.expires_on
+        for key, f in load_facts(config.FACTS_PATH).items()
+        if not f.is_valid_on(date.today())
+    }
+    assert not expired, _expired_message(expired)
 
 
 def test_모든_출처가_1차_출처_호스트다():
