@@ -16,7 +16,8 @@
    원문과 같은지 보고, 되번역이 한국어 원문에서 글자로 얼마나 벌어졌는지 잰다.
 4. `divergences(plan, back, glossary)`: 검토 화면이 보여 줄 `{게시물 번호: 차이값}`을 낸다. `validate_backtranslation`이
    경고문에 적는 값과 같은 길(같은 CTA 떼기)로 재서, 화면의 숫자와 경고문의 숫자가 어긋나지 않게 한다.
-   `comparison_source(source_ko, cta_ko)`는 그 CTA 떼기 규칙이 있는 유일한 곳이고, 검토 화면의 낱말 강조도 쓴다.
+   `comparison_source(source_ko, cta_ko)`는 그 CTA 떼기 규칙이 있는 유일한 곳이고, `is_blank(text)`는 빈 되번역의 판정이
+   있는 유일한 곳이다. 둘 다 검토 화면의 낱말 강조와 빈칸 표시도 쓴다.
 
 **뜻이 옳은지는 여기서 판단하지 않는다.** 검토 화면에서 사람이 한국어 원문과 되번역을 나란히 놓고 읽는다.
 여기서 내는 `divergence`는 글자 유사도일 뿐이다. 그래서 다음은 못 잡는다 — 한 낱말의 부정이 뒤집히는 것,
@@ -128,6 +129,10 @@ def comparison_source(source_ko: str, cta_ko: str) -> str:
     (검토 화면이 보여 주는 차이값), 검토 화면의 낱말 강조가 모두 이것으로 "되번역과 견줄 원문"을 얻는다. 어느 하나가 따로
     떼면 화면이 검증기와 다른 값을 말하게 되어 화면이 무의미해진다. 떼고 남은 것이 빈 문자열인 것(원문이 CTA뿐)과 떼지
     못한 것(원문 통째로)은 다르다 — 그래서 `None`을 `is`로 가른다. 되번역에서는 아무것도 떼지 않는다.
+
+    **전제: `cta_ko`가 비어 있지 않아야 한다.** 이 함수는 확인하지 않는다. 빈 문자열은 모든 글이 "끝난다"고 보아 원문 전체를
+    떼어 낸 것이 되므로 호출하는 쪽의 비교(차이값·숫자·낱말 강조)가 조용히 꺼진다. 세 호출자가 각자 넘기기 전에 막는다:
+    `validate_backtranslation`·`divergences`는 `_require_cta`로, 검토 화면은 `render`의 `cta_ko` 검사로.
     """
     stripped = _strip_cta(source_ko, cta_ko)
     return source_ko if stripped is None else stripped
@@ -292,6 +297,16 @@ def _comparable(text: str) -> str:
     return _normalize("".join(ch for ch in unicodedata.normalize("NFC", text) if not _is_dropped(ch)))
 
 
+def is_blank(text: str) -> bool:
+    """`text`가 비었는지: 글자·숫자가 하나도 없고 공백, 문장부호, 보이지 않는 서식 문자뿐이면 참.
+
+    **빈 되번역의 판정은 이 함수 한 곳이다.** `validate_backtranslation`(`역번역빈칸`), `divergences`(키를 넣지 않음),
+    검토 화면(칸에 "비어 있습니다")이 모두 이것으로 정한다. 화면이 공백만 빈 것으로 보면 `. . .`가 칸에는 보통 글로 나오고
+    차이값 줄에는 "비어 있음"이 떠서 한 카드의 두 줄이 서로 모순된다.
+    """
+    return not _comparable(text)
+
+
 def divergence(source_ko: str, back_ko: str) -> float:
     """두 한국어 글이 글자로 얼마나 다른지: 0.0(같음)부터 1.0(하나도 겹치지 않음)까지.
 
@@ -371,7 +386,7 @@ def divergences(plan: Plan, back: dict[int, str], glossary: dict) -> dict[int, f
     measured: dict[int, float] = {}
     for post in plan.posts:
         text = back.get(post.index)
-        if text is None or not _comparable(text):
+        if text is None or is_blank(text):
             continue
         measured[post.index] = divergence(comparison_source(post.source_ko, cta_ko), text)
     return measured
@@ -415,15 +430,14 @@ def validate_backtranslation(
                 f"back_ko를 채우세요. 역번역이 없으면 현지어 본문이 한국어 원문과 같은 뜻인지 사람이 볼 수 없습니다.",
             ))
             continue
-        comparable = _comparable(text)
-        if not comparable:
+        if is_blank(text):
             findings.append(_error(
                 "역번역빈칸", post.index,
                 f"게시물 {post.index}번의 back_ko가 비어 있습니다. 현지어 본문(body_local)을 한국어로 되번역해 "
                 f"채우세요. 공백이나 문장부호뿐인 값도 비어 있는 것으로 봅니다.",
             ))
             continue
-        comparable_back[post.index] = comparable
+        comparable_back[post.index] = _comparable(text)
 
         source = comparison_source(post.source_ko, cta_ko)
 

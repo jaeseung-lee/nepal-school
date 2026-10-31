@@ -328,11 +328,13 @@ _FIRST_PERSON = {
 # 마침표는 숫자 뒤가 아니고 뒤에 공백이나 글의 끝이 올 때만이다 — 한국어 날짜(`2026. 11. 1.부터`), 주소(`www.a.kr`),
 # 소수(`8,028,841.1`) 안에서 끊으면 같은 문장의 1인칭과 관계 어휘가 갈라진다.
 # 정규화(`_compact`)는 줄바꿈을 지우므로 문장은 정규화 **전에** 가른다.
-_SENTENCE_END = re.compile(r"(?:(?<!\d)\.(?=\s|$)|[!?。\n।။])+")
+# 공개 이름이다: 검토 화면(`review`)이 강조 표시를 문장 끝에서 끊을 때 같은 것을 쓴다. 문장이 무엇인지에 대한 판단이
+# 두 모듈에서 어긋나면 안 되고, 밑줄 이름을 모듈 사이로 가져오지 않는다.
+SENTENCE_END = re.compile(r"(?:(?<!\d)\.(?=\s|$)|[!?。\n।။])+")
 
 
 def _sentences(text: str) -> list[str]:
-    return [sentence for sentence in _SENTENCE_END.split(text) if sentence.strip()]
+    return [sentence for sentence in SENTENCE_END.split(text) if sentence.strip()]
 
 
 def _first_person_marker(text: str, language: str, glossary: dict) -> str | None:

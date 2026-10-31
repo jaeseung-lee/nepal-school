@@ -29,6 +29,7 @@ from facebook import backtranslation, config, review
 from facebook.findings import Finding
 from facebook.plan_model import Plan, load_plan
 from facebook.review import render
+from facebook.validate_copy import SENTENCE_END
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
 IMAGES_DIR = Path("output/facebook/2026-11/images")  # 이미지가 실제로 있을 필요는 없다. render는 파일을 열지 않는다.
@@ -125,6 +126,32 @@ def _parse(output: str) -> _Node:
     builder.close()
     assert builder.current is builder.root, f"닫히지 않은 태그가 있다: <{builder.current.tag}>"
     return builder.root
+
+
+def _css_rule(style: str, selector: str) -> dict[str, str]:
+    """`selector {…}` 규칙 하나의 선언을 {속성: 값}으로. `@media` 안의 규칙은 보지 않는다(최상위만).
+
+    스타일시트에만 있는 요구(열 너비, 글꼴, 표시의 모양)를 글자 그대로가 아니라 선언의 뜻으로 읽으려는 작은 도우미다.
+    """
+    top_level = re.sub(r"@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}", "", style)  # 중첩된 @media 블록을 걷어 낸다
+    matches = [m for m in re.finditer(r"(?m)^%s\s*\{([^}]*)\}" % re.escape(selector), top_level)]
+    assert len(matches) == 1, f"규칙 '{selector}'가 {len(matches)}개 있다(하나여야 한다)"
+    declarations = {}
+    for declaration in matches[0].group(1).split(";"):
+        name, colon, value = declaration.partition(":")
+        if colon:
+            declarations[name.strip()] = " ".join(value.split())
+    return declarations
+
+
+def _equal_tracks(value: str) -> int:
+    """`grid-template-columns` 값이 같은 크기의 열 몇 개인지. `repeat(3, …)`와 `1fr 1fr 1fr`을 모두 읽는다. 다르면 0."""
+    value = " ".join(value.split())
+    repeated = re.fullmatch(r"repeat\((\d+),\s*(.+)\)", value)
+    if repeated:
+        return int(repeated.group(1))
+    tracks = re.findall(r"minmax\([^)]*\)|\S+", value)
+    return len(tracks) if len(set(tracks)) == 1 else 0
 
 
 # --- 입력을 만드는 도우미 ---------------------------------------------------------
@@ -237,10 +264,11 @@ def test_한국어_원문과_되번역은_서로_붙어_있고_현지어_본문�
 
 
 def test_세_단은_같은_너비다():
-    output = _output()
-    doc = _parse(output)
+    doc = _parse(_output())
 
-    assert "grid-template-columns: repeat(3, minmax(0, 1fr))" in doc.find("style").text()
+    # 같은 너비라는 요구는 스타일시트에만 있다. `.cols`의 열 목록이 같은 크기의 세 열인지를 읽는다.
+    columns = _css_rule(doc.find("style").text(), ".cols")["grid-template-columns"]
+    assert _equal_tracks(columns) == 3
     for card in _cards(doc):
         assert len(card.find_all(class_="col")) == 3
 
@@ -285,7 +313,7 @@ def test_게시일_순서는_글자가_아니라_시각으로_정한다():
     assert zero.publish_at.isoformat() > one.publish_at.isoformat()  # 이 전제가 이 테스트의 뜻이다
     plan = dataclasses.replace(base, posts=(one, zero))
 
-    doc = _doc(plan, back=_back(plan))
+    doc = _doc(plan, back=_back(plan), gaps={0: 0.1, 1: 0.2})
 
     assert [card.attrs["id"] for card in _cards(doc)] == ["post-0", "post-1"]
 
@@ -542,15 +570,72 @@ def test_차이값은_소수_둘째_자리까지_적는다():
     assert "0.50" in shown[0] and "0.12" in shown[1] and "0.00" in shown[2] and "1.00" in shown[3]
 
 
-def test_차이값이_없는_게시물은_측정하지_않았다고_적고_숫자를_내지_않는다():
-    # 되번역이 없거나 비어 있으면 `divergences`가 키를 넣지 않는다. 0.00(같음)이나 1.00(최악)으로 읽히면 안 된다.
+@pytest.mark.parametrize("blank", [None, "", "  \n", ". . .", "。"], ids=["없음", "빈문자열", "공백", "마침표만", "문장부호만"])
+def test_되번역이_없거나_비어_있으면_측정하지_않았다고_적고_숫자를_내지_않는다(blank):
+    # 이 경우 `divergences`는 키를 넣지 않는다. 0.00(같음)이나 1.00(최악)으로 읽히면 안 된다. 같은 카드의 되번역 칸도
+    # 비어 있다고 말하므로 두 줄이 서로 맞는다.
+    plan = _plan()
+    back = {i: t for i, t in _back(plan).items() if i != 2}
+    if blank is not None:
+        back[2] = blank
     gaps = {i: v for i, v in GAPS.items() if i != 2}
 
-    doc = _doc(gaps=gaps)
+    card = _card(_doc(plan, back=back, gaps=gaps), 2)
 
-    shown = _card(doc, 2).find(data_role="divergence").text()
-    assert "측정하지 않음" in shown
+    shown = card.find(data_role="divergence").text()
+    assert "측정하지 않음" in shown and "되번역이 없거나 비어 있음" in shown
     assert not any(ch.isdigit() for ch in shown)
+    assert "missing" in _col(card, "back").find(data_role="text").attrs["class"].split()  # 칸도 같은 말을 한다
+
+
+def test_측정값이_없는_이유를_단정하지_않는다():
+    # `_divergence`는 번호가 `divergences`에 없다는 것만 안다. 되번역이 눈앞에 보이는데 "되번역이 없거나 비어 있음"이라고
+    # 적으면 한 달에 서른 번 거짓말을 하고도 아무 오류가 없다.
+    plan = _plan()
+
+    card = _card(_doc(plan, gaps={}), 2)
+
+    shown = card.find(data_role="divergence").text()
+    assert "되번역이 없" not in shown and "비어" not in shown
+    assert "받지 못" in shown
+    assert not any(ch.isdigit() for ch in shown)
+    assert _text_of(card, "back") == _back(plan)[2]  # 되번역은 그대로 보인다
+
+
+def test_문장부호만_있는_되번역도_비어_있다고_본다():
+    # `backtranslation`은 공백·문장부호·서식 문자뿐인 값을 빈 것으로 본다(`역번역빈칸`, `divergences`에 키 없음). 화면이
+    # 공백만 빈 것으로 보면 한 카드의 두 줄(칸은 보통 글, 차이값은 "비어 있음")이 서로 모순된다.
+    plan = _plan()
+    back = {**_back(plan), 2: ". . ."}
+    gaps = {i: v for i, v in GAPS.items() if i != 2}
+
+    card = _card(_doc(plan, back=back, gaps=gaps), 2)
+
+    assert "비어 있습니다" in _col(card, "back").find(data_role="text").text()
+    assert "되번역이 없거나 비어 있음" in card.find(data_role="divergence").text()
+    assert _marks(_col(card, "source")) == []  # 견줄 되번역이 없으니 원문 전체를 칠하지 않는다
+    assert _marks(_col(card, "back")) == []
+
+
+def test_되번역이_비어_있으면_값이_와_있어도_숫자를_내지_않는다():
+    # 칸이 "비어 있습니다"라고 말하는 카드에 글자 차이 숫자를 함께 둘 수 없다. `divergences()`는 이런 값을 내지 않으므로
+    # 입력이 어긋난 경우인데, 두 줄이 모순되는 쪽보다 칸의 말을 따른다.
+    plan = _plan()
+    back = {**_back(plan), 2: "  "}
+
+    card = _card(_doc(plan, back=back, gaps=dict(GAPS)), 2)
+
+    shown = card.find(data_role="divergence").text()
+    assert "측정하지 않음" in shown and not any(ch.isdigit() for ch in shown)
+
+
+def test_플랜에_없는_divergences_키는_오류다():
+    # 다른 달·다른 판의 값이 섞였다는 신호다. 조용히 버리면 그 값이 화면에 안 나오는 것을 아무도 모른다.
+    with pytest.raises(ValueError) as info:
+        _output(gaps={**GAPS, 99: 0.5, 100: 0.1})
+
+    message = str(info.value)
+    assert "99" in message and "100" in message and "divergences" in message
 
 
 def test_차이값은_값과_상관없이_같은_모양으로_보여_준다():
@@ -790,9 +875,14 @@ def test_완결된_HTML_문서다():
 
 
 def test_글꼴_목록에_미얀마_문자와_데바나가리_글꼴이_들어간다():
-    style = _doc().find("style").text()
+    # 한국어 글꼴에는 미얀마 문자와 데바나가리가 없어 목록에 따로 적지 않으면 네모로 깨진다. 이 요구는 스타일시트에만
+    # 있고 구조로는 드러나지 않으므로 `body` 규칙의 글꼴 목록을 읽어 본다(글꼴 이름을 순서까지 맞추지는 않는다).
+    families = [name.strip().strip('"') for name in _css_rule(_doc().find("style").text(), "body")["font-family"].split(",")]
 
-    assert "Myanmar" in style and "Devanagari" in style and "Apple SD Gothic Neo" in style
+    assert any("Myanmar" in name for name in families)
+    assert any("Devanagari" in name for name in families)
+    assert any("Gothic" in name or "Malgun" in name or "Noto Sans KR" in name for name in families)  # 한국어 글꼴
+    assert families[-1] == "sans-serif"  # 어느 것도 없을 때의 대체
 
 
 def test_좁은_화면에서는_단이_세로로_쌓인다():
@@ -976,11 +1066,11 @@ def test_강조해도_원문_글자와_줄바꿈이_그대로다():
     assert _marks(_col(card, "source")) == [("다릅니다.", "replace")]
 
 
-def test_여러_낱말에_걸친_강조는_사이의_줄바꿈도_한_표시_안에_둔다():
-    card = _diff_card("앞입니다.\n\n빠진\n문단  둘\n\n입니다 뒤.", "앞입니다. 입니다 뒤.")
+def test_여러_낱말에_걸친_강조는_사이의_공백도_한_표시_안에_둔다():
+    card = _diff_card("앞입니다.\n\n빠진  문단 둘\n\n입니다 뒤.", "앞입니다. 입니다 뒤.")
 
-    # 구간 안의 줄바꿈과 겹친 공백은 그대로다(낱말마다 끊기거나 한 칸으로 접히지 않는다).
-    assert _marks(_col(card, "source")) == [("빠진\n문단  둘", "delete")]
+    # 같은 문장 안의 겹친 공백은 그대로다(낱말마다 끊기거나 한 칸으로 접히지 않는다).
+    assert _marks(_col(card, "source")) == [("빠진  문단 둘", "delete")]
 
 
 def test_강조_안의_글자도_이스케이프된다():
@@ -1018,12 +1108,6 @@ def test_강조는_게시물마다_그_게시물의_글끼리_견준다():
 
     assert _marks(_col(_card(doc, 0), "source")) == []
     assert _marks(_col(_card(doc, 1), "source")) == [("다", "replace")]
-
-
-def test_표시가_무엇인지_안내한다():
-    howto = _doc().find(class_="howto").text()
-
-    assert "표시" in howto and "낱말" in howto
 
 
 # --- 강조와 CTA ---------------------------------------------------------------
@@ -1075,7 +1159,11 @@ def test_원문이_CTA로_끝나지_않으면_원문_통째로_견준다():
 
     card = _diff_card(source, "비자는 신청할 수 있습니다.", cta_ko=CTA)
 
-    assert _marks(_col(card, "source")) == [(CTA, "delete")]
+    # 떼지 않고 통째로 견주므로 CTA의 두 문장이 문장마다 한 칩씩 칠해진다.
+    assert _marks(_col(card, "source")) == [
+        ("상담은 무료입니다.", "delete"),
+        ("궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.", "delete"),
+    ]
     assert _col(card, "source").find_all(class_="cta") == []
 
 
@@ -1086,7 +1174,10 @@ def test_되번역에_CTA가_적혀_있으면_되번역_쪽에서_강조된다()
     card = _diff_card(f"{body}\n\n{CTA}", f"{body}\n\n{CTA}", cta_ko=CTA)
 
     assert _marks(_col(card, "source")) == []
-    assert _marks(_col(card, "back")) == [(CTA, "insert")]
+    assert _marks(_col(card, "back")) == [
+        ("상담은 무료입니다.", "insert"),
+        ("궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.", "insert"),
+    ]
 
 
 @pytest.mark.parametrize("blank", ["", "  \n", 5, None], ids=["빈문자열", "공백", "문자열아님", "None"])
@@ -1208,8 +1299,111 @@ def test_원문이_CTA로_끝나지_않으면_뒤쪽_공백도_떼지_않고_꼬
     assert _text_of(card, "source") == f"{CTA}\n\n비자는 신청할 수 있습니다.\n"
 
 
-def test_안내가_노란_표시의_뜻을_설명한다():
+def test_안내가_표시_세_가지의_뜻을_설명한다():
     howto = _doc().find(class_="howto")
 
-    assert howto.find("mark").text() == "노란 표시"
+    # 안내 안의 견본 표시는 카드의 표시와 같은 종류 표지를 단다(그래야 같은 모양으로 보인다).
+    assert [mark.attrs["data-diff"] for mark in howto.find_all("mark")] == ["replace", "delete", "insert"]
     assert "서로 다른 낱말" in howto.text()
+    # 안내가 찾으라고 한 "없는 약속 추가"와 "빠진 한정어"가 바로 파란 쪽(insert)과 붉은 쪽(delete)이라고 말한다.
+    legend_element = howto.find(data_role="mark-legend")
+    assert "hidden" not in legend_element.attrs  # 설명은 있되 보이지 않는 것이 아니다
+    legend = legend_element.text()
+    assert "되번역에만" in legend and "원문에만" in legend and "약속" in legend and "한정어" in legend
+
+
+# --- 표시의 모양과 문장 단위 -------------------------------------------------------
+# 한 가지 노란색이면 안내가 찾으라고 한 "없는 약속 추가"(insert)와 "빠진 한정어"(delete)가 흔한 의역(replace)의 잡음에
+# 묻혀 독자가 노란색을 "또 의역"으로 읽게 된다. 걸러 내지 않고 구분한다: 종류마다 모양이 다르고, 칩은 문장을 넘지 않는다.
+
+
+def test_더해진_문장과_빠진_문장이_바뀐_문장과_다르게_보인다():
+    replaced = _col(_diff_card("이 비자는 체류자격입니다.", "이 비자는 체류자격이 아닙니다."), "source").find("mark")
+    deleted = _col(
+        _diff_card("비자는 신청 후 심사를 거칩니다. 심사 결과는 이메일로 알려 드립니다.", "비자는 신청 후 심사를 거칩니다."),
+        "source",
+    ).find("mark")
+    inserted = _col(_diff_card("비자는 신청할 수 있습니다.", "비자는 신청할 수 있습니다. 합격을 보장합니다."), "back").find("mark")
+
+    # 구조: 종류 표지와 말로 된 설명(색을 못 보는 사람도 읽는다)이 셋 모두 다르다.
+    assert [m.attrs["data-diff"] for m in (replaced, deleted, inserted)] == ["replace", "delete", "insert"]
+    assert len({m.attrs["title"] for m in (replaced, deleted, inserted)}) == 3
+    assert "원문에만" in deleted.attrs["title"] and "되번역에만" in inserted.attrs["title"]
+
+    # 스타일: 셋의 배경이 서로 다르고, insert·delete는 색뿐 아니라 막대도 달며(다른 색), replace에는 막대가 없다.
+    style = _doc().find("style").text()
+    base = _css_rule(style, "mark.diff")
+    delete_rule = _css_rule(style, 'mark.diff[data-diff="delete"]')
+    insert_rule = _css_rule(style, 'mark.diff[data-diff="insert"]')
+    assert len({base["background"], delete_rule["background"], insert_rule["background"]}) == 3
+    assert "border-left" in delete_rule and "border-left" in insert_rule and "border-left" not in base
+    assert delete_rule["border-left"] != insert_rule["border-left"]
+
+
+def test_강조는_문장을_넘어가지_않는다():
+    # 두 문장이 통째로 바뀌면 한 칩이 문장 경계를 넘어 둘을 삼킨다. 칩마다 한 문장이어야 어디가 바뀌었는지 찾는다.
+    # 같은 양이 칠해지지만 칩이 문장 하나씩으로 작아진다.
+    card = _diff_card("첫째 문장입니다. 둘째 문장입니다.", "가 나 다. 라 마 바.")
+
+    assert _marks(_col(card, "source")) == [("첫째 문장입니다.", "replace"), ("둘째 문장입니다.", "replace")]
+    assert _marks(_col(card, "back")) == [("가 나 다.", "replace"), ("라 마 바.", "replace")]
+
+
+@pytest.mark.parametrize("terminator", [".", "!", "?", "。", "।", "။"])
+def test_강조는_validate_copy가_문장_끝으로_보는_글자에서_끊는다(terminator):
+    # 문장이 무엇인지에 대한 판단은 `validate_copy.SENTENCE_END` 한 곳에 있다. 두 모듈이 어긋나면 안 된다.
+    card = _diff_card(f"가 나{terminator} 다 라", "마 바 사 아")
+
+    assert _marks(_col(card, "source")) == [(f"가 나{terminator}", "replace"), ("다 라", "replace")]
+    assert _marks(_col(card, "back")) == [("마 바 사 아", "replace")]  # 이쪽에는 문장 끝이 없다
+
+
+def test_한_낱말짜리_문장도_칩이_된다():
+    # 끊은 조각이 짧다고 버리면 그 한 낱말(`아닙니다.`처럼 뜻을 바꾸는 낱말일 수 있다)이 표시에서 사라진다.
+    card = _diff_card("가. 나. 다 라", "마 바 사 아 자")
+
+    assert _marks(_col(card, "source")) == [("가.", "replace"), ("나.", "replace"), ("다 라", "replace")]
+
+
+def test_강조는_줄바꿈에서도_끊는다():
+    card = _diff_card("가 나\n다 라", "마 바 사 아")
+
+    assert _marks(_col(card, "source")) == [("가 나", "replace"), ("다 라", "replace")]
+
+
+def test_강조는_숫자_뒤의_마침표에서_끊지_않는다():
+    # validate_copy와 같다: 날짜(`2026. 11. 1.부터`)와 소수는 문장 끝이 아니다.
+    card = _diff_card("가 2026. 11. 1.부터 나", "마 바 사 아 자")
+
+    assert _marks(_col(card, "source")) == [("가 2026. 11. 1.부터 나", "replace")]
+
+
+def _flipped_paragraph() -> tuple[str, str]:
+    """의역이 붙은 두 문장 안에 뒤집힌 부정이 든 다섯 문장 글(원문, 되번역). 칩이 문장을 넘나들던 경우다."""
+    source = [
+        "유학(D-2)은 전문대학 이상의 교육기관에서 정규과정의 교육을 받으려는 사람을 위한 체류자격입니다.",
+        "신청하려면 입학허가서와 재정증명서를 준비해서 가까운 출입국 사무소에 제출해야 합니다.",
+        "심사에는 보통 2주에서 4주가 걸리며 서류가 부족하면 더 길어질 수 있습니다.",
+        "체류 기간은 학교의 교육과정에 따라 정해지고 필요하면 연장을 신청할 수 있습니다.",
+        "자세한 조건은 학교와 출입국 사무소의 안내를 먼저 확인해 주세요.",
+    ]
+    back = list(source)
+    back[1] = "신청하려면 입학허가서와 재정증명서를 갖추어 가까운 출입국관리사무소에 내시기 바랍니다."  # 의역
+    back[2] = "심사는 대개 2주에서 4주 걸리고 서류가 부족해도 더 길어지지 않습니다."  # 의역 + 뒤집힘
+    return " ".join(source), " ".join(back)
+
+
+def test_의역과_뒤집힌_부정이_붙어_있어도_칩은_한_문장_안에_있고_뒤집힌_자리를_가리킨다():
+    # 이 화면이 존재하는 이유가 가장 심하게 시험받는 경우: 의역이 문장 둘에 걸쳐 있고 그 안에 뒤집힘이 있다.
+    source, back = _flipped_paragraph()
+    card = _diff_card(source, back)
+
+    for column in ("source", "back"):
+        for text, _ in _marks(_col(card, column)):
+            assert len([s for s in SENTENCE_END.split(text) if s.strip()]) <= 1, f"칩이 문장을 넘는다: {text!r}"
+    # 뒤집힌 자리가 자기 칩으로 잡힌다. 앞 문장의 의역을 삼키지 않는다.
+    assert ("길어질 수 있습니다.", "replace") in _marks(_col(card, "source"))
+    assert ("길어지지 않습니다.", "replace") in _marks(_col(card, "back"))
+    # 바뀌지 않은 문장 세 개(첫째·넷째·다섯째)는 칠해지지 않는다.
+    marked_text = " ".join(text for text, _ in _marks(_col(card, "source")))
+    assert "체류자격입니다" not in marked_text and "연장을" not in marked_text and "확인해" not in marked_text

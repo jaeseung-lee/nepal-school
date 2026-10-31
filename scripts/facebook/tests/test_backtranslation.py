@@ -28,6 +28,7 @@ from facebook.backtranslation import (
     comparison_source,
     divergence,
     divergences,
+    is_blank,
     load,
     validate_backtranslation,
     worksheet,
@@ -1467,3 +1468,33 @@ def test_comparison_source는_결과가_늘_원문의_앞부분이다():
     # 검토 화면이 떼어 낸 꼬리를 `source[len(결과):]`로 되찾는다.
     for source in ("본문입니다.\n\n" + CTA, "본문입니다.\n\n" + CTA + " \n", CTA + "\n\n본문입니다.", "본문입니다.", CTA):
         assert source.startswith(comparison_source(source, CTA))
+
+
+# --- is_blank: 빈 되번역의 판정 한 곳 -------------------------------------------------
+# `validate_backtranslation`(`역번역빈칸`)·`divergences`(키를 넣지 않음)·검토 화면(칸의 "비어 있습니다")이 모두 이것으로
+# 비었는지를 정한다. 화면이 공백만 빈 것으로 보면 한 카드의 두 줄이 서로 모순된다.
+
+_BLANKS = ["", "   \n", "。", " . , ", "​", "…", "(  )", "​ ​"]
+_NOT_BLANKS = ["가", "a", "1", " . 가 . ", "(가)", "수", "२०", "၂၀"]
+
+
+@pytest.mark.parametrize("text", _BLANKS)
+def test_is_blank는_공백과_문장부호와_서식_문자뿐이면_참이다(text):
+    assert is_blank(text) is True
+
+
+@pytest.mark.parametrize("text", _NOT_BLANKS)
+def test_is_blank는_글자나_숫자가_하나라도_있으면_거짓이다(text):
+    assert is_blank(text) is False
+
+
+@pytest.mark.parametrize("text", _BLANKS + _NOT_BLANKS)
+def test_is_blank와_validate와_divergences가_빈칸을_같게_판정한다(text):
+    plan = _plan()
+    back = {**_faithful(plan), 3: text}
+
+    blank_error = any(f.code == "역번역빈칸" and f.post_index == 3 for f in _check(plan, back))
+    measured = 3 in _gaps(plan, back)
+
+    assert blank_error is is_blank(text)
+    assert measured is (not is_blank(text))

@@ -16,9 +16,18 @@
   본문은 그 옆(끝)이다. 그래도 다섯 문장짜리 두 단락을 맞대어 읽으며 `입니다` -> `이 아닙니다`를 잡는 것은 사람이 가장
   못하는 일이라, 공백으로 끊은 **낱말 목록**에 `difflib.SequenceMatcher`를 걸어 다른 구간을 양쪽에 칠한다(원문 쪽은
   빠졌거나 바뀐 낱말, 되번역 쪽은 덧붙었거나 바뀐 낱말). 글자 단위로 하면 한국어 조사마다 쪼개져 읽을 수 없다.
-  **임계값으로 걸러 내거나 "잡음"이라고 숨기지 않는다.** 충실한 의역에도 표시가 생기지만(글자 유사도 0.88~0.92라
-  전체의 10~20%) 숨기면 뒤집힌 부정이 그 안에 들어간다. 눈으로 구별되지 않는 차이(NFC/NFD)와 공백·줄바꿈 차이만 차이로
-  치지 않는다.
+  **임계값으로 걸러 내거나 "잡음"이라고 숨기지 않는다.** 어떤 필터든 거의 같은 글에서 꺼지고, 뒤집힌 부정이 숨는 곳이 바로
+  그 거의 같은 글이다(변이 시험으로 확인했다: 유사도 0.8 위에서 끄는 필터는 `입니다` -> `이 아닙니다` 하나만 다른 다섯 문장
+  글에서 표시를 모두 껐다). 눈으로 구별되지 않는 차이(NFC/NFD)와 공백·줄바꿈 차이만 차이로 치지 않는다.
+  **얼마나 칠해지는가(실측, 다섯 문장 글):** 부정 뒤집힘 하나면 원문 5%·되번역 10% 안팎이고 한 낱말 칩이 뚜렷하다. 충실한
+  의역은 27~33%에 칩 3~4개다. 의역과 뒤집힘이 **붙어 있으면** 67~77%가 칠해지고, 문장 경계를 넘는 큰 칩 하나가 되어 그 안에서
+  어느 낱말이 뜻을 바꿨는지 알 수 없다(한국어는 조사와 어미가 낱말에 붙어 있어 어미 하나만 바뀌어도 낱말 전체가 칠해진다).
+  잡음에 대한 답은 숨기는 것이 아니라 **구분하는 것**이다.
+- **표시는 세 가지 모양이고 칩은 문장을 넘지 않는다.** 안내가 찾으라고 하는 "없는 약속 추가"와 "빠진 한정어"가 바로 되번역에만
+  있는 말(`insert`)과 원문에만 있는 말(`delete`)이다. 한 가지 노란색이면 흔한 의역(`replace`)의 잡음에 묻혀 독자가 노란색을 "또
+  의역"으로 읽게 된다. 그래서 `insert`(파란 막대)·`delete`(붉은 막대)·`replace`(노랑)의 모양이 다르고 `title`에 말로도 적는다.
+  또 칩은 `validate_copy.SENTENCE_END`(문장이 무엇인지에 대한 판단이 있는 유일한 곳)에서 끊는다 — 같은 양이 칠해지지만 칩이
+  문장 하나씩으로 작아져 어디가 바뀌었는지 찾을 수 있다.
 - **칠하는 원문은 `validate_backtranslation`이 재는 원문과 같다.** 되번역 워크시트는 끝의 승인된 상담 문구(CTA)를 떼고
   나가므로 되번역에는 CTA가 없다. 원문의 CTA까지 견주면 모든 게시물 끝에 늘 같은 표시가 생겨 "표시가 있다"가 아무것도
   알려 주지 못한다. `backtranslation.comparison_source`(CTA 떼기 규칙이 있는 유일한 곳)로 같은 방식으로 떼고, 떼어 낸
@@ -27,7 +36,10 @@
 - **차이값은 받은 것을 그대로 보여 준다.** `render`는 `divergence`를 계산하지 않는다. 숫자가 `validate_backtranslation`의
   경고문과 어긋나지 않게 `backtranslation.divergences`가 한 곳에서 잰다. 값에 따라 색을 달리하지도 않는다 — 낮은 값을
   초록으로 칠하면 "읽지 않아도 된다"는 신호가 되는데, 위의 측정이 바로 그 신호가 틀렸음을 보였다.
-- **되번역이 없으면 빈칸으로 두지 않고 없다고 적는다.** 차이값이 없는 것도 0이 아니라 "측정하지 않음"이다.
+- **되번역이 없으면 빈칸으로 두지 않고 없다고 적는다.** 차이값이 없는 것도 0이 아니라 "측정하지 않음"이다. 비었는지는
+  `backtranslation.is_blank`(공백·문장부호·서식 문자뿐이면 빔) 하나로 정해 칸과 차이값 줄과 강조가 서로 모순되지 않는다.
+  **차이값이 없는 이유를 단정하지 않는다:** 되번역이 비었으면 그렇다고 적지만, 되번역이 보이는데 값만 못 받았으면
+  "측정값을 받지 못했습니다"라고만 적는다. `_divergence`가 아는 것은 번호가 `divergences`에 없다는 것뿐이다.
 - 카드 머리 밑에 그 게시물이 인용한 사실 키(`fact_keys`)와 대학명(`university_names`)을 한 줄로 적는다. 값은 싣지
   않는다(수치가 사실 값과 맞는지는 `출처없는수치`가 이미 기계로 대조한다). 사람이 볼 것은 이 게시물이 **무엇에 기대어
   있다고 주장하는지**이고, 등록금 글이 사실 키를 하나도 달지 않았다면 "없음"이 눈에 띈다.
@@ -52,9 +64,10 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import quote
 
-from .backtranslation import comparison_source
+from .backtranslation import comparison_source, is_blank
 from .findings import Finding
 from .plan_model import Plan, Post
+from .validate_copy import SENTENCE_END
 
 _LANGUAGE_NAMES = {"vi": "베트남어", "my": "미얀마어", "ne": "네팔어"}
 
@@ -64,11 +77,13 @@ _STYLE = """
   color-scheme: light dark;
   --bg: #f5f4ef; --panel: #ffffff; --ink: #1d1d1b; --muted: #5d5b55; --line: #d6d3c8; --accent: #1f4e79;
   --error: #a8201a; --error-bg: #fdecea; --warning: #7a4f00; --warning-bg: #fff3d1; --mark: #ffe27a;
+  --mark-delete: #ffd3cf; --mark-delete-bar: #c0261d; --mark-insert: #cde3ff; --mark-insert-bar: #1f5fbf;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #151513; --panel: #201f1c; --ink: #ecebe6; --muted: #a8a59b; --line: #3b3934; --accent: #8ab4e8;
     --error: #ff9a91; --error-bg: #3b1d1a; --warning: #f3c471; --warning-bg: #3a2f12; --mark: #6e5600;
+    --mark-delete: #5c2420; --mark-delete-bar: #ff8a80; --mark-insert: #1d3e66; --mark-insert-bar: #7fb0ff;
   }
 }
 * { box-sizing: border-box; }
@@ -149,6 +164,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .divergence strong { color: var(--ink); font-size: .95rem; }
 .text { white-space: pre-wrap; overflow-wrap: anywhere; }
 mark.diff { background: var(--mark); color: inherit; border-radius: 2px; padding: 1px 0; box-decoration-break: clone; }
+mark.diff[data-diff="delete"] { background: var(--mark-delete); border-left: 3px solid var(--mark-delete-bar); padding-left: 3px; }
+mark.diff[data-diff="insert"] { background: var(--mark-insert); border-left: 3px solid var(--mark-insert-bar); padding-left: 3px; }
 .cta { color: var(--muted); }
 .text.missing { padding: 8px; border: 2px dashed var(--error); color: var(--error); font-weight: 700; white-space: normal; }
 .empty { color: var(--muted); }
@@ -162,7 +179,25 @@ mark.diff { background: var(--mark); color: inherit; border-radius: 2px; padding
 }
 """
 
-_HOWTO = """<aside class="howto">
+def _e(value: object) -> str:
+    return html.escape(str(value), quote=True)
+
+
+# 표시의 종류마다 말로 된 설명(`title`)이 있다. 색을 못 보는 사람과 마우스를 올린 사람이 읽는다.
+_MARK_TITLES = {
+    "replace": "양쪽에서 서로 바뀐 낱말",
+    "delete": "원문에만 있음: 되번역에 없는 말",
+    "insert": "되번역에만 있음: 원문에 없는 말",
+}
+
+
+def _mark(kind: str, inner: str) -> str:
+    """강조 표시 하나. `inner`는 이미 이스케이프된 HTML이다."""
+    return f'<mark class="diff" data-diff="{kind}" title="{_e(_MARK_TITLES[kind])}">{inner}</mark>'
+
+
+def _howto() -> str:
+    return f"""<aside class="howto">
 <h2>이 화면으로 하는 일</h2>
 <p>현지어 본문은 AI가 썼고 원어민 검수를 받지 않았습니다. 뜻이 한국어 원문과 같은지 확인할 수 있는 곳은 이 화면에서 <strong>한국어 원문</strong>과 <strong>되번역 한국어</strong>를 나란히 읽는 것뿐입니다. 게시물마다 두 단을 끝까지 읽고 다음을 찾으세요.</p>
 <ul>
@@ -170,13 +205,9 @@ _HOWTO = """<aside class="howto">
 <li><strong>금액</strong>·기간·시간·날짜·인원이 바뀐 곳</li>
 <li>원문에 없는 <strong>약속</strong>·보장·조건이 덧붙은 곳, 원문에 있던 단서(‘평균’, ‘~일 수 있습니다’)가 빠진 곳</li>
 </ul>
-<p><mark class="diff">노란 표시</mark>는 <strong>두 한국어 단에서 서로 다른 낱말</strong>입니다. 원문 쪽은 되번역에 없거나 바뀐 낱말, 되번역 쪽은 원문에 없거나 바뀐 낱말입니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 먼저 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다. 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다.</p>
+<p data-role="mark-legend">두 한국어 단에서 <strong>서로 다른 낱말</strong>에 표시가 있고 모양이 셋입니다. {_mark("replace", "노란색")}은 양쪽에서 서로 다른 낱말로 바뀐 곳으로 의역에서 흔합니다. {_mark("delete", "붉은 막대")}는 원문에만 있고 되번역에는 없는 말, {_mark("insert", "파란 막대")}는 되번역에만 있고 원문에는 없는 말입니다. 위에서 찾으라고 한 <strong>덧붙은 약속·조건</strong>은 파란 막대로, <strong>빠진 단서(한정어)</strong>는 붉은 막대로 나타나므로 이 둘을 먼저 읽으세요. 표시는 문장을 넘지 않게 끊었습니다. 뜻이 같은 의역에도 표시가 생기지만 일부러 걸러 내지 않았습니다 — 표시된 곳을 읽고 뜻이 같은지 판단하세요. 표시가 없는 곳은 두 글의 낱말이 똑같은 곳입니다. 원문 맨 끝의 승인된 상담 문구(회색)는 되번역에 들어가지 않으므로 견주지 않습니다.</p>
 <p class="caveat">‘글자 차이’ 숫자는 두 한국어 글의 글자 유사도일 뿐 뜻을 재지 않습니다. 부정이 뒤집히거나 금액이 바뀌어도 낮게 나오고, 뜻이 같은 의역도 높게 나옵니다. 숫자가 낮다는 것은 읽지 않아도 되는 근거가 아닙니다.</p>
 </aside>"""
-
-
-def _e(value: object) -> str:
-    return html.escape(str(value), quote=True)
 
 
 def _is_error(finding: Finding) -> bool:
@@ -266,9 +297,19 @@ def _findings_box(post_findings: list[Finding]) -> str:
     return f'<div class="findings" data-role="findings"><p class="findings-title">이 게시물에서 걸린 항목</p><ul>{items}</ul></div>'
 
 
-def _divergence(value: float | None) -> str:
-    if value is None:
+def _blank(text: str | None) -> bool:
+    """되번역 칸이 없거나 빈 것으로 보는지. 빈칸의 판정은 `backtranslation.is_blank` 하나라서(`validate_backtranslation`·
+    `divergences`와 같다) 칸과 차이값 줄이 서로 모순되지 않는다."""
+    return text is None or is_blank(text)
+
+
+def _divergence(value: float | None, back_text: str | None) -> str:
+    # 되번역이 비었다면 값이 없는 까닭을 안다. 되번역이 보이는데 값이 없다면 번호가 `divergences`에 없다는 것밖에 모른다 —
+    # 까닭을 지어내 "되번역이 없다"고 적으면 눈앞의 되번역과 모순되는 거짓말이 된다.
+    if _blank(back_text):
         return '<p class="divergence" data-role="divergence">글자 차이: 측정하지 않음(되번역이 없거나 비어 있음)</p>'
+    if value is None:
+        return '<p class="divergence" data-role="divergence">글자 차이: 측정값을 받지 못했습니다</p>'
     return (
         f'<p class="divergence" data-role="divergence">원문과 글자 차이 <strong>{value:.2f}</strong> '
         f"(글자 기준일 뿐 뜻의 보증이 아님)</p>"
@@ -276,6 +317,7 @@ def _divergence(value: float | None) -> str:
 
 
 _PIECE = re.compile(r"\S+|\s+")
+_SENTENCE_FINAL = re.compile(SENTENCE_END.pattern + r"\Z")  # 낱말이 문장 끝 글자로 끝나는가
 
 
 def _pieces(text: str) -> tuple[list[str], list[int]]:
@@ -284,16 +326,41 @@ def _pieces(text: str) -> tuple[list[str], list[int]]:
     return pieces, [position for position, piece in enumerate(pieces) if not piece.isspace()]
 
 
-def _marked(pieces: list[str], words: list[int], runs: list[tuple[int, int, str]]) -> str:
-    """조각을 이스케이프해 이어 붙이되 `runs`(낱말 번호의 [처음, 끝) 구간과 종류)를 `<mark>`로 감싼다.
+def _ends_sentence(pieces: list[str], words: list[int], number: int) -> bool:
+    """`number`번째 낱말 뒤에서 문장이 끝나는가: 그 낱말이 문장 끝 글자로 끝나거나, 다음 낱말과의 사이에 줄바꿈이 있다.
+    무엇이 문장 끝인지는 `validate_copy.SENTENCE_END`가 정한다(숫자 뒤의 마침표는 끝이 아니고 줄바꿈은 끝이다)."""
+    if _SENTENCE_FINAL.search(pieces[words[number]]):
+        return True
+    return number + 1 < len(words) and "\n" in "".join(pieces[words[number] + 1 : words[number + 1]])
 
-    구간 안의 공백과 줄바꿈은 표시 안에 그대로 둔다(표시가 낱말마다 끊기지 않는다). 칸이 `pre-wrap`이라 표시 바깥의
+
+def _split_at_sentences(
+    pieces: list[str], words: list[int], runs: list[tuple[int, int, str]]
+) -> list[tuple[int, int, str]]:
+    """구간을 문장 끝에서 끊어 칩이 문장을 넘지 않게 한다. 칠해지는 낱말은 그대로이고 칩만 잘게 나뉜다.
+
+    의역 둘에 걸쳐 한 칩이 문장 경계를 넘으면 그 안에서 어느 낱말이 뜻을 바꿨는지 알 수 없다(실측 67~77%)."""
+    chips = []
+    for first, end, kind in runs:
+        start = first
+        for number in range(first, end - 1):  # 구간의 마지막 낱말 뒤는 끊을 필요가 없다
+            if _ends_sentence(pieces, words, number):
+                chips.append((start, number + 1, kind))
+                start = number + 1
+        chips.append((start, end, kind))
+    return chips
+
+
+def _marked(pieces: list[str], words: list[int], runs: list[tuple[int, int, str]]) -> str:
+    """조각을 이스케이프해 이어 붙이되 `runs`(낱말 번호의 [처음, 끝) 구간과 종류)를 문장 끝에서 끊어 `<mark>`로 감싼다.
+
+    같은 문장 안의 공백은 표시 안에 그대로 둔다(표시가 낱말마다 끊기지 않는다). 칸이 `pre-wrap`이라 표시 바깥의
     글자도 하나도 바꾸거나 덧붙이지 않는다."""
     out, cursor = [], 0
-    for first, end, kind in runs:
+    for first, end, kind in _split_at_sentences(pieces, words, runs):
         start, stop = words[first], words[end - 1] + 1
         out.append(_e("".join(pieces[cursor:start])))
-        out.append(f'<mark class="diff" data-diff="{kind}">{_e("".join(pieces[start:stop]))}</mark>')
+        out.append(_mark(kind, _e("".join(pieces[start:stop]))))
         cursor = stop
     out.append(_e("".join(pieces[cursor:])))
     return "".join(out)
@@ -325,10 +392,6 @@ def _word_diff(source: str, back: str) -> tuple[str, str]:
     return _marked(source_pieces, source_words, source_runs), _marked(back_pieces, back_words, back_runs)
 
 
-def _is_blank(text: str | None) -> bool:
-    return text is None or not text.strip()
-
-
 def _source_text(compared_html: str, tail: str) -> str:
     # 안쪽에 공백이나 줄바꿈을 끼우지 않는다: 칸이 `pre-wrap`이라 그대로 화면에 나온다.
     cta = f'<span class="cta">{_e(tail)}</span>' if tail else ""
@@ -338,8 +401,8 @@ def _source_text(compared_html: str, tail: str) -> str:
 def _back_text(text: str | None, marked_html: str) -> str:
     if text is None:
         return '<div class="text missing" data-role="text">되번역이 없습니다. 워크시트가 채워지지 않았거나 이 번호의 항목이 빠졌습니다.</div>'
-    if not text.strip():
-        return '<div class="text missing" data-role="text">되번역 칸이 비어 있습니다.</div>'
+    if is_blank(text):
+        return '<div class="text missing" data-role="text">되번역 칸이 비어 있습니다. 공백이나 문장부호뿐인 값도 비어 있는 것으로 봅니다.</div>'
     return f'<div class="text" data-role="text">{marked_html}</div>'
 
 
@@ -362,7 +425,7 @@ def _card(
     # 견주는 원문은 `validate_backtranslation`이 재는 원문과 같다. 떼어 낸 CTA 꼬리는 칠하지 않고 그대로 보여 준다.
     compared = comparison_source(post.source_ko, cta_ko)
     tail = post.source_ko[len(compared):]
-    if _is_blank(back_text):  # 견줄 되번역이 없으면 칠할 것도 없다
+    if _blank(back_text):  # 견줄 되번역이 없으면 칠할 것도 없다
         source_html, back_html = _e(compared), ""
     else:
         source_html, back_html = _word_diff(compared, back_text)
@@ -393,7 +456,7 @@ def _card(
         '<div class="col" data-col="source" lang="ko"><h3>한국어 원문</h3>'
         f"{_source_text(source_html, tail)}</div>"
         '<div class="col" data-col="back" lang="ko"><h3>되번역 한국어</h3>'
-        f"{_divergence(gap)}{_back_text(back_text, back_html)}</div>"
+        f"{_divergence(gap, back_text)}{_back_text(back_text, back_html)}</div>"
         f'<div class="col" data-col="local" lang="{_e(post.language)}"><h3>현지어 본문 ({_e(language)})</h3>'
         f'<div class="text" data-role="text">{_e(post.body_local)}</div></div>'
         "</div></div></article>"
@@ -413,8 +476,10 @@ def render(
 
     `findings`는 검증기들이 낸 목록 전부이고 이미 `findings._ordered` 순서다. `back`은 `backtranslation.load`가 읽은
     `{게시물 번호: 되번역}`, `divergences`는 `backtranslation.divergences`가 잰 `{게시물 번호: 차이값}`이다. 여기서는
-    **다시 재지 않고** 받은 값을 보여 준다. 되번역이 없거나 비어 있어 `divergences`에 번호가 없는 게시물은 0이 아니라
-    "측정하지 않음"으로 보인다.
+    **다시 재지 않고** 받은 값을 보여 준다. 되번역이 없거나 비어 있는 게시물은 0이 아니라 "측정하지 않음"으로 보이고(그때
+    값이 와 있어도 보이지 않는다 — 칸이 비어 있다고 말하는 카드에 숫자를 함께 둘 수 없다), 되번역이 보이는데 값만 없으면
+    까닭을 지어내지 않고 "측정값을 받지 못했습니다"라고 적는다. **플랜에 없는 번호가 `divergences`에 있으면 `ValueError`** —
+    다른 달·다른 판의 값이 섞였다는 신호이고, 조용히 버리면 그 값이 화면에 안 나오는 것을 아무도 모른다.
 
     `cta_ko`는 용어집의 한국어 CTA(`glossary["cta"]["ko"]`)이고 **반드시 넘겨야 한다**(키워드 전용, 기본값 없음 —
     빼먹으면 `TypeError`). 낱말 강조가 `validate_backtranslation`과 같은 원문(끝의 CTA를 뗀 것)을 되번역과 견주고 떼어 낸
@@ -429,6 +494,12 @@ def render(
         raise ValueError(
             f"cta_ko가 비어 있거나 문자열이 아닙니다 (받은 값: {cta_ko!r}). 빈 CTA는 원문 전체를 떼어 낼 꼬리로 보아 낱말 "
             f"강조가 조용히 꺼집니다. 용어집의 cta.ko를 넘기세요."
+        )
+    off_plan = sorted(set(divergences) - {post.index for post in plan.posts})
+    if off_plan:
+        raise ValueError(
+            f"divergences에 이 플랜에 없는 게시물 번호가 있습니다: {', '.join(map(str, off_plan))}. 다른 달이나 다른 판의 값이 "
+            f"섞인 것은 아닌지 확인하세요. divergences는 같은 플랜으로 backtranslation.divergences가 낸 값이어야 합니다."
         )
     titles = {topic.topic_id: topic.title_ko for topic in plan.topics}
     by_post: dict[int | None, list[Finding]] = {}
@@ -457,7 +528,7 @@ def render(
         f"<title>페이스북 게시물 검토 {month}</title>\n<style>{_STYLE}</style>\n</head>\n<body>\n"
         f'<header class="page-head"><h1>페이스북 게시물 검토 <span class="month">{month}</span></h1>'
         f'<p class="meta">게시물 {len(plan.posts)}건 · 게시일 순</p></header>\n'
-        f"<main>\n{_HOWTO}\n"
+        f"<main>\n{_howto()}\n"
         f"{_summary(findings, {post.index for post in plan.posts})}\n"
         f'<section id="posts">\n{cards}\n</section>\n</main>\n</body>\n</html>\n'
     )
