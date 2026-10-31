@@ -81,3 +81,6 @@ output/outreach/
 
 # 면접 인쇄물 빌드 중간 산출물
 scripts/interview-sheets/.build/
+
+# SDD 작업 공간(계획 실행 중 산출물)
+.superpowers/
