@@ -1,7 +1,7 @@
 """페이스북 예약 게시 도구 공통 설정.
 
-값을 바꿔야 할 일이 생기면 이 파일 한 곳만 고친다. 토큰은 여기에 적지 않고
-`.env`의 `FB_PAGE_TOKEN`(또는 같은 이름의 환경변수)에서만 읽는다.
+값을 바꿔야 할 일이 생기면 이 파일 한 곳만 고친다. 토큰은 여기에 적지 않고 `.env`의
+`FB_PAGE_TOKEN` 또는 같은 이름의 환경변수에서 읽는다. 둘 다 값이 있는데 서로 다르면 멈춘다.
 """
 
 from __future__ import annotations
@@ -87,12 +87,20 @@ def _read_env_file(path: Path, name: str) -> str:
 def load_token() -> str:
     """페이지 액세스 토큰을 돌려준다.
 
-    이미 설정된 환경변수 `FB_PAGE_TOKEN`을 먼저 쓰고, 없으면 저장소 루트 `.env`를 읽는다.
-    토큰 값은 오류 메시지·로그에 절대 넣지 않는다.
+    출처는 환경변수 `FB_PAGE_TOKEN`과 저장소 루트 `.env`의 `FB_PAGE_TOKEN` 두 곳이다.
+    한쪽에만 값이 있으면 그 값을, 둘 다 있고 같으면 그 값을 쓴다. 둘 다 있는데 다르면
+    어느 쪽이 최신인지 알 수 없으므로(회전된 토큰을 낡은 셸 변수가 조용히 가리는 사고) 고르지
+    않고 `RuntimeError`로 멈춘다. 토큰 값은 오류 메시지·로그에 절대 넣지 않는다.
     """
-    token = os.environ.get(TOKEN_ENV_NAME, "").strip()
-    if not token:
-        token = _read_env_file(ENV_PATH, TOKEN_ENV_NAME)
+    env_token = os.environ.get(TOKEN_ENV_NAME, "").strip()
+    file_token = _read_env_file(ENV_PATH, TOKEN_ENV_NAME)
+    if env_token and file_token and env_token != file_token:
+        raise RuntimeError(
+            f"환경변수 {TOKEN_ENV_NAME}과(와) {ENV_PATH}의 {TOKEN_ENV_NAME} 값이 서로 다릅니다. "
+            f"어느 쪽이 최신인지 알 수 없어 중단합니다. 낡은 쪽을 정리하세요: "
+            f"셸에서 `unset {TOKEN_ENV_NAME}`을 실행하거나 {ENV_PATH}의 값을 고친 뒤 다시 실행하세요."
+        )
+    token = env_token or file_token
     if not token:
         raise RuntimeError(
             f"{TOKEN_ENV_NAME}을(를) 찾을 수 없습니다. "

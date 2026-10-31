@@ -102,6 +102,28 @@ def test_날짜_형식이_틀리면_FactsError(tmp_path, field, label):
         load_facts(p)
 
 
+def test_파일이_없으면_경로를_담은_한국어_FactsError(tmp_path):
+    p = tmp_path / "없는-facts.json"
+    with pytest.raises(FactsError, match="찾을 수 없습니다") as e:
+        load_facts(p)
+    assert str(p) in str(e.value)
+
+
+def test_읽을_수_없는_경로면_경로를_담은_한국어_FactsError(tmp_path):
+    # 파일 자리에 폴더가 있으면 OSError(IsADirectoryError)가 난다.
+    with pytest.raises(FactsError, match="읽을 수 없습니다") as e:
+        load_facts(tmp_path)
+    assert str(tmp_path) in str(e.value)
+
+
+def test_UTF8이_아니면_경로를_담은_한국어_FactsError(tmp_path):
+    p = tmp_path / "facts.json"
+    p.write_bytes(b"\xff\xfe\x00")
+    with pytest.raises(FactsError, match="UTF-8") as e:
+        load_facts(p)
+    assert str(p) in str(e.value)
+
+
 def test_JSON이_깨졌으면_FactsError(tmp_path):
     p = tmp_path / "facts.json"
     p.write_text("{ 깨진 json", encoding="utf-8")

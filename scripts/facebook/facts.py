@@ -39,6 +39,7 @@ _FIELDS = (
     ("expires_on", "유효기한"),
 )
 
+
 def _parse_date(key: str, label: str, text: str) -> date:
     try:
         return date.fromisoformat(text)
@@ -80,7 +81,15 @@ def _parse_fact(key: str, entry: object) -> Fact:
 def load_facts(path: Path) -> dict[str, Fact]:
     """`facts.json`을 읽어 `{키: Fact}`로 돌려준다. 규칙에 어긋나면 `FactsError`."""
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        text = path.read_text(encoding="utf-8")
+    except FileNotFoundError as e:
+        raise FactsError(f"사실 파일을 찾을 수 없습니다: {path}") from e
+    except OSError as e:
+        raise FactsError(f"사실 파일을 읽을 수 없습니다(경로와 권한을 확인하세요): {path}") from e
+    except UnicodeDecodeError as e:
+        raise FactsError(f"사실 파일이 UTF-8 텍스트가 아닙니다: {path}") from e
+    try:
+        raw = json.loads(text)
     except json.JSONDecodeError as e:
         raise FactsError(f"사실 파일이 올바른 JSON이 아닙니다: {path} ({e})") from e
     if not isinstance(raw, dict):

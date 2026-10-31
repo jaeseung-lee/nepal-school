@@ -41,14 +41,38 @@ def test_언어별_오프셋은_모든_언어를_기본_0으로_가진다():
     assert config.LANGUAGE_OFFSET_MINUTES == {lang: 0 for lang in config.LANGUAGES}
 
 
-def test_load_token은_환경변수를_우선한다(isolated_token, monkeypatch):
-    isolated_token.write_text("FB_PAGE_TOKEN=from-file\n", encoding="utf-8")
+def test_load_token은_환경변수만_있으면_그_값을_쓴다(isolated_token, monkeypatch):
     monkeypatch.setenv("FB_PAGE_TOKEN", "from-env")
+    assert not isolated_token.exists()
     assert config.load_token() == "from-env"
 
 
-def test_load_token은_환경변수가_없으면_dotenv에서_읽는다(isolated_token):
+def test_load_token은_dotenv만_있으면_그_값을_쓴다(isolated_token):
     isolated_token.write_text("OTHER=1\nFB_PAGE_TOKEN=from-file\n", encoding="utf-8")
+    assert config.load_token() == "from-file"
+
+
+def test_load_token은_둘이_같으면_그_값을_쓴다(isolated_token, monkeypatch):
+    isolated_token.write_text("FB_PAGE_TOKEN=same-value\n", encoding="utf-8")
+    monkeypatch.setenv("FB_PAGE_TOKEN", "same-value")
+    assert config.load_token() == "same-value"
+
+
+def test_load_token은_둘이_다르면_어느_쪽도_고르지_않고_멈춘다(isolated_token, monkeypatch):
+    isolated_token.write_text("FB_PAGE_TOKEN=file-value-xyz\n", encoding="utf-8")
+    monkeypatch.setenv("FB_PAGE_TOKEN", "env-value-abc")
+    with pytest.raises(RuntimeError) as e:
+        config.load_token()
+    message = str(e.value)
+    # 두 출처를 모두 이름으로 짚고, 어떻게 풀지 알려 준다.
+    assert "환경변수" in message and str(isolated_token) in message and "다릅니다" in message
+    # 토큰 값은 어느 쪽도 메시지에 넣지 않는다.
+    assert "env-value-abc" not in message and "file-value-xyz" not in message
+
+
+def test_load_token은_환경변수가_공백뿐이면_없는_것으로_본다(isolated_token, monkeypatch):
+    isolated_token.write_text("FB_PAGE_TOKEN=from-file\n", encoding="utf-8")
+    monkeypatch.setenv("FB_PAGE_TOKEN", "   ")
     assert config.load_token() == "from-file"
 
 
