@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone, tzinfo
 from pathlib import Path
 from urllib.parse import quote, quote_plus
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -25,6 +26,9 @@ SENTINEL = "EAAZ-SENTINEL-not-a-real-token-7c41e9d2b8"
 PAGE = "100200300"  # config.PAGE_ID와 일부러 다르다: 코드가 인자를 쓰는지 상수를 쓰는지 가른다
 BASE = f"https://graph.facebook.com/{config.GRAPH_VERSION}"
 JST = timezone(timedelta(hours=9))
+# 이 사업에 쓰이는 시간대(JST·KST·베트남·미얀마·네팔)에는 DST가 없다. DST가 있는 지역을 하나 끌어오는 것은
+# assert_schedulable이 벽시계가 아니라 절대 시간으로 견주는지 가르기 위해서다(고정 오프셋으로는 가를 수 없다).
+NEW_YORK = ZoneInfo("America/New_York")
 NOW = datetime(2026, 11, 1, 12, 0, tzinfo=JST)
 PUBLISH_AT = datetime(2026, 11, 1, 19, 0, tzinfo=JST)
 PUBLISH_UNIX = "1793527200"  # 2026-11-01T10:00:00Z. `date -u`와 파이썬 두 갈래로 따로 계산한 값
@@ -470,6 +474,29 @@ def test_타임존_오프셋이_달라도_같은_순간으로_견준다():
         graph.assert_schedulable((NOW + timedelta(minutes=9)).astimezone(timezone(timedelta(hours=-5))), utc_now)
 
 
+def test_DST가_접히는_구간에서도_벽시계가_아니라_절대_시간으로_견준다():
+    # 두 시각의 tzinfo가 같으면 파이썬은 오프셋을 무시하고 벽시계를 뺀다(CPython이 문서로 정한 동작).
+    # 미국 동부가 서머타임을 끝내는 새벽 한 시가 두 번 지나가는 구간에서, 절대 시간으로 10분 뒤인 예약이
+    # 벽시계로는 50분 전으로 계산돼 "이미 지난 시각"으로 거절됐다.
+    now = datetime(2026, 11, 1, 1, 55, tzinfo=NEW_YORK, fold=0)        # EDT, -04:00
+    publish_at = datetime(2026, 11, 1, 1, 5, tzinfo=NEW_YORK, fold=1)  # EST, -05:00 → 절대 시간으로 10분 뒤
+    assert publish_at.astimezone(timezone.utc) - now.astimezone(timezone.utc) == timedelta(minutes=10)
+    assert publish_at - now == timedelta(minutes=-50)                  # 벽시계로 빼면 이렇게 어긋난다
+    assert graph.assert_schedulable(publish_at, now) is None
+
+
+def test_DST가_접히는_구간의_안내도_절대_시간으로_계산한_시각을_적는다():
+    now = datetime(2026, 11, 1, 1, 55, tzinfo=NEW_YORK, fold=0)
+    publish_at = datetime(2026, 11, 1, 1, 4, tzinfo=NEW_YORK, fold=1)  # 절대 시간으로 9분 뒤: 창 밖
+    with pytest.raises(graph.GraphError) as caught:
+        graph.assert_schedulable(publish_at, now)
+    message = str(caught.value)
+    assert "너무 가깝" in message and "9분 뒤입니다" in message
+    # 가장 이른 가능 시각도 벽시계가 아니라 절대 시간으로 센다: 01:55 EDT + 10분 = 01:05 EST(같은 순간).
+    # 운영자가 읽는 시각은 now의 시간대로 적는다(UTC로 바꿔 적으면 읽는 사람이 다시 환산해야 한다).
+    assert "10분 뒤(2026-11-01T01:05:00-05:00)" in message
+
+
 def test_예약_창은_config_값을_따른다(monkeypatch):
     # 코드가 10분·75일이라는 숫자를 따로 적어 두었다면 이 시험이 잡는다.
     monkeypatch.setattr(config, "SCHEDULE_MIN_LEAD", timedelta(hours=1))
@@ -607,6 +634,52 @@ def test_API가_오류를_주면_GraphError에_한국어_설명(image, response)
     assert f"사진 예약 게시 요청을 Facebook이 거절했습니다 (HTTP {response.status_code})" in message  # 무엇을, 어떤 상태로
     # Facebook이 분명히 거절했으니 "만들어졌을 수도 있다"는 안내는 붙이지 않는다.
     assert "만들어졌을 수" not in message
+
+
+@pytest.mark.parametrize("status", [500, 502, 503])
+def test_5xx에_error_객체가_있으면_결과를_알_수_없는_실패다(image, status):
+    # Graph의 code 1·2는 Meta 쪽 일시 장애에 5xx와 함께 돌아오고, Meta의 안내는 재시도다. 사진 업로드는 멱등이 아니므로
+    # 그 사이에 게시물이 만들어졌을 수 있다. maybe_created를 False로 두면 Task 9가 "안 나갔으니 재시도해도 안전하다"로
+    # 읽어 같은 사진이 실제 페이지에 두 번 나간다.
+    response = FakeResponse(status, {"error": {"message": "An unexpected error has occurred. Please retry your request later.",
+                                               "type": "OAuthException", "code": 2, "fbtrace_id": "TRACE5"}})
+    with pytest.raises(graph.GraphError) as caught:
+        graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=photo_session(response))
+    assert caught.value.maybe_created is True
+    message = str(caught.value)
+    assert has_hangul(message)
+    assert "만들어졌을 수" in message and "예약된 게시물" in message
+    # "거절했습니다"는 "Facebook이 아무것도 하지 않았다"로 읽힌다. 5xx에서는 그것이 바로 틀린 결론이다.
+    assert f"사진 예약 게시 요청을 Facebook 쪽에서 처리하지 못했습니다 (HTTP {status})" in message
+    assert "거절했습니다" not in message
+    assert "An unexpected error has occurred" in message and "code 2" in message
+
+
+def test_토큰_점검의_5xx도_거절이_아니라_처리_실패로_적는다():
+    # 같은 문장이 _refused_status를 거쳐 check_token의 출력에도 간다. 조회는 아무것도 만들지 않으므로 ok=False 상태다.
+    response = FakeResponse(503, {"error": {"message": "(#1) An unknown error occurred", "code": 1}})
+    session = token_session(page=response)
+    status = graph.check_token(SENTINEL, PAGE, session=session)
+    assert status.ok is False and status.missing_permissions == ()
+    assert status.message.startswith("토큰을 확인하지 못했습니다. ")
+    assert "페이지 정보 조회 요청을 Facebook 쪽에서 처리하지 못했습니다 (HTTP 503)" in status.message
+    assert "거절했습니다" not in status.message
+    assert "(#1) An unknown error occurred" in status.message and "code 1" in status.message
+    assert "유효하지 않" not in status.message and "만료" not in status.message  # 토큰 탓이라고 단정하지 않는다
+    assert len(session.calls) == 1
+
+
+def test_모든_호출은_리다이렉트를_따라가지_않는다(image):
+    # 진짜 requests.Session은 3xx를 따라간다. 쓰기 경로에서 301·302·303을 따라가면 POST가 GET으로 바뀌고 본문이
+    # 버려지며, 307·308은 이미 다 읽은 파일 핸들을 다시 보내려 한다. 따라가지 않으면 "2xx가 아니면 실패"가 글자
+    # 그대로 참이 되고, 3xx를 거절로 다루는 아래 시험이 실제로 닿을 수 있는 상태를 설명하게 된다.
+    read = token_session()
+    graph.check_token(SENTINEL, PAGE, session=read)
+    write = photo_session()
+    graph.schedule_photo_post(SENTINEL, PAGE, image, MESSAGE, PUBLISH_AT, session=write)
+    for session in (read, write):
+        for call in session.calls:
+            assert call.kwargs["allow_redirects"] is False
 
 
 @pytest.mark.parametrize("status", [200, 201, 299])

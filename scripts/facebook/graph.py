@@ -40,7 +40,7 @@ from __future__ import annotations
 
 import mimetypes
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Protocol
 from urllib.parse import quote, quote_plus
@@ -107,10 +107,14 @@ class GraphError(Exception):
 
 
 class _Rejected(GraphError):
-    """Facebook이 요청을 받아들이지 않았다(오류 응답). `check_token`은 이것을 상태로 바꿔 돌려준다."""
+    """Facebook이 요청을 받아들이지 않았다(오류 응답). `check_token`은 이것을 상태로 바꿔 돌려준다.
 
-    def __init__(self, message: str, *, reason: str, invalid_token: bool):
-        super().__init__(message)
+    `maybe_created`는 상속받은 뜻 그대로다: `error` 객체가 왔어도 상태가 5xx면 Facebook 쪽에서 처리하다 실패한
+    것이므로 쓰기 요청은 결과를 알 수 없다(`_send` 참고). 직접 만들지 말고 `_rejected`를 쓸 것.
+    """
+
+    def __init__(self, message: str, *, reason: str, invalid_token: bool, maybe_created: bool = False):
+        super().__init__(message, maybe_created=maybe_created)
         self.reason = reason  # Facebook이 한 말(토큰은 이미 가려진 것)
         self.invalid_token = invalid_token
 
@@ -156,13 +160,15 @@ def _error(token: str, message: str, *, maybe_created: bool = False) -> GraphErr
     return GraphError(_scrub(message, token), maybe_created=maybe_created)
 
 
-def _rejected(token: str, message: str, *, reason: str, invalid_token: bool) -> "_Rejected":
+def _rejected(token: str, message: str, *, reason: str, invalid_token: bool, maybe_created: bool = False) -> "_Rejected":
     """`_Rejected`를 만드는 **유일한** 길. `_error`와 같은 자리에서 메시지와 `reason`을 함께 가린다.
 
     `_Rejected`는 토큰이 범위에 있는 `_send` 안에서 만들어진다. 생성자를 직접 부르지 말 것 — 여기를 지나지 않으면
     나중에 누가 메시지에 응답 본문을 덧붙이는 순간 토큰이 샌다.
     """
-    return _Rejected(_scrub(message, token), reason=_scrub(reason, token), invalid_token=invalid_token)
+    return _Rejected(
+        _scrub(message, token), reason=_scrub(reason, token), invalid_token=invalid_token, maybe_created=maybe_created
+    )
 
 
 def _url(path: str) -> str:
@@ -198,7 +204,16 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
     """
     problem = None
     try:
-        response = call(url, headers={"Authorization": f"Bearer {token}"}, timeout=config.GRAPH_TIMEOUT, **kwargs)
+        response = call(
+            url,
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=config.GRAPH_TIMEOUT,
+            # 3xx를 따라가지 않는다. 진짜 `requests.Session`은 기본으로 따라가는데, 쓰기 경로에서 301·302·303을
+            # 따라가면 POST가 GET으로 바뀌어 본문이 버려지고, 307·308은 이미 다 읽은 파일 핸들을 다시 보내려 한다.
+            # 따라가지 않으면 이 함수의 "2xx가 아니면 실패"가 글자 그대로 참이 된다.
+            allow_redirects=False,
+            **kwargs,
+        )
     except OSError as exc:  # requests.RequestException(연결·시간 초과 등)은 OSError(IOError)의 하위 클래스다
         problem = f"{what} 요청을 Facebook에 보내지 못했습니다 ({type(exc).__name__}: {exc}). 인터넷 연결을 확인하세요."
     else:
@@ -219,11 +234,20 @@ def _send(call: Any, url: str, token: str, what: str, *, may_create: bool = Fals
     if "error" in body:
         error = body["error"]
         reason = _api_error_text(error, token)
+        # 5xx는 거절이 아니다: Facebook이 요청을 받아 처리하다 자기 쪽에서 실패한 것이다(Graph의 code 1·2가 그렇게
+        # 돌아오고 Meta의 안내는 재시도다). 사진 업로드는 멱등이 아니므로 그 사이에 게시물이 만들어졌을 수 있어
+        # 쓰기 요청에서는 **결과 불명**으로 다룬다. 4xx(잘못된 인자·만료된 토큰·요청 한도)와 2xx는 확정 거절이다:
+        # Facebook이 일을 하기 전에 물렀다. 운영자에게 하는 말도 둘을 가른다 — "거절했습니다"는 "아무것도 만들어지지
+        # 않았다"로 읽히고, 5xx에서 그것은 바로 틀린 결론이다.
+        server_side = status >= 500
+        verdict = "Facebook 쪽에서 처리하지 못했습니다" if server_side else "Facebook이 거절했습니다"
+        maybe_created = may_create and server_side
         raise _rejected(
             token,
-            f"{what} 요청을 Facebook이 거절했습니다 (HTTP {status}): {reason}",
+            f"{what} 요청을 {verdict} (HTTP {status}): {reason}" + (_MAYBE_CREATED if maybe_created else ""),
             reason=reason,
             invalid_token=isinstance(error, dict) and error.get("code") == _INVALID_TOKEN_CODE,
+            maybe_created=maybe_created,
         )
     return body
 
@@ -319,12 +343,19 @@ def assert_schedulable(publish_at: datetime, now: datetime) -> None:
     """`publish_at`이 예약 창 안(`now`로부터 최소 10분 ~ 최대 75일, 양 끝 포함)이 아니면 `GraphError`.
 
     창의 길이는 `config.SCHEDULE_MIN_LEAD`·`SCHEDULE_MAX_LEAD`에서만 읽는다. 두 시각 모두 타임존이 있어야 한다.
+
+    이 함수는 **토큰을 받지 않는다.** 메시지는 두 시각과 창의 길이만으로 만들어지므로 가릴 토큰이 들어올 길이
+    없다(그래서 여기에는 토큰 누출 시험이 없다 — 어떻게 고쳐도 실패할 수 없는 시험은 시험이 아니다).
     """
     _require_aware("publish_at", publish_at)
     _require_aware("now", now)
-    lead = publish_at - now
-    earliest = now + config.SCHEDULE_MIN_LEAD
-    latest = now + config.SCHEDULE_MAX_LEAD
+    # 반드시 UTC로 바꿔 뺀다. 두 시각의 `tzinfo`가 같은 객체면 파이썬은 오프셋을 무시하고 **벽시계**를 빼므로
+    # (CPython이 문서로 정한 동작), DST가 접히는 구간에서 절대 시간으로 10분 뒤인 예약이 50분 전으로 계산된다.
+    now_utc = now.astimezone(timezone.utc)
+    lead = publish_at.astimezone(timezone.utc) - now_utc
+    # 창의 경계도 같은 산수로 센 뒤, 읽는 사람이 다시 환산하지 않도록 `now`의 시간대로 적는다.
+    earliest = (now_utc + config.SCHEDULE_MIN_LEAD).astimezone(now.tzinfo)
+    latest = (now_utc + config.SCHEDULE_MAX_LEAD).astimezone(now.tzinfo)
     if lead < timedelta(0):
         raise GraphError(
             f"예약 시각 {publish_at.isoformat()}은(는) 이미 지난 시각입니다 (지금 {now.isoformat()}보다 {_describe(lead)} 앞). "
