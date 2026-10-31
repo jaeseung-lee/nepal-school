@@ -320,6 +320,23 @@ def test_용어집_표기를_그대로_쓰면_통과():
     assert _check(_edit(_plan(), 0, body_local=body)) == []
 
 
+def test_D_4도_용어집_표기를_요구한다():
+    plain = _with_cta("Visa D-4 dành cho người học tiếng.", "vi")
+    assert _brief(_check(_edit(_plan(), 0, body_local=plain))) == [(0, "용어불일치", "warning")]
+
+    exact = _with_cta(f"{GLOSSARY['visa_d4']['vi']} dành cho người học tiếng.", "vi")
+    assert _check(_edit(_plan(), 0, body_local=exact)) == []
+
+
+def test_용어집_불일치는_용어마다_하나씩_보고한다():
+    body = _with_cta("Visa D-2 do 정우인재개발원 tư vấn.", "vi")
+
+    findings = _check(_edit(_plan(), 0, body_local=body))
+
+    assert _brief(findings) == [(0, "용어불일치", "warning"), (0, "용어불일치", "warning")]
+    assert "D-2" in findings[0].message and "정우인재개발원" in findings[1].message
+
+
 def test_회사명도_용어집_표기_그대로_써야_한다():
     body = _with_cta(f"{GLOSSARY['visa_d2']['vi']}. 정우인재개발원 tư vấn cho bạn.", "vi")
 
@@ -393,13 +410,14 @@ def test_fact_keys가_있으면_수치가_있어도_통과():
         "한 학기 등록금은 약 300만 원입니다.",
         "한 달에 15만 엔을 법니다.",
         "주 20시간까지 일할 수 있습니다.",
+        "주 20 시간까지 일할 수 있습니다.",
         "하루 4시간 근무합니다.",
         "합격률은 95%입니다.",
         "장학금 50퍼센트를 받습니다.",
         "비용은 $500입니다.",
         "비용은 ¥100,000입니다.",
     ],
-    ids=["원", "만-원", "엔", "주-시간", "하루-시간", "퍼센트-기호", "퍼센트-글자", "달러-기호", "엔-기호"],
+    ids=["원", "만-원", "엔", "주-시간", "주-시간-공백", "하루-시간", "퍼센트-기호", "퍼센트-글자", "달러-기호", "엔-기호"],
 )
 def test_금액_시간_비율을_수치로_본다(sentence):
     plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=())
@@ -426,11 +444,26 @@ def test_연도_학기_급수_같은_숫자는_수치로_보지_않는다(senten
 
 
 def test_수치는_한국어_원문만_본다():
-    # 현지어 숫자 표기까지 상대하지 않는다. 원문에 수치가 없으면 본문 쪽 숫자는 판정하지 않는다.
-    plan = _edit(_plan(), 3, fact_keys=(), source_ko=_with_cta("전주기전대학의 등록금을 안내합니다.", "ko"))
-    assert "6.800.000" in plan.posts[3].body_local
+    # 범위를 정한 것이다: 현지어 숫자 표기까지 상대하지 않고 원문만 본다. 원문에 수치가 없으면
+    # 본문 쪽에 금액처럼 보이는 글이 있어도 이 검사는 판정하지 않는다(본문의 수치는 역번역 대조가 본다).
+    body = _with_cta("Học phí của 전주기전대학 là 6,800,000원 một năm.", "vi")
+    plan = _edit(
+        _plan(), 3, fact_keys=(), body_local=body,
+        source_ko=_with_cta("전주기전대학의 등록금을 안내합니다.", "ko"),
+    )
+    assert "6,800,000원" in plan.posts[3].body_local
 
     assert _check(plan) == []
+
+
+def test_같은_수치가_되풀이되어도_메시지에는_한_번만_나온다():
+    sentence = "등록금은 6,800,000원입니다. 다시 말해 6,800,000원입니다."
+    plan = _edit(_plan(), 0, source_ko=_with_cta(sentence, "ko"), fact_keys=())
+
+    findings = _check(plan)
+
+    assert _brief(findings) == [(0, "출처없는수치", "warning")]
+    assert findings[0].message.count("6,800,000원") == 1
 
 
 def test_수치가_여럿이어도_출처없는수치는_게시물당_하나다():
@@ -447,7 +480,24 @@ def test_수치가_여럿이어도_출처없는수치는_게시물당_하나다(
 # --- 결과 순서 ----------------------------------------------------------------
 
 
-def test_결과는_게시물_번호순이고_같은_게시물_안에서는_검사_순서를_따른다():
+def test_같은_게시물_안에서는_검사_순서를_따른다():
+    # 한 게시물에서 여섯 가지 검사가 모두 걸리게 한다. 이웃한 두 검사의 순서가 바뀌면 여기서 깨진다.
+    plan = _edit(
+        _plan(), 3, fact_keys=(), university_names=("서울대학교",),
+        source_ko="전주기전대학의 연간 평균등록금은 6,800,000원이고 합격 보장이며 협력합니다.",  # CTA 없음
+        body_local=_with_cta("Visa D-2 và 전주기전대학.", "vi"),  # 용어집 표기 아님
+    )
+    banned = _banned(always={"ko": ("합격 보장",)}, university={"ko": ("협력",)})
+
+    findings = _check(plan, banned)
+
+    assert [f.code for f in findings] == [
+        "CTA없음", "금지표현", "대학명목록외", "대학맥락", "용어불일치", "출처없는수치",
+    ]
+    assert {f.post_index for f in findings} == {3}
+
+
+def test_결과는_게시물_번호순이다():
     plan = _plan()
     # 1번(my): CTA 없음 + 금지 표현 + 용어집 불일치.
     plan = _edit(plan, 1, body_local="ပညာသင်ဗီဇာ D-2 ဝန်ဆောင်ခ မရှိပါ။")
@@ -473,11 +523,12 @@ def test_결과는_게시물_번호순이고_같은_게시물_안에서는_검�
 # --- 사전을 읽는 쪽 --------------------------------------------------------------
 
 
-def test_사전이_빠진_항목을_가지면_조용히_건너뛰지_않고_멈춘다():
+@pytest.mark.parametrize("missing", ["my", "ko:대학명", "ne:대학명"])
+def test_사전이_빠진_항목을_가지면_조용히_건너뛰지_않고_멈춘다(missing):
     banned = _banned()
-    del banned["my"]
+    del banned[missing]
 
-    with pytest.raises(ValueError, match="my"):
+    with pytest.raises(ValueError, match=missing):
         _check(_plan(), banned)
 
 
@@ -517,6 +568,7 @@ def test_사전_로더는_파일이_없으면_BannedPhrasesError(tmp_path):
         (lambda raw: "{ 이건 JSON이 아니다", "올바른 JSON"),
         (lambda raw: [], "객체"),
         (lambda raw: {SECTION_ALWAYS: raw[SECTION_ALWAYS]}, SECTION_UNIVERSITY),
+        (lambda raw: {**raw, SECTION_UNIVERSITY: None}, "객체"),
         (lambda raw: {**raw, "오타": {}}, "오타"),
         (lambda raw: {**raw, SECTION_ALWAYS: {k: v for k, v in raw[SECTION_ALWAYS].items() if k != "vi"}}, "vi"),
         (lambda raw: {**raw, SECTION_ALWAYS: {**raw[SECTION_ALWAYS], "fr": {"x": ["y"]}}}, "fr"),
@@ -529,7 +581,7 @@ def test_사전_로더는_파일이_없으면_BannedPhrasesError(tmp_path):
         (lambda raw: {**raw, SECTION_UNIVERSITY: {**raw[SECTION_UNIVERSITY], "my": {}}}, "my"),
     ],
     ids=[
-        "JSON-아님", "최상위-배열", "구역-빠짐", "구역-오타", "언어-빠짐", "언어-오타", "언어-문구-없음",
+        "JSON-아님", "최상위-배열", "구역-빠짐", "구역-값-null", "구역-오타", "언어-빠짐", "언어-오타", "언어-문구-없음",
         "분류-비어있음", "분류-문자열", "문구-숫자", "문구-공백만", "문구-보이지않는-문자만", "대학명-언어-문구-없음",
     ],
 )
@@ -619,6 +671,20 @@ def test_금지_문구는_승인된_용어집_문자열을_막지_않는다():
             for key in (lang, f"{lang}:대학명"):
                 hits = [phrase for phrase in banned[key] if _compact(phrase) in text]
                 assert not hits, f"용어집 {term}({lang})이 사전 '{key}'의 {hits}에 걸린다: {by_language[lang]!r}"
+
+
+def test_한국어_금지_문구는_확정된_사실_문장을_막지_않는다():
+    # 검증된 사실을 그대로 옮겨 쓴 원문이 금지 표현이나 대학 맥락 용어에 걸리면, 사실을 쓰는 게시물이
+    # 사전 때문에 막힌다. 한국어 사실 문장만 있으므로 한국어 항목만 본다.
+    from facebook.facts import load_facts
+    from facebook.validate import _compact
+
+    banned = _real_banned()
+    for key, fact in load_facts(config.FACTS_PATH).items():
+        text = _compact(fact.value)
+        for table in ("ko", "ko:대학명"):
+            hits = [phrase for phrase in banned[table] if _compact(phrase) in text]
+            assert not hits, f"사실 {key}가 사전 '{table}'의 {hits}에 걸린다: {fact.value!r}"
 
 
 # --- 정상 경로 ----------------------------------------------------------------
