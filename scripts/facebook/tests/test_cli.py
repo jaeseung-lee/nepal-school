@@ -1546,6 +1546,21 @@ def test_운영_문서가_토큰이_안_먹힐_때_env_한_줄을_먼저_의심�
     assert "다시 발급하기 전에" in doc
 
 
+def test_운영_문서의_플랜_작성_지침이_게시_시각을_직접_지시한다():
+    """계획의 전역 제약 「게시 시각 기본값은 JST 저녁」이 플랜을 쓰는 세션에 닿는 유일한 경로가
+    `plan_model.py`의 docstring **예시**였다. 운영 문서에는 `19:00`도 `저녁`도 없었고, 플랜 작성 지침 10항목은
+    시각을 한 번도 말하지 않았다. 설정 상수 둘(`DEFAULT_POST_TIME_JST`·`LANGUAGE_OFFSET_MINUTES`)이 있었지만
+    읽는 코드가 하나도 없어 제약을 지키게 하지 못했다 — `publish_at`은 전부 플랜 JSON에서 온다.
+
+    그래서 지시가 실제로 읽히는 자리(세션에 붙여넣는 글) 안에 있는지를 본다. 문서 어딘가에 있는 것으로는
+    모자란다.
+    """
+    doc = doc_text()
+    guide = doc[doc.index("#### 플랜 작성 지침"):doc.index("### 단계 3")]
+    assert "T19:00:00+09:00" in guide
+    assert "저녁" in guide
+
+
 def test_운영_문서가_모든_npm_명령을_싣는다():
     doc = doc_text()
     for name in NPM_SCRIPTS:

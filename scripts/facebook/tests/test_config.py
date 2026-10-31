@@ -48,10 +48,6 @@ def test_이미지_용량_상한이_8MiB다():
     assert config.MAX_IMAGE_BYTES == 8 * 1024 * 1024
 
 
-def test_언어별_오프셋은_모든_언어를_기본_0으로_가진다():
-    assert config.LANGUAGE_OFFSET_MINUTES == {lang: 0 for lang in config.LANGUAGES}
-
-
 def test_load_token은_환경변수만_있으면_그_값을_쓴다(isolated_token, monkeypatch):
     monkeypatch.setenv("FB_PAGE_TOKEN", "from-env")
     assert not isolated_token.exists()

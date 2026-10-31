@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import time, timedelta
+from datetime import timedelta
 from pathlib import Path
 
 # scripts/facebook/config.py -> 저장소 루트 (scripts/*.py 의 parents[1] 관례를 한 단계 깊이에 맞춘 것)
@@ -28,10 +28,9 @@ LANGUAGES: tuple[str, str, str] = ("vi", "my", "ne")
 SCHEDULE_MIN_LEAD = timedelta(minutes=10)
 SCHEDULE_MAX_LEAD = timedelta(days=75)
 
-# 게시 시각 기본값은 일본 시간(JST) 저녁이다. 최우선 독자가 일본 체류자이기 때문이다.
-DEFAULT_POST_TIME_JST = time(19, 0)
-# 언어별로 게시 시각을 어긋나게 하고 싶을 때 분 단위로 더한다. 기본은 전부 같은 시각.
-LANGUAGE_OFFSET_MINUTES: dict[str, int] = {lang: 0 for lang in LANGUAGES}
+# 게시 시각은 전부 플랜 JSON의 `publish_at`에서 온다. 기본값 상수를 여기에 두지 않는다 —
+# 읽는 코드가 없는 상수는 「JST 저녁」이라는 제약을 지키게 하지 못하면서 손잡이가 연결돼 있다는
+# 환상만 만든다. 그 제약은 플랜을 쓰는 세션이 읽는 자리(운영 문서 「플랜 작성 지침」 1항)에 있다.
 
 # 업로드 전에 거르는 이미지 최대 용량.
 MAX_IMAGE_BYTES = 8 * 1024 * 1024

@@ -51,7 +51,7 @@
   - `config.PAGE_ID: str`, `config.GRAPH_VERSION: str`, `config.LANGUAGES: tuple[str, str, str]` = `("vi", "my", "ne")`
   - `config.ROOT: Path`, `config.facebook_dir() -> Path`, `config.month_dir(month: str) -> Path`, `config.FACTS_PATH: Path`, `config.GLOSSARY_PATH: Path`, `config.UNIVERSITIES_PATH: Path`
   - `config.SCHEDULE_MIN_LEAD: timedelta` (10분), `config.SCHEDULE_MAX_LEAD: timedelta` (75일)
-  - `config.DEFAULT_POST_TIME_JST: time`, `config.LANGUAGE_OFFSET_MINUTES: dict[str, int]` (기본 전부 0)
+  - ~~`config.DEFAULT_POST_TIME_JST: time`, `config.LANGUAGE_OFFSET_MINUTES: dict[str, int]` (기본 전부 0)~~ — **최종 검토 M2에서 삭제.** 두 상수를 읽는 코드가 하나도 없었고(`publish_at`은 전부 플랜 JSON에서 온다) 유일한 소비자가 상수 값을 자기 자신과 견주는 동어반복 시험이었다. 전역 제약 「게시 시각 기본값은 JST 저녁」은 상수가 아니라 플랜을 쓰는 세션이 읽는 자리 — 운영 문서 「플랜 작성 지침」 1항(`T19:00:00+09:00`) — 에서 지시한다. 요구와 코드가 말없이 어긋나지 않게 이 줄을 남겨 둔다.
   - `config.MAX_IMAGE_BYTES: int` = `8 * 1024 * 1024`
   - `config.load_token() -> str` — `.env`의 `FB_PAGE_TOKEN` 또는 같은 이름의 환경변수에서 읽는다. 둘 다 값을 주고 서로 다르면 한국어 메시지로 `RuntimeError`. 둘 다 없어도 `RuntimeError`. 토큰 값을 로그에 남기지 않는다.
   - `facts.Fact` — frozen dataclass: `key: str`, `value: str`, `source_url: str`, `verified_by: str`, `verified_on: date`, `expires_on: date`; 메서드 `is_valid_on(day: date) -> bool`
