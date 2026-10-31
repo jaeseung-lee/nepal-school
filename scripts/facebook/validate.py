@@ -4,7 +4,7 @@
 이미지 파일(경로, 확장자, 존재, 크기, 중복)·이미지 프롬프트의 필수 지시 문구를, `validate_facts`는
 게시물이 쓰는 사실의 존재와 **게시일 기준** 유효기한을, `validate_copy`는 게시물이 **무엇을 말하는지**를
 본다: 승인된 상담 문구(CTA)로 끝나는지, 금지 표현이 없는지, 대학 실명이 승인 목록 안에 있고 협력·제휴로
-이어지지 않는지, 용어집 표기를 지켰는지, 출처 없는 수치가 없는지. 셋 다 멈추지 않고 발견한 문제를 전부 모아
+이어지지 않는지, 용어집 표기를 지켰는지, 출처 없는 수치가 없는지, 등록금을 평균·연단위 한정과 함께 쓰는지. 셋 다 멈추지 않고 발견한 문제를 전부 모아
 `Finding` 목록으로 돌려준다. 호출하는 쪽(CLI)이 오류가 하나라도 있으면 다음 단계로 넘기지 않는다.
 
 원문과 현지어 본문의 뜻이 같은지(역번역 대조)는 여기서 보지 않고, 글자 유사도도 계산하지 않는다.
@@ -13,7 +13,7 @@
 결과 순서는 항상 같다. 게시물에 매이지 않는 항목(`post_index`가 `None`)이 먼저 오고, 그다음
 게시물 번호 오름차순이며, 같은 게시물 안에서는 검사한 순서다.
 `validate_structure`는 언어 → 소재 배치 → 월·날짜 → 이미지 → 프롬프트,
-`validate_copy`는 CTA → 금지 표현 → 대학명 → 대학 맥락 → 용어집 → 출처 없는 수치다.
+`validate_copy`는 CTA → 금지 표현 → 대학명 → 대학 맥락 → 대학명 후보 → 용어집 → 출처 없는 수치 → 등록금 한정어다.
 """
 
 from __future__ import annotations
@@ -392,8 +392,10 @@ def validate_copy(
     - 금지 표현이 없는지: 원문은 `ko`, 본문은 그 게시물 언어의 사전으로 (오류)
     - `university_names`의 대학이 승인 목록(`universities`의 `name_ko`)에 있고 본문에 그대로 쓰였는지 (오류)
     - 대학명이 나오는 게시물에 협력·제휴를 떠올리게 하는 표현이 없는지 (오류)
+    - 승인 목록 밖의 `…대학교` 이름이 그런 표현과 한 게시물에 있지 않은지 (경고)
     - `D-2`·`D-4`·회사명이 나오면 용어집 표기를 그대로 썼는지 (경고)
     - `fact_keys`가 빈 게시물의 원문에 금액·시간·비율 수치가 없는지 (경고)
+    - 등록금 사실(`tuition_*`)을 쓰는 게시물의 원문에 `평균`과 연단위 표시가 있는지 (오류)
 
     `banned`는 `load_banned_phrases`가 돌려준 값이다. 항목이 하나라도 빠진 사전은 그 검사를 조용히
     건너뛰게 되므로 `ValueError`로 멈춘다.
@@ -410,8 +412,10 @@ def validate_copy(
     findings += _check_banned_phrases(plan, banned)
     findings += _check_universities(plan, approved)
     findings += _check_university_context(plan, approved, banned)
+    findings += _check_university_candidates(plan, approved, banned)
     findings += _check_glossary_terms(plan, glossary)
     findings += _check_unsourced_figures(plan)
+    findings += _check_tuition_qualifier(plan)
     return _ordered(findings)
 
 
@@ -488,6 +492,17 @@ def _named_universities(post: Post, approved: tuple[str, ...]) -> list[str]:
     return list(dict.fromkeys([*post.university_names, *detected]))
 
 
+def _context_terms(post: Post, banned: dict[str, tuple[str, ...]]) -> list[tuple[str, str]]:
+    """게시물의 원문(`ko:대학명`)과 본문(그 게시물 언어의 `:대학명`)에서 찾은 맥락 어휘를 `(출처, 어휘)`로."""
+    found: list[tuple[str, str]] = []
+    for side, text, language in (
+        ("한국어 원문(source_ko)", post.source_ko, "ko"),
+        ("현지어 본문(body_local)", post.body_local, post.language),
+    ):
+        found += [(side, term) for term in _hits(text, banned[_university_key(language)])]
+    return found
+
+
 def _check_university_context(
     plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]]
 ) -> list[Finding]:
@@ -501,17 +516,51 @@ def _check_university_context(
         named = _named_universities(post, approved)
         if not named:
             continue
-        for side, text, language in (
-            ("한국어 원문(source_ko)", post.source_ko, "ko"),
-            ("현지어 본문(body_local)", post.body_local, post.language),
-        ):
-            for term in _hits(text, banned[_university_key(language)]):
-                findings.append(_error(
-                    "대학맥락", post.index,
-                    f"대학명({', '.join(named)})이 나오는 게시물의 {side}에 협력·제휴를 떠올리게 하는 표현 "
-                    f"'{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
-                    f"연결하지 마세요.",
-                ))
+        for side, term in _context_terms(post, banned):
+            findings.append(_error(
+                "대학맥락", post.index,
+                f"대학명({', '.join(named)})이 나오는 게시물의 {side}에 협력·제휴를 떠올리게 하는 표현 "
+                f"'{term}'이(가) 있습니다. 대학 실명은 소개 맥락에서만 쓰고 협력 관계·제휴·입학 알선·합격 가능성과 "
+                f"연결하지 마세요.",
+            ))
+    return findings
+
+
+# 대학 이름처럼 보이는 낱말. `대학`으로 끝나는 것까지 넓히지 않는다: `전문대학`·`종합대학` 같은 일반 명사가
+# 걸리고, 픽스처 원문에도 `전문대학`이 있다. `…대학교`는 일반 명사로는 드물어 이름일 가능성이 높다.
+_UNIVERSITY_LIKE = re.compile(r"[가-힣]{2,}대학교")
+
+
+def _check_university_candidates(
+    plan: Plan, approved: tuple[str, ...], banned: dict[str, tuple[str, ...]]
+) -> list[Finding]:
+    """승인 목록에도 `university_names`에도 없는 `…대학교` 이름이 맥락 어휘와 한 게시물에 있으면 경고한다.
+
+    한국의 대학을 소개하는 글에서 실명을 쓰는 것은 허용되므로 이름만으로는 걸지 않는다. 걸리는 것은
+    `서울대학교와 연계되어 있습니다`처럼 목록 밖의 이름이 관계를 말하는 어휘 옆에 있을 때뿐이다 — 승인된
+    이름의 같은 문장은 `대학맥락`이, 선언한 이름은 `대학명목록외`가 이미 오류로 잡는다. 이름 모양만 보는
+    추정이라 오류가 아닌 경고다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        terms = _context_terms(post, banned)
+        if not terms:
+            continue
+        known = {*approved, *post.university_names}
+        candidates = dict.fromkeys(
+            name
+            for text in (post.source_ko, post.body_local)
+            for name in _UNIVERSITY_LIKE.findall(text)
+            if name not in known
+        )
+        shown = ", ".join(dict.fromkeys(f"'{term}'" for _, term in terms))
+        for name in candidates:
+            findings.append(_warning(
+                "대학명후보", post.index,
+                f"승인된 대학 목록에 없는 대학명 후보 '{name}'이(가) 협력·제휴를 떠올리게 하는 표현({shown})과 "
+                f"같은 게시물에 있습니다. 목록 밖의 대학은 관계를 말하는 글에 쓸 수 없습니다 — 연결 표현을 빼거나 "
+                f"이름을 빼세요. 대학 이름이 아니라면 무시해도 됩니다.",
+            ))
     return findings
 
 
@@ -572,5 +621,37 @@ def _check_unsourced_figures(plan: Plan) -> list[Finding]:
                 "출처없는수치", post.index,
                 f"한국어 원문에 수치({', '.join(figures)})가 있는데 fact_keys가 비어 있어 출처를 검증할 수 없습니다. "
                 f"facts.json의 확정된 사실에서 가져온 수치라면 그 키를 fact_keys에 적고, 아니라면 수치를 빼세요.",
+            ))
+    return findings
+
+
+# 등록금 사실의 키 접두사(`tuition_<대학 id>`)와, 연단위를 알리는 표시: `1년`(앞이 숫자인 `2021년`은 제외) 또는 `연간`.
+_TUITION_PREFIX = "tuition_"
+_YEARLY_MARKER = re.compile(r"(?<!\d)1년|연간")
+
+
+def _check_tuition_qualifier(plan: Plan) -> list[Finding]:
+    """등록금 사실을 인용하는 게시물의 한국어 원문에 `평균`과 연단위(`1년` 또는 `연간`)가 있어야 한다.
+
+    사실 값은 등록금이 전체 학과 가중평균 공시값이고 1년치(학기당 아님)라고 못박는다. 숫자만 떼어 쓰면 정확한
+    금액이나 학기당 금액으로 읽혀 이 독자층이 가장 신경 쓰는 숫자를 잘못 전하므로 오류다. 문장 전체를
+    대조하지 않고 이 두 표시만 보는 것은 표현을 조금 바꿔 쓸 때 검사가 깨지지 않게 하려는 것이다.
+    """
+    findings: list[Finding] = []
+    for post in plan.posts:
+        keys = [key for key in post.fact_keys if key.startswith(_TUITION_PREFIX)]
+        if not keys:
+            continue
+        missing = []
+        if "평균" not in post.source_ko:
+            missing.append("'평균'")
+        if not _YEARLY_MARKER.search(post.source_ko):
+            missing.append("'1년' 또는 '연간'")
+        if missing:
+            findings.append(_error(
+                "등록금한정어", post.index,
+                f"등록금 사실({', '.join(keys)})을 쓰는 글인데 한국어 원문에 {' · '.join(missing)}이(가) 없습니다. "
+                f"등록금은 전체 학과 가중평균 공시값이고 한 해 금액입니다. 이 한정이 빠지면 정확한 금액이나 "
+                f"학기당 금액으로 읽히니 빠진 표현을 원문에 넣으세요.",
             ))
     return findings

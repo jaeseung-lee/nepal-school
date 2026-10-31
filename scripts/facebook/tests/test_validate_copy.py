@@ -218,7 +218,8 @@ def test_같은_문구가_여러_번_나와도_문구마다_한_번만_보고한
 
 
 def test_대학명과_협력표현이_같은_게시물에_있으면_오류():
-    plan = _edit(_plan(), 3, source_ko=_with_cta("전주기전대학은 저희 협력 대학입니다.", "ko"))
+    # 등록금 사실을 쓰지 않는 글이라 fact_keys는 비운다(등록금 한정어 규칙이 끼어들지 않게).
+    plan = _edit(_plan(), 3, source_ko=_with_cta("전주기전대학은 저희 협력 대학입니다.", "ko"), fact_keys=())
 
     findings = _check(plan, _banned(university={"ko": ("협력",)}))
 
@@ -298,6 +299,72 @@ def test_university_names에_적은_대학명이_현지어_본문에_없으면_�
 def test_현지어_글자를_곁들여도_한국어_대학명이_그대로_있으면_통과():
     body = _with_cta("전주기전대학 (Cao đẳng Jeonju Kijeon) là một trường cao đẳng.", "vi")
     plan = _edit(_plan(), 3, body_local=body)
+
+    assert _check(plan, _real_banned()) == []
+
+
+def test_대학교명이_연계_표현과_함께_있으면_경고():
+    # 승인 목록 밖의 이름이 연계·협력 같은 말과 한 게시물에 있으면 목록에 없는 대학과의 관계를 말하는 글일 수 있다.
+    related = _edit(_plan(), 0, source_ko=_with_cta("서울대학교와 연계되어 있습니다.", "ko"))
+    assert related.posts[0].university_names == ()
+
+    findings = _check(related, _real_banned())
+
+    assert _brief(findings) == [(0, "대학명후보", "warning")]
+    assert "서울대학교" in findings[0].message and "연계" in findings[0].message
+
+    # 같은 이름이라도 맥락 어휘가 없는 소개는 통과한다. 한국의 대학을 소개하는 글은 허용된다.
+    intro = _edit(_plan(), 0, source_ko=_with_cta("서울대학교는 서울에 있는 대학교입니다.", "ko"))
+
+    assert _check(intro, _real_banned()) == []
+
+
+def test_대학명후보는_현지어_본문의_연계_표현과도_짝지어_본다():
+    body = _with_cta("서울대학교 hợp tác với chúng tôi.", "vi")
+    plan = _edit(_plan(), 0, body_local=body)
+
+    findings = _check(plan, _banned(university={"vi": ("hợp tác",)}))
+
+    assert _brief(findings) == [(0, "대학명후보", "warning")]
+    assert "hợp tác" in findings[0].message
+
+
+def test_대학명후보는_이름마다_하나씩_보고한다():
+    plan = _edit(_plan(), 0, source_ko=_with_cta("서울대학교와 연세대학교는 서울대학교와 연계됩니다.", "ko"))
+
+    findings = _check(plan, _banned(university={"ko": ("연계",)}))
+
+    assert _brief(findings) == [(0, "대학명후보", "warning"), (0, "대학명후보", "warning")]
+    assert "서울대학교" in findings[0].message and "연세대학교" in findings[1].message
+
+
+def test_승인_목록에_있는_대학명은_대학명후보가_아니다():
+    # 승인된 이름의 연계 표현은 대학맥락이 이미 오류로 잡는다. 후보로 또 보고하지 않는다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("경기대학교와 연계되어 있습니다.", "ko"))
+
+    findings = _check(plan, _real_banned())
+
+    assert _brief(findings) == [(0, "대학맥락", "error")]
+
+
+def test_university_names에_적은_대학명은_대학명후보가_아니다():
+    # 선언한 이름은 대학명목록외가 이미 오류로 잡는다.
+    plan = _edit(
+        _plan(), 3,
+        university_names=("서울대학교",),
+        source_ko=_with_cta("서울대학교와 연계되어 있습니다.", "ko"),
+        body_local=_with_cta("서울대학교 안내.", "vi"),
+        fact_keys=(),
+    )
+
+    findings = _check(plan, _real_banned())
+
+    assert [f.code for f in findings] == ["대학명목록외", "대학맥락"]
+
+
+def test_전문대학_같은_일반_명사는_대학교명_후보가_아니다():
+    # 후보 패턴은 `…대학교`뿐이다. 픽스처 원문에도 있는 `전문대학`이 연계 표현 옆에서 걸리면 안 된다.
+    plan = _edit(_plan(), 0, source_ko=_with_cta("전문대학과 연계되어 있습니다.", "ko"))
 
     assert _check(plan, _real_banned()) == []
 
@@ -477,14 +544,88 @@ def test_수치가_여럿이어도_출처없는수치는_게시물당_하나다(
         assert shown in findings[0].message
 
 
+# --- 등록금 한정어 -------------------------------------------------------------
+
+
+def _tuition_plan(source: str, **changes) -> Plan:
+    """3번(vi, tuition_kijeon) 게시물의 원문만 `source`로 바꾼다(상담 문구는 붙여 준다)."""
+    return _edit(_plan(), 3, source_ko=_with_cta(source, "ko"), **changes)
+
+
+def test_등록금_사실을_인용하면_평균과_연단위_한정어가_있어야_한다():
+    # 한정어가 모두 있는 픽스처 원문은 통과하고, '평균'을 뗀 원문은 오류다.
+    assert _check(_plan()) == []
+
+    findings = _check(_tuition_plan("전주기전대학의 연간 등록금은 6,800,000원입니다."))
+
+    assert _brief(findings) == [(3, "등록금한정어", "error")]
+    assert "평균" in findings[0].message
+    assert "1년" not in findings[0].message  # 연단위는 '연간'으로 갖췄으므로 빠졌다고 하지 않는다
+
+
+def test_등록금_원문에_연단위_한정어가_없으면_오류():
+    findings = _check(_tuition_plan("전주기전대학의 평균 등록금은 6,800,000원입니다."))
+
+    assert _brief(findings) == [(3, "등록금한정어", "error")]
+    assert "1년" in findings[0].message and "연간" in findings[0].message
+    assert "'평균'" not in findings[0].message
+
+
+def test_등록금_원문에_평균도_연단위도_없으면_한_항목에_둘_다_알린다():
+    findings = _check(_tuition_plan("전주기전대학의 등록금은 6,800,000원입니다."))
+
+    assert _brief(findings) == [(3, "등록금한정어", "error")]
+    assert "평균" in findings[0].message and "1년" in findings[0].message
+
+
+@pytest.mark.parametrize("year_marker", ["1년치", "1년에", "연간", "연간 기준"], ids=["1년치", "1년에", "연간", "연간-기준"])
+def test_연단위_한정어는_1년이나_연간_중_하나면_된다(year_marker):
+    findings = _check(_tuition_plan(f"전주기전대학의 평균 등록금은 {year_marker} 6,800,000원입니다."))
+
+    assert findings == []
+
+
+def test_2021년_같은_연도의_1년은_연단위_한정어가_아니다():
+    # `2021년`에도 문자열 `1년`이 들어 있다. 연도가 연단위 표시로 둔갑하면 안 된다.
+    findings = _check(_tuition_plan("2021년 기준 전주기전대학의 평균 등록금은 6,800,000원입니다."))
+
+    assert _brief(findings) == [(3, "등록금한정어", "error")]
+
+
+def test_등록금이_아닌_사실은_평균과_연단위_한정어를_요구하지_않는다():
+    plan = _tuition_plan("전주기전대학은 유학(D-2) 안내를 합니다.", fact_keys=("visa_d2_definition",))
+
+    assert _check(plan) == []
+
+
+def test_등록금_사실이_여럿_중_하나여도_한정어를_요구한다():
+    plan = _tuition_plan(
+        "전주기전대학의 등록금은 6,800,000원입니다.",
+        fact_keys=("visa_d2_definition", "tuition_kijeon"),
+    )
+
+    assert _brief(_check(plan)) == [(3, "등록금한정어", "error")]
+
+
+def test_등록금한정어는_같은_게시물의_다른_검사_뒤에_온다():
+    plan = _edit(
+        _plan(), 3,
+        source_ko="전주기전대학의 등록금은 6,800,000원입니다.",  # CTA 없음, 평균·연단위 없음
+        body_local=_with_cta("Visa D-2 và 전주기전대학.", "vi"),  # 용어집 표기 아님
+    )
+
+    assert [f.code for f in _check(plan)] == ["CTA없음", "용어불일치", "등록금한정어"]
+
+
 # --- 결과 순서 ----------------------------------------------------------------
 
 
 def test_같은_게시물_안에서는_검사_순서를_따른다():
-    # 한 게시물에서 여섯 가지 검사가 모두 걸리게 한다. 이웃한 두 검사의 순서가 바뀌면 여기서 깨진다.
+    # 한 게시물에서 일곱 가지 검사가 모두 걸리게 한다. 이웃한 두 검사의 순서가 바뀌면 여기서 깨진다.
+    # (등록금한정어는 fact_keys가 비면 걸릴 수 없어 따로 본다 — 등록금한정어는_같은_게시물의_다른_검사_뒤에_온다.)
     plan = _edit(
         _plan(), 3, fact_keys=(), university_names=("서울대학교",),
-        source_ko="전주기전대학의 연간 평균등록금은 6,800,000원이고 합격 보장이며 협력합니다.",  # CTA 없음
+        source_ko="전주기전대학의 연간 평균등록금은 6,800,000원이고 합격 보장이며 부산대학교와 협력합니다.",  # CTA 없음
         body_local=_with_cta("Visa D-2 và 전주기전대학.", "vi"),  # 용어집 표기 아님
     )
     banned = _banned(always={"ko": ("합격 보장",)}, university={"ko": ("협력",)})
@@ -492,7 +633,7 @@ def test_같은_게시물_안에서는_검사_순서를_따른다():
     findings = _check(plan, banned)
 
     assert [f.code for f in findings] == [
-        "CTA없음", "금지표현", "대학명목록외", "대학맥락", "용어불일치", "출처없는수치",
+        "CTA없음", "금지표현", "대학명목록외", "대학맥락", "대학명후보", "용어불일치", "출처없는수치",
     ]
     assert {f.post_index for f in findings} == {3}
 
