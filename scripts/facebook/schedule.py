@@ -415,10 +415,19 @@ def _schedule_one(
 
 
 def _already_recorded(ledger_path: Path, index: int, entry: _Entry) -> Outcome:
+    """원장에 이미 결과가 있는 게시물. 결과 불명이면 **영구히 건너뛰고** 사람이 확인할 방법을 알려 준다.
+
+    **까닭에 그 게시물의 신원(이미지 파일 이름)을 넣지 않는다.** `_resolve_unknown`과 같은 이유다: 이 글은
+    `Outcome.error`로 나가고 `cli._reasons`가 **같은 까닭을 한 묶음으로** 모으므로, 게시물마다 달라지는
+    글자를 넣으면 묶기가 게시물 수만큼 쪼개진다. 하필 이 글을 읽는 때가 **우리가 "다시 실행하세요"라고
+    시킨 그 재실행**이고, 그때 서른 건이 결과 불명이면 화면이 벽이 된다. 신원은 버리지 않는다 —
+    부르는 쪽이 묶음 안에 「번호 + 이미지 파일」 목록으로 한 번 싣는다(원장의 신원과 플랜의 같은 자리가
+    어긋나면 `_require_same_posts`가 그 전에 멈추므로, 두 신원은 여기서 같다).
+    """
     if entry.result == UNKNOWN_RESULT:
         return Outcome(
             index, False, entry.result,
-            f"이전 실행에서 결과를 알 수 없었던 게시물(이미지 파일 {entry.image_file})이라 건너뜁니다. 페이스북 페이지의 예약된 게시물에서 "
+            f"이전 실행에서 결과를 알 수 없었던 게시물이라 건너뜁니다. 페이스북 페이지의 예약된 게시물에서 "
             f"이 게시물을 찾아보세요. 있으면 {_resolve_unknown(ledger_path)}",
             skipped=True,
         )

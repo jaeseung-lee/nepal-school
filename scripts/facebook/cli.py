@@ -57,7 +57,7 @@ from pathlib import Path
 from . import backtranslation, config, graph, review, schedule, validate_copy, validate_structure
 from .facts import Fact, FactsError, load_facts
 from .findings import Finding, _ordered
-from .plan_model import Plan, PlanError, load_plan
+from .plan_model import Plan, PlanError, Post, load_plan
 
 COMMANDS: tuple[str, ...] = (
     "check-token",
@@ -892,8 +892,17 @@ def _when(publish_at: datetime) -> str:
     return publish_at.strftime("%m-%d %H:%M")
 
 
-def _reasons(title: str, outcomes: list[schedule.Outcome]) -> None:
-    """같은 까닭은 한 번만 적는다. 30건이 글자까지 같은 거절을 내도 진짜 다른 실패 한 건이 묻히지 않게."""
+def _reasons(title: str, outcomes: list[schedule.Outcome], posts: dict[int, Post], *, identify: bool = False) -> None:
+    """같은 까닭은 한 번만 적는다. 30건이 글자까지 같은 거절을 내도 진짜 다른 실패 한 건이 묻히지 않게.
+
+    **묶는 열쇠는 까닭 문자열 하나뿐이다.** 그래서 까닭을 만드는 쪽(`schedule`)은 게시물마다 달라지는
+    글자(번호·이미지 파일 이름)를 그 글에 넣지 않는다. 넣으면 묶기가 게시물 수만큼 쪼개져, 전면 장애나
+    결과 불명 재실행에서 거의 같은 ~390자 문단이 서른 번 찍힌다. 번호는 묶음 머리에 목록으로 싣는다.
+
+    `identify`는 **결과 불명 묶음에만** 참이다. 그 묶음의 게시물은 운영자가 페이스북의 예약된 게시물에서
+    하나씩 **눈으로 찾아** 확인해야 하므로 번호만으로는 모자라고 사진 파일 이름이 함께 있어야 한다.
+    실패 묶음은 아무것도 만들어지지 않았으니 찾을 것이 없다.
+    """
     if not outcomes:
         return
     groups: dict[str, list[int]] = {}
@@ -903,6 +912,8 @@ def _reasons(title: str, outcomes: list[schedule.Outcome]) -> None:
     print(f"{title} (같은 까닭은 한 번만 적습니다):")
     for message, indexes in groups.items():
         print(f"  게시물 {', '.join(map(str, indexes))}번 ({len(indexes)}건): {message}")
+        if identify:
+            print(f"    찾을 게시물: {', '.join(f'{index}번 {posts[index].image_file}' for index in indexes)}")
 
 
 def _off_plan(paths: _Paths, plan: Plan) -> None:
@@ -967,8 +978,9 @@ def _report(outcomes: list[schedule.Outcome], plan: Plan, paths: _Paths, *, dry_
     ))
     print(f"실패: {len(grouped['실패'])}건")
 
-    _reasons("결과 불명인 게시물의 까닭", grouped["결과 불명"])
-    _reasons("실패한 게시물의 까닭", grouped["실패"])
+    # 결과 불명만 신원을 함께 싣는다: 그 게시물은 페이스북에서 사람이 하나씩 찾아야 한다.
+    _reasons("결과 불명인 게시물의 까닭", grouped["결과 불명"], posts, identify=True)
+    _reasons("실패한 게시물의 까닭", grouped["실패"], posts)
     _off_plan(paths, plan)
 
 

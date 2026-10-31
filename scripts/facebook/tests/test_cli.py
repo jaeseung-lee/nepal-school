@@ -748,6 +748,31 @@ def test_schedule은_전면_장애의_결과_불명_까닭도_한_묶음으로_�
     assert str(env.ledger) in text  # 묶었어도 어느 파일을 고치는지는 그 자리에 남는다
 
 
+def test_schedule은_재실행의_결과_불명_안내도_한_묶음으로_적고_신원을_목록으로_싣는다(env, 토큰, capsys):
+    """I3의 형제. 결과 불명이 남은 원장으로 **다시 돌릴 때**의 안내는 `_already_recorded`가 내는데, 그 글에
+    이미지 파일 이름이 박혀 있어 까닭 문자열이 게시물마다 달라졌다 — 그래서 한 경로는 묶이고 그 형제는
+    쪼개졌다. 운영자가 그 형제를 만나는 때가 하필 **우리가 "다시 실행하세요"라고 시킨 그 재실행**이다.
+
+    이미지 파일 이름은 원장 신원 설계(`_require_same_posts`)가 일부러 싣는 것이므로 버리지 않는다.
+    까닭에서 떼어 내고 묶음 안에 「번호 + 이미지 파일」 목록으로 한 번 싣는다.
+    """
+    fill_worksheet(env)
+    env.seed_ledger({post.index: (schedule.UNKNOWN_RESULT, post.image_file) for post in env.plan.posts})
+
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession()) == 2
+    text = shown(capsys)
+    assert "결과 불명: 6건" in text
+    assert text.count("이전 실행에서 결과를 알 수 없었던") == 1  # 까닭은 한 번만
+    assert text.count(f'"{schedule.CONFIRMED_BY_HAND}"으로 바꾸고') == 1  # 원장 수정 지시도 한 번만
+    assert "게시물 0, 1, 2, 3, 4, 5번 (6건)" in text
+
+    # 신원은 잃지 않는다: 묶음 안의 한 줄이 번호와 이미지 파일을 짝지어 전부 댄다.
+    assert text.count("찾을 게시물:") == 1
+    listing = next(line for line in text.splitlines() if "찾을 게시물:" in line)
+    for post in env.plan.posts:
+        assert f"{post.index}번 {post.image_file}" in listing, post.image_file
+
+
 def test_schedule은_이미_예약된_건을_건너뛴_것으로_따로_센다(env, 토큰, capsys):
     fill_worksheet(env)
     env.seed_ledger({

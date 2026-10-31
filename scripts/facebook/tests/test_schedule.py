@@ -550,9 +550,14 @@ def test_원장의_결과_불명은_건너뛰되_실패로_알리고_확인_방�
     outcome = outcomes[1]
     assert (outcome.ok, outcome.post_id, outcome.skipped) == (False, schedule.UNKNOWN_RESULT, True)
     # 운영자가 할 일: 페이스북에서 찾기 → 있으면 "확인함"으로, 없으면 그 줄을 지우고 다시 실행
-    for needle in ("페이스북", str(env.ledger), "지운 뒤", schedule.CONFIRMED_BY_HAND, env.post(1).image_file):
+    for needle in ("페이스북", str(env.ledger), "지운 뒤", schedule.CONFIRMED_BY_HAND):
         assert needle in outcome.error
     assert outcome.error.count("예약된 게시물") == 1  # 같은 지시를 두 번 말하지 않는다
+    # **신원(이미지 파일 이름)은 이 글에 없어야 한다.** 들어가면 까닭 문자열이 게시물마다 달라져
+    # `cli._reasons`의 「같은 까닭은 한 번만 적습니다」가 쪼개지고, 하필 우리가 "다시 실행하세요"라고
+    # 시킨 재실행에서 서른 건이 벽이 된다. 신원은 묶음 안의 「찾을 게시물」 목록이 싣는다
+    # (`tests/test_cli.py`가 그 출력을 못박는다).
+    assert env.post(1).image_file not in outcome.error
     assert env.saved()["1"] == UNKNOWN  # 사람이 고치기 전에는 그대로 남는다
 
 
