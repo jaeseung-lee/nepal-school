@@ -438,3 +438,21 @@ def schedule_photo_post(
     # 이 규칙에는 없다. 실제 사진 id는 숫자와 밑줄(`<page>_<post>`)뿐이라 토큰 모양을 부분 문자열로 품을 수 없어
     # 멀쩡한 id는 그대로 지나간다.
     return _scrub(post_id, token)
+
+
+def delete_post(token: str, post_id: str, *, session: _Session) -> None:
+    """게시물(사진) 하나를 지운다 (`session.post` 한 번: `POST /{post_id}`에 `method=delete`).
+
+    HTTP `DELETE` 대신 `method=delete`를 쓴다 — `_Session` 프로토콜이 `get`·`post`만 요구하므로 이 모듈이 세션에
+    바라는 것이 늘어나지 않는다. 쓰는 곳은 테스트 글 1건을 눈으로 확인한 뒤 지우는 길 하나뿐이다.
+
+    **`success: true`가 아니면 실패로 본다.** 지워졌다고 잘못 말하면 운영자는 페이스북을 다시 보지 않고, 그
+    테스트 글은 날짜가 되면 실제로 공개된다. 모를 때는 직접 지우라고 말하는 쪽이 맞는 답이다.
+    """
+    body = _send(session.post, _url(post_id), token, "게시물 삭제", data={"method": "delete"})
+    if body.get("success") is not True:
+        raise _error(
+            token,
+            f"게시물 삭제 요청에 Facebook이 성공을 확인해 주지 않았습니다. 응답 앞부분: {_excerpt(body, token)}. "
+            f"페이스북 페이지의 예약된 게시물 목록에서 그 게시물이 남아 있는지 눈으로 확인하고, 남아 있으면 직접 지우세요.",
+        )

@@ -6,7 +6,11 @@
 - **서브커맨드는 한 달의 순서 그대로다.** `check-token` → (플랜 작성은 Claude Code 세션이 한다) →
   `images` → `backtranslate-template` → `validate` → `review` → `schedule`. 명령마다 끝에 다음 단계를
   적어 두어, 운영자가 문서를 다시 펴지 않아도 한 줄씩 따라갈 수 있게 한다.
-- **`--month YYYY-MM`은 모든 서브커맨드에서 필수이고 기본값이 없다.** "이번 달"로 기본값을 두면 11월
+- **`test-post`는 달의 순서 밖에 있다.** "이 토큰으로 글을 올릴 수 있다"는 증명은 `check-token`이 하지 못하고
+  (읽기만 본다) 테스트 글 1건을 올려 보는 것뿐인데, 그 1건을 올리려고 플랜·그림·되번역·원장을 손으로 만들게
+  하면 비개발자는 건너뛴다. 그래서 본문과 그림을 저장소가 들고, 명령 둘(`test-post` → `test-post --delete`)로
+  끝낸다. 이 경로는 달 폴더를 읽지도 쓰지도 않으므로 `--month`를 받지 않고 원장에도 적지 않는다.
+- **`--month YYYY-MM`은 `test-post` 말고 모든 서브커맨드에서 필수이고 기본값이 없다.** "이번 달"로 기본값을 두면 11월
   게시물을 10월에 준비하는 평상시 운영에서 조용히 다른 달 폴더를 읽는다. 어느 달인지는 사람이 적는다.
 - **`schedule`은 기본이 연습(dry-run)이고 실제 예약은 `--confirm`이 있어야 한다.** 손이 미끄러져 30건이
   나가는 일이 없어야 한다. npm 스크립트에도 `--confirm`을 박아 넣지 않는다.
@@ -16,7 +20,11 @@
 - **토큰은 `config.load_token()`에서 받아 `graph`·`schedule`에 인자로 넘기는 것 외에 아무 데도 가지 않는다.**
   명령줄 옵션으로 받지 않는다(명령줄 인자는 `ps`에 보인다). 토큰을 손에 쥔 구간에서 빠져나오는 예외는 그
   자리에서 `graph._scrub`을 거쳐 가려진다 — `graph`가 자기 메시지를 가리는 것과 같은 함수를 쓴다(퍼센트
-  인코딩 모양까지 아는 곳이 그 하나뿐이라, 여기서 같은 일을 다시 구현하면 둘이 어긋난다).
+  인코딩 모양까지 아는 곳이 그 하나뿐이라, 여기서 같은 일을 다시 구현하면 둘이 어긋난다). 토큰을 쥐지 않은
+  자리의 마지막 손잡이도 같은 함수를 거친다 — "여기에는 토큰이 없다"는 불변식을 지키는 것이 아무것도 없다.
+- **뜻밖의 예외를 잡는 자리는 `(Exception, KeyboardInterrupt)`까지다.** Ctrl-C는 원장에 남은 표시를 확인하라고
+  일러 줘야 하므로 잡지만, `BaseException`으로 넓히면 `SystemExit`까지 삼켜 프로세스를 끝내려던 신호가
+  "뜻밖의 오류" 한 줄로 바뀐다.
 - **`requests`는 지연 임포트다.** 네트워크를 타는 두 서브커맨드(`check-token`·`schedule`)가 실제 세션을
   만들 때만 임포트한다. `images`·`validate`·`review`는 `requests` 없이 돌아야 하고(검증은 오프라인이다),
   테스트는 가짜 세션을 넣는다.
@@ -41,7 +49,7 @@ from __future__ import annotations
 import json
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import backtranslation, config, graph, review, schedule, validate_copy, validate_structure
@@ -56,7 +64,13 @@ COMMANDS: tuple[str, ...] = (
     "validate",
     "review",
     "schedule",
+    "test-post",
 )
+
+# `--month`를 받는 명령. `test-post`는 한 달의 일이 아니다 — 묶어 둔 자리표시 그림으로 1건을 올려 보고 지우는,
+# 토큰 하나를 재는 명령이라 달 폴더를 읽지도 쓰지도 않는다. `--month`를 받아 무시하면 "그 달의 플랜에서 한 건을
+# 올린다"로 읽히므로 아예 받지 않는다.
+MONTH_COMMANDS: tuple[str, ...] = tuple(name for name in COMMANDS if name != "test-post")
 
 # 한 달 폴더 안의 파일 이름. 운영자가 폴더를 열어 보고 고치는 이름이라 한곳에 모아 둔다.
 PLAN_FILE = "plan.json"
@@ -66,6 +80,18 @@ REVIEW_FILE = "review.html"
 LEDGER_FILE = "scheduled.json"
 
 _DOC = "docs/facebook-운영.md"
+
+# 테스트 글 1건. "이 토큰으로 글을 올릴 수 있다"는 유일한 증명이고, 운영자가 손으로 만들 것이 하나도 없어야
+# 실제로 이뤄진다(플랜도 그림도 되번역도 원장도 쓰지 않는다). 본문에는 약속이 없고, 세 현지어 글자가 페이스북을
+# 지나면서 깨지지 않는지도 이 1건으로 같이 본다.
+TEST_POST_MESSAGE = (
+    "[테스트] 정우인재개발원 페이스북 예약 도구를 점검하려고 올린 글입니다. 확인한 뒤 지웁니다.\n"
+    "글자 깨짐 확인: Tiếng Việt · မြန်မာ · नेपाली"
+)
+
+# 예약 창은 지금부터 10분 ~ 75일이다. 그 안에서 넉넉히 뒤로 둔다 — 지우는 것을 잊어도 알아챌 시간이 길고,
+# 예약 글은 그 시각까지 공개되지 않는다. 너무 가까우면 눈으로 확인하기 전에 공개될 수 있다.
+TEST_POST_LEAD = timedelta(days=30)
 
 
 class _Stop(Exception):
@@ -100,6 +126,19 @@ def _describe(exc: BaseException, token: str) -> str:
     return graph._scrub(f"{type(exc).__name__}: {exc}", token)
 
 
+def _scrub_unknown(text: str) -> str:
+    """토큰을 쥐고 있지 않은 자리에서 찍는 글을 가린다. 토큰을 **여기서 한 번 더 읽어** 가린다.
+
+    "이 자리에는 토큰이 없는 예외만 온다"는 불변식은 지금 참이지만 지키는 것이 아무것도 없다(`try` 밖의 줄이
+    늘어나면 조용히 깨진다). 토큰을 읽지 못하면 가릴 것도 없으므로 그때는 글을 그대로 둔다.
+    """
+    try:
+        token = config.load_token()
+    except Exception:
+        return text
+    return graph._scrub(text, token)
+
+
 # ── 인자 ─────────────────────────────────────────────────────────────────────
 
 
@@ -115,9 +154,12 @@ def _usage() -> str:
         "  npm run fb:review -- --month 2026-11                 사람이 읽을 검토 화면을 만든다",
         "  npm run fb:schedule -- --month 2026-11               연습 실행(아무것도 올리지 않는다)",
         "  npm run fb:schedule -- --month 2026-11 --confirm     실제로 예약한다",
+        "  npm run fb:test-post                                 테스트 글 1건을 올려 본다(달을 받지 않는다)",
+        "  npm run fb:test-post -- --delete <사진 id>            그 테스트 글을 지운다",
         "",
         "명령: " + ", ".join(COMMANDS),
-        "옵션: --month YYYY-MM (필수)  ·  --confirm (schedule에서만, 실제로 올릴 때)",
+        "옵션: --month YYYY-MM (test-post 말고는 필수)  ·  --confirm (schedule에서만, 실제로 올릴 때)",
+        "      --delete <사진 id> (test-post에서만)",
         "",
         "종료 코드: 0 성공 · 1 플랜·본문·역번역에 고칠 것이 있음 · 2 실행이 안 됨(사용법·토큰·페이스북·원장)",
         f"월간 절차 전체는 {_DOC}에 있습니다.",
@@ -127,8 +169,9 @@ def _usage() -> str:
 @dataclass(frozen=True)
 class _Args:
     command: str
-    month: str
+    month: str  # `test-post`에서는 빈 문자열이다(달 폴더를 쓰지 않는다)
     confirm: bool
+    delete: str | None = None
 
 
 def _parse(argv: list[str]) -> _Args:
@@ -143,11 +186,17 @@ def _parse(argv: list[str]) -> _Args:
 
     month: str | None = None
     confirm = False
+    delete: str | None = None
     position = 0
     while position < len(rest):
         argument = rest[position]
         if argument in ("-h", "--help"):
             return _help()
+        if argument == "--delete":
+            if position + 1 >= len(rest):
+                raise _Stop("--delete 뒤에 지울 사진 id를 적어 주세요 (올릴 때 화면에 찍힌 그 값입니다).", 2)
+            delete, position = rest[position + 1], position + 2
+            continue
         if argument == "--month":
             if position + 1 >= len(rest):
                 raise _Stop("--month 뒤에 달을 적어 주세요 (예: --month 2026-11).", 2)
@@ -161,6 +210,20 @@ def _parse(argv: list[str]) -> _Args:
             continue
         raise _Stop(f"'{argument}'은(는) 이 도구가 아는 옵션이 아닙니다.\n\n{_usage()}", 2)
 
+    if delete is not None and command != "test-post":
+        raise _Stop(
+            f"--delete는 test-post 명령에만 씁니다. '{command}'은(는) 페이스북에서 아무것도 지우지 않습니다. "
+            f"예약한 게시물을 지우려면 페이스북 페이지의 예약된 게시물 목록에서 직접 지우세요.",
+            2,
+        )
+    if command == "test-post":
+        if month is not None:
+            raise _Stop(
+                "test-post는 --month를 받지 않습니다. 저장소에 들어 있는 테스트용 그림으로 1건만 올려 보는 "
+                "명령이라 그 달의 플랜·그림·원장을 읽지도, 쓰지도 않습니다. --month를 빼고 다시 실행하세요.",
+                2,
+            )
+        return _Args(command=command, month="", confirm=confirm, delete=delete)
     if month is None:
         raise _Stop(
             f"--month가 없습니다. 어느 달의 게시물인지 적어 주세요 (예: --month 2026-11).\n\n{_usage()}", 2
@@ -175,7 +238,7 @@ def _parse(argv: list[str]) -> _Args:
         config.month_dir(month)  # 달 형식 판정은 config 한 곳에 둔다
     except ValueError as exc:
         raise _Stop(str(exc), 2) from None
-    return _Args(command=command, month=month, confirm=confirm)
+    return _Args(command=command, month=month, confirm=confirm, delete=None)
 
 
 def _help() -> _Args:
@@ -363,7 +426,9 @@ def _check_token(args: _Args, session) -> int:
         status = graph.check_token(token, config.PAGE_ID, session=session or _real_session())
     except graph.GraphError as exc:
         raise _Stop(str(exc), 2) from None
-    except BaseException as exc:  # 토큰을 쥔 구간에서 나오는 예외는 여기서 가린다
+    except (Exception, KeyboardInterrupt) as exc:
+        # 토큰을 쥔 구간에서 나오는 예외는 여기서 가린다. `BaseException`으로 넓히지 않는다 — `SystemExit`까지
+        # 삼키면 프로세스를 끝내려던 신호가 "뜻밖의 오류" 한 줄로 바뀐다.
         raise _Stop(f"토큰 점검 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}).", 2) from None
     print(status.message)
     if not status.ok:
@@ -375,6 +440,74 @@ def _check_token(args: _Args, session) -> int:
         return 2
     print()
     print(f"다음 단계: npm run fb:images -- --month {args.month}")
+    return 0
+
+
+def _test_post(args: _Args, session) -> int:
+    """테스트 글 1건을 올리거나(`--delete` 없이) 그 1건을 지운다(`--delete <사진 id>`).
+
+    이것이 **"이 토큰으로 글을 올릴 수 있다"는 유일한 증명**이다(`check-token`은 읽기만 증명한다). 그래서
+    운영자가 손으로 만들 것이 하나도 없어야 한다 — 플랜도, 그림도, 되번역도, 원장도 쓰지 않고, 달 폴더를
+    만들지도 않는다. 본문과 그림은 저장소가 들고 있다.
+
+    **원장에 적지 않는다.** 원장은 "그 달의 게시물 가운데 무엇을 이미 올렸는가"를 적는 파일이고, 이 1건은 그
+    달의 게시물이 아니다. 대신 사진 id를 찍고 그것으로 지우는 명령을 그 자리에 보여 준다.
+    """
+    token = _token()
+    session = session or _real_session()
+    if args.delete is not None:
+        try:
+            graph.delete_post(token, args.delete, session=session)
+        except graph.GraphError as exc:
+            raise _Stop(str(exc), 2) from None
+        except (Exception, KeyboardInterrupt) as exc:
+            raise _Stop(
+                f"테스트 글을 지우는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
+                f"페이스북 페이지의 예약된 게시물 목록에서 그 글이 남아 있는지 눈으로 확인하세요.",
+                2,
+            ) from None
+        print(f"테스트 글을 지웠습니다 (사진 id {args.delete}).")
+        print("페이스북 페이지의 예약된 게시물 목록에서 그 글이 사라졌는지 눈으로 확인하세요.")
+        return 0
+
+    image = config.TEST_POST_IMAGE_PATH
+    if not image.exists():
+        raise _Stop(
+            f"테스트 글에 쓰는 그림이 저장소에 없습니다: {image}\n"
+            f"이 파일은 저장소와 함께 오는 것이라, 없으면 받아 온 파일이 온전하지 않습니다. 개발자에게 알리세요.",
+            2,
+        )
+    now = _now()
+    publish_at = now + TEST_POST_LEAD
+    try:
+        graph.assert_schedulable(publish_at, now)
+        post_id = graph.schedule_photo_post(
+            token, config.PAGE_ID, image, TEST_POST_MESSAGE, publish_at, session=session
+        )
+    except graph.GraphError as exc:
+        raise _Stop(
+            f"{exc}\n테스트 글이 올라가지 않았다면 이 토큰으로는 글을 올릴 수 없습니다. 권한 세 개"
+            f"({', '.join(graph.REQUIRED_PERMISSIONS)})를 다시 확인하세요 — 절차는 {_DOC}의 '최초 1회 준비'에 있습니다.",
+            2,
+        ) from None
+    except (Exception, KeyboardInterrupt) as exc:
+        raise _Stop(
+            f"테스트 글을 올리는 중에 예상하지 못한 오류가 났습니다 ({_describe(exc, token)}). "
+            f"페이스북 페이지의 예약된 게시물 목록을 눈으로 확인하세요 — 글이 올라갔을 수도 있습니다.",
+            2,
+        ) from None
+
+    print(f"테스트 글 1건을 예약했습니다 (사진 id {post_id}).")
+    print(f"  예약 시각: {publish_at.strftime('%Y-%m-%d %H:%M')} (지금부터 {TEST_POST_LEAD.days}일 뒤)")
+    print(f"  그림: {image}")
+    print("  원장에는 아무것도 적지 않았습니다. 이 1건은 그 달의 게시물이 아닙니다.")
+    print()
+    print(
+        "눈으로 확인할 것: 페이스북 페이지의 '예약된 게시물' 목록에 이 글이 보이는지. 보이면 이 토큰으로 글을 "
+        "올릴 수 있다는 것이 증명된 것입니다. 미얀마 문자와 데바나가리가 네모로 보이지 않는지도 같이 보세요."
+    )
+    print("확인한 뒤 지우세요(그대로 두면 위 시각에 실제로 공개됩니다):")
+    print(f"  npm run fb:test-post -- --delete {post_id}")
     return 0
 
 
@@ -478,8 +611,13 @@ def _review(args: _Args) -> int:
     )
     print(
         "볼 것: 게시물마다 한국어 원문과 되번역을 나란히 읽으세요. 파란 막대는 되번역에만 있는 말(원문에 없는 "
-        "약속이 들어온 자리), 붉은 막대는 원문에만 있는 말(한정어가 사라진 자리)입니다. 글자 차이 숫자는 뜻을 "
-        "보증하지 않습니다 — 뜻은 사람이 읽어야 확인됩니다."
+        "약속이 들어온 자리), 붉은 막대는 원문에만 있는 말(한정어가 사라진 자리), 노란색은 양쪽에 말이 있는데 "
+        "서로 다른 말입니다."
+    )
+    print(
+        "세 모양은 낱말이 어떻게 다른지만 말하고 뜻이 바뀌었는지는 말하지 않습니다. 부정이 뒤집히면 노란색으로 "
+        "나타나는 일이 많습니다('있다'와 '없다', '-지 않'이 붙은 자리) — 그래서 표시된 곳은 모양을 가리지 말고 "
+        "모두 읽어야 합니다. 글자 차이 숫자도 뜻을 보증하지 않습니다. 뜻은 사람이 읽어야 확인됩니다."
     )
     if errors:
         print()
@@ -620,8 +758,9 @@ def _schedule(args: _Args, session) -> int:
         raise _Stop(str(exc), 2) from None
     except ValueError as exc:  # 검증 관문: 오류가 남아 있으면 아무것도 보내지 않는다
         raise _Stop(str(exc), 1) from None
-    except BaseException as exc:
+    except (Exception, KeyboardInterrupt) as exc:
         # Ctrl-C도 여기로 온다. 날 트레이스백만 보여 주면 원장에 남은 표시를 아무도 확인하지 않는다.
+        # `BaseException`으로 넓히지 않는다 — `SystemExit`까지 삼키면 프로세스를 끝내려던 신호가 사라진다.
         raise _Stop(_unexpected_while_scheduling(exc, paths, token), 2) from None
 
     _report(outcomes, plan, paths, dry_run=not args.confirm)
@@ -653,6 +792,8 @@ def main(argv: list[str], *, session=None) -> int:
         args = _parse(argv)
         if args.command == "check-token":
             return _check_token(args, session)
+        if args.command == "test-post":
+            return _test_post(args, session)
         if args.command == "images":
             return _images(args)
         if args.command == "backtranslate-template":
@@ -666,10 +807,9 @@ def main(argv: list[str], *, session=None) -> int:
         print(stop.message, file=sys.stdout if stop.code == 0 else sys.stderr)
         return stop.code
     except Exception as exc:
-        # 토큰을 쥔 구간은 자기 자리에서 가린 뒤 `_Stop`으로 올리므로 여기에는 토큰이 없는 예외만 온다.
         print(
-            f"예상하지 못한 오류가 났습니다 ({type(exc).__name__}: {exc}). 페이스북에는 아무것도 보내지 "
-            f"않았습니다. 이 글을 그대로 개발자에게 보여 주세요.",
+            f"예상하지 못한 오류가 났습니다 ({_scrub_unknown(f'{type(exc).__name__}: {exc}')}). 페이스북에는 "
+            f"아무것도 보내지 않았습니다. 이 글을 그대로 개발자에게 보여 주세요.",
             file=sys.stderr,
         )
         return 2

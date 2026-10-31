@@ -600,6 +600,43 @@ def test_tzinfo가_붙어_있어도_오프셋을_알_수_없으면_타임존이_
     assert "타임존이 없습니다" in str(caught.value)
 
 
+# ── delete_post ──────────────────────────────────────────────────────────────
+
+
+POST_ID = "100200300_122100000000000001"
+
+
+def delete_session(outcome=None) -> FakeSession:
+    return FakeSession({("POST", f"{BASE}/{POST_ID}"): outcome if outcome is not None else FakeResponse(200, {"success": True})})
+
+
+def test_delete_post는_method_delete를_POST로_보내고_토큰은_헤더에만_싣는다():
+    session = delete_session()
+    graph.delete_post(SENTINEL, POST_ID, session=session)
+    (call,) = session.calls
+    assert (call.verb, call.url) == ("POST", f"{BASE}/{POST_ID}")
+    assert call.kwargs["data"] == {"method": "delete"}
+    assert call.upload is None
+    assert_token_only_in_header(session)
+
+
+def test_delete_post는_success가_아니면_실패로_보고_직접_지우라고_말한다():
+    for body in ({"success": False}, {}, {"id": POST_ID}):
+        session = delete_session(FakeResponse(200, body))
+        with pytest.raises(graph.GraphError) as caught:
+            graph.delete_post(SENTINEL, POST_ID, session=session)
+        assert "직접 지우세요" in str(caught.value)
+
+
+def test_delete_post의_거절은_Facebook의_말을_그대로_싣는다():
+    rejected = FakeResponse(400, {"error": {"message": "Unsupported delete request", "code": 100}})
+    session = delete_session(rejected)
+    with pytest.raises(graph.GraphError) as caught:
+        graph.delete_post(SENTINEL, POST_ID, session=session)
+    assert "Unsupported delete request" in str(caught.value)
+    assert SENTINEL not in str(caught.value)
+
+
 # ── schedule_photo_post ──────────────────────────────────────────────────────
 
 

@@ -63,6 +63,10 @@ UNIVERSITIES_PATH = facebook_dir() / "universities.json"
 # CLI는 이 경로를 직접 적지 말고 이 상수를 쓴다.
 BANNED_PHRASES_PATH = ROOT / "scripts" / "facebook" / "data" / "banned-phrases.json"
 
+# 테스트 글 1건에 쓰는 자리표시 그림. "이 토큰으로 글을 올릴 수 있다"는 증명은 운영자가 **손으로 만들 것이
+# 하나도 없을 때만** 실제로 이뤄지므로, 그림도 저장소가 들고 있는다. 글자도 사람도 없는 평평한 한 장이다.
+TEST_POST_IMAGE_PATH = ROOT / "scripts" / "facebook" / "data" / "test-post.png"
+
 _MONTH_PATTERN = re.compile(r"[0-9]{4}-(0[1-9]|1[0-2])")
 
 

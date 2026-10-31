@@ -26,7 +26,7 @@ from pathlib import Path
 
 import pytest
 
-from facebook import backtranslation, cli, config, schedule
+from facebook import backtranslation, cli, config, schedule, validate_copy
 from facebook.plan_model import Plan, load_plan
 
 FIXTURE = Path(__file__).parent / "fixtures" / "plan-valid.json"
@@ -40,8 +40,20 @@ SENTINEL = "EAAZ-SENTINEL-not-a-real-token-7c41e9d2b8"
 JST = timezone(timedelta(hours=9))
 NOW = datetime(2026, 10, 31, 12, 0, tzinfo=JST)  # 픽스처의 첫 게시(11-01 19:00)보다 31시간 앞. 여섯 건 모두 예약 창 안이다.
 
+# `--month`를 받는 여섯. `test-post`는 한 달의 일이 아니라 "이 토큰으로 글을 올릴 수 있다"를 재는 1건이고
+# 묶어 둔 자리표시 그림을 쓰므로 달 폴더가 없다 — 그래서 이 묶음에서 빠진다.
 SUBCOMMANDS = ("check-token", "images", "backtranslate-template", "validate", "review", "schedule")
-NPM_SCRIPTS = ("fb:check-token", "fb:images", "fb:validate", "fb:review", "fb:schedule", "test:facebook")
+ALL_COMMANDS = SUBCOMMANDS + ("test-post",)
+NPM_SCRIPTS = (
+    "fb:check-token",
+    "fb:images",
+    "fb:backtranslate-template",
+    "fb:validate",
+    "fb:review",
+    "fb:schedule",
+    "fb:test-post",
+    "test:facebook",
+)
 
 
 # ── 가짜 세션 ────────────────────────────────────────────────────────────────
@@ -76,13 +88,17 @@ class FakeSession:
         self.script = script or {}
         self.page = page
         self.uploaded: list[str] = []
+        self.posts: list[dict] = []
         self.gets: list[str] = []
 
     def post(self, url, **kwargs):
-        filename, handle, _content_type = kwargs["files"]["source"]
-        handle.read()
-        number = len(self.uploaded)
-        self.uploaded.append(filename)
+        number = len(self.posts)
+        self.posts.append({"url": url, "data": kwargs.get("data", {})})
+        files = kwargs.get("files")
+        if files is not None:  # 사진 예약은 파일을 싣고, 게시물 삭제는 싣지 않는다
+            filename, handle, _content_type = files["source"]
+            handle.read()
+            self.uploaded.append(filename)
         outcome = self.script.get(number)
         if isinstance(outcome, BaseException):
             raise outcome
@@ -256,7 +272,7 @@ def test_알_수_없는_서브커맨드는_종료코드_2와_한국어_메시지
     assert cli.main(["schedul", "--month", MONTH]) == 2
     text = shown(capsys)
     assert has_hangul(text)
-    for name in SUBCOMMANDS:
+    for name in ALL_COMMANDS:
         assert name in text
 
 
@@ -301,7 +317,7 @@ def test_알_수_없는_옵션은_종료코드_2다(capsys):
 def test_인자가_하나도_없으면_사용법과_종료코드_2(capsys):
     assert cli.main([]) == 2
     text = shown(capsys)
-    for name in SUBCOMMANDS:
+    for name in ALL_COMMANDS:
         assert name in text
 
 
@@ -310,7 +326,7 @@ def test_도움말은_한국어로_서브커맨드와_월_인자를_보여_준�
     text = shown(capsys)
     assert has_hangul(text)
     assert "--month" in text
-    for name in SUBCOMMANDS:
+    for name in ALL_COMMANDS:
         assert name in text
 
 
@@ -742,6 +758,185 @@ def test_세션을_넣지_않으면_schedule이_실제_세션을_만든다(env, 
     assert len(fake.sessions) == 1
 
 
+# ── test-post (글을 올릴 수 있다는 유일한 증명) ───────────────────────────────
+
+
+def test_test_post는_손으로_만들_파일_없이_한_건을_예약한다(토큰, tmp_path, capsys):
+    """이것이 "이 토큰으로 글을 올릴 수 있다"는 유일한 증명이다. 손으로 만들 것이 하나라도 있으면
+    비개발자는 건너뛰고, 건너뛰면 30건이 전부 거절되는 달을 예약을 시도하다 처음 알게 된다.
+    그러므로 플랜도, 그림도, 워크시트도, 원장도, 달 폴더도 **없이** 돌아야 한다.
+    """
+    session = FakeSession()
+    assert cli.main(["test-post"], session=session) == 0
+    assert session.uploaded == [config.TEST_POST_IMAGE_PATH.name]
+    text = shown(capsys)
+    assert photo_id(config.TEST_POST_IMAGE_PATH.name) in text  # 지울 때 쓸 사진 id를 찍는다
+    assert "--delete" in text
+    assert "예약된 게시물" in text  # 눈으로 확인할 곳
+    assert list(tmp_path.rglob("scheduled.json")) == []  # 원장을 쓰지 않는다
+
+
+def test_test_post는_예약_창_안의_시각으로_보낸다(토큰):
+    """예약 창은 지금부터 10분 ~ 75일이다. 이 1건의 시각은 사람이 정하지 않으므로 도구가 창 안에
+    들어가는 값을 골라야 한다 — 창 밖이면 증명 자체가 시작되지 않는다."""
+    session = FakeSession()
+    assert cli.main(["test-post"], session=session) == 0
+    data = session.posts[0]["data"]
+    assert data["published"] == "false"
+    publish_at = datetime.fromtimestamp(int(data["scheduled_publish_time"]), tz=JST)
+    assert NOW + config.SCHEDULE_MIN_LEAD < publish_at < NOW + config.SCHEDULE_MAX_LEAD
+    assert data["message"] == cli.TEST_POST_MESSAGE
+
+
+def test_test_post의_본문은_테스트임을_밝히고_금지_문구가_없다():
+    """공개되기 전에 지우는 글이지만, 지우지 않고 공개되는 경우에도 약속이 들어 있으면 안 된다."""
+    banned = validate_copy.load_banned_phrases(config.BANNED_PHRASES_PATH)
+    assert "테스트" in cli.TEST_POST_MESSAGE
+    for phrase in banned["ko"] + banned["ko:대학명"]:
+        assert phrase not in cli.TEST_POST_MESSAGE, phrase
+
+
+def test_자리표시_그림이_저장소에_들어_있다():
+    """운영자가 그림을 만들지 않아야 하므로 저장소가 들고 있어야 한다. 검증기가 받아들이는 모양이어야 한다."""
+    path = config.TEST_POST_IMAGE_PATH
+    assert path.exists(), path
+    assert path.suffix in config.ALLOWED_IMAGE_SUFFIXES
+    data = path.read_bytes()
+    assert data.startswith(b"\x89PNG\r\n\x1a\n")  # 페이스북이 실제로 읽을 수 있는 PNG다
+    assert 0 < len(data) <= config.MAX_IMAGE_BYTES
+
+
+def test_test_post는_month를_받지_않는다(capsys):
+    """달 폴더를 쓰지 않는다. `--month`를 받아 무시하면 "그 달의 플랜에서 한 건을 올린다"로 읽힌다."""
+    assert cli.main(["test-post", "--month", MONTH]) == 2
+    text = shown(capsys)
+    assert "--month" in text
+    assert has_hangul(text)
+
+
+def test_test_post는_토큰이_없으면_종료코드_2다(capsys):
+    assert cli.main(["test-post"]) == 2
+    text = shown(capsys)
+    assert config.TOKEN_ENV_NAME in text
+    assert has_hangul(text)
+
+
+def test_test_post_delete는_그래프_API로_그_게시물만_지운다(토큰, capsys):
+    session = FakeSession({0: FakeResponse(200, {"success": True})})
+    assert cli.main(["test-post", "--delete", "61595913932801_122100000000000001"], session=session) == 0
+    assert session.uploaded == []  # 지우는 길에 새 글을 올리지 않는다
+    assert session.posts[0]["url"].endswith("/61595913932801_122100000000000001")
+    assert session.posts[0]["data"] == {"method": "delete"}
+    assert "지웠습니다" in shown(capsys)
+
+
+def test_test_post_delete가_실패하면_직접_지우라고_말한다(토큰, capsys):
+    """지워졌다고 잘못 말하면 운영자는 확인하지 않고, 그 테스트 글은 날짜가 되면 실제로 공개된다."""
+    session = FakeSession({0: FakeResponse(200, {"success": False})})
+    assert cli.main(["test-post", "--delete", "photo-1"], session=session) == 2
+    text = shown(capsys)
+    assert "예약된 게시물" in text
+    assert has_hangul(text)
+
+
+def test_delete는_test_post에만_쓸_수_있다(capsys):
+    assert cli.main(["schedule", "--month", MONTH, "--delete", "photo-1"]) == 2
+    text = shown(capsys)
+    assert "--delete" in text
+    assert "test-post" in text
+
+
+def test_test_post도_SystemExit을_삼키지_않는다(토큰):
+    with pytest.raises(SystemExit):
+        cli.main(["test-post"], session=FakeSession({0: SystemExit(3)}))
+
+
+# ── 그림을 넣기 전 단계 ─────────────────────────────────────────────────────
+
+
+def test_그림을_넣기_전에_검사하면_남는_오류는_이미지없음뿐이다(env, capsys):
+    """문서 「플랜 작성 지침」 10번이 **그 단계에서 실제로 도달할 수 있는** 멈추는 조건을 적는지 본다.
+
+    플랜을 만드는 단계에는 `images/`가 비어 있고 워크시트도 없다. 그때 `validate`는 게시물마다
+    `이미지없음`을 내고 그 뒤 단계(역번역)로 가지 않으므로, "오류 0건"은 **도달할 수 없는 상태**다.
+    도달할 수 있는 상태는 "남은 오류가 `이미지없음`뿐"이고, 문서는 그것을 적어야 한다.
+    """
+    for post in env.plan.posts:
+        (env.images / post.image_file).unlink()
+    assert not env.worksheet.exists()
+    assert env.run("validate", "--month", MONTH) == 1
+    text = shown(capsys)
+    codes = {
+        line.split("]", 1)[1].split("·", 1)[0].strip()
+        for line in text.splitlines()
+        if line.strip().startswith("[오류]")
+    }
+    assert codes == {"이미지없음"}, codes
+    assert f"오류 {len(env.plan.posts)}건" in text
+    # 워크시트가 없다는 오류는 이 단계에 **나타나지 않는다** — 그것을 면제해 주는 문장은 쓸모가 없다.
+    assert "역번역 워크시트가 없습니다" not in text
+
+
+# ── 결과 불명 ────────────────────────────────────────────────────────────────
+
+
+def test_원장에_있던_결과_불명은_건너뜀에_숨지_않는다(env, 토큰, capsys):
+    """지난 실행이 남긴 `결과 불명`은 이번 실행에서 건너뛴 건이기도 하다. 건너뜀으로 세면 **사람이
+    확인해야 하는 건**이 "이미 예약됨" 아래로 숨는다 — 둘은 운영자에게 전혀 다른 보고다."""
+    fill_worksheet(env)
+    env.seed_ledger({0: (schedule.UNKNOWN_RESULT, env.plan.posts[0].image_file)})
+    session = FakeSession()
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=session) == 2
+    text = shown(capsys)
+    assert "결과 불명: 1건" in text
+    assert "이미 예약돼 건너뜀: 0건" in text
+    assert "예약: 5건" in text
+    assert session.uploaded == [post.image_file for post in env.plan.posts[1:]]
+
+
+# ── 예외를 삼키지 않는다 ────────────────────────────────────────────────────
+
+
+def test_schedule은_SystemExit을_삼키지_않는다(env, 토큰):
+    """`except BaseException`은 `SystemExit`까지 잡아 "뜻밖의 오류"로 바꿔 버린다. 종료 코드 2를
+    돌려주며 끝난 것처럼 보이는데, 실제로는 프로세스를 끝내려던 신호를 집어삼킨 것이다."""
+    fill_worksheet(env)
+    with pytest.raises(SystemExit):
+        env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession({0: SystemExit(3)}))
+
+
+def test_check_token도_SystemExit을_삼키지_않는다(토큰):
+    session = FakeSession(page=SystemExit(3))
+    with pytest.raises(SystemExit):
+        cli.main(["check-token", "--month", MONTH], session=session)
+
+
+def test_schedule은_Ctrl_C에는_원장_확인을_안내한다(env, 토큰, capsys):
+    """Ctrl-C는 여전히 한국어 안내로 바꾼다. 날 트레이스백만 보여 주면 요청 직전에 적어 둔 표시를
+    아무도 확인하지 않는다."""
+    fill_worksheet(env)
+    assert env.run("schedule", "--month", MONTH, "--confirm", session=FakeSession({0: KeyboardInterrupt()})) == 2
+    text = shown(capsys)
+    assert schedule.UNKNOWN_RESULT in text
+    assert schedule.CONFIRMED_BY_HAND in text
+    assert env.ledger_raw()["0"]["결과"] == schedule.UNKNOWN_RESULT
+
+
+def test_마지막_손잡이도_토큰을_가린다(env, 토큰, monkeypatch, capsys):
+    """`main`의 마지막 `except`는 "여기엔 토큰이 없다"는 불변식에 기대고 있었다. 그 불변식을 지키는
+    것은 아무것도 없으므로, 이 손잡이도 `graph._scrub`을 거친다."""
+
+    def boom(month):
+        raise RuntimeError(f"어딘가에서 {SENTINEL}이(가) 새어 나왔습니다")
+
+    monkeypatch.setattr(cli, "_paths", boom)
+    assert env.run("images", "--month", MONTH) == 2
+    text = shown(capsys)
+    assert SENTINEL not in text
+    assert "RuntimeError" in text
+    assert has_hangul(text)
+
+
 # ── 진입점·npm 스크립트 ──────────────────────────────────────────────────────
 
 
@@ -799,9 +994,12 @@ def test_운영_문서가_역번역_유사도의_실측_한계를_숨기지_않�
 
 
 def test_운영_문서가_원어민_검수가_아직_없다고_적는다():
+    """§3-2만 가진 문장을 못박는다. `원어민`·`banned-phrases.json`은 §6-1에도 있어서, 그 둘만 보면
+    §3-2(현지어 금지 검사가 아직 검수되지 않았다는 고백)를 통째로 지워도 초록이었다."""
     doc = doc_text()
     assert "원어민" in doc
     assert "banned-phrases.json" in doc
+    assert "사람이 확인한 것은" in doc
 
 
 def test_운영_문서가_결과_불명을_되돌리는_법을_적는다():
@@ -819,15 +1017,21 @@ def test_운영_문서가_원장_손편집을_파일_전체_예로_보여_준다
 
 
 def test_운영_문서가_재시도를_달지_말라고_적는다():
+    """`중복`은 문서 곳곳(`역번역중복`)에 있어 실질 단정이 `재시도` 한 낱말이었다. 왜 위험한지를 말하는
+    문장(§7-1만 가진 것)을 못박는다 — 복제가 원장에 남지 않아 아무도 알아챌 수 없다는 것이 이유다."""
     doc = doc_text()
     assert "재시도" in doc
     assert "중복" in doc
+    assert "원장에도 남지 않습니다" in doc
 
 
 def test_운영_문서가_첫_실제_월_전에_할_일을_따로_묶는다():
+    """`첫 실제 월`·`테스트 예약`은 §1-4의 상호 참조에도 있어서 §6 전체를 지워도 초록이었다.
+    §6-2만 가진 문장(올릴 수 있다는 유일한 증명)을 못박는다."""
     doc = doc_text()
     assert "첫 실제 월" in doc
     assert "테스트 예약" in doc
+    assert "유일한 증명" in doc
 
 
 def test_운영_문서가_모든_npm_명령을_싣는다():
@@ -841,3 +1045,87 @@ def test_운영_문서는_개발자_용어를_쓰지_않는다():
     doc = doc_text()
     for jargon in ("maybe_created", "Outcome", "findings", "LedgerError", "GraphError", "dict["):
         assert jargon not in doc, jargon
+
+
+def test_운영_문서가_uv_설치를_첫_명령보다_앞에_적는다():
+    """운영자는 터미널을 열어 본 적이 없다고 가정한다. 모든 명령이 `uv`를 타므로, 설치 안내가 없으면
+    첫 명령에서 `uv: command not found`(종료 코드 127)로 끝나고 이 시스템 전체에 닿지 못한다.
+    안내가 **첫 명령보다 앞**에 있어야 한다 — 뒤에 있으면 읽기 전에 막힌다."""
+    doc = doc_text()
+    for needle in ("uv --version", "astral.sh/uv/install.sh", "node --version", "127"):
+        assert needle in doc, needle
+    assert doc.index("uv --version") < doc.index("npm run fb:")
+
+
+def test_운영_문서가_그림_전_단계의_멈추는_조건을_이미지없음으로_적는다():
+    """플랜을 만드는 단계에서 "오류 0건"은 도달할 수 없다(그림이 아직 없다). 도달할 수 있는 조건을
+    코드 이름 그대로 적어야 플랜 세션이 멈추지도, 고치려고 플랜을 망치지도 않는다."""
+    doc = doc_text()
+    assert "이미지없음" in doc
+    assert "남은 오류가 `이미지없음`뿐" in doc
+
+
+def test_운영_문서가_노란색에도_부정_뒤집힘이_나타난다고_적는다():
+    """검토 화면이 뜻을 보는 유일한 지점이고, 부정 뒤집힘은 노란색으로 나타난다(§3-1이 0.05로 재 둔
+    바로 그 변경이다). "노란색은 의역이면 정상"이라고 적으면 그 하나뿐인 사람 검사를 건너뛰게 된다."""
+    doc = doc_text()
+    assert "의역이면 정상" not in doc
+    assert "부정이 뒤집히면 노란색" in doc
+    assert "모양을 가리지 말고" in doc
+
+
+def test_review_안내도_노란색을_건너뛰라고_말하지_않는다(env, capsys):
+    """터미널 안내와 화면 안내(`review.py`의 범례)가 서로 다른 방향을 가리키면, 운영자는 먼저 읽은
+    쪽을 따른다."""
+    fill_worksheet(env)
+    assert env.run("review", "--month", MONTH) == 0
+    text = shown(capsys)
+    assert "노란색" in text
+    assert "부정" in text
+    assert "의역이면 정상" not in text
+
+
+def test_운영_문서의_테스트_예약이_한_명령으로_끝난다():
+    """손으로 만들 파일 넷(플랜·그림·되번역·원장)을 요구하면 건너뛴다. 명령 둘이면 하게 된다."""
+    doc = doc_text()
+    assert doc.count("fb:test-post") >= 2  # 올리기와 지우기
+    assert "--delete" in doc
+    assert "손으로 만들 파일은 없습니다" in doc
+
+
+def test_운영_문서의_대학_금지_문구_목록이_사전과_맞는다():
+    """"여덟 문구"라고 적고 여섯만 실으면, 주어가 없을 때 놓치는 표현 둘을 운영자가 모른다.
+    수를 세는 문장과 목록이 같이 틀릴 수 없게 사전에서 끌어와 맞춰 본다."""
+    phrases = validate_copy.load_banned_phrases(config.BANNED_PHRASES_PATH)["ko:대학명"]
+    doc = doc_text()
+    for phrase in phrases:
+        assert phrase in doc, phrase
+    assert f"{len(phrases)}개 중 0개" in doc
+
+
+def test_운영_문서가_보내기_전_검사도_실패로_센다고_적는다():
+    """예약 시각이 창 밖이면 요청이 나가지도 않는데 `실패`로 세어지고, `validate`를 통과한 플랜이
+    `schedule`에서 종료 코드 2로 끝난다. 그때 고칠 것은 플랜의 날짜다 — 개발자에게 보낼 일이 아니다."""
+    doc = doc_text()
+    assert "보내기 전 검사" in doc
+    assert "예약 시각이 너무 가깝거나 멀다" in doc
+
+
+def test_운영_문서가_연습_실행이_남기는_잠금_파일을_적는다():
+    """연습 실행도 잠금 파일을 만든다. 폴더를 열어 본 운영자가 설명 없는 파일을 보게 된다."""
+    assert "scheduled.json.lock" in doc_text()
+
+
+def test_운영_문서가_원장_잠금_안내를_코드와_같은_말로_적는다():
+    """운영자는 화면에 나온 글을 문서에서 찾는다. 문서가 다른 말로 적으면 찾지 못한다."""
+    말 = "다른 예약 실행이 같은 원장을 쓰고 있어"
+    assert 말 in (REPO / "scripts" / "facebook" / "schedule.py").read_text(encoding="utf-8")
+    assert 말 in doc_text()
+
+
+def test_운영_문서가_env는_UTF_8로_저장하라고_적는다():
+    """`.env`가 UTF-8이 아니면(편집기가 한국어 주석을 EUC-KR로 저장한 경우) 도구가 한국어로 멈춘다.
+    그 자리에서 무엇을 해야 하는지 문서가 미리 말해 두어야 한다."""
+    doc = doc_text()
+    assert "UTF-8" in doc
+    assert ".env" in doc
