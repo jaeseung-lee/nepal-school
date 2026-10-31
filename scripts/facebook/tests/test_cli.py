@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import socket
 import stat
 import subprocess
@@ -519,11 +520,39 @@ def test_review는_오류가_있어도_화면을_쓰고_종료코드_1을_낸다
     assert "역번역금지표현" in html
 
 
-def test_review는_차이값을_화면에_싣는다(env):
-    fill_worksheet(env, edit=lambda index, text: text.replace("체류자격입니다", "체류자격이 아닙니다") if index == 0 else text)
+# 검토 화면의 '글자 차이' 줄. 이 표지(`data-role="divergence"`)를 찍는 곳은 `review._divergence` 하나다 —
+# 같은 화면의 안내문도 '차이'라는 낱말을 쓰지만 표지는 쓰지 않는다(측정: 한 화면에 '차이' 7곳, 그 중 안내문 1곳).
+_DIVERGENCE_LINE = re.compile(r'<p class="divergence" data-role="divergence">(.*?)</p>', re.DOTALL)
+
+
+def divergence_lines(html: str) -> list[str]:
+    """검토 화면이 게시물 순서대로 찍은 '글자 차이' 줄(태그를 뗀 글)."""
+    return [re.sub(r"<[^>]+>", "", match.group(1)) for match in _DIVERGENCE_LINE.finditer(html)]
+
+
+def test_review는_실제로_잰_차이값을_게시물마다_화면에_싣는다(env):
+    """`cli`가 `backtranslation.divergences(plan, back, glossary)`의 결과를 화면에 넘기는 **배선**을 못박는다.
+
+    이전 단언은 `"차이" in html` 하나였다. 그런데 그 낱말은 화면의 안내문(`review._howto`)이 **늘** 찍으므로,
+    배선을 `{}`로 바꿔 서른 건의 수치가 전부 "측정값을 받지 못했습니다"로 사라져도 초록이었다(측정: 1353건 통과).
+    그래서 게시물마다 **실제로 잰 값**이 그 게시물의 차이 줄에 실렸는지를 본다. 되번역을 게시물마다 다르게 비틀어
+    여섯 값이 서로 다르게 나오므로, 값이 사라지는 것뿐 아니라 번호가 뒤섞이는 것도 걸린다.
+    """
+    fill_worksheet(env, edit=lambda index, text: text if index == 0 else text + " 다른 말" * index)
     assert env.run("review", "--month", MONTH) == 0
+
+    back = backtranslation.load(env.worksheet, plan=env.plan, glossary=env.glossary)
+    measured = backtranslation.divergences(env.plan, back, env.glossary)
+    assert len(measured) == len(env.plan.posts)
+    expected = [f"{measured[post.index]:.2f}" for post in env.plan.posts]
+    assert len(set(expected)) == len(expected), f"잰 값이 서로 겹쳐 뒤섞임을 못 잡는다: {expected}"
+
     html = env.review.read_text(encoding="utf-8")
-    assert "차이" in html
+    lines = divergence_lines(html)
+    assert len(lines) == len(env.plan.posts), f"차이 줄이 {len(lines)}개다(게시물 수와 같아야 한다)"
+    for value, line in zip(expected, lines):
+        assert value in line, f"차이 줄에 잰 값 {value}이(가) 없다: {line!r}"
+    assert "측정값을 받지 못했습니다" not in html
 
 
 # ── check-token ──────────────────────────────────────────────────────────────
