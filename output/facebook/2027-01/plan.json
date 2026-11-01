@@ -1,0 +1,488 @@
+{
+  "month": "2027-01",
+  "topics": [
+    {
+      "topic_id": "tuition-lowest",
+      "title_ko": "공시 금액이 낮은 쪽 세 곳"
+    },
+    {
+      "topic_id": "tuition-highest",
+      "title_ko": "공시 금액이 높은 쪽 세 곳"
+    },
+    {
+      "topic_id": "tuition-weighted",
+      "title_ko": "\"가중평균\"이 무슨 뜻인가"
+    },
+    {
+      "topic_id": "tuition-not-all",
+      "title_ko": "등록금만 보면 놓치는 것들"
+    },
+    {
+      "topic_id": "two-doors",
+      "title_ko": "한국 유학의 두 입구 — 다시 한 번"
+    },
+    {
+      "topic_id": "short-term-again",
+      "title_ko": "단기사증 이야기를 한 번 더 하는 까닭"
+    },
+    {
+      "topic_id": "permit-first",
+      "title_ko": "허가가 먼저, 일이 그 다음"
+    },
+    {
+      "topic_id": "japan-korea-separate",
+      "title_ko": "일본의 자격과 한국의 자격은 별개입니다"
+    },
+    {
+      "topic_id": "what-we-ask",
+      "title_ko": "무료 상담에서 저희가 묻는 것들"
+    },
+    {
+      "topic_id": "new-year",
+      "title_ko": "1월 — 한 해를 거꾸로 세어 보는 달"
+    }
+  ],
+  "posts": [
+    {
+      "index": 0,
+      "topic_id": "tuition-lowest",
+      "language": "vi",
+      "publish_at": "2027-01-01T19:00:00+09:00",
+      "source_ko": "새해 첫 글은 숫자로 시작하겠습니다. 지난해에 올린 열한 학교 가운데 공시 금액이 낮은 쪽 세 곳입니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 1년치 금액이고 학기당이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n\n이 셋을 모아 보면 한 가지가 보입니다. 금액이 낮은 쪽에는 국립과 전문대학이 섞여 있습니다. 공시 자료는 제주관광대학교와 제주한라대학교를 전문대학으로, 전북대학교를 대학으로 분류합니다.\n\n금액이 낮다는 것만으로 고르면 과정의 길이와 사는 곳이 뒤에 문제가 됩니다. 제주 두 곳은 섬이고, 전북대학교는 전라북도에 있습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Bài đầu năm xin bắt đầu bằng con số. Trong mười một trường đã đăng năm ngoái, đây là ba trường có số công bố thấp hơn.\n\nĐây là học phí bình quân hằng năm theo chuẩn năm 2026 do Quỹ Học bổng Hàn Quốc công bố. Là số tiền của 1 năm, không phải một học kỳ.\n\n전북대학교 4.461.484 won\n제주관광대학교 5.475.138 won\n제주한라대학교 5.618.737 won\n\nGom ba trường này lại thì thấy một điều: ở phía số tiền thấp có cả trường quốc lập và cao đẳng lẫn vào nhau. Tài liệu công bố phân loại 제주관광대학교 và 제주한라대학교 là cao đẳng, còn 전북대학교 là đại học.\n\nNếu chỉ chọn vì số tiền thấp thì độ dài chương trình và nơi ở sẽ thành vấn đề về sau. Hai trường ở Jeju nằm trên đảo, còn 전북대학교 ở tỉnh Jeollabuk.\n\nCon số này là bình quân gia quyền của toàn bộ các ngành nên tùy ngành số tiền thực nộp có thể khác, và phí nhập học không nằm trong đó.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "00-tuition-lowest-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three short plain bar shapes at the left of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing down toward them, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the three bars centered with the empty baseline to the right. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교"
+      ]
+    },
+    {
+      "index": 1,
+      "topic_id": "tuition-lowest",
+      "language": "my",
+      "publish_at": "2027-01-02T19:00:00+09:00",
+      "source_ko": "새해 첫 글은 숫자로 시작하겠습니다. 지난해에 올린 열한 학교 가운데 공시 금액이 낮은 쪽 세 곳입니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 1년치 금액이고 학기당이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n\n이 셋을 모아 보면 한 가지가 보입니다. 금액이 낮은 쪽에는 국립과 전문대학이 섞여 있습니다. 공시 자료는 제주관광대학교와 제주한라대학교를 전문대학으로, 전북대학교를 대학으로 분류합니다.\n\n금액이 낮다는 것만으로 고르면 과정의 길이와 사는 곳이 뒤에 문제가 됩니다. 제주 두 곳은 섬이고, 전북대학교는 전라북도에 있습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "နှစ်သစ်၏ ပထမဆုံးပို့စ်ကို ကိန်းဂဏန်းဖြင့် စတင်ပါမည်။ မကြာမီနှစ်တွင် တင်ခဲ့သော ကျောင်းတစ်ဆယ့်တစ်ခုအထဲမှ ထုတ်ပြန်ချက် ပမာဏ နိမ့်သည့်ဘက် ကျောင်းသုံးခုဖြစ်ပါသည်။\n\nကိုရီးယား ပညာသင်ဆုရန်ပုံငွေအဖွဲ့ ထုတ်ပြန်ထားသော 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခဖြစ်ပါသည်။ 1 နှစ်စာ ပမာဏဖြစ်၍ စာသင်ကာလ တစ်ခုစာ မဟုတ်ပါ။\n\n전북대학교 4,461,484 ဝမ်\n제주관광대학교 5,475,138 ဝမ်\n제주한라대학교 5,618,737 ဝမ်\n\nဤသုံးခုကို စုစည်းကြည့်ပါက အရာ တစ်ခု မြင်ပါသည်။ ပမာဏ နိမ့်သည့်ဘက်တွင် အစိုးရကျောင်းနှင့် ဒီပလိုမာကောလိပ် ရောနှောပါဝင်ပါသည်။ ထုတ်ပြန်ချက် အချက်အလက်များသည် 제주관광대학교 နှင့် 제주한라대학교 ကို ဒီပလိုမာကောလိပ်အဖြစ်၊ 전북대학교 ကို တက္ကသိုလ်အဖြစ် အမျိုးအစား ခွဲထားပါသည်။\n\nပမာဏ နိမ့်သည်ဆိုသည်နှင့်သာ ရွေးချယ်ပါက သင်တန်း၏ ကာလနှင့် နေထိုင်ရာအရပ်သည် နောက်ပိုင်းတွင် ပြဿနာ ဖြစ်လာပါသည်။ Jeju ၏ ကျောင်းနှစ်ခုသည် ကျွန်းတွင် ရှိ၍၊ 전북대학교 မှာ Jeollabuk ပြည်နယ်တွင် ရှိပါသည်။\n\nဤကိန်းဂဏန်းမှာ ဘာသာရပ်အားလုံး၏ အလေးချိန်ပျှမ်းမျှဖြစ်သဖြင့် ဘာသာရပ်အလိုက် အမှန်တကယ် ပေးသွင်းရမည့် ပမာဏ ကွဲပြားနိုင်၍၊ ကျောင်းအပ်ခ ပါဝင်ခြင်း မရှိပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "01-tuition-lowest-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three short plain bar shapes at the left of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing down toward them, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the arrow stroke larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교"
+      ]
+    },
+    {
+      "index": 2,
+      "topic_id": "tuition-lowest",
+      "language": "ne",
+      "publish_at": "2027-01-03T19:00:00+09:00",
+      "source_ko": "새해 첫 글은 숫자로 시작하겠습니다. 지난해에 올린 열한 학교 가운데 공시 금액이 낮은 쪽 세 곳입니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 1년치 금액이고 학기당이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n\n이 셋을 모아 보면 한 가지가 보입니다. 금액이 낮은 쪽에는 국립과 전문대학이 섞여 있습니다. 공시 자료는 제주관광대학교와 제주한라대학교를 전문대학으로, 전북대학교를 대학으로 분류합니다.\n\n금액이 낮다는 것만으로 고르면 과정의 길이와 사는 곳이 뒤에 문제가 됩니다. 제주 두 곳은 섬이고, 전북대학교는 전라북도에 있습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "नयाँ वर्षको पहिलो पोस्ट अङ्कबाट सुरु गर्छु। गत वर्ष राखेका एघार विद्यालयमध्ये सार्वजनिक रकम कम भएका तीन विद्यालय यी हुन्।\n\nकोरिया छात्रवृत्ति कोषले सार्वजनिक गरेको 2026 आधार वर्षको वार्षिक औसत शुल्क यो छ। 1 वर्षको रकम हो, सेमेस्टरको होइन।\n\n전북대학교 4,461,484 वोन\n제주관광대학교 5,475,138 वोन\n제주한라대학교 5,618,737 वोन\n\nयी तीन सँगै हेर्दा एउटा कुरा देखिन्छ। रकम कम भएतर्फ सरकारी र डिप्लोमा कलेज मिसिएका छन्। सार्वजनिक सामग्रीले 제주관광대학교 र 제주한라대학교 लाई डिप्लोमा कलेज, र 전북대학교 लाई विश्वविद्यालय वर्गीकृत गरेको छ।\n\nरकम कम भएकै आधारमा छान्दा पाठ्यक्रमको अवधि र बस्ने ठाउँ पछि समस्या बन्छ। जेजुका दुई टापुमा छन्, र 전북대학교 जोल्लाबुक प्रान्तमा छ।\n\nयो अङ्क सबै विषयको भारित औसत भएकोले विषय अनुसार वास्तविक तिर्नुपर्ने रकम फरक हुन सक्छ, र भर्ना शुल्क समावेश छैन।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "02-tuition-lowest-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three short plain bar shapes at the left of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing down toward them, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Rotated to lie horizontally, the three rows at the top and the arrow at the left. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교"
+      ]
+    },
+    {
+      "index": 3,
+      "topic_id": "tuition-highest",
+      "language": "vi",
+      "publish_at": "2027-01-04T19:00:00+09:00",
+      "source_ko": "낮은 쪽을 봤으니 높은 쪽도 보겠습니다. 숫자는 양쪽을 다 봐야 범위가 생깁니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치입니다.\n\n청주대학교 8,319,491원\n평택대학교 8,198,774원\n협성대학교 8,135,252원\n\n세 곳 모두 공시 자료가 대학으로 분류한 학교입니다. 그리고 세 금액의 차이는 크지 않습니다. 사립대학 쪽은 금액이 비슷한 구간에 몰려 있다는 뜻입니다.\n\n앞의 글과 견주면 가장 낮은 전북대학교와 가장 높은 청주대학교의 차이가 두 배에 가깝습니다. \"한국 유학 학비\"라는 하나의 숫자가 없는 까닭입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Đã xem phía thấp thì cũng xem phía cao. Con số phải nhìn cả hai đầu mới thành một phạm vi.\n\nĐây là học phí bình quân hằng năm theo chuẩn năm 2026 do Quỹ Học bổng Hàn Quốc công bố. Tất cả là số tiền của 1 năm.\n\n청주대학교 8.319.491 won\n평택대학교 8.198.774 won\n협성대학교 8.135.252 won\n\nCả ba đều là trường mà tài liệu công bố phân loại là đại học. Và khoảng cách giữa ba số tiền không lớn. Nghĩa là phía đại học tư thục tập trung trong một khoảng số tiền gần nhau.\n\nSo với bài trước, khoảng cách giữa 전북대학교 thấp nhất và 청주대학교 cao nhất gần gấp đôi. Đó là lý do không có một con số duy nhất gọi là \"học phí du học Hàn Quốc\".\n\nCon số này là bình quân gia quyền của toàn bộ các ngành nên tùy ngành số tiền thực nộp có thể khác, và phí nhập học không nằm trong đó.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "03-tuition-highest-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three tall plain bar shapes at the right of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing up toward them, muted neutral palette with one muted plum accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the three bars centered with the empty baseline to the left. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_cheongju",
+        "tuition_pyeongtaek-university",
+        "tuition_hyupsung"
+      ],
+      "university_names": [
+        "청주대학교",
+        "평택대학교",
+        "협성대학교"
+      ]
+    },
+    {
+      "index": 4,
+      "topic_id": "tuition-highest",
+      "language": "my",
+      "publish_at": "2027-01-05T19:00:00+09:00",
+      "source_ko": "낮은 쪽을 봤으니 높은 쪽도 보겠습니다. 숫자는 양쪽을 다 봐야 범위가 생깁니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치입니다.\n\n청주대학교 8,319,491원\n평택대학교 8,198,774원\n협성대학교 8,135,252원\n\n세 곳 모두 공시 자료가 대학으로 분류한 학교입니다. 그리고 세 금액의 차이는 크지 않습니다. 사립대학 쪽은 금액이 비슷한 구간에 몰려 있다는 뜻입니다.\n\n앞의 글과 견주면 가장 낮은 전북대학교와 가장 높은 청주대학교의 차이가 두 배에 가깝습니다. \"한국 유학 학비\"라는 하나의 숫자가 없는 까닭입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "နိမ့်သည့်ဘက်ကို ကြည့်ပြီးသဖြင့် မြင့်သည့်ဘက်ကိုလည် ကြည့်ပါမည်။ ကိန်းဂဏန်းသည် နှစ်ဘက်လုံးကို ကြည့်မှ အတိုင်းအတာ ပေါ်လာပါသည်။\n\nကိုရီးယား ပညာသင်ဆုရန်ပုံငွေအဖွဲ့ ထုတ်ပြန်ထားသော 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခဖြစ်ပါသည်။ အားလုံး 1 နှစ်စာဖြစ်ပါသည်။\n\n청주대학교 8,319,491 ဝမ်\n평택대학교 8,198,774 ဝမ်\n협성대학교 8,135,252 ဝမ်\n\nကျောင်းသုံးခုလုံးသည် ထုတ်ပြန်ချက် အချက်အလက်များက တက္ကသိုလ်အဖြစ် အမျိုးအစား ခွဲထားသော ကျောင်းများဖြစ်ပါသည်။ ထို့အပြင် ပမာဏသုံးခု၏ ကွာဟမှုသည် မကြီးပါ။ ပုဂ္ဂလိက တက္ကသိုလ်ဘက်သည် ပမာဏ ဆင်တူသော အတိုင်းအတာအတွင်း စုစည်းနေသည် ဟူသော အဓိပ္ပာယ်ဖြစ်ပါသည်။\n\nရှေ့ပို့စ်နှင့် နှိုင်းယှဉ်ပါက အနိမ့်ဆုံး 전북대학교 နှင့် အမြင့်ဆုံး 청주대학교 ၏ ကွာဟမှုသည် နှစ်ဆနီးပါး ရှိပါသည်။ \"ကိုရီးယား ပညာသင်ခရီး ကျောင်းလခ\" ဟူသော ကိန်းဂဏန်း တစ်ခုတည်း မရှိသည့် အကြောင်းရင်းဖြစ်ပါသည်။\n\nဤကိန်းဂဏန်းမှာ ဘာသာရပ်အားလုံး၏ အလေးချိန်ပျှမ်းမျှဖြစ်သဖြင့် ဘာသာရပ်အလိုက် အမှန်တကယ် ပေးသွင်းရမည့် ပမာဏ ကွဲပြားနိုင်၍၊ ကျောင်းအပ်ခ ပါဝင်ခြင်း မရှိပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "04-tuition-highest-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three tall plain bar shapes at the right of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing up toward them, muted neutral palette with one muted plum accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the arrow stroke larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_cheongju",
+        "tuition_pyeongtaek-university",
+        "tuition_hyupsung"
+      ],
+      "university_names": [
+        "청주대학교",
+        "평택대학교",
+        "협성대학교"
+      ]
+    },
+    {
+      "index": 5,
+      "topic_id": "tuition-highest",
+      "language": "ne",
+      "publish_at": "2027-01-06T19:00:00+09:00",
+      "source_ko": "낮은 쪽을 봤으니 높은 쪽도 보겠습니다. 숫자는 양쪽을 다 봐야 범위가 생깁니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치입니다.\n\n청주대학교 8,319,491원\n평택대학교 8,198,774원\n협성대학교 8,135,252원\n\n세 곳 모두 공시 자료가 대학으로 분류한 학교입니다. 그리고 세 금액의 차이는 크지 않습니다. 사립대학 쪽은 금액이 비슷한 구간에 몰려 있다는 뜻입니다.\n\n앞의 글과 견주면 가장 낮은 전북대학교와 가장 높은 청주대학교의 차이가 두 배에 가깝습니다. \"한국 유학 학비\"라는 하나의 숫자가 없는 까닭입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "कमतर्फ हेरिसकेपछि बढीतर्फ पनि हेरौं। अङ्क दुवै छेउ हेर्दा मात्र दायरा बन्छ।\n\nकोरिया छात्रवृत्ति कोषले सार्वजनिक गरेको 2026 आधार वर्षको वार्षिक औसत शुल्क यो छ। सबै 1 वर्षको हो।\n\n청주대학교 8,319,491 वोन\n평택대학교 8,198,774 वोन\n협성대학교 8,135,252 वोन\n\nतीनै विद्यालय सार्वजनिक सामग्रीले विश्वविद्यालय वर्गीकृत गरेका हुन्। र तीन रकमको फरक ठूलो छैन। अर्थात् निजी विश्वविद्यालयतर्फ रकम मिल्दोजुल्दो दायराभित्र जम्मा भएको छ।\n\nअघिल्लो पोस्टसँग दाँज्दा सबैभन्दा कम 전북대학교 र सबैभन्दा बढी 청주대학교 को फरक झन्डै दोब्बर छ। \"कोरिया अध्ययनको शुल्क\" भन्ने एउटै अङ्क नहुने कारण यही हो।\n\nयो अङ्क सबै विषयको भारित औसत भएकोले विषय अनुसार वास्तविक तिर्नुपर्ने रकम फरक हुन सक्छ, र भर्ना शुल्क समावेश छैन।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "05-tuition-highest-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three tall plain bar shapes at the right of a long baseline, with the rest of the baseline empty, a thin arrow stroke pointing up toward them, muted neutral palette with one muted plum accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Rotated to lie horizontally, the three rows at the bottom and the arrow at the right. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_cheongju",
+        "tuition_pyeongtaek-university",
+        "tuition_hyupsung"
+      ],
+      "university_names": [
+        "청주대학교",
+        "평택대학교",
+        "협성대학교"
+      ]
+    },
+    {
+      "index": 6,
+      "topic_id": "tuition-weighted",
+      "language": "vi",
+      "publish_at": "2027-01-07T19:00:00+09:00",
+      "source_ko": "지금까지 올린 등록금 숫자에는 \"가중평균\"이라는 말이 늘 붙어 있었습니다. 그 말이 무엇을 뜻하는지 적어 둡니다.\n\n한 학교 안에는 학과가 여럿이고 학과마다 등록금이 다릅니다. 학생 수도 다릅니다. 그냥 학과별 금액을 더해 나누면, 학생이 열 명인 학과와 오백 명인 학과가 똑같은 무게로 셈됩니다.\n\n가중평균은 학생 수를 무게로 얹어 계산한 평균입니다. 그래서 학생이 많은 학과의 금액이 결과에 더 많이 반영됩니다.\n\n예를 들어 전북대학교의 2026년 기준 연간 평균등록금 4,461,484원은 그렇게 나온 1년치 숫자입니다. 이 학교의 어느 한 학과 금액이 아닙니다.\n\n그러니 지원할 학과를 정하셨으면, 평균이 아니라 그 학과의 금액을 학교에 직접 물으셔야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Trong các con số học phí đã đăng tới nay luôn kèm chữ \"bình quân gia quyền\". Xin ghi lại chữ ấy nghĩa là gì.\n\nTrong một trường có nhiều ngành và mỗi ngành học phí khác nhau. Số sinh viên cũng khác. Nếu chỉ cộng số tiền của từng ngành rồi chia, thì ngành có mười sinh viên và ngành có năm trăm sinh viên được tính với cùng một trọng lượng.\n\nBình quân gia quyền là bình quân được tính bằng cách đặt số sinh viên làm trọng lượng. Vì vậy số tiền của ngành có nhiều sinh viên được phản ánh nhiều hơn vào kết quả.\n\nVí dụ, học phí bình quân hằng năm của 전북대학교 theo chuẩn năm 2026 là 4.461.484 won — đó là con số của 1 năm tính ra theo cách ấy. Không phải số tiền của một ngành nào cụ thể của trường này.\n\nVậy nên nếu bạn đã chọn ngành muốn ứng tuyển, hãy hỏi trực tiếp nhà trường số tiền của ngành đó, chứ không phải con số bình quân.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "06-tuition-weighted-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a simple two-pan balance scale, one pan holding many small identical squares and the other holding a few larger squares, the beam level, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen straight on at eye height, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk"
+      ],
+      "university_names": [
+        "전북대학교"
+      ]
+    },
+    {
+      "index": 7,
+      "topic_id": "tuition-weighted",
+      "language": "my",
+      "publish_at": "2027-01-08T19:00:00+09:00",
+      "source_ko": "지금까지 올린 등록금 숫자에는 \"가중평균\"이라는 말이 늘 붙어 있었습니다. 그 말이 무엇을 뜻하는지 적어 둡니다.\n\n한 학교 안에는 학과가 여럿이고 학과마다 등록금이 다릅니다. 학생 수도 다릅니다. 그냥 학과별 금액을 더해 나누면, 학생이 열 명인 학과와 오백 명인 학과가 똑같은 무게로 셈됩니다.\n\n가중평균은 학생 수를 무게로 얹어 계산한 평균입니다. 그래서 학생이 많은 학과의 금액이 결과에 더 많이 반영됩니다.\n\n예를 들어 전북대학교의 2026년 기준 연간 평균등록금 4,461,484원은 그렇게 나온 1년치 숫자입니다. 이 학교의 어느 한 학과 금액이 아닙니다.\n\n그러니 지원할 학과를 정하셨으면, 평균이 아니라 그 학과의 금액을 학교에 직접 물으셔야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ယခုအထိ တင်ခဲ့သော ကျောင်းလခ ကိန်းဂဏန်းများတွင် \"အလေးချိန်ပျှမ်းမျှ\" ဟူသော စကားလုံး အမြဲ တွဲပါလာပါသည်။ ထိုစကားလုံး အဘယ်အရာကို ဆိုလိုသည်ကို ရေးထားပါမည်။\n\nကျောင်းတစ်ခုအတွင်းတွင် ဘာသာရပ် အများအပြား ရှိ၍ ဘာသာရပ်အလိုက် ကျောင်းလခ မတူပါ။ ကျောင်းသားအရေအတွက်လည် မတူပါ။ ဘာသာရပ်အလိုက် ပမာဏကို သာမန် စုစည်း၍ စားလျှင်၊ ကျောင်းသား တစ်ဆယ်ရှိသော ဘာသာရပ်နှင့် ငါးရာရှိသော ဘာသာရပ်သည် အလေးချိန် တူညီစွာ တွက်ချက်ခံရပါသည်။\n\nအလေးချိန်ပျှမ်းမျှသည် ကျောင်းသားအရေအတွက်ကို အလေးချိန်အဖြစ် တင်၍ တွက်ချက်သော ပျှမ်းမျှဖြစ်ပါသည်။ ထို့ကြောင့် ကျောင်းသား များသော ဘာသာရပ်၏ ပမာဏသည် ရလဒ်တွင် ပိုမို ထင်ဟပ်ပါသည်။\n\nဥပမာ 전북대학교 ၏ 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခ 4,461,484 ဝမ်သည် ထိုသို့ ထွက်လာသော 1 နှစ်စာ ကိန်းဂဏန်းဖြစ်ပါသည်။ ဤကျောင်း၏ မည်သည့် ဘာသာရပ် တစ်ခု၏ ပမာဏမှ မဟုတ်ပါ။\n\nထို့ကြောင့် လျှောက်ထားမည့် ဘာသာရပ်ကို ဆုံးဖြတ်ထားပါက၊ ပျှမ်းမျှ မဟုတ်ဘဲ ထိုဘာသာရပ်၏ ပမာဏကို ကျောင်းသို့ တိုက်ရိုက် မေးရပါမည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "07-tuition-weighted-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a simple two-pan balance scale, one pan holding many small identical squares and the other holding a few larger squares, the beam level, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from a low three-quarter angle, the heavier pan nearer the viewer. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk"
+      ],
+      "university_names": [
+        "전북대학교"
+      ]
+    },
+    {
+      "index": 8,
+      "topic_id": "tuition-weighted",
+      "language": "ne",
+      "publish_at": "2027-01-09T19:00:00+09:00",
+      "source_ko": "지금까지 올린 등록금 숫자에는 \"가중평균\"이라는 말이 늘 붙어 있었습니다. 그 말이 무엇을 뜻하는지 적어 둡니다.\n\n한 학교 안에는 학과가 여럿이고 학과마다 등록금이 다릅니다. 학생 수도 다릅니다. 그냥 학과별 금액을 더해 나누면, 학생이 열 명인 학과와 오백 명인 학과가 똑같은 무게로 셈됩니다.\n\n가중평균은 학생 수를 무게로 얹어 계산한 평균입니다. 그래서 학생이 많은 학과의 금액이 결과에 더 많이 반영됩니다.\n\n예를 들어 전북대학교의 2026년 기준 연간 평균등록금 4,461,484원은 그렇게 나온 1년치 숫자입니다. 이 학교의 어느 한 학과 금액이 아닙니다.\n\n그러니 지원할 학과를 정하셨으면, 평균이 아니라 그 학과의 금액을 학교에 직접 물으셔야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "अहिलेसम्म राखेका शुल्कका अङ्कमा \"भारित औसत\" भन्ने शब्द सधैं जोडिएको थियो। त्यो शब्दको अर्थ के हो, लेखी राख्छु।\n\nएउटै विद्यालयभित्र धेरै विषय हुन्छन् र विषय अनुसार शुल्क फरक हुन्छ। विद्यार्थी सङ्ख्या पनि फरक हुन्छ। विषयगत रकम जोडी भाग मात्र गर्दा, दस विद्यार्थी भएको विषय र पाँच सय विद्यार्थी भएको विषय एउटै भारमा गणना हुन्छन्।\n\nभारित औसत विद्यार्थी सङ्ख्यालाई भार राखी गणना गरिएको औसत हो। त्यसैले धेरै विद्यार्थी भएको विषयको रकम नतिजामा बढी प्रतिबिम्बित हुन्छ।\n\nउदाहरणको लागि, 전북대학교 को 2026 आधार वर्षको वार्षिक औसत शुल्क 4,461,484 वोन त्यसै निस्केको 1 वर्षको अङ्क हो। यो विद्यालयको कुनै एक विषयको रकम होइन।\n\nत्यसैले आवेदन दिने विषय छान्नुभएको छ भने, औसत नभई त्यो विषयको रकम विद्यालयलाई सिधै सोध्नुपर्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "08-tuition-weighted-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a simple two-pan balance scale, one pan holding many small identical squares and the other holding a few larger squares, the beam level, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from the side, the beam running across the frame, long soft shadows below. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk"
+      ],
+      "university_names": [
+        "전북대학교"
+      ]
+    },
+    {
+      "index": 9,
+      "topic_id": "tuition-not-all",
+      "language": "vi",
+      "publish_at": "2027-01-10T19:00:00+09:00",
+      "source_ko": "등록금은 한 해 비용의 일부입니다. 전부가 아닙니다. 숫자를 비교하실 때 같이 세어야 하는 것들을 적어 둡니다.\n\n사는 곳입니다. 기숙사가 있는지, 방을 따로 구해야 하는지, 보증금이 필요한지에 따라 몇 달치 비용이 달라집니다.\n\n이동입니다. 섬이나 지방에 있는 학교는 처음 들어가는 비용과 가족을 만나러 오가는 비용이 다릅니다.\n\n생활비입니다. 수도권과 지방은 같은 돈으로 지낼 수 있는 달의 수가 다릅니다.\n\n그리고 시간입니다. 과정이 몇 년인지에 따라 같은 등록금도 총액이 달라집니다. 2년과 4년은 두 배 차이입니다.\n\n지난 글들의 숫자는 비교의 출발점일 뿐입니다. 자기 조건에서 한 해에 얼마가 드는지는 같이 세어 봐야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Học phí chỉ là một phần chi phí của một năm. Không phải toàn bộ. Xin ghi lại những thứ cần đếm cùng khi bạn so sánh các con số.\n\nNơi ở. Có ký túc xá hay phải tự tìm phòng, khi vào ở phải trả trước khoản nào — tùy đó mà chi phí vài tháng sẽ khác.\n\nViệc đi lại. Trường ở đảo hay ở địa phương thì chi phí lần đầu vào và chi phí qua lại thăm gia đình đều khác.\n\nChi phí sinh hoạt. Với cùng một số tiền, số tháng sống được ở vùng thủ đô và ở địa phương là khác nhau.\n\nVà thời gian. Chương trình mấy năm thì cùng một mức học phí tổng số tiền cũng khác. 2 năm và 4 năm chênh nhau gấp đôi.\n\nCon số trong những bài trước chỉ là điểm bắt đầu để so sánh. Một năm trong điều kiện của riêng bạn tốn bao nhiêu thì phải cùng đếm mới ra.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "09-tuition-not-all-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape in sharp focus with several faint outlined shapes of similar size standing behind it, suggesting items not counted, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the solid bar centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 10,
+      "topic_id": "tuition-not-all",
+      "language": "my",
+      "publish_at": "2027-01-11T19:00:00+09:00",
+      "source_ko": "등록금은 한 해 비용의 일부입니다. 전부가 아닙니다. 숫자를 비교하실 때 같이 세어야 하는 것들을 적어 둡니다.\n\n사는 곳입니다. 기숙사가 있는지, 방을 따로 구해야 하는지, 보증금이 필요한지에 따라 몇 달치 비용이 달라집니다.\n\n이동입니다. 섬이나 지방에 있는 학교는 처음 들어가는 비용과 가족을 만나러 오가는 비용이 다릅니다.\n\n생활비입니다. 수도권과 지방은 같은 돈으로 지낼 수 있는 달의 수가 다릅니다.\n\n그리고 시간입니다. 과정이 몇 년인지에 따라 같은 등록금도 총액이 달라집니다. 2년과 4년은 두 배 차이입니다.\n\n지난 글들의 숫자는 비교의 출발점일 뿐입니다. 자기 조건에서 한 해에 얼마가 드는지는 같이 세어 봐야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကျောင်းလခသည် တစ်နှစ်စာ စရိတ်၏ အစိတ်အပိုင်း တစ်ခုဖြစ်ပါသည်။ အားလုံး မဟုတ်ပါ။ ကိန်းဂဏန်းများကို နှိုင်းယှဉ်သည့်အခါ အတူတကွ တွက်ရမည့် အရာများကို ရေးထားပါမည်။\n\nနေထိုင်ရာ အရပ်ဖြစ်ပါသည်။ အိပ်ဆောင် ရှိမရှိ၊ အခန်းကို သီးသန့် ရှာရမရ၊ အပ်နှံငွေ လိုအပ်မလိုအပ် ဆိုသည်အလိုက် လ မည်မျှစာ စရိတ် ကွဲပြားပါသည်။\n\nအသွားအလာ ဖြစ်ပါသည်။ ကျွန်း သို့မဟုတ် နယ်တွင် ရှိသော ကျောင်းများသည် ပထမဆုံး ဝင်ရောက်သည့် စရိတ်နှင့် မိသားစုကို တွေ့ရန် အသွားအလာ စရိတ် မတူပါ။\n\nစားဝတ်နေစရိတ် ဖြစ်ပါသည်။ မြို့တော်ဝန်းကျင်နှင့် နယ်သည် ပိုက်ဆံ တူညီစွာဖြင့် နေနိုင်မည့် လ အရေအတွက် မတူပါ။\n\nထို့အပြင် အချိန် ဖြစ်ပါသည်။ သင်တန်းသည် နှစ် မည်မျှဖြစ်သည်အလိုက် ကျောင်းလခ တူညီစွာပင် စုစုပေါင်း ပမာဏ ကွဲပြားပါသည်။ 2 နှစ်နှင့် 4 နှစ်သည် နှစ်ဆ ကွာပါသည်။\n\nမကြာမီပို့စ်များ၏ ကိန်းဂဏန်းများသည် နှိုင်းယှဉ်မှု၏ စမတ်မျှသာဖြစ်ပါသည်။ မိမိ၏အခြေအနေတွင် တစ်နှစ်စာ မည်မျှ ကုန်မည်ကို အတူတကွ တွက်ကြည့်ရပါမည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "10-tuition-not-all-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape in sharp focus with several faint outlined shapes of similar size standing behind it, suggesting items not counted, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the faint shapes spreading behind. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 11,
+      "topic_id": "tuition-not-all",
+      "language": "ne",
+      "publish_at": "2027-01-12T19:00:00+09:00",
+      "source_ko": "등록금은 한 해 비용의 일부입니다. 전부가 아닙니다. 숫자를 비교하실 때 같이 세어야 하는 것들을 적어 둡니다.\n\n사는 곳입니다. 기숙사가 있는지, 방을 따로 구해야 하는지, 보증금이 필요한지에 따라 몇 달치 비용이 달라집니다.\n\n이동입니다. 섬이나 지방에 있는 학교는 처음 들어가는 비용과 가족을 만나러 오가는 비용이 다릅니다.\n\n생활비입니다. 수도권과 지방은 같은 돈으로 지낼 수 있는 달의 수가 다릅니다.\n\n그리고 시간입니다. 과정이 몇 년인지에 따라 같은 등록금도 총액이 달라집니다. 2년과 4년은 두 배 차이입니다.\n\n지난 글들의 숫자는 비교의 출발점일 뿐입니다. 자기 조건에서 한 해에 얼마가 드는지는 같이 세어 봐야 합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "शुल्क एक वर्षको खर्चको एक हिस्सा हो। सबै होइन। अङ्क तुलना गर्दा सँगै गणना गर्नुपर्ने कुरा लेखी राख्छु।\n\nबस्ने ठाउँ। होस्टल छ कि कोठा छुट्टै खोज्नुपर्छ, धरौटी चाहिन्छ कि — त्यस अनुसार केही महिनाको खर्च फरक पर्छ।\n\nआवतजावत। टापु वा प्रान्तमा रहेका विद्यालयका पहिलो पटक छिर्ने खर्च र परिवार भेट्न आउजाउ गर्ने खर्च फरक हुन्छ।\n\nजीवनयापन खर्च। उही पैसाले राजधानी क्षेत्र र प्रान्तमा बस्न सकिने महिनाको सङ्ख्या फरक हुन्छ।\n\nर समय। पाठ्यक्रम कति वर्षको हो त्यस अनुसार उही शुल्कको पनि कुल रकम फरक पर्छ। 2 वर्ष र 4 वर्षमा दोब्बर फरक हुन्छ।\n\nअघिल्ला पोस्टका अङ्क तुलनाको सुरुवात बिन्दु मात्र हुन्। आफ्नो अवस्थामा एक वर्षमा कति लाग्छ, त्यो सँगै गणना गर्नुपर्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "11-tuition-not-all-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape in sharp focus with several faint outlined shapes of similar size standing behind it, suggesting items not counted, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Rotated to lie horizontally, the solid row at the top and the faint rows below. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 12,
+      "topic_id": "two-doors",
+      "language": "vi",
+      "publish_at": "2027-01-13T19:00:00+09:00",
+      "source_ko": "새로 이 페이지를 보시는 분들이 계시니 기본을 다시 적습니다. 한국에서 공부하는 길의 입구는 둘입니다.\n\n유학(D-2)은 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"입니다.\n\n일반연수(D-4)는 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"입니다. 다만 그 조문은 유학(D-2) 체류자격에 해당하는 사람을 제외합니다.\n\n그래서 둘 중 어디로 들어가는지는 자기가 고르는 것이 아니라, 어느 학교의 어느 과정에 가는지가 정합니다.\n\n학교와 과정을 먼저 정하십시오. 자격은 그 다음에 따라옵니다. 순서가 바뀌면 준비한 서류가 쓸모없어지는 일이 생깁니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Có những bạn mới xem trang này nên xin ghi lại phần căn bản. Con đường học tập tại Hàn Quốc có hai cửa vào.\n\nThị thực du học (D-2) là \"người muốn nhận giáo dục chính quy hoặc thực hiện nghiên cứu nhất định tại cơ sở giáo dục từ cao đẳng trở lên hoặc tại cơ quan nghiên cứu học thuật\".\n\nThị thực đào tạo chung (D-4) là \"người muốn nhận giáo dục hoặc đào tạo, hoặc tham gia hoạt động nghiên cứu, tại cơ sở giáo dục, doanh nghiệp, tổ chức v.v. đáp ứng các điều kiện do Bộ trưởng Bộ Tư pháp quy định\". Nhưng điều khoản đó loại trừ người thuộc tư cách Thị thực du học (D-2).\n\nVậy nên bạn vào bằng cửa nào không phải do bạn chọn, mà do bạn đi học trường nào, chương trình nào.\n\nXin hãy quyết định trường và chương trình trước. Tư cách đi theo sau. Nếu đảo thứ tự, có khi giấy tờ đã chuẩn bị trở thành vô dụng.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "12-two-doors-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain door shapes side by side in a flat wall, one slightly ajar, a single path line approaching and splitting toward both, muted neutral palette with one warm ochre and one soft blue accent, generous empty space, simple geometric shapes. Seen straight on at eye height, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition",
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 13,
+      "topic_id": "two-doors",
+      "language": "my",
+      "publish_at": "2027-01-14T19:00:00+09:00",
+      "source_ko": "새로 이 페이지를 보시는 분들이 계시니 기본을 다시 적습니다. 한국에서 공부하는 길의 입구는 둘입니다.\n\n유학(D-2)은 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"입니다.\n\n일반연수(D-4)는 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"입니다. 다만 그 조문은 유학(D-2) 체류자격에 해당하는 사람을 제외합니다.\n\n그래서 둘 중 어디로 들어가는지는 자기가 고르는 것이 아니라, 어느 학교의 어느 과정에 가는지가 정합니다.\n\n학교와 과정을 먼저 정하십시오. 자격은 그 다음에 따라옵니다. 순서가 바뀌면 준비한 서류가 쓸모없어지는 일이 생깁니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ဤစာမျက်နှာကို အသစ် ကြည့်သူများ ရှိသဖြင့် အခြေခံကို ထပ်မံ ရေးထားပါမည်။ ကိုရီးယားတွင် ပညာသင်သည့် လမ်း၏ အဝင်ဝသည် နှစ်ခု ဖြစ်ပါသည်။\n\nပညာသင်ဗီဇာ (D-2) သည် \"ဒီပလိုမာကောလိပ်အထက် ပညာရေးအဖွဲ့အစည်း သို့မဟုတ် ပညာရပ်ဆိုင်ရာ သုတေသနအဖွဲ့အစည်းတွင် ပုံမှန်သင်တန်းပညာရေးကို ခံယူလိုသူ သို့မဟုတ် သတ်မှတ်သုတေသနကို ပြုလုပ်လိုသူ\" ဖြစ်ပါသည်။\n\nအထွေထွေသင်တန်းဗီဇာ (D-4) မှာ \"တရားရေးဝန်ကြီးက သတ်မှတ်သည့် အချက်အလက်များ ပြည့်မီသော ပညာရေးအဖွဲ့အစည်း သို့မဟုတ် လုပ်ငန်း၊ အဖွဲ့အစည်း စသည်တို့တွင် ပညာရေး သို့မဟုတ် သင်တန်းကို ခံယူလိုသူ သို့မဟုတ် သုတေသနလုပ်ငန်းတွင် ပါဝင်လိုသူ\" ဖြစ်ပါသည်။ သို့သော် ထိုပြဋ္ဌာန်းချက်သည် ပညာသင်ဗီဇာ (D-2) အခြေအနေနှင့် ကိုက်ညီသူကို ချွင်းချက်ထားပါသည်။\n\nထို့ကြောင့် နှစ်ခုအထဲမှ မည်သည့်ဘက်မှ ဝင်ရောက်မည်ဆိုသည်မှာ မိမိ ရွေးချယ်သည့်အရာ မဟုတ်ဘဲ၊ မည်သည့်ကျောင်း၏ မည်သည့်သင်တန်းသို့ သွားမည်ဆိုသည်က သတ်မှတ်ပါသည်။\n\nကျောင်းနှင့် သင်တန်းကို အရင် ဆုံးဖြတ်ပါ။ အခြေအနေမှာ ထို့နောက် လိုက်ပါလာပါသည်။ အစီအစဉ် ပြောင်းသွားပါက ပြင်ဆင်ထားသော စာရွက်စာတမ်းများ အသုံးမဝင် ဖြစ်သည့် အခြေအနေ ပေါ်ပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "13-two-doors-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain door shapes side by side in a flat wall, one slightly ajar, a single path line approaching and splitting toward both, muted neutral palette with one warm ochre and one soft blue accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the nearer door larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition",
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 14,
+      "topic_id": "two-doors",
+      "language": "ne",
+      "publish_at": "2027-01-15T19:00:00+09:00",
+      "source_ko": "새로 이 페이지를 보시는 분들이 계시니 기본을 다시 적습니다. 한국에서 공부하는 길의 입구는 둘입니다.\n\n유학(D-2)은 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"입니다.\n\n일반연수(D-4)는 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"입니다. 다만 그 조문은 유학(D-2) 체류자격에 해당하는 사람을 제외합니다.\n\n그래서 둘 중 어디로 들어가는지는 자기가 고르는 것이 아니라, 어느 학교의 어느 과정에 가는지가 정합니다.\n\n학교와 과정을 먼저 정하십시오. 자격은 그 다음에 따라옵니다. 순서가 바뀌면 준비한 서류가 쓸모없어지는 일이 생깁니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "यो पेज नयाँ हेर्नेहरू हुनुहुन्छ, त्यसैले आधारभूत कुरा फेरि लेख्छु। कोरियामा अध्ययन गर्ने बाटोका प्रवेशद्वार दुई छन्।\n\nअध्ययन भिसा (D-2) भनेको \"डिप्लोमा कलेज वा त्यसभन्दा माथिको शैक्षिक संस्था वा शैक्षिक अनुसन्धान संस्थामा नियमित पाठ्यक्रमको शिक्षा लिन वा निश्चित अनुसन्धान गर्न चाहने व्यक्ति\" हो।\n\nसामान्य तालिम भिसा (D-4) भनेको \"न्याय मन्त्रीले तोकेका सर्त पूरा गर्ने शैक्षिक संस्था वा उद्यम, संस्था आदिमा शिक्षा वा तालिम लिन वा अनुसन्धान कार्यमा संलग्न हुन चाहने व्यक्ति\" हो। तर त्यो धाराले अध्ययन भिसा (D-2) योग्यतामा पर्ने व्यक्तिलाई हटाएको छ।\n\nत्यसैले दुईमध्ये कुनबाट छिर्ने भन्ने कुरा आफूले छान्ने होइन, कुन विद्यालयको कुन पाठ्यक्रममा जाने हो त्यसले तोक्छ।\n\nविद्यालय र पाठ्यक्रम पहिले निर्णय गर्नुहोस्। योग्यता पछि आउँछ। क्रम उल्टो भए जुटाएका कागजात काम नलाग्ने अवस्था आउँछ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "14-two-doors-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain door shapes side by side in a flat wall, one slightly ajar, a single path line approaching and splitting toward both, muted neutral palette with one warm ochre and one soft blue accent, generous empty space, simple geometric shapes. Seen from above looking down at the splitting path, the doors at the top edge. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition",
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 15,
+      "topic_id": "short-term-again",
+      "language": "vi",
+      "publish_at": "2027-01-16T19:00:00+09:00",
+      "source_ko": "지난해에 올린 이야기를 다시 적습니다. 이 한 가지에서 길이 어긋나는 분이 가장 많기 때문입니다.\n\n90일 이하 단기사증 소지자는 체류자격외활동을 할 수 없습니다. 시간제 아르바이트는 체류자격외활동허가를 받아야 하는 활동이므로, 단기사증으로는 아르바이트를 할 수 없습니다.\n\n왜 이 이야기를 또 하는가. 일본에서 지내 보신 분들은 \"일단 들어가서 바꾸면 된다\"는 말을 자주 듣습니다. 체류자격은 활동의 종류로 정해지는 것이고, 들어간 뒤에 사정이 바뀌면 그때부터 지키기가 어려워집니다.\n\n처음부터 하려는 활동이 들어 있는 자격으로 들어가는 것이 멀리 보면 가장 빠릅니다. 돌아가지 않기 때문입니다.\n\n지금 어떤 사증을 생각하고 계신지, 그리고 한국에서 무엇을 하려고 하시는지 두 가지만 적어 보내 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Xin ghi lại chuyện đã đăng năm ngoái. Vì đây là điểm mà nhiều người đi lệch đường nhất.\n\nNgười mang thị thực ngắn hạn 90 ngày trở xuống không thể thực hiện hoạt động ngoài tư cách lưu trú. Làm thêm theo giờ là hoạt động phải xin giấy phép hoạt động ngoài tư cách lưu trú, nên với thị thực ngắn hạn thì không thể làm thêm.\n\nVì sao lại nói chuyện này lần nữa? Những người đã sống ở Nhật Bản thường nghe câu \"cứ vào rồi đổi là được\". Tư cách lưu trú được xác định bởi loại hoạt động, và nếu hoàn cảnh thay đổi sau khi đã vào thì từ lúc đó việc giữ đúng tư cách trở nên khó.\n\nVào ngay từ đầu bằng tư cách đã bao gồm hoạt động mình muốn làm, nhìn xa ra thì là cách nhanh nhất. Vì không phải đi đường vòng.\n\nXin hãy viết gửi sang hai điều: bạn đang nghĩ tới loại thị thực nào, và bạn muốn làm gì ở Hàn Quốc.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "15-short-term-again-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a short dashed line and a long solid line running in parallel across a pale surface, the short one ending abruptly at a small blocking bar, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from directly above, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "short_term_visa_cannot_work"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 16,
+      "topic_id": "short-term-again",
+      "language": "my",
+      "publish_at": "2027-01-17T19:00:00+09:00",
+      "source_ko": "지난해에 올린 이야기를 다시 적습니다. 이 한 가지에서 길이 어긋나는 분이 가장 많기 때문입니다.\n\n90일 이하 단기사증 소지자는 체류자격외활동을 할 수 없습니다. 시간제 아르바이트는 체류자격외활동허가를 받아야 하는 활동이므로, 단기사증으로는 아르바이트를 할 수 없습니다.\n\n왜 이 이야기를 또 하는가. 일본에서 지내 보신 분들은 \"일단 들어가서 바꾸면 된다\"는 말을 자주 듣습니다. 체류자격은 활동의 종류로 정해지는 것이고, 들어간 뒤에 사정이 바뀌면 그때부터 지키기가 어려워집니다.\n\n처음부터 하려는 활동이 들어 있는 자격으로 들어가는 것이 멀리 보면 가장 빠릅니다. 돌아가지 않기 때문입니다.\n\n지금 어떤 사증을 생각하고 계신지, 그리고 한국에서 무엇을 하려고 하시는지 두 가지만 적어 보내 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "မကြာမီနှစ်တွင် တင်ခဲ့သော အကြောင်းအရာကို ထပ်မံ ရေးထားပါမည်။ ဤအချက် တစ်ခုတည်းတွင် လမ်း လွဲသူ အများဆုံး ဖြစ်သောကြောင်းဖြစ်ပါသည်။\n\n90 ရက်နှင့် အောက် ကာလတိုဗီဇာ ကိုင်ဆောင်သူသည် နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းကို လုပ်ဆောင်နိုင်ခြင်း မရှိပါ။ အချိန်ပိုင်းအလုပ်မှာ နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းခွင့်ပြုမိန့် ရယူရမည့် လုပ်ငန်းဖြစ်သဖြင့်၊ ကာလတိုဗီဇာနှင့် အချိန်ပိုင်းအလုပ် လုပ်နိုင်ခြင်း မရှိပါ။\n\nဤအကြောင်းအရာကို အဘယ်ကြောင့် ထပ်ပြောသနည်း။ ဂျပန်တွင် နေဖူးသူများသည် \"အရင် ဝင်ပြီးမှ ပြောင်းလိုက်ရင် ရတယ်\" ဟူသော စကားကို မကြာခဏ ကြားပါသည်။ နေထိုင်ခွင့်အခြေအနေသည် လုပ်ငန်း၏ အမျိုးအစားဖြင့် သတ်မှတ်ခံရသော အရာဖြစ်၍၊ ဝင်ရောက်ပြီးနောက် အခြေအနေ ပြောင်းလဲပါက ထိုအချိန်မှစ၍ လိုက်နာရန် ခက်ခဲလာပါသည်။\n\nအစကတည်းက လုပ်လိုသော လုပ်ငန်း ပါဝင်သည့် အခြေအနေနှင့် ဝင်ရောက်ခြင်းသည် အကွာအလှမ်း ကြည့်လျှင် အမြန်ဆုံးဖြစ်ပါသည်။ လမ်းကွေ့ မသွားရသောကြောင်းဖြစ်ပါသည်။\n\nယခု မည်သည့်ဗီဇာကို စဉ်းစားနေသည်၊ ထို့အပြင် ကိုရီးယားတွင် အဘယ်အရာ ပြုလုပ်လိုသည် — ဤနှစ်ချက်ကိုသာ ရေး၍ ပို့ပေးပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "16-short-term-again-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a short dashed line and a long solid line running in parallel across a pale surface, the short one ending abruptly at a small blocking bar, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the blocking bar larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "short_term_visa_cannot_work"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 17,
+      "topic_id": "short-term-again",
+      "language": "ne",
+      "publish_at": "2027-01-18T19:00:00+09:00",
+      "source_ko": "지난해에 올린 이야기를 다시 적습니다. 이 한 가지에서 길이 어긋나는 분이 가장 많기 때문입니다.\n\n90일 이하 단기사증 소지자는 체류자격외활동을 할 수 없습니다. 시간제 아르바이트는 체류자격외활동허가를 받아야 하는 활동이므로, 단기사증으로는 아르바이트를 할 수 없습니다.\n\n왜 이 이야기를 또 하는가. 일본에서 지내 보신 분들은 \"일단 들어가서 바꾸면 된다\"는 말을 자주 듣습니다. 체류자격은 활동의 종류로 정해지는 것이고, 들어간 뒤에 사정이 바뀌면 그때부터 지키기가 어려워집니다.\n\n처음부터 하려는 활동이 들어 있는 자격으로 들어가는 것이 멀리 보면 가장 빠릅니다. 돌아가지 않기 때문입니다.\n\n지금 어떤 사증을 생각하고 계신지, 그리고 한국에서 무엇을 하려고 하시는지 두 가지만 적어 보내 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "गत वर्ष राखेको कुरा फेरि लेख्छु। यही एउटै बिन्दुमा बाटो बिग्रिने मानिस सबैभन्दा धेरै हुन्छन्।\n\n90 दिन वा त्यसभन्दा कमको अल्पकालीन भिसा बोक्ने व्यक्तिले बसोबास योग्यता बाहिरको गतिविधि गर्न सक्दैन। समय-आधारित पार्ट-टाइम काम बसोबास योग्यता बाहिरको गतिविधि अनुमति लिनुपर्ने गतिविधि हो, त्यसैले अल्पकालीन भिसाले पार्ट-टाइम काम गर्न सकिँदैन।\n\nयो कुरा किन फेरि भन्ने? जापानमा बसेकाहरूले \"पहिले छिरेपछि बदलिदिए हुन्छ\" भन्ने कुरा धेरै सुन्छन्। बसोबास योग्यता गतिविधिको किसिमले तोकिने कुरा हो, र छिरेपछि परिस्थिति बदलिए त्यही बेलादेखि पालना गर्न गाह्रो हुन्छ।\n\nसुरुदेखि गर्न चाहेको गतिविधि समावेश भएको योग्यताबाट छिर्नु, टाढा हेर्दा सबैभन्दा छिटो हुन्छ। घुम्ती बाटो नजानुपर्ने भएकोले।\n\nअहिले कुन भिसा सोच्दै हुनुहुन्छ, र कोरियामा के गर्न चाहनुहुन्छ — यी दुई कुरा मात्र लेखी पठाउनुहोस्।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "17-short-term-again-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a short dashed line and a long solid line running in parallel across a pale surface, the short one ending abruptly at a small blocking bar, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. The lines rotated to run vertically, the blocking bar at the top. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "short_term_visa_cannot_work"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 18,
+      "topic_id": "permit-first",
+      "language": "vi",
+      "publish_at": "2027-01-19T19:00:00+09:00",
+      "source_ko": "한국에서 공부하며 일하실 생각이라면, 기억해야 할 순서가 하나입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n\"시작하기 전에\"라는 말에 무게가 있습니다. 일을 구한 뒤에 받는 것이 아니고, 일을 시작한 뒤에 받는 것도 아닙니다. 시작 전입니다.\n\n그래서 한국에 가시기 전에 미리 알아 두실 것이 생깁니다. 자기 학교가 어느 출입국관리사무소를 관할로 두는지, 그리고 신청에 무엇이 필요한지입니다. 둘 다 학교의 국제교류 담당 부서가 알고 있습니다.\n\n입학이 정해지면 그 부서에 가장 먼저 물어보십시오. 가장 많은 것을 가장 정확하게 아는 곳입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Nếu bạn định vừa học vừa làm tại Hàn Quốc, có một thứ tự cần nhớ.\n\nDu học sinh Thị thực du học (D-2) muốn làm thêm theo giờ trong khi vẫn tiếp tục học thì trước khi bắt đầu hoạt động đó, nhất định phải xin được giấy phép hoạt động ngoài tư cách lưu trú tại văn phòng quản lý xuất nhập cảnh có thẩm quyền.\n\nCụm \"trước khi bắt đầu\" có trọng lượng riêng. Không phải xin sau khi đã tìm được việc, cũng không phải xin sau khi đã bắt đầu làm. Là trước khi bắt đầu.\n\nVì vậy có những điều bạn nên biết trước khi sang Hàn Quốc: trường của bạn thuộc văn phòng quản lý xuất nhập cảnh nào, và hồ sơ xin phép cần những gì. Cả hai điều này bộ phận phụ trách giao lưu quốc tế của trường đều biết.\n\nKhi đã có kết quả nhập học, xin hãy hỏi bộ phận đó trước tiên. Đó là nơi biết nhiều nhất và chính xác nhất.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "18-permit-first-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two numbered step blocks on a flat ground, the first holding a small stamp shape and the second holding a folded apron, a thin arrow from the first to the second, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen straight on at eye height, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 19,
+      "topic_id": "permit-first",
+      "language": "my",
+      "publish_at": "2027-01-20T19:00:00+09:00",
+      "source_ko": "한국에서 공부하며 일하실 생각이라면, 기억해야 할 순서가 하나입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n\"시작하기 전에\"라는 말에 무게가 있습니다. 일을 구한 뒤에 받는 것이 아니고, 일을 시작한 뒤에 받는 것도 아닙니다. 시작 전입니다.\n\n그래서 한국에 가시기 전에 미리 알아 두실 것이 생깁니다. 자기 학교가 어느 출입국관리사무소를 관할로 두는지, 그리고 신청에 무엇이 필요한지입니다. 둘 다 학교의 국제교류 담당 부서가 알고 있습니다.\n\n입학이 정해지면 그 부서에 가장 먼저 물어보십시오. 가장 많은 것을 가장 정확하게 아는 곳입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကိုရီးယားတွင် ပညာသင်ရင် အလုပ်လုပ်မည် ဟု စဉ်းစားပါက၊ မှတ်ထားရမည့် အစီအစဉ် တစ်ခု ရှိပါသည်။\n\nပညာသင်ဗီဇာ (D-2) ကိုင်ဆောင်သည့် ပညာသင်ကျောင်းသားသည် ပညာရေးကို ဆက်လက်လုပ်ဆောင်ရင်း အချိန်ပိုင်းအလုပ် လုပ်လိုပါက၊ ထိုလုပ်ငန်းကို မစတင်မီ သက်ဆိုင်ရာ လူဝင်မှုကြီးကြပ်ရေးရုံးတွင် နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းခွင့်ပြုမိန့်ကို မဖြစ်မနေ ရယူရပါမည်။\n\n\"မစတင်မီ\" ဟူသော စကားလုံးတွင် အလေးချိန် ရှိပါသည်။ အလုပ် ရှာပြီးနောက် ရယူသည့်အရာ မဟုတ်၊ အလုပ် စတင်ပြီးနောက် ရယူသည့်အရာလည် မဟုတ်ပါ။ စတင်မီ ဖြစ်ပါသည်။\n\nထို့ကြောင့် ကိုရီးယားသို့ မသွားမီ ကြိုတင်၍ သိထားရမည့်အရာ ပေါ်လာပါသည်။ မိမိ၏ကျောင်းသည် မည်သည့် လူဝင်မှုကြီးကြပ်ရေးရုံးကို သက်ဆိုင်ရာအဖြစ် ထားသည်၊ ထို့အပြင် လျှောက်ထားရာတွင် အဘယ်အရာ လိုအပ်သည် ဖြစ်ပါသည်။ နှစ်ခုလုံးကို ကျောင်း၏ အပြည်ပြည်ဆိုင်ရာ ဆက်သွယ်မှု တာဝန်ခံဌာနသည် သိရှိထားပါသည်။\n\nကျောင်းအပ်ခွင့် သတ်မှတ်ပြီးပါက ထိုဌာနသို့ အရင်ဆုံး မေးကြည့်ပါ။ အများဆုံးကို အတိအကျဆုံး သိသော အရပ်ဖြစ်ပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "19-permit-first-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two numbered step blocks on a flat ground, the first holding a small stamp shape and the second holding a folded apron, a thin arrow from the first to the second, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from a low three-quarter angle, the first step nearer the viewer. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 20,
+      "topic_id": "permit-first",
+      "language": "ne",
+      "publish_at": "2027-01-21T19:00:00+09:00",
+      "source_ko": "한국에서 공부하며 일하실 생각이라면, 기억해야 할 순서가 하나입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n\"시작하기 전에\"라는 말에 무게가 있습니다. 일을 구한 뒤에 받는 것이 아니고, 일을 시작한 뒤에 받는 것도 아닙니다. 시작 전입니다.\n\n그래서 한국에 가시기 전에 미리 알아 두실 것이 생깁니다. 자기 학교가 어느 출입국관리사무소를 관할로 두는지, 그리고 신청에 무엇이 필요한지입니다. 둘 다 학교의 국제교류 담당 부서가 알고 있습니다.\n\n입학이 정해지면 그 부서에 가장 먼저 물어보십시오. 가장 많은 것을 가장 정확하게 아는 곳입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "कोरियामा पढ्दै काम गर्ने सोच छ भने, सम्झनुपर्ने एउटा क्रम छ।\n\nअध्ययन भिसा (D-2) बोकेको विद्यार्थीले अध्ययन जारी राख्दै समय-आधारित पार्ट-टाइम काम गर्न चाहन्छ भने, त्यो गतिविधि सुरु गर्नुअघि अनिवार्य रूपमा सम्बन्धित आगमन-प्रस्थान व्यवस्थापन कार्यालयबाट बसोबास योग्यता बाहिरको गतिविधि अनुमति लिनुपर्छ।\n\n\"सुरु गर्नुअघि\" भन्ने शब्दमा भार छ। काम पाएपछि लिने होइन, काम सुरु गरेपछि लिने पनि होइन। सुरु गर्नुअघि हो।\n\nत्यसैले कोरिया जानुअघि पहिले थाहा पाउनुपर्ने कुरा आउँछ। आफ्नो विद्यालय कुन आगमन-प्रस्थान व्यवस्थापन कार्यालय अन्तर्गत पर्छ, र आवेदनमा के चाहिन्छ। यी दुवै विद्यालयको अन्तर्राष्ट्रिय आदान-प्रदान विभागले जान्दछ।\n\nभर्ना पक्का भएपछि त्यो विभागलाई सबैभन्दा पहिले सोध्नुहोस्। सबैभन्दा धेरै कुरा सबैभन्दा सही जान्ने ठाउँ त्यही हो।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "20-permit-first-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two numbered step blocks on a flat ground, the first holding a small stamp shape and the second holding a folded apron, a thin arrow from the first to the second, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from above looking down, the arrow running left to right across the frame. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 21,
+      "topic_id": "japan-korea-separate",
+      "language": "vi",
+      "publish_at": "2027-01-22T19:00:00+09:00",
+      "source_ko": "일본에서 오래 지내신 분들께 꼭 드리고 싶은 말이 있습니다. 두 나라의 체류자격은 이어져 있지 않습니다.\n\n일본에서 어떤 자격으로 몇 년을 지냈든, 한국의 체류자격은 한국의 법령이 따로 정합니다. 일본에서의 기간이 한국의 자격으로 이어지거나, 한국의 심사를 줄여 주는 길이 되지는 않습니다.\n\n반대로도 그렇습니다. 일본에서 성실하게 지낸 기록은 한국의 자격을 자동으로 만들어 주지 않지만, 서류를 모으고 설명하는 일에는 분명히 도움이 됩니다. 재직과 납세, 체류의 기록이 남아 있기 때문입니다.\n\n그래서 지금 하실 일은 하나입니다. 일본에서의 기록을 버리지 말고 모아 두시는 것입니다. 어떤 서류가 남아 있는지 아는 것이 출발점입니다.\n\n손에 어떤 서류가 있는지 적어 보내 주시면, 무엇이 더 필요한지 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Có một điều rất muốn nói với những bạn đã sống lâu ở Nhật Bản: tư cách lưu trú của hai nước không nối với nhau.\n\nBạn đã ở Nhật Bản bao nhiêu năm với tư cách nào thì tư cách lưu trú ở Hàn Quốc vẫn do pháp luật Hàn Quốc quy định riêng. Thời gian ở Nhật Bản không tự nối thành tư cách ở Hàn Quốc, cũng không phải con đường làm cho việc xét duyệt của Hàn Quốc ngắn lại.\n\nNgược lại cũng vậy. Hồ sơ sống đúng mực ở Nhật Bản không tự tạo ra tư cách ở Hàn Quốc, nhưng rõ ràng có ích cho việc gom và giải thích giấy tờ. Vì vẫn còn lại ghi nhận về việc làm, thuế và lưu trú.\n\nVậy nên việc bạn cần làm bây giờ chỉ có một: đừng bỏ các ghi nhận ở Nhật Bản, hãy giữ lại. Biết mình còn giữ những giấy tờ nào chính là điểm bắt đầu.\n\nBạn viết gửi sang xem trong tay đang có những giấy tờ gì, chúng tôi sẽ cùng xem cần thêm những gì.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "21-japan-korea-separate-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two separate plain rectangular frames side by side with a clear gap between them, each enclosing a different simple geometric symbol, no line connecting them, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen straight on at eye height, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 22,
+      "topic_id": "japan-korea-separate",
+      "language": "my",
+      "publish_at": "2027-01-23T19:00:00+09:00",
+      "source_ko": "일본에서 오래 지내신 분들께 꼭 드리고 싶은 말이 있습니다. 두 나라의 체류자격은 이어져 있지 않습니다.\n\n일본에서 어떤 자격으로 몇 년을 지냈든, 한국의 체류자격은 한국의 법령이 따로 정합니다. 일본에서의 기간이 한국의 자격으로 이어지거나, 한국의 심사를 줄여 주는 길이 되지는 않습니다.\n\n반대로도 그렇습니다. 일본에서 성실하게 지낸 기록은 한국의 자격을 자동으로 만들어 주지 않지만, 서류를 모으고 설명하는 일에는 분명히 도움이 됩니다. 재직과 납세, 체류의 기록이 남아 있기 때문입니다.\n\n그래서 지금 하실 일은 하나입니다. 일본에서의 기록을 버리지 말고 모아 두시는 것입니다. 어떤 서류가 남아 있는지 아는 것이 출발점입니다.\n\n손에 어떤 서류가 있는지 적어 보내 주시면, 무엇이 더 필요한지 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ဂျပန်တွင် ကာလရှည် နေထိုင်ဖူးသူများအား မဖြစ်မနေ ပြောလိုသော စကား ရှိပါသည်။ နိုင်ငံနှစ်ခု၏ နေထိုင်ခွင့်အခြေအနေများသည် ဆက်စပ်ထားခြင်း မရှိပါ။\n\nဂျပန်တွင် မည်သည့်အခြေအနေနှင့် နှစ် မည်မျှ နေခဲ့သည်ဖြစ်ပါစေ၊ ကိုရီးယား၏ နေထိုင်ခွင့်အခြေအနေကို ကိုရီးယား၏ ဥပဒေများက သီးသန့် သတ်မှတ်ပါသည်။ ဂျပန်တွင်၏ ကာလသည် ကိုရီးယား၏ အခြေအနေအဖြစ် ဆက်စပ်သွားခြင်း၊ သို့မဟုတ် ကိုရီးယား၏ စစ်ဆေးမှုကို လျှော့ပေးသည့် လမ်း ဖြစ်လာခြင်း မရှိပါ။\n\nပြောင်းပြန်အားဖြင့်လည် အတူတူပင်ဖြစ်ပါသည်။ ဂျပန်တွင် ရိုးသားစွာ နေခဲ့သော မှတ်တမ်းသည် ကိုရီးယား၏ အခြေအနေကို အလိုအလျောက် ဖန်တီးပေးခြင်း မရှိသော်လည်း၊ စာရွက်စာတမ်းများ စုဆောင်းခြင်းနှင့် ရှင်းလင်းခြင်းအတွက် သေချာပေါက် အကူအညီ ဖြစ်ပါသည်။ အလုပ်ခံထားမှုနှင့် အခွန်ထမ်းမှု၊ နေထိုင်မှု မှတ်တမ်းများ ကျန်ရှိနေသောကြောင်းဖြစ်ပါသည်။\n\nထို့ကြောင့် ယခု ပြုလုပ်ရမည့်အရာမှာ တစ်ခုတည်းဖြစ်ပါသည်။ ဂျပန်တွင်၏ မှတ်တမ်းများကို မစွန့်ပစ်ဘဲ စုဆောင်းထားခြင်းဖြစ်ပါသည်။ မည်သည့်စာရွက်စာတမ်းများ ကျန်ရှိသည်ကို သိခြင်းသည် စမတ်ဖြစ်ပါသည်။\n\nလက်တွင် မည်သည့်စာရွက်စာတမ်းများ ရှိသည်ကို ရေး၍ ပို့ပေးပါက၊ အဘယ်အရာ ထပ်မံ လိုအပ်သည်ကို အတူတကွ ကြည့်ပါမည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "22-japan-korea-separate-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two separate plain rectangular frames side by side with a clear gap between them, each enclosing a different simple geometric symbol, no line connecting them, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from a low three-quarter angle, the nearer frame larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 23,
+      "topic_id": "japan-korea-separate",
+      "language": "ne",
+      "publish_at": "2027-01-24T19:00:00+09:00",
+      "source_ko": "일본에서 오래 지내신 분들께 꼭 드리고 싶은 말이 있습니다. 두 나라의 체류자격은 이어져 있지 않습니다.\n\n일본에서 어떤 자격으로 몇 년을 지냈든, 한국의 체류자격은 한국의 법령이 따로 정합니다. 일본에서의 기간이 한국의 자격으로 이어지거나, 한국의 심사를 줄여 주는 길이 되지는 않습니다.\n\n반대로도 그렇습니다. 일본에서 성실하게 지낸 기록은 한국의 자격을 자동으로 만들어 주지 않지만, 서류를 모으고 설명하는 일에는 분명히 도움이 됩니다. 재직과 납세, 체류의 기록이 남아 있기 때문입니다.\n\n그래서 지금 하실 일은 하나입니다. 일본에서의 기록을 버리지 말고 모아 두시는 것입니다. 어떤 서류가 남아 있는지 아는 것이 출발점입니다.\n\n손에 어떤 서류가 있는지 적어 보내 주시면, 무엇이 더 필요한지 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "जापानमा लामो समय बसेकाहरूलाई अवश्य भन्न चाहेको एउटा कुरा छ। दुई देशका बसोबास योग्यता जोडिएका छैनन्।\n\nजापानमा कुन योग्यताले कति वर्ष बसे पनि, कोरियाको बसोबास योग्यता कोरियाको कानूनले छुट्टै तोक्छ। जापानमा बिताएको अवधि कोरियाको योग्यतामा जोडिने, वा कोरियाको छानबिन छोट्याउने बाटो बन्ने होइन।\n\nउल्टो पनि त्यस्तै हो। जापानमा इमान्दारीसाथ बसेको अभिलेखले कोरियाको योग्यता स्वतः बनाउँदैन, तर कागजात जुटाउने र व्याख्या गर्ने काममा स्पष्ट रूपमा सहयोग गर्छ। रोजगारी, कर र बसोबासको अभिलेख बाँकी रहने भएकोले।\n\nत्यसैले अहिले गर्नुपर्ने काम एउटै छ। जापानको अभिलेख नफाल्नुहोस्, जम्मा गरी राख्नुहोस्। कुन कागजात बाँकी छ भन्ने थाहा पाउनु सुरुवात बिन्दु हो।\n\nहातमा कुन कागजात छन् लेखी पठाउनुभए, थप के चाहिन्छ सँगै हेर्नेछौं।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "23-japan-korea-separate-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two separate plain rectangular frames side by side with a clear gap between them, each enclosing a different simple geometric symbol, no line connecting them, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. The two frames stacked one above the other with the gap running horizontally. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 24,
+      "topic_id": "what-we-ask",
+      "language": "vi",
+      "publish_at": "2027-01-25T19:00:00+09:00",
+      "source_ko": "상담이라고 하면 무엇을 물어볼지 모르겠다는 분들이 계십니다. 그래서 저희가 무엇을 묻는지 먼저 적어 둡니다.\n\n지금 어디에 계시고 어떤 체류자격으로 지내시는지 묻습니다. 일본에 계신지, 본국에 계신지에 따라 할 수 있는 준비가 다릅니다.\n\n마지막으로 마친 학교와 그 서류가 남아 있는지 묻습니다. 학력 서류는 뒤에 반드시 필요하고, 모으는 데 가장 오래 걸립니다.\n\n한국어를 공부해 보셨는지 묻습니다. 급수가 있으면 급수를, 없으면 없다고 말씀해 주시면 됩니다. 없다고 해서 할 수 있는 일이 없어지지는 않습니다.\n\n그리고 언제쯤 가고 싶으신지, 쓸 수 있는 돈이 어느 정도인지 묻습니다. 이 둘이 고를 수 있는 범위를 정합니다.\n\n답을 다 준비해 오셔야 하는 자리가 아닙니다. 모르겠다는 답도 답입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Có bạn nói rằng nghe tới tư vấn thì không biết nên hỏi gì. Vậy xin ghi trước những điều chúng tôi sẽ hỏi.\n\nChúng tôi hỏi bạn đang ở đâu và đang sống với tư cách lưu trú nào. Bạn ở Nhật Bản hay ở quê nhà thì việc có thể chuẩn bị sẽ khác.\n\nChúng tôi hỏi trường học cuối cùng bạn đã hoàn thành và giấy tờ của trường ấy còn giữ không. Giấy tờ học vấn nhất định sẽ cần về sau, và gom lại mất nhiều thời gian nhất.\n\nChúng tôi hỏi bạn đã học tiếng Hàn chưa. Có cấp thì nói cấp, không có thì nói là không có cũng được. Không có cấp không có nghĩa là không còn việc gì làm được.\n\nVà chúng tôi hỏi bạn muốn đi vào khoảng khi nào, số tiền có thể dùng là bao nhiêu. Hai điều này quyết định phạm vi bạn có thể chọn.\n\nĐây không phải chỗ bạn phải chuẩn bị sẵn mọi câu trả lời. \"Tôi chưa biết\" cũng là một câu trả lời.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "24-what-we-ask-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain chairs facing each other across a small round table with an empty notepad and a glass of water on it, soft side light, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from directly above, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 25,
+      "topic_id": "what-we-ask",
+      "language": "my",
+      "publish_at": "2027-01-26T19:00:00+09:00",
+      "source_ko": "상담이라고 하면 무엇을 물어볼지 모르겠다는 분들이 계십니다. 그래서 저희가 무엇을 묻는지 먼저 적어 둡니다.\n\n지금 어디에 계시고 어떤 체류자격으로 지내시는지 묻습니다. 일본에 계신지, 본국에 계신지에 따라 할 수 있는 준비가 다릅니다.\n\n마지막으로 마친 학교와 그 서류가 남아 있는지 묻습니다. 학력 서류는 뒤에 반드시 필요하고, 모으는 데 가장 오래 걸립니다.\n\n한국어를 공부해 보셨는지 묻습니다. 급수가 있으면 급수를, 없으면 없다고 말씀해 주시면 됩니다. 없다고 해서 할 수 있는 일이 없어지지는 않습니다.\n\n그리고 언제쯤 가고 싶으신지, 쓸 수 있는 돈이 어느 정도인지 묻습니다. 이 둘이 고를 수 있는 범위를 정합니다.\n\n답을 다 준비해 오셔야 하는 자리가 아닙니다. 모르겠다는 답도 답입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "အကြံပေးဆွေးနွေးမှု ဟု ဆိုလျှင် အဘယ်အရာ မေးရမည် မသိဘူး ဟု ဆိုသူများ ရှိပါသည်။ ထို့ကြောင့် ကျွန်ုပ်တို့ အဘယ်အရာ မေးသည်ကို အရင် ရေးထားပါမည်။\n\nယခု မည်သည့်အရပ်တွင် ရှိ၍ မည်သည့် နေထိုင်ခွင့်အခြေအနေနှင့် နေထိုင်သည်ကို မေးပါသည်။ ဂျပန်တွင် ရှိသလား၊ မိမိနိုင်ငံတွင် ရှိသလား ဆိုသည်အလိုက် ပြုလုပ်နိုင်မည့် ပြင်ဆင်မှု ကွဲပြားပါသည်။\n\nနောက်ဆုံး ပြီးဆုံးခဲ့သော ကျောင်းနှင့် ထိုစာရွက်စာတမ်းများ ကျန်ရှိမရှိကို မေးပါသည်။ ပညာအရည်အချင်း စာရွက်စာတမ်းများသည် နောက်ပိုင်းတွင် မဖြစ်မနေ လိုအပ်၍၊ စုဆောင်းရာတွင် အကြာဆုံး ဖြစ်ပါသည်။\n\nကိုရီးယားဘာသာ လေ့လာဖူးမဖူးကို မေးပါသည်။ အဆင့် ရှိပါက အဆင့်ကို၊ မရှိပါက မရှိဘူး ဟု ပြောပေးလျှင် ရပါသည်။ မရှိသဖြင့် ပြုလုပ်နိုင်သော အရာ မရှိသွားခြင်း မဟုတ်ပါ။\n\nထို့အပြင် မည်သည့်အချိန်ခန့်တွင် သွားလိုသည်၊ အသုံးပြုနိုင်သော ပိုက်ဆံ မည်မျှ ဖြစ်သည်ကို မေးပါသည်။ ဤနှစ်ချက်သည် ရွေးချယ်နိုင်မည့် အတိုင်းအတာကို သတ်မှတ်ပါသည်။\n\nအဖြေအားလုံးကို ပြင်ဆင်၍ လာရမည့် အရပ် မဟုတ်ပါ။ မသိဘူး ဟူသော အဖြေလည် အဖြေဖြစ်ပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "25-what-we-ask-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain chairs facing each other across a small round table with an empty notepad and a glass of water on it, soft side light, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the nearer chair larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 26,
+      "topic_id": "what-we-ask",
+      "language": "ne",
+      "publish_at": "2027-01-27T19:00:00+09:00",
+      "source_ko": "상담이라고 하면 무엇을 물어볼지 모르겠다는 분들이 계십니다. 그래서 저희가 무엇을 묻는지 먼저 적어 둡니다.\n\n지금 어디에 계시고 어떤 체류자격으로 지내시는지 묻습니다. 일본에 계신지, 본국에 계신지에 따라 할 수 있는 준비가 다릅니다.\n\n마지막으로 마친 학교와 그 서류가 남아 있는지 묻습니다. 학력 서류는 뒤에 반드시 필요하고, 모으는 데 가장 오래 걸립니다.\n\n한국어를 공부해 보셨는지 묻습니다. 급수가 있으면 급수를, 없으면 없다고 말씀해 주시면 됩니다. 없다고 해서 할 수 있는 일이 없어지지는 않습니다.\n\n그리고 언제쯤 가고 싶으신지, 쓸 수 있는 돈이 어느 정도인지 묻습니다. 이 둘이 고를 수 있는 범위를 정합니다.\n\n답을 다 준비해 오셔야 하는 자리가 아닙니다. 모르겠다는 답도 답입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "परामर्श भन्नेबित्तिकै के सोध्ने थाहा नहुने भन्नेहरू हुन्छन्। त्यसैले हामी के सोध्छौं भन्ने पहिले लेखी राख्छौं।\n\nअहिले कहाँ हुनुहुन्छ र कुन बसोबास योग्यतामा बस्दै हुनुहुन्छ भनी सोध्छौं। जापानमा हुनुहुन्छ कि स्वदेशमा — त्यस अनुसार गर्न सकिने तयारी फरक हुन्छ।\n\nअन्तिममा सकेको विद्यालय र त्यसका कागजात बाँकी छन् कि भनी सोध्छौं। शैक्षिक कागजात पछि अनिवार्य चाहिन्छ, र जुटाउन सबैभन्दा लामो समय लाग्छ।\n\nकोरियाली भाषा पढ्नुभएको छ कि भनी सोध्छौं। स्तर छ भने स्तर, छैन भने छैन भन्नुभए हुन्छ। छैन भन्दैमा गर्न सकिने काम सकिँदैन।\n\nर कति बेला जान चाहनुहुन्छ, प्रयोग गर्न सकिने पैसा कति छ भनी सोध्छौं। यी दुईले छान्न सकिने दायरा तोक्छन्।\n\nसबै उत्तर तयार गरी आउनुपर्ने ठाउँ होइन। \"थाहा छैन\" पनि एउटा उत्तर हो।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "26-what-we-ask-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: two plain chairs facing each other across a small round table with an empty notepad and a glass of water on it, soft side light, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from the side at table height, long soft shadows under the chairs. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 27,
+      "topic_id": "new-year",
+      "language": "vi",
+      "publish_at": "2027-01-28T19:00:00+09:00",
+      "source_ko": "1월입니다. 올해 안에 한국에 가고 싶으신 분이라면, 지금 해 볼 일은 거꾸로 세기입니다.\n\n가고 싶은 달을 먼저 정하십시오. 그 달에서 거꾸로 세어 보면, 서류를 모두 갖춰야 하는 달이 나오고, 학교에 지원해야 하는 달이 나오고, 지금 시작해야 하는 일이 나옵니다.\n\n가장 오래 걸리는 것은 대개 학력 서류입니다. 본국에서 받아야 하는 서류가 있으면 더 걸립니다. 그래서 거꾸로 세기의 맨 앞에 놓입니다.\n\n한국어는 지금부터 시작해도 늘어나는 쪽입니다. 급수를 따려면 시험 날짜가 정해져 있으니, 그 날짜도 거꾸로 세기에 넣으셔야 합니다.\n\n올해 안이 어렵다고 나오면 그것도 답입니다. 내년으로 미루는 대신 올해 할 수 있는 준비가 보이기 때문입니다.\n\n가고 싶은 달을 한 번 적어 보내 주십시오. 거꾸로 세기는 같이 하겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Đã là tháng 1. Nếu bạn muốn sang Hàn Quốc trong năm nay, việc nên làm bây giờ là đếm ngược.\n\nXin hãy quyết định trước tháng bạn muốn đi. Đếm ngược từ tháng đó sẽ ra tháng phải gom đủ giấy tờ, ra tháng phải ứng tuyển vào trường, và ra việc phải bắt đầu ngay bây giờ.\n\nThứ mất nhiều thời gian nhất thường là giấy tờ học vấn. Nếu có giấy phải lấy từ quê nhà thì còn lâu hơn. Vì vậy nó nằm ở đầu của việc đếm ngược.\n\nTiếng Hàn thì bắt đầu từ bây giờ vẫn là phía tăng lên. Muốn lấy cấp thì ngày thi đã được định sẵn, nên bạn phải đưa cả ngày đó vào việc đếm ngược.\n\nNếu kết quả là trong năm nay khó, thì đó cũng là một câu trả lời. Vì thay vì hoãn sang năm sau, bạn sẽ thấy được phần chuẩn bị có thể làm trong năm nay.\n\nXin hãy viết gửi sang tháng bạn muốn đi. Việc đếm ngược chúng ta sẽ làm cùng nhau.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "27-new-year-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a long horizontal timeline rule with twelve evenly spaced tick marks and one small flag placed near the far end, a pencil resting below, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen from directly above, square composition, the timeline centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 28,
+      "topic_id": "new-year",
+      "language": "my",
+      "publish_at": "2027-01-29T19:00:00+09:00",
+      "source_ko": "1월입니다. 올해 안에 한국에 가고 싶으신 분이라면, 지금 해 볼 일은 거꾸로 세기입니다.\n\n가고 싶은 달을 먼저 정하십시오. 그 달에서 거꾸로 세어 보면, 서류를 모두 갖춰야 하는 달이 나오고, 학교에 지원해야 하는 달이 나오고, 지금 시작해야 하는 일이 나옵니다.\n\n가장 오래 걸리는 것은 대개 학력 서류입니다. 본국에서 받아야 하는 서류가 있으면 더 걸립니다. 그래서 거꾸로 세기의 맨 앞에 놓입니다.\n\n한국어는 지금부터 시작해도 늘어나는 쪽입니다. 급수를 따려면 시험 날짜가 정해져 있으니, 그 날짜도 거꾸로 세기에 넣으셔야 합니다.\n\n올해 안이 어렵다고 나오면 그것도 답입니다. 내년으로 미루는 대신 올해 할 수 있는 준비가 보이기 때문입니다.\n\n가고 싶은 달을 한 번 적어 보내 주십시오. 거꾸로 세기는 같이 하겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ဇန်နဝါရီလ ဖြစ်ပါသည်။ ယခုနှစ်အတွင်း ကိုရီးယားသို့ သွားလိုသူဖြစ်ပါက၊ ယခု ပြုလုပ်ကြည့်ရမည့်အရာမှာ ပြောင်းပြန် တွက်ချက်ခြင်းဖြစ်ပါသည်။\n\nသွားလိုသော လကို အရင် ဆုံးဖြတ်ပါ။ ထိုလမှ ပြောင်းပြန် တွက်ကြည့်ပါက၊ စာရွက်စာတမ်းအားလုံး ပြည့်စုံရမည့် လ ထွက်လာ၍၊ ကျောင်းသို့ လျှောက်ထားရမည့် လ ထွက်လာ၍၊ ယခု စတင်ရမည့် အလုပ် ထွက်လာပါသည်။\n\nအကြာဆုံး ဖြစ်သည်မှာ အများအားဖြင့် ပညာအရည်အချင်း စာရွက်စာတမ်းများဖြစ်ပါသည်။ မိမိနိုင်ငံတွင် ရယူရမည့် စာရွက်စာတမ်း ရှိပါက ပိုကြာပါသည်။ ထို့ကြောင့် ပြောင်းပြန် တွက်ချက်မှု၏ ရှေ့ဆုံးတွင် ထားရပါသည်။\n\nကိုရီးယားဘာသာမှာ ယခုမှ စတင်သော်လည် တိုးတက်သည့်ဘက်ဖြစ်ပါသည်။ အဆင့် ရယူလိုပါက စာမေးပွဲ ရက်စွဲ သတ်မှတ်ထားသဖြင့်၊ ထိုရက်စွဲကိုလည် ပြောင်းပြန် တွက်ချက်မှုတွင် ထည့်ရပါမည်။\n\nယခုနှစ်အတွင်း ခက်ခဲသည် ဟု ထွက်လာပါက ထိုအရာလည် အဖြေဖြစ်ပါသည်။ လာမည့်နှစ်သို့ ဆိုင်းငံ့ခြင်းအစား ယခုနှစ်တွင် ပြုလုပ်နိုင်သော ပြင်ဆင်မှုကို မြင်လာသောကြောင်းဖြစ်ပါသည်။\n\nသွားလိုသော လကို တစ်ခါ ရေး၍ ပို့ပေးပါ။ ပြောင်းပြန် တွက်ချက်မှုကို အတူတကွ ပြုလုပ်ပါမည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "28-new-year-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a long horizontal timeline rule with twelve evenly spaced tick marks and one small flag placed near the far end, a pencil resting below, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the flag larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 29,
+      "topic_id": "new-year",
+      "language": "ne",
+      "publish_at": "2027-01-30T19:00:00+09:00",
+      "source_ko": "1월입니다. 올해 안에 한국에 가고 싶으신 분이라면, 지금 해 볼 일은 거꾸로 세기입니다.\n\n가고 싶은 달을 먼저 정하십시오. 그 달에서 거꾸로 세어 보면, 서류를 모두 갖춰야 하는 달이 나오고, 학교에 지원해야 하는 달이 나오고, 지금 시작해야 하는 일이 나옵니다.\n\n가장 오래 걸리는 것은 대개 학력 서류입니다. 본국에서 받아야 하는 서류가 있으면 더 걸립니다. 그래서 거꾸로 세기의 맨 앞에 놓입니다.\n\n한국어는 지금부터 시작해도 늘어나는 쪽입니다. 급수를 따려면 시험 날짜가 정해져 있으니, 그 날짜도 거꾸로 세기에 넣으셔야 합니다.\n\n올해 안이 어렵다고 나오면 그것도 답입니다. 내년으로 미루는 대신 올해 할 수 있는 준비가 보이기 때문입니다.\n\n가고 싶은 달을 한 번 적어 보내 주십시오. 거꾸로 세기는 같이 하겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "जनवरी भयो। यो वर्षभित्र कोरिया जान चाहनुहुन्छ भने, अहिले गर्नुपर्ने काम उल्टो गणना हो।\n\nजान चाहेको महिना पहिले तोक्नुहोस्। त्यो महिनादेखि उल्टो गणना गर्दा, कागजात सबै पूरा गर्नुपर्ने महिना निस्कन्छ, विद्यालयमा आवेदन दिनुपर्ने महिना निस्कन्छ, र अहिले सुरु गर्नुपर्ने काम निस्कन्छ।\n\nसबैभन्दा लामो समय लाग्ने प्रायः शैक्षिक कागजात हुन्छ। स्वदेशमा लिनुपर्ने कागजात छ भने अझ लामो लाग्छ। त्यसैले उल्टो गणनाको सबैभन्दा अगाडि राख्नुपर्छ।\n\nकोरियाली भाषा अहिलेदेखि सुरु गरे पनि बढ्नेतर्फ हो। स्तर लिन चाहे परीक्षाको मिति तोकिएको हुन्छ, त्यसैले त्यो मिति पनि उल्टो गणनामा राख्नुपर्छ।\n\nयो वर्षभित्र गाह्रो छ भनी निस्किए त्यो पनि एउटा उत्तर हो। अर्को वर्षमा सार्नुको साटो यो वर्ष गर्न सकिने तयारी देखिने भएकोले।\n\nजान चाहेको महिना एक पटक लेखी पठाउनुहोस्। उल्टो गणना सँगै गर्नेछौं।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "29-new-year-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a long horizontal timeline rule with twelve evenly spaced tick marks and one small flag placed near the far end, a pencil resting below, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. The timeline rotated to run vertically, the flag near the bottom. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    }
+  ]
+}

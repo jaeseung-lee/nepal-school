@@ -1,0 +1,551 @@
+{
+  "month": "2026-12",
+  "topics": [
+    {
+      "topic_id": "tuition-eleven",
+      "title_ko": "열한 학교의 공시 연간 평균등록금을 한 자리에"
+    },
+    {
+      "topic_id": "tuition-junior-colleges",
+      "title_ko": "공시 자료가 전문대학으로 분류한 세 곳"
+    },
+    {
+      "topic_id": "tuition-one-year",
+      "title_ko": "그 금액은 1년치입니다 — 학기당이 아닙니다"
+    },
+    {
+      "topic_id": "tuition-entrance-fee",
+      "title_ko": "입학금은 그 금액에 들어 있지 않습니다"
+    },
+    {
+      "topic_id": "d2-regular-course",
+      "title_ko": "유학(D-2)의 \"정규과정\"이라는 말"
+    },
+    {
+      "topic_id": "d4-bracket",
+      "title_ko": "일반연수(D-4) 조문의 괄호 — 누가 빠지는가"
+    },
+    {
+      "topic_id": "permit-name",
+      "title_ko": "체류자격외활동허가 — 이름이 길어도 뜻은 간단합니다"
+    },
+    {
+      "topic_id": "hours-rumor",
+      "title_ko": "허용 시간을 숫자 하나로 들으셨다면"
+    },
+    {
+      "topic_id": "choose-questions",
+      "title_ko": "학교를 고를 때 스스로에게 물어야 할 세 가지"
+    },
+    {
+      "topic_id": "december-decision",
+      "title_ko": "12월 — 다음 학기를 정하는 달"
+    }
+  ],
+  "posts": [
+    {
+      "index": 0,
+      "topic_id": "tuition-eleven",
+      "language": "vi",
+      "publish_at": "2026-12-01T19:00:00+09:00",
+      "source_ko": "지난달에 지역별로 나눠 올린 숫자를, 이번에는 낮은 쪽부터 한 줄로 모았습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치이고 학기당 금액이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n호남대학교 6,788,793원\n전주기전대학 6,800,000원\n위덕대학교 7,312,525원\n우석대학교 7,519,491원\n경기대학교 8,028,841원\n협성대학교 8,135,252원\n평택대학교 8,198,774원\n청주대학교 8,319,491원\n\n맨 위와 맨 아래의 차이가 두 배에 가깝습니다. 그래서 \"한국 유학 학비가 얼마냐\"는 질문에는 하나의 답이 없습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있습니다. 입학금은 공시 항목이 달라 이 금액에 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Những con số tháng trước chia theo vùng, lần này xin xếp thành một hàng từ thấp lên cao.\n\nĐây là học phí bình quân hằng năm theo chuẩn năm 2026 do Quỹ Học bổng Hàn Quốc công bố. Tất cả là số tiền của 1 năm, không phải của một học kỳ.\n\n전북대학교 4.461.484 won\n제주관광대학교 5.475.138 won\n제주한라대학교 5.618.737 won\n호남대학교 6.788.793 won\n전주기전대학 6.800.000 won\n위덕대학교 7.312.525 won\n우석대학교 7.519.491 won\n경기대학교 8.028.841 won\n협성대학교 8.135.252 won\n평택대학교 8.198.774 won\n청주대학교 8.319.491 won\n\nKhoảng cách giữa trên cùng và dưới cùng gần gấp đôi. Vì vậy câu hỏi \"học phí du học Hàn Quốc là bao nhiêu\" không có một câu trả lời duy nhất.\n\nCon số này là bình quân gia quyền của toàn bộ các ngành nên tùy ngành số tiền thực nộp có thể khác. Phí nhập học là hạng mục công bố riêng nên không nằm trong số tiền này.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "00-tuition-eleven-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: eleven plain vertical bar shapes of varying heights standing in a row on a single baseline, sorted from short to tall, a thin horizontal ruler line above them, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the row of bars centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla",
+        "tuition_honam",
+        "tuition_kijeon",
+        "tuition_uiduk",
+        "tuition_woosuk",
+        "tuition_kyonggi",
+        "tuition_hyupsung",
+        "tuition_pyeongtaek-university",
+        "tuition_cheongju"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교",
+        "호남대학교",
+        "전주기전대학",
+        "위덕대학교",
+        "우석대학교",
+        "경기대학교",
+        "협성대학교",
+        "평택대학교",
+        "청주대학교"
+      ]
+    },
+    {
+      "index": 1,
+      "topic_id": "tuition-eleven",
+      "language": "my",
+      "publish_at": "2026-12-02T19:00:00+09:00",
+      "source_ko": "지난달에 지역별로 나눠 올린 숫자를, 이번에는 낮은 쪽부터 한 줄로 모았습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치이고 학기당 금액이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n호남대학교 6,788,793원\n전주기전대학 6,800,000원\n위덕대학교 7,312,525원\n우석대학교 7,519,491원\n경기대학교 8,028,841원\n협성대학교 8,135,252원\n평택대학교 8,198,774원\n청주대학교 8,319,491원\n\n맨 위와 맨 아래의 차이가 두 배에 가깝습니다. 그래서 \"한국 유학 학비가 얼마냐\"는 질문에는 하나의 답이 없습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있습니다. 입학금은 공시 항목이 달라 이 금액에 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "မကြာမီလတွင် နယ်ပယ်အလိုက် ခွဲ၍ တင်ခဲ့သော ကိန်းဂဏန်းများကို၊ ဤတစ်ခါ နိမ့်သည့်ဘက်မှ စ၍ တစ်တန်းတည်း စုစည်းထားပါသည်။\n\nကိုရီးယား ပညာသင်ဆုရန်ပုံငွေအဖွဲ့ ထုတ်ပြန်ထားသော 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခဖြစ်ပါသည်။ အားလုံး 1 နှစ်စာ ဖြစ်၍ စာသင်ကာလ တစ်ခုစာ မဟုတ်ပါ။\n\n전북대학교 4,461,484 ဝမ်\n제주관광대학교 5,475,138 ဝမ်\n제주한라대학교 5,618,737 ဝမ်\n호남대학교 6,788,793 ဝမ်\n전주기전대학 6,800,000 ဝမ်\n위덕대학교 7,312,525 ဝမ်\n우석대학교 7,519,491 ဝမ်\n경기대학교 8,028,841 ဝမ်\n협성대학교 8,135,252 ဝမ်\n평택대학교 8,198,774 ဝမ်\n청주대학교 8,319,491 ဝမ်\n\nအထက်ဆုံးနှင့် အောက်ဆုံး၏ ကွာဟမှုသည် နှစ်ဆနီးပါး ရှိပါသည်။ ထို့ကြောင့် \"ကိုရီးယား ပညာသင်ခရီး၏ ကျောင်းလခက မည်မျှလဲ\" ဟူသော အမေးအတွက် အဖြေ တစ်ခုတည်း မရှိပါ။\n\nဤကိန်းဂဏန်းမှာ ဘာသာရပ်အားလုံး၏ အလေးချိန်ပျှမ်းမျှဖြစ်သဖြင့် ဘာသာရပ်အလိုက် အမှန်တကယ် ပေးသွင်းရမည့် ပမာဏ ကွဲပြားနိုင်ပါသည်။ ကျောင်းအပ်ခမှာ သီးသန့် ထုတ်ပြန်ချက်ဖြစ်သဖြင့် ဤပမာဏတွင် မပါဝင်ပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "01-tuition-eleven-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: eleven plain vertical bar shapes of varying heights standing in a row on a single baseline, sorted from short to tall, a thin horizontal ruler line above them, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the tallest bars nearer the viewer. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla",
+        "tuition_honam",
+        "tuition_kijeon",
+        "tuition_uiduk",
+        "tuition_woosuk",
+        "tuition_kyonggi",
+        "tuition_hyupsung",
+        "tuition_pyeongtaek-university",
+        "tuition_cheongju"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교",
+        "호남대학교",
+        "전주기전대학",
+        "위덕대학교",
+        "우석대학교",
+        "경기대학교",
+        "협성대학교",
+        "평택대학교",
+        "청주대학교"
+      ]
+    },
+    {
+      "index": 2,
+      "topic_id": "tuition-eleven",
+      "language": "ne",
+      "publish_at": "2026-12-03T19:00:00+09:00",
+      "source_ko": "지난달에 지역별로 나눠 올린 숫자를, 이번에는 낮은 쪽부터 한 줄로 모았습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금입니다. 모두 1년치이고 학기당 금액이 아닙니다.\n\n전북대학교 4,461,484원\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n호남대학교 6,788,793원\n전주기전대학 6,800,000원\n위덕대학교 7,312,525원\n우석대학교 7,519,491원\n경기대학교 8,028,841원\n협성대학교 8,135,252원\n평택대학교 8,198,774원\n청주대학교 8,319,491원\n\n맨 위와 맨 아래의 차이가 두 배에 가깝습니다. 그래서 \"한국 유학 학비가 얼마냐\"는 질문에는 하나의 답이 없습니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있습니다. 입학금은 공시 항목이 달라 이 금액에 들어 있지 않습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "गत महिना क्षेत्र अनुसार छुट्टाई राखेका अङ्कलाई, यसपालि कमभन्दा सुरु गरी एकै हारमा राखिएको छ।\n\nकोरिया छात्रवृत्ति कोषले सार्वजनिक गरेको 2026 आधार वर्षको वार्षिक औसत शुल्क यो छ। सबै 1 वर्षको रकम हो, एक सेमेस्टरको होइन।\n\n전북대학교 4,461,484 वोन\n제주관광대학교 5,475,138 वोन\n제주한라대학교 5,618,737 वोन\n호남대학교 6,788,793 वोन\n전주기전대학 6,800,000 वोन\n위덕대학교 7,312,525 वोन\n우석대학교 7,519,491 वोन\n경기대학교 8,028,841 वोन\n협성대학교 8,135,252 वोन\n평택대학교 8,198,774 वोन\n청주대학교 8,319,491 वोन\n\nसबैभन्दा माथि र सबैभन्दा तलको फरक झन्डै दोब्बर छ। त्यसैले \"कोरिया अध्ययनको शुल्क कति हो\" भन्ने प्रश्नको एउटै उत्तर छैन।\n\nयो अङ्क सबै विषयको भारित औसत भएकोले विषय अनुसार वास्तविक तिर्नुपर्ने रकम फरक हुन सक्छ। भर्ना शुल्क छुट्टै सार्वजनिक विषय भएकोले यो रकममा समावेश छैन।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "02-tuition-eleven-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: eleven plain vertical bar shapes of varying heights standing in a row on a single baseline, sorted from short to tall, a thin horizontal ruler line above them, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes, abstract and diagrammatic. The bars rotated to lie horizontally as a stack of rows, the ruler line vertical at the left. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_jeonbuk",
+        "tuition_jeju-tourism",
+        "tuition_cheju-halla",
+        "tuition_honam",
+        "tuition_kijeon",
+        "tuition_uiduk",
+        "tuition_woosuk",
+        "tuition_kyonggi",
+        "tuition_hyupsung",
+        "tuition_pyeongtaek-university",
+        "tuition_cheongju"
+      ],
+      "university_names": [
+        "전북대학교",
+        "제주관광대학교",
+        "제주한라대학교",
+        "호남대학교",
+        "전주기전대학",
+        "위덕대학교",
+        "우석대학교",
+        "경기대학교",
+        "협성대학교",
+        "평택대학교",
+        "청주대학교"
+      ]
+    },
+    {
+      "index": 3,
+      "topic_id": "tuition-junior-colleges",
+      "language": "vi",
+      "publish_at": "2026-12-04T19:00:00+09:00",
+      "source_ko": "한국의 고등교육기관은 한 종류가 아닙니다. 공시 자료는 학교를 대학과 전문대학으로 나눠 적습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금 가운데, 전문대학으로 분류된 세 곳입니다. 1년치 금액입니다.\n\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n전주기전대학 6,800,000원\n\n앞서 올린 대학 쪽 숫자와 견주면 전문대학 쪽이 대체로 낮습니다. 다만 금액이 낮다는 것과 자기에게 맞는다는 것은 다른 이야기입니다. 과정의 길이와 내용이 다르기 때문입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 이 금액에 들어 있지 않습니다.\n\n어느 종류의 학교가 자기 계획에 맞는지부터 정하는 것이 순서입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Cơ sở giáo dục đại học ở Hàn Quốc không chỉ có một loại. Tài liệu công bố chia trường thành đại học và cao đẳng.\n\nTrong học phí bình quân hằng năm theo chuẩn năm 2026 do Quỹ Học bổng Hàn Quốc công bố, đây là ba trường được phân loại là cao đẳng. Là số tiền của 1 năm.\n\n제주관광대학교 5.475.138 won\n제주한라대학교 5.618.737 won\n전주기전대학 6.800.000 won\n\nSo với các con số bên đại học đã đăng trước đó, bên cao đẳng nhìn chung thấp hơn. Nhưng tiền thấp hơn và phù hợp với mình là hai chuyện khác nhau, vì độ dài và nội dung chương trình khác nhau.\n\nCon số này là bình quân gia quyền của toàn bộ các ngành nên tùy ngành số tiền thực nộp có thể khác, và phí nhập học không nằm trong số tiền này.\n\nViệc trước tiên là quyết định loại trường nào phù hợp với kế hoạch của mình.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "03-tuition-junior-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain bar shapes of similar height grouped together on a baseline, set apart from a single taller faded bar at the far right, a coin stack beside the group, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the group of three centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon",
+        "tuition_cheju-halla",
+        "tuition_jeju-tourism"
+      ],
+      "university_names": [
+        "전주기전대학",
+        "제주한라대학교",
+        "제주관광대학교"
+      ]
+    },
+    {
+      "index": 4,
+      "topic_id": "tuition-junior-colleges",
+      "language": "my",
+      "publish_at": "2026-12-05T19:00:00+09:00",
+      "source_ko": "한국의 고등교육기관은 한 종류가 아닙니다. 공시 자료는 학교를 대학과 전문대학으로 나눠 적습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금 가운데, 전문대학으로 분류된 세 곳입니다. 1년치 금액입니다.\n\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n전주기전대학 6,800,000원\n\n앞서 올린 대학 쪽 숫자와 견주면 전문대학 쪽이 대체로 낮습니다. 다만 금액이 낮다는 것과 자기에게 맞는다는 것은 다른 이야기입니다. 과정의 길이와 내용이 다르기 때문입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 이 금액에 들어 있지 않습니다.\n\n어느 종류의 학교가 자기 계획에 맞는지부터 정하는 것이 순서입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကိုရီးယား၏ အထက်တန်းလွန် ပညာရေးအဖွဲ့အစည်းများသည် အမျိုးအစား တစ်ခုတည်း မဟုတ်ပါ။ ထုတ်ပြန်ချက် အချက်အလက်များသည် ကျောင်းများကို တက္ကသိုလ်နှင့် ဒီပလိုမာကောလိပ် ခွဲ၍ ရေးထားပါသည်။\n\nကိုရီးယား ပညာသင်ဆုရန်ပုံငွေအဖွဲ့ ထုတ်ပြန်ထားသော 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခအထဲမှ၊ ဒီပလိုမာကောလိပ်အဖြစ် အမျိုးအစား ခွဲထားသော ကျောင်းသုံးခုဖြစ်ပါသည်။ 1 နှစ်စာ ပမာဏဖြစ်ပါသည်။\n\n제주관광대학교 5,475,138 ဝမ်\n제주한라대학교 5,618,737 ဝမ်\n전주기전대학 6,800,000 ဝမ်\n\nယခင် တင်ခဲ့သော တက္ကသိုလ်ဘက် ကိန်းဂဏန်းများနှင့် နှိုင်းယှဉ်လျှင် ဒီပလိုမာကောလိပ်ဘက်သည် အများအားဖြင့် နိမ့်ပါသည်။ သို့သော် ပမာဏ နိမ့်သည်ဆိုသည်နှင့် မိမိအတွက် ကိုက်ညီသည်ဆိုသည်မှာ မတူသော အကြောင်းအရာဖြစ်ပါသည်။ သင်တန်း၏ ကာလနှင့် အကြောင်းအရာ ကွဲပြားသောကြောင်းဖြစ်ပါသည်။\n\nဤကိန်းဂဏန်းမှာ ဘာသာရပ်အားလုံး၏ အလေးချိန်ပျှမ်းမျှဖြစ်သဖြင့် ဘာသာရပ်အလိုက် အမှန်တကယ် ပေးသွင်းရမည့် ပမာဏ ကွဲပြားနိုင်၍၊ ကျောင်းအပ်ခမှာ ဤပမာဏတွင် မပါဝင်ပါ။\n\nမည်သည့်အမျိုးအစား ကျောင်းသည် မိမိ၏အစီအစဉ်နှင့် ကိုက်ညီသည်ကို အရင် ဆုံးဖြတ်ခြင်းသည် အစီအစဉ်ဖြစ်ပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "04-tuition-junior-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain bar shapes of similar height grouped together on a baseline, set apart from a single taller faded bar at the far right, a coin stack beside the group, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the coin stack larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon",
+        "tuition_cheju-halla",
+        "tuition_jeju-tourism"
+      ],
+      "university_names": [
+        "전주기전대학",
+        "제주한라대학교",
+        "제주관광대학교"
+      ]
+    },
+    {
+      "index": 5,
+      "topic_id": "tuition-junior-colleges",
+      "language": "ne",
+      "publish_at": "2026-12-06T19:00:00+09:00",
+      "source_ko": "한국의 고등교육기관은 한 종류가 아닙니다. 공시 자료는 학교를 대학과 전문대학으로 나눠 적습니다.\n\n한국장학재단이 공시한 2026년 기준 연간 평균등록금 가운데, 전문대학으로 분류된 세 곳입니다. 1년치 금액입니다.\n\n제주관광대학교 5,475,138원\n제주한라대학교 5,618,737원\n전주기전대학 6,800,000원\n\n앞서 올린 대학 쪽 숫자와 견주면 전문대학 쪽이 대체로 낮습니다. 다만 금액이 낮다는 것과 자기에게 맞는다는 것은 다른 이야기입니다. 과정의 길이와 내용이 다르기 때문입니다.\n\n이 숫자는 전체 학과의 가중평균이라 학과에 따라 실제 납부액은 다를 수 있고, 입학금은 이 금액에 들어 있지 않습니다.\n\n어느 종류의 학교가 자기 계획에 맞는지부터 정하는 것이 순서입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "कोरियाका उच्च शिक्षा संस्था एक किसिमका मात्र छैनन्। सार्वजनिक सामग्रीले विद्यालयलाई विश्वविद्यालय र डिप्लोमा कलेज छुट्टाई लेखेको छ।\n\nकोरिया छात्रवृत्ति कोषले सार्वजनिक गरेको 2026 आधार वर्षको वार्षिक औसत शुल्कमध्ये, डिप्लोमा कलेज वर्गीकृत भएका तीन विद्यालय यी हुन्। 1 वर्षको रकम हो।\n\n제주관광대학교 5,475,138 वोन\n제주한라대학교 5,618,737 वोन\n전주기전대학 6,800,000 वोन\n\nअघि राखेका विश्वविद्यालयतर्फका अङ्कसँग दाँज्दा डिप्लोमा कलेजतर्फ सामान्यतया कम छ। तर रकम कम हुनु र आफूलाई मिल्नु भिन्न कुरा हुन्। पाठ्यक्रमको अवधि र विषयवस्तु फरक हुने भएकोले।\n\nयो अङ्क सबै विषयको भारित औसत भएकोले विषय अनुसार वास्तविक तिर्नुपर्ने रकम फरक हुन सक्छ, र भर्ना शुल्क यो रकममा समावेश छैन।\n\nकुन किसिमको विद्यालय आफ्नो योजनासँग मिल्छ, त्यो पहिले निर्णय गर्नु क्रम हो।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "05-tuition-junior-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain bar shapes of similar height grouped together on a baseline, set apart from a single taller faded bar at the far right, a coin stack beside the group, muted neutral palette with one sage green accent, generous empty space, simple geometric shapes, abstract and diagrammatic. The bars rotated to lie horizontally, the faded bar at the bottom. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon",
+        "tuition_cheju-halla",
+        "tuition_jeju-tourism"
+      ],
+      "university_names": [
+        "전주기전대학",
+        "제주한라대학교",
+        "제주관광대학교"
+      ]
+    },
+    {
+      "index": 6,
+      "topic_id": "tuition-one-year",
+      "language": "vi",
+      "publish_at": "2026-12-07T19:00:00+09:00",
+      "source_ko": "숫자를 읽을 때 가장 자주 어긋나는 자리가 단위입니다.\n\n한국장학재단이 공시한 2026년 기준 호남대학교 연간 평균등록금은 6,788,793원입니다. 여기서 \"연간\"은 1년치라는 뜻입니다. 한 학기 금액이 아닙니다.\n\n이것을 학기당으로 잘못 읽으면 한 해 비용을 두 배로 셈하게 됩니다. 반대로 1년치를 한 학기 금액으로 들으면 준비한 돈이 모자랍니다. 어느 쪽이든 계획이 틀어집니다.\n\n지난 글들에 적은 숫자도 모두 같습니다. 전부 1년치 평균입니다.\n\n한국의 학기는 한 해에 둘입니다. 숫자를 들으실 때마다 \"이게 1년치인가 한 학기인가\"를 먼저 물어 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Chỗ sai lệch thường gặp nhất khi đọc con số là đơn vị.\n\nHọc phí bình quân hằng năm của 호남대학교 theo chuẩn năm 2026 do Quỹ Học bổng Hàn Quốc công bố là 6.788.793 won. Ở đây \"hằng năm\" nghĩa là số tiền của 1 năm. Không phải số tiền của một học kỳ.\n\nNếu đọc nhầm thành mỗi học kỳ thì bạn tính chi phí một năm thành gấp đôi. Ngược lại, nếu nghe số tiền của 1 năm mà hiểu là một học kỳ thì tiền chuẩn bị sẽ thiếu. Cách nào thì kế hoạch cũng lệch.\n\nCác con số trong những bài trước cũng vậy. Tất cả đều là bình quân của 1 năm.\n\nMột năm học ở Hàn Quốc có hai học kỳ. Mỗi lần nghe một con số, xin hãy hỏi trước: \"đây là của 1 năm hay của một học kỳ?\"\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "06-tuition-one-year-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one tall plain bar beside two short bars of half its height, a thin bracket shape spanning the two short bars, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the tall bar on the left. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_honam"
+      ],
+      "university_names": [
+        "호남대학교"
+      ]
+    },
+    {
+      "index": 7,
+      "topic_id": "tuition-one-year",
+      "language": "my",
+      "publish_at": "2026-12-08T19:00:00+09:00",
+      "source_ko": "숫자를 읽을 때 가장 자주 어긋나는 자리가 단위입니다.\n\n한국장학재단이 공시한 2026년 기준 호남대학교 연간 평균등록금은 6,788,793원입니다. 여기서 \"연간\"은 1년치라는 뜻입니다. 한 학기 금액이 아닙니다.\n\n이것을 학기당으로 잘못 읽으면 한 해 비용을 두 배로 셈하게 됩니다. 반대로 1년치를 한 학기 금액으로 들으면 준비한 돈이 모자랍니다. 어느 쪽이든 계획이 틀어집니다.\n\n지난 글들에 적은 숫자도 모두 같습니다. 전부 1년치 평균입니다.\n\n한국의 학기는 한 해에 둘입니다. 숫자를 들으실 때마다 \"이게 1년치인가 한 학기인가\"를 먼저 물어 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကိန်းဂဏန်းကို ဖတ်သည့်အခါ အများဆုံး လွဲမှားသည့် အချက်မှာ ယူနစ်ဖြစ်ပါသည်။\n\nကိုရီးယား ပညာသင်ဆုရန်ပုံငွေအဖွဲ့ ထုတ်ပြန်ထားသော 2026 ခုနှစ် အခြေခံ 호남대학교 ၏ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခမှာ 6,788,793 ဝမ်ဖြစ်ပါသည်။ ဤတွင် \"တစ်နှစ်စာ\" ဆိုသည်မှာ 1 နှစ်စာ ဟူသော အဓိပ္ပာယ်ဖြစ်ပါသည်။ စာသင်ကာလ တစ်ခုစာ မဟုတ်ပါ။\n\nဤအရာကို စာသင်ကာလအလိုက် ဟု လွဲမှားစွာ ဖတ်ပါက တစ်နှစ်စာ စရိတ်ကို နှစ်ဆ တွက်မိပါမည်။ ပြောင်းပြန်အားဖြင့် 1 နှစ်စာကို စာသင်ကာလ တစ်ခုစာ ဟု ကြားပါက ပြင်ဆင်ထားသော ပိုက်ဆံ မလုံလောက်ပါ။ မည်သည့်ဘက်ဖြစ်ပါစေ အစီအစဉ် လွဲပါမည်။\n\nယခင်ပို့စ်များတွင် ရေးထားသော ကိန်းဂဏန်းများလည်း အတူတူပင်ဖြစ်ပါသည်။ အားလုံး 1 နှစ်စာ ပျှမ်းမျှဖြစ်ပါသည်။\n\nကိုရီးယား၏ စာသင်ကာလသည် တစ်နှစ်တွင် နှစ်ခု ရှိပါသည်။ ကိန်းဂဏန်း ကြားသည့်အခါတိုင်း \"ဤအရာသည် 1 နှစ်စာလား စာသင်ကာလ တစ်ခုစာလား\" ကို အရင် မေးပေးပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "07-tuition-one-year-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one tall plain bar beside two short bars of half its height, a thin bracket shape spanning the two short bars, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the bracket larger. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_honam"
+      ],
+      "university_names": [
+        "호남대학교"
+      ]
+    },
+    {
+      "index": 8,
+      "topic_id": "tuition-one-year",
+      "language": "ne",
+      "publish_at": "2026-12-09T19:00:00+09:00",
+      "source_ko": "숫자를 읽을 때 가장 자주 어긋나는 자리가 단위입니다.\n\n한국장학재단이 공시한 2026년 기준 호남대학교 연간 평균등록금은 6,788,793원입니다. 여기서 \"연간\"은 1년치라는 뜻입니다. 한 학기 금액이 아닙니다.\n\n이것을 학기당으로 잘못 읽으면 한 해 비용을 두 배로 셈하게 됩니다. 반대로 1년치를 한 학기 금액으로 들으면 준비한 돈이 모자랍니다. 어느 쪽이든 계획이 틀어집니다.\n\n지난 글들에 적은 숫자도 모두 같습니다. 전부 1년치 평균입니다.\n\n한국의 학기는 한 해에 둘입니다. 숫자를 들으실 때마다 \"이게 1년치인가 한 학기인가\"를 먼저 물어 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "अङ्क पढ्दा सबैभन्दा धेरै गल्ती हुने ठाउँ एकाइ हो।\n\nकोरिया छात्रवृत्ति कोषले सार्वजनिक गरेको 2026 आधार वर्षको 호남대학교 को वार्षिक औसत शुल्क 6,788,793 वोन छ। यहाँ \"वार्षिक\" भन्नाले 1 वर्षको रकम भन्ने अर्थ हो। एक सेमेस्टरको रकम होइन।\n\nयसलाई सेमेस्टरको भनी गलत पढ्दा एक वर्षको खर्च दोब्बर गणना हुन्छ। उल्टो, 1 वर्षको रकमलाई एक सेमेस्टरको भनी सुन्दा जुटाएको पैसा नपुग हुन्छ। कुनै पनि तर्फ योजना बिग्रिन्छ।\n\nअघिल्ला पोस्टमा लेखिएका अङ्क पनि सबै त्यस्तै हुन्। सबै 1 वर्षको औसत हो।\n\nकोरियाको शैक्षिक सत्र एक वर्षमा दुई हुन्छ। अङ्क सुन्ने बेला हरेक पटक \"यो 1 वर्षको हो कि एक सेमेस्टरको\" भनी पहिले सोध्नुहोस्।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "08-tuition-one-year-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one tall plain bar beside two short bars of half its height, a thin bracket shape spanning the two short bars, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Rotated to lie horizontally, the bracket below the two short rows. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_honam"
+      ],
+      "university_names": [
+        "호남대학교"
+      ]
+    },
+    {
+      "index": 9,
+      "topic_id": "tuition-entrance-fee",
+      "language": "vi",
+      "publish_at": "2026-12-10T19:00:00+09:00",
+      "source_ko": "등록금 숫자에는 들어 있지 않은 항목이 있습니다. 입학금입니다.\n\n공시 자료는 등록금과 입학금을 다른 항목으로 적습니다. 그래서 지금까지 올린 연간 평균등록금에는 입학금이 포함되어 있지 않습니다.\n\n예를 들어 경기대학교의 2026년 기준 연간 평균등록금은 8,028,841원이고, 같은 자료에 적힌 이 학교 본교의 평균입학금액은 0원입니다. 1년치 기준입니다.\n\n항목이 둘로 나뉘어 있다는 것이 중요합니다. 어떤 학교는 입학금이 0원이고 어떤 학교는 아닐 수 있으니, 학교를 정한 뒤에는 그 학교의 공시 항목을 따로 보셔야 합니다.\n\n등록금 숫자 하나만 보고 한 해 비용을 다 셈했다고 생각하지 않는 것이 안전합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Trong con số học phí có một hạng mục không được tính vào. Đó là phí nhập học.\n\nTài liệu công bố ghi học phí và phí nhập học thành hai hạng mục khác nhau. Vì vậy học phí bình quân hằng năm đã đăng tới nay không bao gồm phí nhập học.\n\nVí dụ, học phí bình quân hằng năm của 경기대학교 theo chuẩn năm 2026 là 8.028.841 won, và trong cùng tài liệu đó, phí nhập học bình quân của trụ sở chính trường này ghi là 0 won. Theo chuẩn số tiền của 1 năm.\n\nĐiều quan trọng là hai hạng mục được tách riêng. Có trường phí nhập học là 0 won, có trường có thể không, nên sau khi chọn trường bạn phải xem riêng các hạng mục công bố của trường đó.\n\nAn toàn hơn là đừng nghĩ rằng chỉ xem một con số học phí là đã tính xong chi phí cả năm.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "09-tuition-entrance-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape with a small separate empty outlined box sitting beside it on the same baseline, a thin dashed line between them, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Square composition, the bar and the empty box centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kyonggi"
+      ],
+      "university_names": [
+        "경기대학교"
+      ]
+    },
+    {
+      "index": 10,
+      "topic_id": "tuition-entrance-fee",
+      "language": "my",
+      "publish_at": "2026-12-11T19:00:00+09:00",
+      "source_ko": "등록금 숫자에는 들어 있지 않은 항목이 있습니다. 입학금입니다.\n\n공시 자료는 등록금과 입학금을 다른 항목으로 적습니다. 그래서 지금까지 올린 연간 평균등록금에는 입학금이 포함되어 있지 않습니다.\n\n예를 들어 경기대학교의 2026년 기준 연간 평균등록금은 8,028,841원이고, 같은 자료에 적힌 이 학교 본교의 평균입학금액은 0원입니다. 1년치 기준입니다.\n\n항목이 둘로 나뉘어 있다는 것이 중요합니다. 어떤 학교는 입학금이 0원이고 어떤 학교는 아닐 수 있으니, 학교를 정한 뒤에는 그 학교의 공시 항목을 따로 보셔야 합니다.\n\n등록금 숫자 하나만 보고 한 해 비용을 다 셈했다고 생각하지 않는 것이 안전합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကျောင်းလခ ကိန်းဂဏန်းတွင် မပါဝင်သော အကြောင်းအရာ တစ်ခု ရှိပါသည်။ ကျောင်းအပ်ခ ဖြစ်ပါသည်။\n\nထုတ်ပြန်ချက် အချက်အလက်များသည် ကျောင်းလခနှင့် ကျောင်းအပ်ခကို မတူသော အကြောင်းအရာအဖြစ် ရေးထားပါသည်။ ထို့ကြောင့် ယခုအထိ တင်ခဲ့သော တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခတွင် ကျောင်းအပ်ခ ပါဝင်ခြင်း မရှိပါ။\n\nဥပမာ 경기대학교 ၏ 2026 ခုနှစ် အခြေခံ တစ်နှစ်စာ ပျှမ်းမျှ ကျောင်းလခမှာ 8,028,841 ဝမ်ဖြစ်၍၊ ထိုအချက်အလက် တူညီစွာတွင် ရေးထားသော ဤကျောင်း၏ ပင်မကျောင်း ပျှမ်းမျှ ကျောင်းအပ်ခ ပမာဏမှာ 0 ဝမ် ဖြစ်ပါသည်။ 1 နှစ်စာ အခြေခံဖြစ်ပါသည်။\n\nအကြောင်းအရာ နှစ်ခု ခွဲထားသည်ဆိုသည်မှာ အရေးကြီးပါသည်။ အချို့ကျောင်းသည် ကျောင်းအပ်ခ 0 ဝမ် ဖြစ်၍ အချို့မှာ မဟုတ်နိုင်သဖြင့်၊ ကျောင်းကို ဆုံးဖြတ်ပြီးနောက် ထိုကျောင်း၏ ထုတ်ပြန်ချက် အကြောင်းအရာကို သီးသန့် ကြည့်ရပါမည်။\n\nကျောင်းလခ ကိန်းဂဏန်း တစ်ခုတည်းကို ကြည့်၍ တစ်နှစ်စာ စရိတ်ကို အားလုံး တွက်ပြီးပြီ ဟု မထင်ခြင်းသည် စိတ်ချရပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "10-tuition-entrance-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape with a small separate empty outlined box sitting beside it on the same baseline, a thin dashed line between them, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Seen in slight perspective from the lower left, the empty box nearer the viewer. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kyonggi"
+      ],
+      "university_names": [
+        "경기대학교"
+      ]
+    },
+    {
+      "index": 11,
+      "topic_id": "tuition-entrance-fee",
+      "language": "ne",
+      "publish_at": "2026-12-12T19:00:00+09:00",
+      "source_ko": "등록금 숫자에는 들어 있지 않은 항목이 있습니다. 입학금입니다.\n\n공시 자료는 등록금과 입학금을 다른 항목으로 적습니다. 그래서 지금까지 올린 연간 평균등록금에는 입학금이 포함되어 있지 않습니다.\n\n예를 들어 경기대학교의 2026년 기준 연간 평균등록금은 8,028,841원이고, 같은 자료에 적힌 이 학교 본교의 평균입학금액은 0원입니다. 1년치 기준입니다.\n\n항목이 둘로 나뉘어 있다는 것이 중요합니다. 어떤 학교는 입학금이 0원이고 어떤 학교는 아닐 수 있으니, 학교를 정한 뒤에는 그 학교의 공시 항목을 따로 보셔야 합니다.\n\n등록금 숫자 하나만 보고 한 해 비용을 다 셈했다고 생각하지 않는 것이 안전합니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "शुल्कको अङ्कमा समावेश नभएको एउटा विषय छ। भर्ना शुल्क।\n\nसार्वजनिक सामग्रीले शुल्क र भर्ना शुल्कलाई दुई फरक विषय लेखेको छ। त्यसैले अहिलेसम्म राखेको वार्षिक औसत शुल्कमा भर्ना शुल्क समावेश छैन।\n\nउदाहरणको लागि, 경기대학교 को 2026 आधार वर्षको वार्षिक औसत शुल्क 8,028,841 वोन छ, र त्यही सामग्रीमा लेखिएको यो विद्यालयको मुख्य क्याम्पसको औसत भर्ना शुल्क 0 वोन छ। 1 वर्षको आधारमा।\n\nविषय दुईमा छुट्टिएको छ भन्ने कुरा महत्त्वपूर्ण छ। कुनै विद्यालयको भर्ना शुल्क 0 वोन हुन्छ र कुनैको नहुन सक्छ, त्यसैले विद्यालय छानेपछि त्यो विद्यालयको सार्वजनिक विषय छुट्टै हेर्नुपर्छ।\n\nशुल्कको एउटै अङ्क हेरेर एक वर्षको खर्च सबै गणना भयो भन्ने नसोच्नु सुरक्षित हुन्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "11-tuition-entrance-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: one plain bar shape with a small separate empty outlined box sitting beside it on the same baseline, a thin dashed line between them, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes, abstract and diagrammatic. Rotated to lie horizontally, the empty box below the bar. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kyonggi"
+      ],
+      "university_names": [
+        "경기대학교"
+      ]
+    },
+    {
+      "index": 12,
+      "topic_id": "d2-regular-course",
+      "language": "vi",
+      "publish_at": "2026-12-13T19:00:00+09:00",
+      "source_ko": "법령의 글귀 안에서 가장 많은 일을 하는 낱말이 하나 있습니다. \"정규과정\"입니다.\n\n출입국관리법 시행령은 유학(D-2)를 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"으로 적습니다.\n\n여기서 조건이 둘로 묶여 있습니다. 하나는 기관입니다. 전문대학 이상의 교육기관, 또는 학술연구기관입니다. 또 하나는 그 기관에서 받는 것입니다. 정규과정의 교육, 또는 특정 연구입니다.\n\n그러니 \"한국의 학교에 등록했다\"만으로 이 조건이 끝나지 않습니다. 어느 기관인지와, 그 기관의 어느 과정인지를 둘 다 봐야 합니다.\n\n자기가 지원하려는 과정이 그 학교의 정규과정인지, 학교에 직접 확인해 보십시오. 그 답에 따라 자격이 달라집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Trong câu chữ của nghị định có một từ làm nhiều việc nhất. Đó là \"chính quy\".\n\nNghị định thi hành Luật Quản lý xuất nhập cảnh ghi Thị thực du học (D-2) là \"người muốn nhận giáo dục chính quy hoặc thực hiện nghiên cứu nhất định tại cơ sở giáo dục từ cao đẳng trở lên hoặc tại cơ quan nghiên cứu học thuật\".\n\nỞ đây điều kiện được buộc thành hai phần. Một là cơ quan: cơ sở giáo dục từ cao đẳng trở lên, hoặc cơ quan nghiên cứu học thuật. Hai là điều được nhận tại cơ quan đó: giáo dục chính quy, hoặc nghiên cứu nhất định.\n\nVậy nên chỉ \"đã đăng ký vào một trường ở Hàn Quốc\" thì điều kiện này chưa xong. Phải xem cả cơ quan nào, và chương trình nào của cơ quan đó.\n\nXin hãy hỏi trực tiếp nhà trường xem chương trình bạn định ứng tuyển có phải là chương trình chính quy của trường đó không. Tư cách thay đổi theo câu trả lời ấy.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "12-d2-regular-course-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single sheet of paper with one phrase underlined by a thin colored rule, a magnifying glass resting across its corner, on a pale desk, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from directly above, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 13,
+      "topic_id": "d2-regular-course",
+      "language": "my",
+      "publish_at": "2026-12-14T19:00:00+09:00",
+      "source_ko": "법령의 글귀 안에서 가장 많은 일을 하는 낱말이 하나 있습니다. \"정규과정\"입니다.\n\n출입국관리법 시행령은 유학(D-2)를 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"으로 적습니다.\n\n여기서 조건이 둘로 묶여 있습니다. 하나는 기관입니다. 전문대학 이상의 교육기관, 또는 학술연구기관입니다. 또 하나는 그 기관에서 받는 것입니다. 정규과정의 교육, 또는 특정 연구입니다.\n\n그러니 \"한국의 학교에 등록했다\"만으로 이 조건이 끝나지 않습니다. 어느 기관인지와, 그 기관의 어느 과정인지를 둘 다 봐야 합니다.\n\n자기가 지원하려는 과정이 그 학교의 정규과정인지, 학교에 직접 확인해 보십시오. 그 답에 따라 자격이 달라집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "အမိန့်၏ စာကြောင်းအတွင်း အလုပ် အများဆုံး လုပ်သော ဝေါဟာရ တစ်ခု ရှိပါသည်။ \"ပုံမှန်သင်တန်း\" ဖြစ်ပါသည်။\n\nလူဝင်မှုကြီးကြပ်ရေးဥပဒေ အကောင်အထည်ဖော်မှုအမိန့်သည် ပညာသင်ဗီဇာ (D-2) ကို \"ဒီပလိုမာကောလိပ်အထက် ပညာရေးအဖွဲ့အစည်း သို့မဟုတ် ပညာရပ်ဆိုင်ရာ သုတေသနအဖွဲ့အစည်းတွင် ပုံမှန်သင်တန်းပညာရေးကို ခံယူလိုသူ သို့မဟုတ် သတ်မှတ်သုတေသနကို ပြုလုပ်လိုသူ\" ဟု ရေးထားပါသည်။\n\nဤတွင် အချက်အလက်သည် နှစ်ခု တွဲထားပါသည်။ တစ်ခုမှာ အဖွဲ့အစည်းဖြစ်ပါသည် — ဒီပလိုမာကောလိပ်အထက် ပညာရေးအဖွဲ့အစည်း သို့မဟုတ် ပညာရပ်ဆိုင်ရာ သုတေသနအဖွဲ့အစည်း။ နောက်တစ်ခုမှာ ထိုအဖွဲ့အစည်းတွင် ခံယူသည့်အရာဖြစ်ပါသည် — ပုံမှန်သင်တန်းပညာရေး သို့မဟုတ် သတ်မှတ်သုတေသန။\n\nထို့ကြောင့် \"ကိုရီးယား၏ ကျောင်းတွင် စာရင်းသွင်းထားသည်\" ဆိုသည်နှင့် ဤအချက်အလက် မပြီးပါ။ မည်သည့်အဖွဲ့အစည်းလဲ ဆိုသည်နှင့် ထိုအဖွဲ့အစည်း၏ မည်သည့်သင်တန်းလဲ ဆိုသည်ကို နှစ်ခုလုံး ကြည့်ရပါမည်။\n\nမိမိ လျှောက်လိုသော သင်တန်းသည် ထိုကျောင်း၏ ပုံမှန်သင်တန်း ဖြစ်မဖြစ်ကို ကျောင်းသို့ တိုက်ရိုက် အတည်ပြုကြည့်ပါ။ ထိုအဖြေအလိုက် အခြေအနေ ကွဲပြားပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "13-d2-regular-course-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single sheet of paper with one phrase underlined by a thin colored rule, a magnifying glass resting across its corner, on a pale desk, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the magnifying glass larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 14,
+      "topic_id": "d2-regular-course",
+      "language": "ne",
+      "publish_at": "2026-12-15T19:00:00+09:00",
+      "source_ko": "법령의 글귀 안에서 가장 많은 일을 하는 낱말이 하나 있습니다. \"정규과정\"입니다.\n\n출입국관리법 시행령은 유학(D-2)를 \"전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람\"으로 적습니다.\n\n여기서 조건이 둘로 묶여 있습니다. 하나는 기관입니다. 전문대학 이상의 교육기관, 또는 학술연구기관입니다. 또 하나는 그 기관에서 받는 것입니다. 정규과정의 교육, 또는 특정 연구입니다.\n\n그러니 \"한국의 학교에 등록했다\"만으로 이 조건이 끝나지 않습니다. 어느 기관인지와, 그 기관의 어느 과정인지를 둘 다 봐야 합니다.\n\n자기가 지원하려는 과정이 그 학교의 정규과정인지, 학교에 직접 확인해 보십시오. 그 답에 따라 자격이 달라집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "आदेशको वाक्यभित्र सबैभन्दा धेरै काम गर्ने एउटा शब्द छ। \"नियमित पाठ्यक्रम\"।\n\nआगमन-प्रस्थान व्यवस्थापन कानूनको कार्यान्वयन आदेशले अध्ययन भिसा (D-2) लाई \"डिप्लोमा कलेज वा त्यसभन्दा माथिको शैक्षिक संस्था वा शैक्षिक अनुसन्धान संस्थामा नियमित पाठ्यक्रमको शिक्षा लिन वा निश्चित अनुसन्धान गर्न चाहने व्यक्ति\" भनी लेखेको छ।\n\nयहाँ सर्त दुईमा बाँधिएको छ। एक, संस्था — डिप्लोमा कलेज वा त्यसभन्दा माथिको शैक्षिक संस्था, वा शैक्षिक अनुसन्धान संस्था। दुई, त्यो संस्थामा लिने कुरा — नियमित पाठ्यक्रमको शिक्षा, वा निश्चित अनुसन्धान।\n\nत्यसैले \"कोरियाको विद्यालयमा भर्ना भएँ\" भन्दैमा यो सर्त पूरा हुँदैन। कुन संस्था हो र त्यो संस्थाको कुन पाठ्यक्रम हो, दुवै हेर्नुपर्छ।\n\nआफू आवेदन दिन चाहेको पाठ्यक्रम त्यो विद्यालयको नियमित पाठ्यक्रम हो कि होइन, विद्यालयलाई सिधै सोधी पक्का गर्नुहोस्। त्यो उत्तर अनुसार योग्यता फरक पर्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "14-d2-regular-course-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single sheet of paper with one phrase underlined by a thin colored rule, a magnifying glass resting across its corner, on a pale desk, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from the side at desk height, long soft shadows across the sheet. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 15,
+      "topic_id": "d4-bracket",
+      "language": "vi",
+      "publish_at": "2026-12-16T19:00:00+09:00",
+      "source_ko": "법령을 읽을 때 괄호를 건너뛰면 안 됩니다. 조건이 거기 들어 있는 일이 잦습니다.\n\n출입국관리법 시행령은 일반연수(D-4)를 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"으로 적고, 바로 뒤에 괄호를 붙입니다.\n\n괄호 안의 글귀는 이렇습니다. 연수기관으로부터 체재비를 초과하는 보수를 받는 사람, 그리고 유학(D-2)이나 기술연수(D-3) 체류자격에 해당하는 사람은 제외한다.\n\n앞의 조건에 들어맞는데도 괄호 때문에 빠지는 사람이 있다는 뜻입니다. 특히 \"연수를 받으면서 체재비를 넘는 보수를 받는\" 경우가 그렇습니다.\n\n연수와 일의 경계를 스스로 정하지 마십시오. 받는 돈의 성격이 자격을 가릅니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Khi đọc văn bản pháp luật, không được bỏ qua dấu ngoặc. Điều kiện thường nằm ở đó.\n\nNghị định thi hành Luật Quản lý xuất nhập cảnh ghi Thị thực đào tạo chung (D-4) là \"người muốn nhận giáo dục hoặc đào tạo, hoặc tham gia hoạt động nghiên cứu, tại cơ sở giáo dục, doanh nghiệp, tổ chức v.v. đáp ứng các điều kiện do Bộ trưởng Bộ Tư pháp quy định\", và ngay sau đó đặt một dấu ngoặc.\n\nCâu chữ trong dấu ngoặc là thế này: loại trừ người nhận từ cơ quan đào tạo khoản thù lao vượt quá chi phí lưu trú, và người thuộc tư cách Thị thực du học (D-2) hoặc tư cách đào tạo kỹ thuật (D-3).\n\nNghĩa là có người khớp với điều kiện phía trước nhưng vẫn bị loại vì dấu ngoặc ấy. Đặc biệt là trường hợp \"vừa nhận đào tạo vừa nhận thù lao vượt quá chi phí lưu trú\".\n\nXin đừng tự mình vạch ranh giới giữa đào tạo và công việc. Tính chất của khoản tiền bạn nhận sẽ phân định tư cách.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "15-d4-bracket-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a large pair of parenthesis shapes drawn as two thin curved strokes, with a small plain envelope resting between them, on a pale surface, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes. Seen from directly above, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 16,
+      "topic_id": "d4-bracket",
+      "language": "my",
+      "publish_at": "2026-12-17T19:00:00+09:00",
+      "source_ko": "법령을 읽을 때 괄호를 건너뛰면 안 됩니다. 조건이 거기 들어 있는 일이 잦습니다.\n\n출입국관리법 시행령은 일반연수(D-4)를 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"으로 적고, 바로 뒤에 괄호를 붙입니다.\n\n괄호 안의 글귀는 이렇습니다. 연수기관으로부터 체재비를 초과하는 보수를 받는 사람, 그리고 유학(D-2)이나 기술연수(D-3) 체류자격에 해당하는 사람은 제외한다.\n\n앞의 조건에 들어맞는데도 괄호 때문에 빠지는 사람이 있다는 뜻입니다. 특히 \"연수를 받으면서 체재비를 넘는 보수를 받는\" 경우가 그렇습니다.\n\n연수와 일의 경계를 스스로 정하지 마십시오. 받는 돈의 성격이 자격을 가릅니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ဥပဒေကို ဖတ်သည့်အခါ ကွင်းစကွင်းပိတ်ကို ခုန်ကျော်ခြင်း မပြုရပါ။ အချက်အလက်များသည် ထိုအထဲတွင် ပါဝင်သည့် အခြေအနေ မကြာခဏ ရှိပါသည်။\n\nလူဝင်မှုကြီးကြပ်ရေးဥပဒေ အကောင်အထည်ဖော်မှုအမိန့်သည် အထွေထွေသင်တန်းဗီဇာ (D-4) ကို \"တရားရေးဝန်ကြီးက သတ်မှတ်သည့် အချက်အလက်များ ပြည့်မီသော ပညာရေးအဖွဲ့အစည်း သို့မဟုတ် လုပ်ငန်း၊ အဖွဲ့အစည်း စသည်တို့တွင် ပညာရေး သို့မဟုတ် သင်တန်းကို ခံယူလိုသူ သို့မဟုတ် သုတေသနလုပ်ငန်းတွင် ပါဝင်လိုသူ\" ဟု ရေး၍၊ ထို့နောက် ကွင်းစကွင်းပိတ် တစ်ခု တွဲထားပါသည်။\n\nကွင်းအတွင်း စာကြောင်းမှာ ဤသို့ဖြစ်ပါသည် — သင်တန်းအဖွဲ့အစည်းမှ နေထိုင်စရိတ်ကို ကျော်လွန်သည့် အခကြေးငွေ ရရှိသူ၊ ထို့အပြင် ပညာသင်ဗီဇာ (D-2) သို့မဟုတ် နည်းပညာသင်တန်းဗီဇာ (D-3) အခြေအနေနှင့် ကိုက်ညီသူကို ချွင်းချက်ထားသည်။\n\nရှေ့အချက်အလက်နှင့် ကိုက်ညီသော်လည်း ကွင်းစကွင်းပိတ်ကြောင့် ချွင်းချက်ခံရသူ ရှိသည် ဟူသော အဓိပ္ပာယ်ဖြစ်ပါသည်။ အထူးသဖြင့် \"သင်တန်း ခံယူရင်း နေထိုင်စရိတ်ကို ကျော်လွန်သည့် အခကြေးငွေ ရရှိသည့်\" အခြေအနေဖြစ်ပါသည်။\n\nသင်တန်းနှင့် အလုပ်၏ နယ်နိမိတ်ကို မိမိကိုယ်တိုင် မသတ်မှတ်ပါနှင့်။ ရရှိသော ပိုက်ဆံ၏ သဘာဝသည် အခြေအနေကို ခွဲခြားပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "16-d4-bracket-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a large pair of parenthesis shapes drawn as two thin curved strokes, with a small plain envelope resting between them, on a pale surface, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the envelope larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 17,
+      "topic_id": "d4-bracket",
+      "language": "ne",
+      "publish_at": "2026-12-18T19:00:00+09:00",
+      "source_ko": "법령을 읽을 때 괄호를 건너뛰면 안 됩니다. 조건이 거기 들어 있는 일이 잦습니다.\n\n출입국관리법 시행령은 일반연수(D-4)를 \"법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람\"으로 적고, 바로 뒤에 괄호를 붙입니다.\n\n괄호 안의 글귀는 이렇습니다. 연수기관으로부터 체재비를 초과하는 보수를 받는 사람, 그리고 유학(D-2)이나 기술연수(D-3) 체류자격에 해당하는 사람은 제외한다.\n\n앞의 조건에 들어맞는데도 괄호 때문에 빠지는 사람이 있다는 뜻입니다. 특히 \"연수를 받으면서 체재비를 넘는 보수를 받는\" 경우가 그렇습니다.\n\n연수와 일의 경계를 스스로 정하지 마십시오. 받는 돈의 성격이 자격을 가릅니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "कानून पढ्दा कोष्ठक नछोड्नुहोस्। सर्त त्यहीँ हुने धेरै हुन्छ।\n\nआगमन-प्रस्थान व्यवस्थापन कानूनको कार्यान्वयन आदेशले सामान्य तालिम भिसा (D-4) लाई \"न्याय मन्त्रीले तोकेका सर्त पूरा गर्ने शैक्षिक संस्था वा उद्यम, संस्था आदिमा शिक्षा वा तालिम लिन वा अनुसन्धान कार्यमा संलग्न हुन चाहने व्यक्ति\" भनी लेखी, ठीक पछि एउटा कोष्ठक राखेको छ।\n\nकोष्ठकभित्रको वाक्य यस्तो छ — तालिम संस्थाबाट बसोबास खर्चभन्दा बढी पारिश्रमिक पाउने व्यक्ति, र अध्ययन भिसा (D-2) वा प्राविधिक तालिम भिसा (D-3) योग्यतामा पर्ने व्यक्तिलाई हटाइएको छ।\n\nअर्थात् अघिल्लो सर्तमा मिल्दा पनि कोष्ठकका कारण हटिने व्यक्ति हुन्छन्। विशेष गरी \"तालिम लिँदै बसोबास खर्चभन्दा बढी पारिश्रमिक पाउने\" अवस्था त्यस्तै हो।\n\nतालिम र कामको सीमा आफैले नतोक्नुहोस्। पाउने पैसाको प्रकृतिले योग्यता छुट्याउँछ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "17-d4-bracket-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a large pair of parenthesis shapes drawn as two thin curved strokes, with a small plain envelope resting between them, on a pale surface, muted neutral palette with one soft blue accent, generous empty space, simple geometric shapes. Seen from the side at surface height, long soft shadows behind the strokes. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d4_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 18,
+      "topic_id": "permit-name",
+      "language": "vi",
+      "publish_at": "2026-12-19T19:00:00+09:00",
+      "source_ko": "한국의 서류 이름은 길 때가 많습니다. 체류자격외활동허가도 그렇습니다. 끊어 읽으면 뜻이 바로 보입니다.\n\n체류자격 / 외 / 활동 / 허가입니다. 지금 가진 체류자격에 들어 있지 않은 활동을 하려면 받아야 하는 허가라는 뜻입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n왜 허가가 필요한지도 이름에 적혀 있습니다. 유학(D-2)는 공부하러 온 자격이고, 일하는 것은 그 자격 \"외\"의 활동입니다. 그래서 따로 허가를 받습니다.\n\n서류 이름이 낯설어 미루지 마십시오. 이름만 알면 어디서 무엇을 물어야 하는지가 분명해집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Tên giấy tờ ở Hàn Quốc thường rất dài. Giấy phép hoạt động ngoài tư cách lưu trú cũng vậy. Ngắt ra đọc thì nghĩa hiện ra ngay.\n\nTư cách lưu trú / ngoài / hoạt động / giấy phép. Nghĩa là giấy phép phải xin khi bạn muốn làm một hoạt động không nằm trong tư cách lưu trú đang có.\n\nDu học sinh Thị thực du học (D-2) muốn làm thêm theo giờ trong khi vẫn tiếp tục học thì trước khi bắt đầu hoạt động đó, nhất định phải xin được giấy phép hoạt động ngoài tư cách lưu trú tại văn phòng quản lý xuất nhập cảnh có thẩm quyền.\n\nLý do cần giấy phép cũng nằm trong cái tên. Thị thực du học (D-2) là tư cách để đến học, còn làm việc là hoạt động \"ngoài\" tư cách ấy. Vì vậy phải xin phép riêng.\n\nXin đừng trì hoãn chỉ vì tên giấy tờ nghe lạ. Biết cái tên thôi là đã rõ phải hỏi gì, ở đâu.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "18-permit-name-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single key lying beside a closed door shape drawn as a plain rectangle with a thin frame, on a pale surface, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes. Seen from directly above, square composition, the key centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 19,
+      "topic_id": "permit-name",
+      "language": "my",
+      "publish_at": "2026-12-20T19:00:00+09:00",
+      "source_ko": "한국의 서류 이름은 길 때가 많습니다. 체류자격외활동허가도 그렇습니다. 끊어 읽으면 뜻이 바로 보입니다.\n\n체류자격 / 외 / 활동 / 허가입니다. 지금 가진 체류자격에 들어 있지 않은 활동을 하려면 받아야 하는 허가라는 뜻입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n왜 허가가 필요한지도 이름에 적혀 있습니다. 유학(D-2)는 공부하러 온 자격이고, 일하는 것은 그 자격 \"외\"의 활동입니다. 그래서 따로 허가를 받습니다.\n\n서류 이름이 낯설어 미루지 마십시오. 이름만 알면 어디서 무엇을 물어야 하는지가 분명해집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကိုရီးယား၏ စာရွက်စာတမ်း အမည်များသည် ရှည်သည့်အခါ များပါသည်။ နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းခွင့်ပြုမိန့်လည် အတူတူပင်ဖြစ်ပါသည်။ ခွဲ၍ ဖတ်လျှင် အဓိပ္ပာယ် တန်းမြင်ပါသည်။\n\nနေထိုင်ခွင့်အခြေအနေ / ပြင်ပ / လုပ်ငန်း / ခွင့်ပြုမိန့် ဖြစ်ပါသည်။ ယခု ကိုင်ဆောင်ထားသော နေထိုင်ခွင့်အခြေအနေတွင် မပါဝင်သော လုပ်ငန်းကို လုပ်လိုပါက ရယူရမည့် ခွင့်ပြုမိန့် ဟူသော အဓိပ္ပာယ်ဖြစ်ပါသည်။\n\nပညာသင်ဗီဇာ (D-2) ကိုင်ဆောင်သည့် ပညာသင်ကျောင်းသားသည် ပညာရေးကို ဆက်လက်လုပ်ဆောင်ရင်း အချိန်ပိုင်းအလုပ် လုပ်လိုပါက၊ ထိုလုပ်ငန်းကို မစတင်မီ သက်ဆိုင်ရာ လူဝင်မှုကြီးကြပ်ရေးရုံးတွင် နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းခွင့်ပြုမိန့်ကို မဖြစ်မနေ ရယူရပါမည်။\n\nခွင့်ပြုမိန့် အဘယ်ကြောင့် လိုအပ်သည်ကိုလည် အမည်တွင် ရေးထားပါသည်။ ပညာသင်ဗီဇာ (D-2) သည် ပညာသင်ရန် လာသော အခြေအနေဖြစ်၍၊ အလုပ်လုပ်ခြင်းမှာ ထိုအခြေအနေ၏ \"ပြင်ပ\" လုပ်ငန်းဖြစ်ပါသည်။ ထို့ကြောင့် သီးသန့် ခွင့်ပြုမိန့် ရယူရပါသည်။\n\nစာရွက်စာတမ်း အမည် အစိမ်းသန်းသဖြင့် မဆိုင်းငံ့ပါနှင့်။ အမည်ကို သိရုံဖြင့် မည်သည့်အရာကို မည်သည့်အရပ်တွင် မေးရမည်ဆိုသည် ထင်ရှားလာပါသည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "19-permit-name-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single key lying beside a closed door shape drawn as a plain rectangle with a thin frame, on a pale surface, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the key larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 20,
+      "topic_id": "permit-name",
+      "language": "ne",
+      "publish_at": "2026-12-21T19:00:00+09:00",
+      "source_ko": "한국의 서류 이름은 길 때가 많습니다. 체류자격외활동허가도 그렇습니다. 끊어 읽으면 뜻이 바로 보입니다.\n\n체류자격 / 외 / 활동 / 허가입니다. 지금 가진 체류자격에 들어 있지 않은 활동을 하려면 받아야 하는 허가라는 뜻입니다.\n\n유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n왜 허가가 필요한지도 이름에 적혀 있습니다. 유학(D-2)는 공부하러 온 자격이고, 일하는 것은 그 자격 \"외\"의 활동입니다. 그래서 따로 허가를 받습니다.\n\n서류 이름이 낯설어 미루지 마십시오. 이름만 알면 어디서 무엇을 물어야 하는지가 분명해집니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "कोरियाका कागजातका नाम धेरैजसो लामो हुन्छन्। बसोबास योग्यता बाहिरको गतिविधि अनुमति पनि त्यस्तै छ। टुक्राई पढ्दा अर्थ तुरुन्तै देखिन्छ।\n\nबसोबास योग्यता / बाहिर / गतिविधि / अनुमति। अर्थात् अहिले बोकेको बसोबास योग्यतामा समावेश नभएको गतिविधि गर्न चाहे लिनुपर्ने अनुमति भन्ने अर्थ हो।\n\nअध्ययन भिसा (D-2) बोकेको विद्यार्थीले अध्ययन जारी राख्दै समय-आधारित पार्ट-टाइम काम गर्न चाहन्छ भने, त्यो गतिविधि सुरु गर्नुअघि अनिवार्य रूपमा सम्बन्धित आगमन-प्रस्थान व्यवस्थापन कार्यालयबाट बसोबास योग्यता बाहिरको गतिविधि अनुमति लिनुपर्छ।\n\nअनुमति किन चाहिन्छ भन्ने पनि नाममै लेखिएको छ। अध्ययन भिसा (D-2) पढ्न आउने योग्यता हो, र काम गर्नु त्यो योग्यता \"बाहिर\" को गतिविधि हो। त्यसैले छुट्टै अनुमति लिनुपर्छ।\n\nकागजातको नाम नौलो लागेर पछि नसार्नुहोस्। नाम थाहा भए कहाँ के सोध्ने हो स्पष्ट हुन्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "20-permit-name-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a single key lying beside a closed door shape drawn as a plain rectangle with a thin frame, on a pale surface, muted neutral palette with one deep teal accent, generous empty space, simple geometric shapes. Seen straight on at eye height, the door shape larger, the key at its base. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 21,
+      "topic_id": "hours-rumor",
+      "language": "vi",
+      "publish_at": "2026-12-22T19:00:00+09:00",
+      "source_ko": "\"유학생은 일주일에 몇 시간까지 일할 수 있다\"는 숫자를 들으셨을 수 있습니다. 그 숫자를 저희는 게시물에 적지 않습니다.\n\n적지 않는 까닭은 하나입니다. 허용되는 시간은 학위과정, 한국어 능력, 성적, 학기와 방학 같은 조건에 따라 갈립니다. 숫자 하나만 현지어로 내보내면, 읽는 분이 자기 조건과 상관없이 그 숫자를 자기 몫으로 받아들입니다.\n\n확실한 것은 순서입니다. 유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n허가를 신청하는 자리에서 자기 조건에 해당하는 범위를 확인하실 수 있습니다. 그것이 숫자를 소문으로 듣는 것보다 빠릅니다.\n\n주변에서 들은 숫자가 자기에게도 맞는지는 아무도 보장해 주지 않습니다. 확인할 곳에서 확인하십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Có thể bạn đã nghe một con số kiểu \"du học sinh được làm bao nhiêu giờ một tuần\". Con số đó chúng tôi không ghi trong bài đăng.\n\nLý do chỉ có một. Số giờ được phép khác nhau theo các điều kiện như chương trình học, năng lực tiếng Hàn, điểm số, học kỳ hay kỳ nghỉ. Nếu chỉ đưa ra một con số bằng tiếng bản ngữ, người đọc sẽ nhận con số ấy thành phần của mình dù điều kiện của họ khác.\n\nĐiều chắc chắn là thứ tự. Du học sinh Thị thực du học (D-2) muốn làm thêm theo giờ trong khi vẫn tiếp tục học thì trước khi bắt đầu hoạt động đó, nhất định phải xin được giấy phép hoạt động ngoài tư cách lưu trú tại văn phòng quản lý xuất nhập cảnh có thẩm quyền.\n\nNgay tại nơi nộp đơn xin phép, bạn có thể xác nhận phạm vi ứng với điều kiện của mình. Cách đó nhanh hơn là nghe con số qua lời kể.\n\nKhông ai bảo đảm rằng con số bạn nghe từ người quanh mình cũng đúng với bạn. Xin hãy xác nhận ở nơi có thể xác nhận.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "21-hours-rumor-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a plain analogue clock face with no numerals and no hands, a thin question-mark-shaped stroke beside it, on a pale surface, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes. Seen from directly above, square composition, the clock face centered. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 22,
+      "topic_id": "hours-rumor",
+      "language": "my",
+      "publish_at": "2026-12-23T19:00:00+09:00",
+      "source_ko": "\"유학생은 일주일에 몇 시간까지 일할 수 있다\"는 숫자를 들으셨을 수 있습니다. 그 숫자를 저희는 게시물에 적지 않습니다.\n\n적지 않는 까닭은 하나입니다. 허용되는 시간은 학위과정, 한국어 능력, 성적, 학기와 방학 같은 조건에 따라 갈립니다. 숫자 하나만 현지어로 내보내면, 읽는 분이 자기 조건과 상관없이 그 숫자를 자기 몫으로 받아들입니다.\n\n확실한 것은 순서입니다. 유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n허가를 신청하는 자리에서 자기 조건에 해당하는 범위를 확인하실 수 있습니다. 그것이 숫자를 소문으로 듣는 것보다 빠릅니다.\n\n주변에서 들은 숫자가 자기에게도 맞는지는 아무도 보장해 주지 않습니다. 확인할 곳에서 확인하십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "\"ပညာသင်ကျောင်းသားသည် တစ်ပတ်တွင် နာရီ မည်မျှအထိ အလုပ်လုပ်နိုင်သည်\" ဟူသော ကိန်းဂဏန်းကို ကြားဖူးနိုင်ပါသည်။ ထိုကိန်းဂဏန်းကို ကျွန်ုပ်တို့ ပို့စ်တွင် မရေးပါ။\n\nမရေးသည့် အကြောင်းရင်းမှာ တစ်ခုတည်းဖြစ်ပါသည်။ ခွင့်ပြုသည့် အချိန်သည် ဒီဂရီသင်တန်း၊ ကိုရီးယားဘာသာ စွမ်းရည်၊ အမှတ်၊ စာသင်ကာလနှင့် ကျောင်းပိတ်ရက် ကဲ့သို့ အခြေအနေများအလိုက် ကွဲပါသည်။ ကိန်းဂဏန်း တစ်ခုတည်းကို ဌာနေဘာသာဖြင့် ထုတ်လိုက်ပါက၊ ဖတ်သူသည် မိမိ၏အခြေအနေနှင့် မသက်ဆိုင်ဘဲ ထိုကိန်းဂဏန်းကို မိမိ၏အဖို့အဖြစ် လက်ခံမိပါသည်။\n\nတိတိကျကျ သေချာသည်မှာ အစီအစဉ်ဖြစ်ပါသည်။ ပညာသင်ဗီဇာ (D-2) ကိုင်ဆောင်သည့် ပညာသင်ကျောင်းသားသည် ပညာရေးကို ဆက်လက်လုပ်ဆောင်ရင်း အချိန်ပိုင်းအလုပ် လုပ်လိုပါက၊ ထိုလုပ်ငန်းကို မစတင်မီ သက်ဆိုင်ရာ လူဝင်မှုကြီးကြပ်ရေးရုံးတွင် နေထိုင်ခွင့်အခြေအနေပြင်ပ လုပ်ငန်းခွင့်ပြုမိန့်ကို မဖြစ်မနေ ရယူရပါမည်။\n\nခွင့်ပြုမိန့် လျှောက်ထားသည့် အရပ်တွင် မိမိ၏အခြေအနေနှင့် သက်ဆိုင်သော အတိုင်းအတာကို အတည်ပြုနိုင်ပါသည်။ ထိုအရာသည် ကိန်းဂဏန်းကို သတင်းစကားအဖြစ် ကြားခြင်းထက် ပိုမြန်ပါသည်။\n\nအနီးအနားမှ ကြားသော ကိန်းဂဏန်းသည် မိမိအတွက်လည် ကိုက်ညီမကိုက်ညီကို မည်သူမှ အာမခံပေးခြင်း မရှိပါ။ အတည်ပြုရမည့် အရပ်တွင် အတည်ပြုပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "22-hours-rumor-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a plain analogue clock face with no numerals and no hands, a thin question-mark-shaped stroke beside it, on a pale surface, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the clock face larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 23,
+      "topic_id": "hours-rumor",
+      "language": "ne",
+      "publish_at": "2026-12-24T19:00:00+09:00",
+      "source_ko": "\"유학생은 일주일에 몇 시간까지 일할 수 있다\"는 숫자를 들으셨을 수 있습니다. 그 숫자를 저희는 게시물에 적지 않습니다.\n\n적지 않는 까닭은 하나입니다. 허용되는 시간은 학위과정, 한국어 능력, 성적, 학기와 방학 같은 조건에 따라 갈립니다. 숫자 하나만 현지어로 내보내면, 읽는 분이 자기 조건과 상관없이 그 숫자를 자기 몫으로 받아들입니다.\n\n확실한 것은 순서입니다. 유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 합니다.\n\n허가를 신청하는 자리에서 자기 조건에 해당하는 범위를 확인하실 수 있습니다. 그것이 숫자를 소문으로 듣는 것보다 빠릅니다.\n\n주변에서 들은 숫자가 자기에게도 맞는지는 아무도 보장해 주지 않습니다. 확인할 곳에서 확인하십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "\"विद्यार्थीले हप्तामा कति घण्टासम्म काम गर्न पाउँछ\" भन्ने अङ्क सुन्नुभएको हुन सक्छ। त्यो अङ्क हामी पोस्टमा लेख्दैनौं।\n\nनलेख्ने कारण एउटै छ। अनुमति पाउने समय डिग्री पाठ्यक्रम, कोरियाली भाषा क्षमता, अङ्क, शैक्षिक सत्र र बिदा जस्ता अवस्था अनुसार फरक पर्छ। एउटै अङ्क स्थानीय भाषामा पठाइदिए, पढ्ने व्यक्तिले आफ्नो अवस्थासँग सम्बन्ध नभए पनि त्यो अङ्कलाई आफ्नो भागको भनी लिन्छन्।\n\nपक्का कुरा क्रम हो। अध्ययन भिसा (D-2) बोकेको विद्यार्थीले अध्ययन जारी राख्दै समय-आधारित पार्ट-टाइम काम गर्न चाहन्छ भने, त्यो गतिविधि सुरु गर्नुअघि अनिवार्य रूपमा सम्बन्धित आगमन-प्रस्थान व्यवस्थापन कार्यालयबाट बसोबास योग्यता बाहिरको गतिविधि अनुमति लिनुपर्छ।\n\nअनुमति आवेदन दिने ठाउँमै आफ्नो अवस्थासँग मिल्ने दायरा पक्का गर्न सक्नुहुन्छ। त्यो अङ्क हल्लाबाट सुन्नुभन्दा छिटो हुन्छ।\n\nवरिपरिबाट सुनेको अङ्क आफूलाई पनि मिल्छ कि भन्ने कुरा कसैले ग्यारेन्टी गर्दैन। पक्का गर्ने ठाउँमा पक्का गर्नुहोस्।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "23-hours-rumor-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a plain analogue clock face with no numerals and no hands, a thin question-mark-shaped stroke beside it, on a pale surface, muted neutral palette with one muted red accent, generous empty space, simple geometric shapes. Seen straight on at eye height, the stroke above the clock face, long soft shadow below. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "part_time_work_permit_required"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 24,
+      "topic_id": "choose-questions",
+      "language": "vi",
+      "publish_at": "2026-12-25T19:00:00+09:00",
+      "source_ko": "학교 이름과 금액만 늘어놓으면 고르기가 더 어려워집니다. 순서를 바꿔 보십시오. 먼저 자기에게 물을 것이 셋 있습니다.\n\n첫째, 어떤 과정을 끝내고 싶은가. 학위인지 자격인지 어학인지에 따라 지원할 수 있는 학교의 종류가 달라집니다.\n\n둘째, 어디서 살 수 있는가. 수도권과 지방, 섬은 등록금 말고도 집값과 이동 비용이 다릅니다. 한 해 비용은 등록금 하나로 끝나지 않습니다.\n\n셋째, 지금 쓸 수 있는 돈과 시간은 얼마인가. 일본에서 모으신 것이 얼마이고, 몇 년을 쓸 생각인지 숫자로 적어 보십시오. 적어 놓으면 고를 수 있는 범위가 저절로 좁아집니다.\n\n이 셋에 답이 생긴 뒤에 학교 이름을 보는 것이 빠릅니다. 답을 적어 보내 주시면 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Chỉ xếp ra tên trường và số tiền thì càng khó chọn. Xin hãy đổi thứ tự. Trước tiên có ba điều cần tự hỏi.\n\nThứ nhất, bạn muốn hoàn thành chương trình nào? Là bằng cấp, chứng chỉ hay học tiếng — loại trường bạn có thể ứng tuyển sẽ khác nhau.\n\nThứ hai, bạn có thể sống ở đâu? Vùng thủ đô, địa phương và đảo khác nhau không chỉ về học phí mà cả tiền nhà và chi phí đi lại. Chi phí một năm không kết thúc ở học phí.\n\nThứ ba, bạn có bao nhiêu tiền và thời gian dùng được lúc này? Xin hãy viết thành số: bạn đã dành dụm được bao nhiêu ở Nhật Bản, và định dùng trong mấy năm. Viết ra rồi thì phạm vi chọn tự nhiên hẹp lại.\n\nCó câu trả lời cho ba điều này rồi mới xem tên trường thì nhanh hơn. Bạn viết câu trả lời gửi sang, chúng tôi sẽ cùng xem.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "24-choose-questions-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain index cards fanned out in a row on a pale desk, each blank, a pencil resting across the middle one, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from directly above, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 25,
+      "topic_id": "choose-questions",
+      "language": "my",
+      "publish_at": "2026-12-26T19:00:00+09:00",
+      "source_ko": "학교 이름과 금액만 늘어놓으면 고르기가 더 어려워집니다. 순서를 바꿔 보십시오. 먼저 자기에게 물을 것이 셋 있습니다.\n\n첫째, 어떤 과정을 끝내고 싶은가. 학위인지 자격인지 어학인지에 따라 지원할 수 있는 학교의 종류가 달라집니다.\n\n둘째, 어디서 살 수 있는가. 수도권과 지방, 섬은 등록금 말고도 집값과 이동 비용이 다릅니다. 한 해 비용은 등록금 하나로 끝나지 않습니다.\n\n셋째, 지금 쓸 수 있는 돈과 시간은 얼마인가. 일본에서 모으신 것이 얼마이고, 몇 년을 쓸 생각인지 숫자로 적어 보십시오. 적어 놓으면 고를 수 있는 범위가 저절로 좁아집니다.\n\n이 셋에 답이 생긴 뒤에 학교 이름을 보는 것이 빠릅니다. 답을 적어 보내 주시면 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ကျောင်းအမည်နှင့် ပမာဏကိုသာ စီတန်းချပြလျှင် ရွေးချယ်ရန် ပိုခက်လာပါသည်။ အစီအစဉ်ကို ပြောင်းကြည့်ပါ။ အရင်ဆုံး မိမိကိုယ်ကို မေးရမည့်အရာ သုံးခု ရှိပါသည်။\n\nတစ်ခုမှာ၊ မည်သည့်သင်တန်းကို အဆုံးသတ်လိုသနည်း။ ဒီဂရီလား အရည်အချင်းလက်မှတ်လား ဘာသာစကားလား ဆိုသည်အလိုက် လျှောက်ထားနိုင်မည့် ကျောင်း၏ အမျိုးအစား ကွဲပြားပါသည်။\n\nနှစ်ခုမှာ၊ မည်သည့်အရပ်တွင် နေနိုင်သနည်း။ မြို့တော်ဝန်းကျင်၊ နယ်နှင့် ကျွန်းသည် ကျောင်းလခမှလွဲ၍ အိမ်ခနှင့် အသွားအလာ စရိတ်လည် မတူပါ။ တစ်နှစ်စာ စရိတ်မှာ ကျောင်းလခ တစ်ခုတည်းနှင့် မပြီးပါ။\n\nသုံးခုမှာ၊ ယခု အသုံးပြုနိုင်သော ပိုက်ဆံနှင့် အချိန်သည် မည်မျှလဲ။ ဂျပန်တွင် စုဆောင်းထားသည် မည်မျှဖြစ်၍ နှစ် မည်မျှ အသုံးပြုမည်ကို ကိန်းဂဏန်းဖြင့် ရေးကြည့်ပါ။ ရေးထားပါက ရွေးချယ်နိုင်မည့် အတိုင်းအတာသည် အလိုအလျောက် ကျဉ်းလာပါသည်။\n\nဤသုံးခုအတွက် အဖြေ ရှိလာပြီးနောက် ကျောင်းအမည်ကို ကြည့်ခြင်းသည် ပိုမြန်ပါသည်။ အဖြေကို ရေး၍ ပို့ပေးပါက အတူတကွ ကြည့်ပါမည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "25-choose-questions-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain index cards fanned out in a row on a pale desk, each blank, a pencil resting across the middle one, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the nearest card larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 26,
+      "topic_id": "choose-questions",
+      "language": "ne",
+      "publish_at": "2026-12-27T19:00:00+09:00",
+      "source_ko": "학교 이름과 금액만 늘어놓으면 고르기가 더 어려워집니다. 순서를 바꿔 보십시오. 먼저 자기에게 물을 것이 셋 있습니다.\n\n첫째, 어떤 과정을 끝내고 싶은가. 학위인지 자격인지 어학인지에 따라 지원할 수 있는 학교의 종류가 달라집니다.\n\n둘째, 어디서 살 수 있는가. 수도권과 지방, 섬은 등록금 말고도 집값과 이동 비용이 다릅니다. 한 해 비용은 등록금 하나로 끝나지 않습니다.\n\n셋째, 지금 쓸 수 있는 돈과 시간은 얼마인가. 일본에서 모으신 것이 얼마이고, 몇 년을 쓸 생각인지 숫자로 적어 보십시오. 적어 놓으면 고를 수 있는 범위가 저절로 좁아집니다.\n\n이 셋에 답이 생긴 뒤에 학교 이름을 보는 것이 빠릅니다. 답을 적어 보내 주시면 같이 보겠습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "विद्यालयको नाम र रकम मात्र पङ्क्तिबद्ध गर्दा छान्न अझ गाह्रो हुन्छ। क्रम बदली हेर्नुहोस्। पहिले आफूलाई सोध्नुपर्ने तीन कुरा छन्।\n\nपहिलो, कुन पाठ्यक्रम सक्न चाहनुहुन्छ? डिग्री हो, प्रमाणपत्र हो वा भाषा हो — त्यस अनुसार आवेदन दिन सकिने विद्यालयको किसिम फरक हुन्छ।\n\nदोस्रो, कहाँ बस्न सक्नुहुन्छ? राजधानी क्षेत्र, प्रान्त र टापुमा शुल्कबाहेक घरभाडा र आवतजावत खर्च पनि फरक छ। एक वर्षको खर्च शुल्कमै सकिँदैन।\n\nतेस्रो, अहिले प्रयोग गर्न सकिने पैसा र समय कति छ? जापानमा जोडेको कति छ, र कति वर्ष प्रयोग गर्ने सोच छ — अङ्कमा लेखी हेर्नुहोस्। लेखेपछि छान्न सकिने दायरा आफै साँघुरो हुन्छ।\n\nयी तीनको उत्तर आएपछि विद्यालयको नाम हेर्नु छिटो हुन्छ। उत्तर लेखी पठाउनुभए सँगै हेर्नेछौं।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "26-choose-questions-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: three plain index cards fanned out in a row on a pale desk, each blank, a pencil resting across the middle one, muted neutral palette with one warm ochre accent, generous empty space, simple geometric shapes. Seen from the side at desk height, the cards standing upright in a row, long soft shadows. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 27,
+      "topic_id": "december-decision",
+      "language": "vi",
+      "publish_at": "2026-12-28T19:00:00+09:00",
+      "source_ko": "12월입니다. 일본에서 한 해를 마무리하면서 다음을 생각하시는 분들이 많은 달입니다.\n\n유학은 마음을 정한 날부터 바로 되는 일이 아닙니다. 과정을 고르고, 자격을 확인하고, 서류를 모으고, 돈을 맞추는 데 시간이 걸립니다. 그 시간을 거꾸로 세어 보면 지금 무엇을 해야 하는지가 나옵니다.\n\n지난 달과 이번 달에 올린 글들은 그 거꾸로 세기에 필요한 것들이었습니다. 어떤 체류자격이 있는지, 학비가 공시상 얼마인지, 아르바이트에는 어떤 허가가 필요한지입니다.\n\n아직 아무것도 정하지 않으셨어도 괜찮습니다. 지금 궁금한 것 한 가지만 적어 보내 주셔도 거기서 시작할 수 있습니다.\n\n연말에 쉬시면서 한 번 생각해 보십시오. 그리고 생각이 정리되면 말씀해 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Đã là tháng 12. Đây là tháng nhiều người vừa kết thúc một năm ở Nhật Bản vừa nghĩ về chặng tiếp theo.\n\nDu học không phải việc xong ngay từ ngày quyết tâm. Chọn chương trình, xác nhận tư cách, gom giấy tờ, sắp xếp tiền — tất cả đều mất thời gian. Đếm ngược quãng thời gian ấy thì sẽ thấy ngay bây giờ phải làm gì.\n\nNhững bài đã đăng tháng trước và tháng này chính là những thứ cần cho việc đếm ngược đó: có những tư cách lưu trú nào, học phí theo công bố là bao nhiêu, làm thêm thì cần giấy phép gì.\n\nChưa quyết định gì cũng không sao. Chỉ cần viết một điều bạn đang thắc mắc và gửi sang, chúng ta có thể bắt đầu từ đó.\n\nCuối năm nghỉ ngơi và thử nghĩ một lần. Khi suy nghĩ đã rõ, xin hãy cho biết.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "27-december-decision-vi.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a bare winter branch in a narrow vase on a windowsill, a closed notebook beside it, a plain pale sky through the window, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes. Seen straight on at eye height, square composition. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 28,
+      "topic_id": "december-decision",
+      "language": "my",
+      "publish_at": "2026-12-29T19:00:00+09:00",
+      "source_ko": "12월입니다. 일본에서 한 해를 마무리하면서 다음을 생각하시는 분들이 많은 달입니다.\n\n유학은 마음을 정한 날부터 바로 되는 일이 아닙니다. 과정을 고르고, 자격을 확인하고, 서류를 모으고, 돈을 맞추는 데 시간이 걸립니다. 그 시간을 거꾸로 세어 보면 지금 무엇을 해야 하는지가 나옵니다.\n\n지난 달과 이번 달에 올린 글들은 그 거꾸로 세기에 필요한 것들이었습니다. 어떤 체류자격이 있는지, 학비가 공시상 얼마인지, 아르바이트에는 어떤 허가가 필요한지입니다.\n\n아직 아무것도 정하지 않으셨어도 괜찮습니다. 지금 궁금한 것 한 가지만 적어 보내 주셔도 거기서 시작할 수 있습니다.\n\n연말에 쉬시면서 한 번 생각해 보십시오. 그리고 생각이 정리되면 말씀해 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ဒီဇင်ဘာလ ဖြစ်ပါသည်။ ဂျပန်တွင် တစ်နှစ်တာကို အဆုံးသတ်ရင်း နောက်တစ်ဆင့်ကို စဉ်းစားသူများ များသော လဖြစ်ပါသည်။\n\nပညာသင်ခရီးသည် စိတ်ဆုံးဖြတ်သည့် ရက်မှ တန်းဖြစ်သော အရာ မဟုတ်ပါ။ သင်တန်းကို ရွေးချယ်ခြင်း၊ အခြေအနေကို အတည်ပြုခြင်း၊ စာရွက်စာတမ်းများ စုဆောင်းခြင်း၊ ပိုက်ဆံ ကိုက်ညီအောင် လုပ်ခြင်းတွင် အချိန် ကြာပါသည်။ ထိုအချိန်ကို ပြောင်းပြန် တွက်ကြည့်ပါက ယခု အဘယ်အရာ ပြုလုပ်ရမည်ကို ထွက်လာပါသည်။\n\nမကြာမီလနှင့် ဤလတွင် တင်ခဲ့သော ပို့စ်များသည် ထိုပြောင်းပြန် တွက်ချက်မှုအတွက် လိုအပ်သော အရာများဖြစ်ပါသည် — မည်သည့် နေထိုင်ခွင့်အခြေအနေများ ရှိသည်၊ ကျောင်းလခသည် ထုတ်ပြန်ချက်အရ မည်မျှဖြစ်သည်၊ အချိန်ပိုင်းအလုပ်အတွက် မည်သည့်ခွင့်ပြုမိန့် လိုအပ်သည် ဖြစ်ပါသည်။\n\nယခုအထိ မည်သည့်အရာမှ မဆုံးဖြတ်ထားသော်လည် ကိစ္စမရှိပါ။ ယခု သိလိုသော အရာ တစ်ခုတည်းကို ရေး၍ ပို့ပေးသော်လည် ထိုအရပ်မှ စတင်နိုင်ပါသည်။\n\nနှစ်ကုန်တွင် အနားယူရင်း တစ်ခါ စဉ်းစားကြည့်ပါ။ ထို့နောက် အကြံအစည် စုစည်းလာပါက ပြောပြပေးပါ။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "28-december-decision-my.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a bare winter branch in a narrow vase on a windowsill, a closed notebook beside it, a plain pale sky through the window, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes. Seen from a low three-quarter angle, the vase larger in the foreground. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    },
+    {
+      "index": 29,
+      "topic_id": "december-decision",
+      "language": "ne",
+      "publish_at": "2026-12-30T19:00:00+09:00",
+      "source_ko": "12월입니다. 일본에서 한 해를 마무리하면서 다음을 생각하시는 분들이 많은 달입니다.\n\n유학은 마음을 정한 날부터 바로 되는 일이 아닙니다. 과정을 고르고, 자격을 확인하고, 서류를 모으고, 돈을 맞추는 데 시간이 걸립니다. 그 시간을 거꾸로 세어 보면 지금 무엇을 해야 하는지가 나옵니다.\n\n지난 달과 이번 달에 올린 글들은 그 거꾸로 세기에 필요한 것들이었습니다. 어떤 체류자격이 있는지, 학비가 공시상 얼마인지, 아르바이트에는 어떤 허가가 필요한지입니다.\n\n아직 아무것도 정하지 않으셨어도 괜찮습니다. 지금 궁금한 것 한 가지만 적어 보내 주셔도 거기서 시작할 수 있습니다.\n\n연말에 쉬시면서 한 번 생각해 보십시오. 그리고 생각이 정리되면 말씀해 주십시오.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "डिसेम्बर भयो। जापानमा वर्ष टुङ्ग्याउँदै अर्को कदम सोच्ने धेरै हुने महिना यही हो।\n\nअध्ययन यात्रा मन बनाएको दिनदेखि तुरुन्तै हुने काम होइन। पाठ्यक्रम छान्न, योग्यता पक्का गर्न, कागजात जम्मा गर्न, पैसा मिलाउन — सबैमा समय लाग्छ। त्यो समय उल्टो गणना गर्दा अहिले के गर्नुपर्छ भन्ने निस्कन्छ।\n\nगत महिना र यो महिना राखेका पोस्टहरू त्यही उल्टो गणनाका लागि चाहिने कुरा थिए — कुन बसोबास योग्यता छन्, शुल्क सार्वजनिक रूपमा कति छ, पार्ट-टाइम कामलाई कुन अनुमति चाहिन्छ।\n\nअहिलेसम्म कुनै निर्णय गर्नुभएको छैन भने पनि ठीक छ। अहिले जिज्ञासा लागेको एउटै कुरा लेखी पठाउनुभए पनि त्यहीँबाट सुरु गर्न सकिन्छ।\n\nवर्षको अन्तमा आराम गर्दै एक पटक सोची हेर्नुहोस्। र सोचाइ मिलेपछि बताउनुहोस्।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "29-december-decision-ne.png",
+      "image_prompt": "A calm flat-vector editorial illustration: a bare winter branch in a narrow vase on a windowsill, a closed notebook beside it, a plain pale sky through the window, muted neutral palette with one cool slate blue accent, generous empty space, simple geometric shapes. Seen from the side, the branch reaching across the frame, long soft shadows. no text, no letters, no logos, no real people, no real campuses, no company facilities.",
+      "fact_keys": [],
+      "university_names": []
+    }
+  ]
+}
