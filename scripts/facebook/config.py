@@ -29,9 +29,15 @@ GRAPH_TIMEOUT: tuple[float, float] = (10.0, 60.0)
 # 언어 순서는 베트남어 -> 미얀마어 -> 네팔어로 고정한다.
 LANGUAGES: tuple[str, str, str] = ("vi", "my", "ne")
 
-# 예약 가능 창: 지금부터 10분 이후 ~ 75일 이내 (Graph API 제한).
+# 예약 가능 창: 지금부터 10분 이후 ~ 30일 이내.
+# 「The publish date must be between 10 minutes and 30 days from the time of the API request.」
+# https://developers.facebook.com/docs/pages-api/posts/ (「Notes about scheduled posts」)
+# 2026-11-01까지 여기에 75일이 적혀 있었다. 출처 없는 숫자였고, 틀렸다 — 정확히 30일 뒤로 예약을 보내
+# 거절당하는 것으로 확인했다(`(#100) The specified scheduled publish time was invalid`).
+# **30일은 넉넉한 창이 아니라 빠듯한 창이다.** 한 달치를 1일에 몰아 예약하면 마지막 건이 29~30일 뒤로
+# 경계에 닿는다. 다음 달치를 미리 예약하는 것은 아예 안 된다 — 그 달이 시작한 뒤에 걸어야 한다.
 SCHEDULE_MIN_LEAD = timedelta(minutes=10)
-SCHEDULE_MAX_LEAD = timedelta(days=75)
+SCHEDULE_MAX_LEAD = timedelta(days=30)
 
 # 게시 시각은 전부 플랜 JSON의 `publish_at`에서 온다. 기본값 상수를 여기에 두지 않는다 —
 # 읽는 코드가 없는 상수는 「JST 저녁」이라는 제약을 지키게 하지 못하면서 손잡이가 연결돼 있다는

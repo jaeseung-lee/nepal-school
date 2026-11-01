@@ -93,6 +93,14 @@
   시스템 사용자 영구 토큰**을 쓴다.
 - 예약 게시는 `published=false` + `scheduled_publish_time`으로 한다. 현재부터
   10분 이후 ~ 75일 이내만 가능하므로 30일치 예약은 한 번에 들어간다.
+
+> **2026-11-01 정정.** 상한은 75일이 아니라 **30일**이다.
+> 「The publish date must be between 10 minutes and 30 days from the time of the API request.」
+> (https://developers.facebook.com/docs/pages-api/posts/ 「Notes about scheduled posts」)
+> 실제로 정확히 30일 뒤로 보냈다가 `(#100) The specified scheduled publish time was invalid`로
+> 거절당해 확인했다. **결론("30일치가 한 번에 들어간다")은 아슬아슬하게만 참이다** — 그 달 1일에
+> 걸면 마지막 건이 경계에 닿고, **다음 달치를 미리 거는 것은 안 된다.** 바로 아래 줄이
+> "구현 전에 예약 창 상한을 재확인할 것"이라고 적어 두었는데, 그 재확인은 이뤄지지 않았다.
 - 구현 전에 Meta 현재 레퍼런스에서 권한명과 예약 창 상한을 재확인할 것. 위
   내용은 2026년 10월 기준 조사 결과다.
 

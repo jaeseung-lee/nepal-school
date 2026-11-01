@@ -397,7 +397,7 @@ def check_token(token: str, page_id: str, *, session: _Session) -> TokenStatus:
 
 
 def assert_schedulable(publish_at: datetime, now: datetime) -> None:
-    """`publish_at`이 예약 창 안(`now`로부터 최소 10분 ~ 최대 75일, 양 끝 포함)이 아니면 `GraphError`.
+    """`publish_at`이 예약 창 안(`now`로부터 최소 10분 ~ 최대 30일, 양 끝 포함)이 아니면 `GraphError`.
 
     창의 길이는 `config.SCHEDULE_MIN_LEAD`·`SCHEDULE_MAX_LEAD`에서만 읽는다. 두 시각 모두 타임존이 있어야 한다.
 
@@ -438,8 +438,20 @@ def schedule_photo_post(
 ) -> str:
     """사진 한 장과 본문을 `publish_at`에 게시되도록 예약하고, 생성된 사진 id를 돌려준다 (`session.post` 한 번).
 
-    페이지의 `/photos`에 멀티파트로 보내며 `published=false`와 `scheduled_publish_time`(유닉스 초)을 함께 싣는다.
+    페이지의 `/photos`에 멀티파트로 보내며 `published=false`·`scheduled_publish_time`(유닉스 초)·
+    `unpublished_content_type=SCHEDULED` 셋을 함께 싣는다.
     예약 창은 **검사하지 않는다**(`now`를 받지 않는다) — 부르기 전에 `assert_schedulable`을 거쳐야 한다.
+
+    **`unpublished_content_type=SCHEDULED`는 레퍼런스가 요구해서 보낸다.** 예약 게시물일 때
+    `published`·`scheduled_publish_time`·`unpublished_content_type` 셋을 함께 보내라고 적혀 있다
+    (허용값: SCHEDULED, SCHEDULED_RECURRING, DRAFT, PUBLISH_PENDING, ADS_POST, INLINE_CREATED,
+    PUBLISHED, REVIEWABLE_BRANDED_CONTENT). 같은 문서가 미게시 사진의 수명을 "If you do not publish
+    these photos within 24 hours, we delete them."로 적으므로, 이 값이 "24시간 뒤 삭제"가 아니라
+    "예약된 글"이라고 말해 주는 자리로 읽힌다.
+
+    **이 값만 빠졌을 때 어떻게 되는지는 재 보지 않았다.** 2026-11-01에 `(#100) The specified scheduled
+    publish time was invalid`로 거절당했을 때 처음에는 이것을 원인으로 짚었으나, 넣고 다시 보내도 같은
+    거절이었다. 진짜 원인은 `TEST_POST_LEAD`가 창의 상한(30일)에 정확히 붙어 있던 것이었다.
 
     **본문은 `caption`으로 보낸다.** Meta의 `/{page-id}/photos` 레퍼런스가 `message`를 "Deprecated. Please use the
     caption param instead."로 적었다. 같은 글을 사진 노드에서 다시 읽을 때의 필드는 `name`이고 그 설명이
@@ -462,7 +474,12 @@ def schedule_photo_post(
             session.post, _url(f"{page_id}/photos"), token, "사진 예약 게시",
             may_create=True,
             # 멀티파트 필드는 문자열이다. False를 그대로 넘기면 requests가 "False"로 적는다.
-            data={"caption": caption, "published": "false", "scheduled_publish_time": str(int(publish_at.timestamp()))},
+            data={
+                "caption": caption,
+                "published": "false",
+                "scheduled_publish_time": str(int(publish_at.timestamp())),
+                "unpublished_content_type": "SCHEDULED",
+            },
             files={"source": (image_path.name, handle, content_type)},
         )
     post_id = body.get("id")
