@@ -759,7 +759,7 @@ def test_거절된_건의_표시를_지우지_못하면_멈추고_지울_줄을_
     [
         pytest.param(NOW - timedelta(hours=1), "지난", id="과거"),
         pytest.param(NOW + timedelta(minutes=8), "가깝", id="너무가까움"),
-        pytest.param(NOW + timedelta(days=76), "멉니다", id="75일넘음"),
+        pytest.param(NOW + timedelta(days=31), "멉니다", id="30일넘음"),
     ],
 )
 def test_예약창_밖인_게시물은_호출하지_않고_실패로_기록된다(env, when, needle):
@@ -871,7 +871,7 @@ def test_지난_시각이든_가깝든_여유_구간이든_같은_하한_15분_�
 @pytest.mark.parametrize(
     "when",
     [pytest.param(NOW + timedelta(minutes=12), id="너무가까움"), pytest.param(NOW - timedelta(hours=1), id="지난시각"),
-     pytest.param(NOW + timedelta(days=76), id="75일넘음")],
+     pytest.param(NOW + timedelta(days=31), id="30일넘음")],
 )
 def test_거절_메시지의_지금은_주입한_now_그대로이고_여유가_더해진_거짓_지금이_없다(env, when):
     error = env.run(FakeSession(), plan=with_publish_at(env.plan, 0, when))[0].error
@@ -882,7 +882,7 @@ def test_거절_메시지의_지금은_주입한_now_그대로이고_여유가_�
 @pytest.mark.parametrize(
     "when",
     [pytest.param(NOW + timedelta(minutes=12), id="너무가까움"), pytest.param(NOW - timedelta(hours=1), id="지난시각"),
-     pytest.param(NOW + timedelta(days=76), id="75일넘음")],
+     pytest.param(NOW + timedelta(days=31), id="30일넘음")],
 )
 def test_거절_메시지의_시각은_plan에_적은_시각과_같은_오프셋으로_적힌다(env, when):
     # CLI가 UTC 같은 다른 시간대의 now를 넘겨도 운영자는 plan.json에 적은 +09:00 시각과 바로 견줄 수 있어야 한다.
@@ -892,9 +892,9 @@ def test_거절_메시지의_시각은_plan에_적은_시각과_같은_오프셋
     assert "+00:00" not in error
 
 
-def test_먼_쪽_경계는_여유_없이_Meta의_75일_그대로다(env):
-    # 가까운 쪽 여유가 먼 쪽을 5분 늘려 놓으면 75일 + 몇 분짜리 예약이 로컬 검사를 통과해 Facebook에서 거절당한다.
-    plan = with_publish_at(with_publish_at(env.plan, 0, NOW + timedelta(days=75)), 1, NOW + timedelta(days=75, seconds=1))
+def test_먼_쪽_경계는_여유_없이_Meta의_30일_그대로다(env):
+    # 가까운 쪽 여유가 먼 쪽을 5분 늘려 놓으면 30일 + 몇 분짜리 예약이 로컬 검사를 통과해 Facebook에서 거절당한다.
+    plan = with_publish_at(with_publish_at(env.plan, 0, NOW + timedelta(days=30)), 1, NOW + timedelta(days=30, seconds=1))
     session = FakeSession()
     outcomes = env.run(session, plan=plan)
     assert env.post(0).image_file in session.uploaded

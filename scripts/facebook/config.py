@@ -14,7 +14,12 @@ from pathlib import Path
 # scripts/facebook/config.py -> 저장소 루트 (scripts/*.py 의 parents[1] 관례를 한 단계 깊이에 맞춘 것)
 ROOT = Path(__file__).resolve().parents[2]
 
-PAGE_ID = "61595913932801"
+# 정우인재개발원 페이지의 **Graph API id**. 브라우저 주소창의 번호(61595913932801)와 **다르다** —
+# 페이지 하나에 URL용 번호와 API용 번호가 따로 있고, API는 URL 쪽 번호를 모른다(`GET /61595913932801`은
+# code 100 subcode 33으로 거절당한다). 주소창을 보고 "고치면" 한 달치가 전부 실패한다.
+# 출처: 이 토큰으로 `GET /me/accounts`가 돌려준 값. 2026-11-01에 실제 호출로 확인했다
+# (about·website·팔로워 수가 페이지 화면과 일치).
+PAGE_ID = "1487730074413949"
 GRAPH_VERSION = "v26.0"
 # Graph API 요청에서 기다리는 최대 시간(초): (연결, 응답). 모든 호출이 이 값을 명시적으로 넘긴다.
 # 사진 한 장에서 멈춘 채 한 달치 예약 전체가 끝나지 않는 것보다, 소리 내어 실패하고 다음 건으로 넘어가는 편이 낫다.
@@ -24,9 +29,15 @@ GRAPH_TIMEOUT: tuple[float, float] = (10.0, 60.0)
 # 언어 순서는 베트남어 -> 미얀마어 -> 네팔어로 고정한다.
 LANGUAGES: tuple[str, str, str] = ("vi", "my", "ne")
 
-# 예약 가능 창: 지금부터 10분 이후 ~ 75일 이내 (Graph API 제한).
+# 예약 가능 창: 지금부터 10분 이후 ~ 30일 이내.
+# 「The publish date must be between 10 minutes and 30 days from the time of the API request.」
+# https://developers.facebook.com/docs/pages-api/posts/ (「Notes about scheduled posts」)
+# 2026-11-01까지 여기에 75일이 적혀 있었다. 출처 없는 숫자였고, 틀렸다 — 정확히 30일 뒤로 예약을 보내
+# 거절당하는 것으로 확인했다(`(#100) The specified scheduled publish time was invalid`).
+# **30일은 넉넉한 창이 아니라 빠듯한 창이다.** 한 달치를 1일에 몰아 예약하면 마지막 건이 29~30일 뒤로
+# 경계에 닿는다. 다음 달치를 미리 예약하는 것은 아예 안 된다 — 그 달이 시작한 뒤에 걸어야 한다.
 SCHEDULE_MIN_LEAD = timedelta(minutes=10)
-SCHEDULE_MAX_LEAD = timedelta(days=75)
+SCHEDULE_MAX_LEAD = timedelta(days=30)
 
 # 게시 시각은 전부 플랜 JSON의 `publish_at`에서 온다. 기본값 상수를 여기에 두지 않는다 —
 # 읽는 코드가 없는 상수는 「JST 저녁」이라는 제약을 지키게 하지 못하면서 손잡이가 연결돼 있다는

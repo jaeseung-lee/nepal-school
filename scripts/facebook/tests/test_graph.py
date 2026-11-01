@@ -444,14 +444,14 @@ def test_10분_이내_예약이면_GraphError():
     assert "5분 뒤입니다" in message                                                 # 지금 얼마나 모자라는지
 
 
-def test_75일_초과_예약이면_GraphError():
+def test_30일_초과_예약이면_GraphError():
     publish_at = NOW + timedelta(days=80)
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(publish_at, NOW)
     message = str(caught.value)
     assert has_hangul(message) and "너무 멉니다" in message
     assert publish_at.isoformat() in message
-    assert f"75일 뒤({(NOW + config.SCHEDULE_MAX_LEAD).isoformat()})" in message
+    assert f"30일 뒤({(NOW + config.SCHEDULE_MAX_LEAD).isoformat()})" in message
     assert "80일 뒤입니다" in message
 
 
@@ -472,7 +472,7 @@ def test_지금과_같은_시각은_지난_시각이_아니라_너무_가까운_
     assert "0초 뒤입니다" in str(caught.value)
 
 
-def test_경계값_정확히_10분과_75일은_통과():
+def test_경계값_정확히_10분과_30일은_통과():
     assert graph.assert_schedulable(NOW + config.SCHEDULE_MIN_LEAD, NOW) is None
     assert graph.assert_schedulable(NOW + config.SCHEDULE_MAX_LEAD, NOW) is None
 
@@ -534,24 +534,24 @@ def test_DST가_접히는_구간의_안내도_절대_시간으로_계산한_시�
     assert "10분 뒤(2026-11-01T01:05:00-05:00)" in message
 
 
-def test_DST를_건너는_75일_경계의_안내도_절대_시간으로_계산한_시각을_적는다():
+def test_DST를_건너는_30일_경계의_안내도_절대_시간으로_계산한_시각을_적는다():
     # 창의 먼 쪽 경계(latest)도 같은 산수여야 한다. 가까운 쪽(earliest)만 고치면 이 메시지가 한 시간 틀린 시각을
     # 적고, 운영자는 되는 시각을 안 된다고 읽거나 그 반대로 읽는다.
     zone = new_york()
     now = datetime(2026, 11, 1, 1, 55, tzinfo=zone, fold=0)        # EDT, -04:00 (= 05:55 UTC)
-    publish_at = datetime(2027, 1, 15, 0, 56, tzinfo=zone)         # EST, -05:00 → 절대 시간으로 75일 1분 뒤
-    assert publish_at.astimezone(timezone.utc) - now.astimezone(timezone.utc) == timedelta(days=75, minutes=1)
-    assert publish_at - now == timedelta(days=74, hours=23, minutes=1)  # 벽시계로 빼면 창 안으로 보인다
+    publish_at = datetime(2026, 12, 1, 0, 56, tzinfo=zone)         # EST, -05:00 → 절대 시간으로 30일 1분 뒤
+    assert publish_at.astimezone(timezone.utc) - now.astimezone(timezone.utc) == timedelta(days=30, minutes=1)
+    assert publish_at - now == timedelta(days=29, hours=23, minutes=1)  # 벽시계로 빼면 창 안으로 보인다
     with pytest.raises(graph.GraphError) as caught:
         graph.assert_schedulable(publish_at, now)
     message = str(caught.value)
-    assert "너무 멉니다" in message and "75일 1분 뒤입니다" in message
-    # 01:55 EDT + 75일 = 00:55 EST(같은 순간). 벽시계로 더하면 01:55로 한 시간 틀린다.
-    assert "75일 뒤(2027-01-15T00:55:00-05:00)" in message
+    assert "너무 멉니다" in message and "30일 1분 뒤입니다" in message
+    # 01:55 EDT + 30일 = 00:55 EST(같은 순간). 벽시계로 더하면 01:55로 한 시간 틀린다.
+    assert "30일 뒤(2026-12-01T00:55:00-05:00)" in message
 
 
 def test_예약_창은_config_값을_따른다(monkeypatch):
-    # 코드가 10분·75일이라는 숫자를 따로 적어 두었다면 이 시험이 잡는다.
+    # 코드가 10분·30일이라는 숫자를 따로 적어 두었다면 이 시험이 잡는다.
     monkeypatch.setattr(config, "SCHEDULE_MIN_LEAD", timedelta(hours=1))
     monkeypatch.setattr(config, "SCHEDULE_MAX_LEAD", timedelta(days=1))
     graph.assert_schedulable(NOW + timedelta(hours=1), NOW)
@@ -564,7 +564,7 @@ def test_예약_창은_config_값을_따른다(monkeypatch):
         graph.assert_schedulable(NOW - timedelta(minutes=1), NOW)
     assert "1시간" in str(early.value) and "10분" not in str(early.value)
     assert "1시간 뒤(" in str(past.value) and "10분" not in str(past.value)
-    assert "1일" in str(late.value) and "75일" not in str(late.value)
+    assert "1일" in str(late.value) and "30일" not in str(late.value)
 
 
 @pytest.mark.parametrize("naive_arg", ["publish_at", "now"])
@@ -759,7 +759,7 @@ def test_delete_post의_거절은_Facebook의_말을_그대로_싣는다():
 # ── schedule_photo_post ──────────────────────────────────────────────────────
 
 
-def test_schedule_photo_post가_caption과_published_false와_scheduled_publish_time을_보낸다(image):
+def test_schedule_photo_post가_caption과_published_false와_예약_시각과_SCHEDULED를_보낸다(image):
     """본문은 **`caption`**으로 보낸다. Meta의 `/{page-id}/photos` 레퍼런스가 `message`를
     "Deprecated. Please use the caption param instead."로 적었고, 같은 문서가 사진 노드의 읽기 필드
     `name`을 "The user-provided caption given to this photo"로 적는다 — `caption`으로 보내야
@@ -772,7 +772,26 @@ def test_schedule_photo_post가_caption과_published_false와_scheduled_publish_
     (call,) = session.calls
     # 전송되는 값은 문자열이다(멀티파트 필드). 파이썬 False를 그대로 넘기면 requests가 "False"로 적는다.
     # 정확한 모양을 못 박아 두어야 토큰이나 다른 필드가 몰래 끼어들지도 못한다.
-    assert call.kwargs["data"] == {"caption": CAPTION, "published": "false", "scheduled_publish_time": PUBLISH_UNIX}
+    assert call.kwargs["data"] == {
+        "caption": CAPTION,
+        "published": "false",
+        "scheduled_publish_time": PUBLISH_UNIX,
+        "unpublished_content_type": "SCHEDULED",
+    }
+
+
+def test_예약이면_unpublished_content_type을_SCHEDULED로_보낸다(image):
+    """레퍼런스가 예약 게시물일 때 `published`·`scheduled_publish_time`과 **함께** 보내라고 적는다.
+    출처: https://developers.facebook.com/docs/graph-api/reference/page/photos/
+
+    **이 값만 빠졌을 때 실제로 거절당하는지는 재 보지 않았다.** 2026-11-01의
+    `(#100) The specified scheduled publish time was invalid`는 이것 때문이 아니라 예약 시각이
+    창의 상한(30일)에 붙어 있었기 때문이었다 — 이 값을 넣고 다시 보내도 같은 거절이었다.
+    그러므로 이 시험이 지키는 것은 "문서가 요구하는 필드를 보낸다"이지 "안 보내면 깨진다"가 아니다.
+    """
+    session = photo_session()
+    graph.schedule_photo_post(SENTINEL, PAGE, image, CAPTION, PUBLISH_AT, session=session)
+    assert session.calls[0].kwargs["data"]["unpublished_content_type"] == "SCHEDULED"
 
 
 def test_예약_시각은_정수_유닉스_초이고_오프셋과_상관없이_같은_순간이면_같다(image):
