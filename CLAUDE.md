@@ -10,7 +10,7 @@ A single repo holding three loosely-coupled things about a **Nepal → Japan 특
 2. **`dashboard/`** — Next.js 14 internal viewer that renders the root wiki markdown.
 3. **`company/`** — Next.js 15 marketing site for 정우인재개발원 (Jeongwoo Human Resource Development Institute), a separate B2B corporate site.
 
-The two apps are **independent** (own `package.json`, own `node_modules`, different React/Next versions). The repo root itself is not a JS project — there is no root `package.json`.
+The two apps are **independent** (own `package.json`, own `node_modules`, different React/Next versions). The repo root has its own `package.json` too, but it is not an app: it holds only husky and repo-wide helper scripts (`test:i18n`, `catalog:kts*`, and the `fb:*` / `test:facebook` scripts for `scripts/facebook/`). Build and run the two apps from inside their own directories.
 
 Working language is **Korean**: docs, code comments, and UI copy are all Korean (Japanese-origin institutional terms kept in the original, e.g. 特定技能1号, 介護). Match this when writing content or comments.
 

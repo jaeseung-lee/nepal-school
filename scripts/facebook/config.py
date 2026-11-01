@@ -1,0 +1,177 @@
+"""페이스북 예약 게시 도구 공통 설정.
+
+값을 바꿔야 할 일이 생기면 이 파일 한 곳만 고친다. 토큰은 여기에 적지 않고 `.env`의
+`FB_PAGE_TOKEN` 또는 같은 이름의 환경변수에서 읽는다. 둘 다 값이 있는데 서로 다르면 멈춘다.
+"""
+
+from __future__ import annotations
+
+import os
+import re
+from datetime import timedelta
+from pathlib import Path
+
+# scripts/facebook/config.py -> 저장소 루트 (scripts/*.py 의 parents[1] 관례를 한 단계 깊이에 맞춘 것)
+ROOT = Path(__file__).resolve().parents[2]
+
+PAGE_ID = "61595913932801"
+GRAPH_VERSION = "v26.0"
+# Graph API 요청에서 기다리는 최대 시간(초): (연결, 응답). 모든 호출이 이 값을 명시적으로 넘긴다.
+# 사진 한 장에서 멈춘 채 한 달치 예약 전체가 끝나지 않는 것보다, 소리 내어 실패하고 다음 건으로 넘어가는 편이 낫다.
+# 단, 두 값 모두 소켓이 한 번 기다리는 시간이지 요청 전체의 상한은 아니다(requests의 timeout 규칙).
+GRAPH_TIMEOUT: tuple[float, float] = (10.0, 60.0)
+
+# 언어 순서는 베트남어 -> 미얀마어 -> 네팔어로 고정한다.
+LANGUAGES: tuple[str, str, str] = ("vi", "my", "ne")
+
+# 예약 가능 창: 지금부터 10분 이후 ~ 75일 이내 (Graph API 제한).
+SCHEDULE_MIN_LEAD = timedelta(minutes=10)
+SCHEDULE_MAX_LEAD = timedelta(days=75)
+
+# 게시 시각은 전부 플랜 JSON의 `publish_at`에서 온다. 기본값 상수를 여기에 두지 않는다 —
+# 읽는 코드가 없는 상수는 「JST 저녁」이라는 제약을 지키게 하지 못하면서 손잡이가 연결돼 있다는
+# 환상만 만든다. 그 제약은 플랜을 쓰는 세션이 읽는 자리(운영 문서 「플랜 작성 지침」 1항)에 있다.
+
+# 업로드 전에 거르는 이미지 최대 용량.
+MAX_IMAGE_BYTES = 8 * 1024 * 1024
+# 올릴 수 있는 이미지 확장자(소문자). JPEG와 PNG만 받는다.
+ALLOWED_IMAGE_SUFFIXES: tuple[str, ...] = (".jpg", ".jpeg", ".png")
+
+# 이미지 프롬프트에 반드시 들어가야 하는 지시 문구. 사업주가 ChatGPT 이미지 도구에 그대로 붙여넣는
+# 프롬프트이므로 영어다. 검증은 대소문자와 공백 수를 무시한 부분 문자열 일치로 찾는다.
+# (짧은 "no text"로 두면 "no texture"에도 걸리므로 문구 전체를 요구한다.)
+# 글자: 이미지 모델이 미얀마 문자·데바나가리를 깨뜨려 그리므로 글자가 없는 그림만 받는다.
+IMAGE_PROMPT_NO_TEXT = "no text, no letters, no logos"
+# 삽화: AI 그림이 실존 인물·특정 캠퍼스·회사 시설의 실제 기록 사진으로 읽히면 안 된다.
+IMAGE_PROMPT_NO_REAL_SUBJECTS = "no real people, no real campuses, no company facilities"
+
+TOKEN_ENV_NAME = "FB_PAGE_TOKEN"
+ENV_PATH = ROOT / ".env"
+
+
+def facebook_dir() -> Path:
+    """페이스북 산출물 루트(`output/facebook`)."""
+    return ROOT / "output" / "facebook"
+
+
+FACTS_PATH = facebook_dir() / "facts.json"
+GLOSSARY_PATH = facebook_dir() / "glossary.json"
+UNIVERSITIES_PATH = facebook_dir() / "universities.json"
+
+# 금지 표현 사전은 생성 산출물이 아니라 코드와 함께 커밋하는 정책 파일이라 `output/`이 아닌 코드 옆에 둔다.
+# CLI는 이 경로를 직접 적지 말고 이 상수를 쓴다.
+BANNED_PHRASES_PATH = ROOT / "scripts" / "facebook" / "data" / "banned-phrases.json"
+
+# 테스트 글 1건에 쓰는 자리표시 그림. "이 토큰으로 글을 올릴 수 있다"는 증명은 운영자가 **손으로 만들 것이
+# 하나도 없을 때만** 실제로 이뤄지므로, 그림도 저장소가 들고 있는다. 글자도 사람도 없는 평평한 한 장이다.
+TEST_POST_IMAGE_PATH = ROOT / "scripts" / "facebook" / "data" / "test-post.png"
+
+_MONTH_PATTERN = re.compile(r"[0-9]{4}-(0[1-9]|1[0-2])")
+
+
+def month_dir(month: str) -> Path:
+    """월별 산출물 폴더(`output/facebook/YYYY-MM`)."""
+    if not _MONTH_PATTERN.fullmatch(month):
+        raise ValueError(f"월 형식이 올바르지 않습니다: {month!r} (YYYY-MM 형식으로 입력하세요. 예: 2026-11)")
+    return facebook_dir() / month
+
+
+# 따옴표로 시작하는 값: 여는 따옴표부터 **처음 나오는 같은 따옴표**까지가 값이다.
+_QUOTED_VALUE = re.compile(r"""^(?P<quote>["'])(?P<value>.*?)(?P=quote)""")
+# 여는 따옴표만 있는지 보는 짝. 짝이 되는 닫는 따옴표가 없으면 값을 추측하지 않고 멈춘다.
+_OPENING_QUOTE = re.compile(r"""^["']""")
+# 따옴표로 시작하지 않는 값의 줄 끝 주석: **첫 `#`부터** 끝까지. 앞의 공백을 요구하지 않는다 —
+# `FB_PAGE_TOKEN=토큰#메모`처럼 붙여 쓴 `#`를 놓치면 그 글자가 토큰에 섞여 들어간다.
+_INLINE_COMMENT = re.compile(r"#.*$")
+
+
+def _parse_env_value(raw: str, *, path: Path, name: str) -> str:
+    """`.env` 한 줄에서 `=` 뒤를 값으로 읽는다.
+
+    규칙은 셋이고 **순서가 중요하다.**
+
+    - 값이 따옴표로 시작하고 **짝이 되는 닫는 따옴표가 있으면** 거기까지가 값이고 그 뒤는 버린다.
+      따옴표 안의 `#`는 값의 일부다.
+    - 값이 따옴표로 시작하는데 **닫는 따옴표가 없으면 추측하지 않고 멈춘다**(`RuntimeError`).
+    - 따옴표로 시작하지 않으면 **첫 `#`부터 버린다**(앞에 공백이 있든 없든 주석이다).
+
+    따옴표를 벗기는 일이 주석을 떼는 일보다 **먼저** 와야 한다. 거꾸로 하면 `TOKEN="값" # 메모`에서 양 끝이
+    `"`와 `모`라 따옴표 짝이 아니라고 판정하고, 주석만 뗀 뒤 따옴표가 값에 남는다.
+
+    **추측해서 고치지 않는 까닭:** 따옴표가 섞인 값으로 Graph API를 부르면 Facebook이 거절하고, 이 도구는
+    그 거절을 「토큰이 유효하지 않거나 만료되었습니다」로 번역해 보여 준다. 운영자가 보는 그림은 "방금 발급한
+    토큰이 벌써 죽었다"이고, 그래서 멀쩡한 토큰을 계속 재발급하는 고리에 갇힌다(설치 직후 첫 10분에
+    일어난다). 조용히 추측하는 쪽은 그 고리를 그대로 남기므로, `.env` 한 줄이 잘못됐다고 말하고 멈춘다.
+
+    **잘린 값은 메시지에 넣지 않는다** — 따옴표가 열린 채 끊긴 값이라도 토큰 조각이다. 세 경우 모두
+    `tests/test_config.py`가 못박는다.
+    """
+    raw = raw.strip()
+    quoted = _QUOTED_VALUE.match(raw)
+    if quoted is not None:
+        return quoted.group("value")
+    if _OPENING_QUOTE.match(raw):
+        raise RuntimeError(
+            f"{path}의 {name} 값이 따옴표로 시작하는데 짝이 되는 닫는 따옴표가 없습니다. 어디까지가 토큰인지 "
+            f"추측하지 않고 멈춥니다 — 따옴표가 섞인 값을 보내면 Facebook이 거절하고, 그 거절은 "
+            f"「토큰이 유효하지 않거나 만료되었습니다」로 보여서 멀쩡한 토큰을 몇 번이고 다시 발급하게 됩니다. "
+            f"그 줄의 따옴표를 짝이 맞게 고치거나 따옴표를 모두 지운 뒤 다시 실행하세요. "
+            f"가장 안전한 모양은 따옴표도 메모도 없는 한 줄입니다: `{name}=<페이지 토큰>`"
+        )
+    return _INLINE_COMMENT.sub("", raw).strip()
+
+
+def _read_env_file(path: Path, name: str) -> str:
+    """`.env`에서 `name`의 값을 읽는다. 파일이나 키가 없으면 빈 문자열."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return ""
+    except UnicodeDecodeError as e:
+        # 운영자가 손으로 만드는 파일이다. 한국어 주석을 EUC-KR로 저장한 편집기가 여기로 온다.
+        raise RuntimeError(
+            f"{path} 파일을 UTF-8로 읽을 수 없습니다. 편집기에서 인코딩을 UTF-8로 바꿔 다시 저장하세요. "
+            f"이 파일에는 `{name}=<토큰>` 한 줄만 있으면 되고, 한국어 주석은 넣지 않아도 됩니다."
+        ) from e
+    except OSError as e:
+        # 같은 이름의 폴더, 권한 없음, 깨진 심볼릭 링크 따위. 영어 OS 문구를 그대로 내보내지 않는다.
+        raise RuntimeError(
+            f"{path} 파일을 열 수 없습니다. 같은 이름의 폴더가 있는지, 읽을 권한이 있는지 확인하세요."
+        ) from e
+    value = ""
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export "):]
+        key, sep, raw = line.partition("=")
+        if sep and key.strip() == name:
+            value = _parse_env_value(raw, path=path, name=name)  # 같은 키가 여러 번이면 마지막 줄이 이긴다
+    return value
+
+
+def load_token() -> str:
+    """페이지 액세스 토큰을 돌려준다.
+
+    출처는 환경변수 `FB_PAGE_TOKEN`과 저장소 루트 `.env`의 `FB_PAGE_TOKEN` 두 곳이다.
+    한쪽에만 값이 있으면 그 값을, 둘 다 있고 같으면 그 값을 쓴다. 둘 다 있는데 다르면
+    어느 쪽이 최신인지 알 수 없으므로(회전된 토큰을 낡은 셸 변수가 조용히 가리는 사고) 고르지
+    않고 `RuntimeError`로 멈춘다. 토큰 값은 오류 메시지·로그에 절대 넣지 않는다.
+    """
+    env_token = os.environ.get(TOKEN_ENV_NAME, "").strip()
+    file_token = _read_env_file(ENV_PATH, TOKEN_ENV_NAME)
+    if env_token and file_token and env_token != file_token:
+        raise RuntimeError(
+            f"환경변수 {TOKEN_ENV_NAME}과(와) {ENV_PATH}의 {TOKEN_ENV_NAME} 값이 서로 다릅니다. "
+            f"어느 쪽이 최신인지 알 수 없어 중단합니다. 낡은 쪽을 정리하세요: "
+            f"셸에서 `unset {TOKEN_ENV_NAME}`을 실행하거나 {ENV_PATH}의 값을 고친 뒤 다시 실행하세요."
+        )
+    token = env_token or file_token
+    if not token:
+        raise RuntimeError(
+            f"{TOKEN_ENV_NAME}을(를) 찾을 수 없습니다. "
+            f"{ENV_PATH} 파일에 `{TOKEN_ENV_NAME}=<페이지 토큰>` 한 줄을 추가하거나 "
+            f"같은 이름의 환경변수를 설정하세요."
+        )
+    return token

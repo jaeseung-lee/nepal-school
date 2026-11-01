@@ -81,3 +81,20 @@ output/outreach/
 
 # 면접 인쇄물 빌드 중간 산출물
 scripts/interview-sheets/.build/
+
+# 페이스북 월간 게시 이미지(ChatGPT 생성본). plan.json·facts.json은 커밋한다.
+output/facebook/*/images/
+
+# 예약 실행의 동시 실행 잠금 파일과 원장 쓰기의 임시 파일.
+output/facebook/*/*.lock
+output/facebook/*/*.tmp
+
+# 올려 둔 테스트 글 1건의 기록(사진 id). 그 맥에서만 뜻이 있는 값이라 커밋하지 않는다.
+output/facebook/test-post.json
+
+# Python 캐시
+__pycache__/
+.pytest_cache/
+
+# SDD 작업 공간(계획 실행 중 산출물)
+.superpowers/

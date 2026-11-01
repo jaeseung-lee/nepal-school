@@ -1,0 +1,107 @@
+{
+  "visa_d2_definition": {
+    "value": "전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람 [출입국관리법 시행령 별표 1의2 장기체류자격(제12조 관련, 개정 2026. 9. 15.) 5. 유학(D-2)]",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290501&chrClsCd=010202&urlMode=lsInfoP&efYd=20261002&ancYnChk=0",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-10-31"
+  },
+  "visa_d4_definition": {
+    "value": "법무부장관이 정하는 요건을 갖춘 교육기관이나 기업체, 단체 등에서 교육 또는 연수를 받거나 연구활동에 종사하려는 사람[연수기관으로부터 체재비를 초과하는 보수(報酬)를 받거나 유학(D-2)·기술연수(D-3) 체류자격에 해당하는 사람은 제외한다] [출입국관리법 시행령 별표 1의2 장기체류자격(제12조 관련, 개정 2026. 9. 15.) 7. 일반연수(D-4)]",
+    "source_url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290501&chrClsCd=010202&urlMode=lsInfoP&efYd=20261002&ancYnChk=0",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-10-31"
+  },
+  "part_time_work_permit_required": {
+    "value": "유학(D-2) 유학생이 학업을 계속하면서 시간제 아르바이트를 하려면, 그 활동을 시작하기 전에 반드시 관할 출입국관리사무소에서 체류자격외활동허가를 받아야 한다.",
+    "source_url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=187&PARENT_ID=142",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-10-31"
+  },
+  "short_term_visa_cannot_work": {
+    "value": "90일 이하 단기사증 소지자는 체류자격외활동을 할 수 없다. 시간제 아르바이트는 체류자격외활동허가를 받아야 하는 활동이므로, 단기사증으로는 아르바이트를 할 수 없다.",
+    "source_url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=187&PARENT_ID=142",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-10-31"
+  },
+  "tuition_kyonggi": {
+    "value": "연간 평균등록금 8,028,841.1원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EA%B2%BD%EA%B8%B0%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_pyeongtaek-university": {
+    "value": "연간 평균등록금 8,198,774.1원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%ED%8F%89%ED%83%9D%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_hyupsung": {
+    "value": "연간 평균등록금 8,135,252.7원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%ED%98%91%EC%84%B1%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_honam": {
+    "value": "연간 평균등록금 6,788,793.8원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%ED%98%B8%EB%82%A8%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_cheongju": {
+    "value": "연간 평균등록금 8,319,491원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%B2%AD%EC%A3%BC%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_woosuk": {
+    "value": "연간 평균등록금 7,519,491.2원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%9A%B0%EC%84%9D%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_kijeon": {
+    "value": "연간 평균등록금 6,800,000원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 전문대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%A0%84%EC%A3%BC%EA%B8%B0%EC%A0%84%EB%8C%80%ED%95%99",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_jeonbuk": {
+    "value": "연간 평균등록금 4,461,484.3원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_uiduk": {
+    "value": "연간 평균등록금 7,312,525.9원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%9C%84%EB%8D%95%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_cheju-halla": {
+    "value": "연간 평균등록금 5,618,737.1원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 전문대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%A0%9C%EC%A3%BC%ED%95%9C%EB%9D%BC%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  },
+  "tuition_jeju-tourism": {
+    "value": "연간 평균등록금 5,475,138.5원(1년치, 학기당 아님). 전체 학과 가중평균으로 산출한 공시 평균값이므로 학생 개인의 실제 납부액과 다를 수 있다. 입학금은 별도 공시 항목이라 이 금액에 포함되지 않는다(해당 학교(본교) 평균입학금액 0원). [한국장학재단 전국대학별평균등록금정보 표준데이터, 전문대학·본교, 기준연도 2026, 데이터기준일자 2026-05-19]",
+    "source_url": "https://www.data.go.kr/data/15107738/standard.do?colCondition=UNIV_NM&searchKeyword1=%EC%A0%9C%EC%A3%BC%EA%B4%80%EA%B4%91%EB%8C%80%ED%95%99%EA%B5%90",
+    "verified_by": "builder",
+    "verified_on": "2026-10-31",
+    "expires_on": "2027-02-28"
+  }
+}

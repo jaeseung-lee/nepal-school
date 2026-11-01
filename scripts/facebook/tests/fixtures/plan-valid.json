@@ -1,0 +1,105 @@
+{
+  "month": "2026-11",
+  "topics": [
+    {
+      "topic_id": "visa-d2",
+      "title_ko": "유학(D-2) 비자란 무엇인가"
+    },
+    {
+      "topic_id": "tuition-kijeon",
+      "title_ko": "전주기전대학 연간 평균등록금"
+    }
+  ],
+  "posts": [
+    {
+      "index": 0,
+      "topic_id": "visa-d2",
+      "language": "vi",
+      "publish_at": "2026-11-01T19:00:00+09:00",
+      "source_ko": "유학(D-2)은 전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람을 위한 체류자격입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Thị thực du học (D-2) dành cho người học chương trình chính quy tại cơ sở giáo dục từ bậc cao đẳng trở lên hoặc nghiên cứu tại cơ quan nghiên cứu học thuật.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "00-visa-d2-vi.png",
+      "image_prompt": "A student at a desk reading a document about study visas, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 1,
+      "topic_id": "visa-d2",
+      "language": "my",
+      "publish_at": "2026-11-02T19:00:00+09:00",
+      "source_ko": "유학(D-2)은 전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람을 위한 체류자격입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "ပညာသင်ဗီဇာ (D-2) သည် ကောလိပ်အဆင့်နှင့်အထက် ပညာရေးအဖွဲ့အစည်းတွင် ပုံမှန်သင်တန်းများ တက်ရောက်လိုသူများအတွက် ဖြစ်သည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "01-visa-d2-my.png",
+      "image_prompt": "A student at a desk reading a document about study visas, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 2,
+      "topic_id": "visa-d2",
+      "language": "ne",
+      "publish_at": "2026-11-03T19:00:00+09:00",
+      "source_ko": "유학(D-2)은 전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 사람을 위한 체류자격입니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "अध्ययन भिसा (D-2) कलेज वा सोभन्दा माथिको शैक्षिक संस्थामा नियमित पाठ्यक्रम पढ्न चाहनेहरूका लागि हो।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "02-visa-d2-ne.png",
+      "image_prompt": "A student at a desk reading a document about study visas, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "visa_d2_definition"
+      ],
+      "university_names": []
+    },
+    {
+      "index": 3,
+      "topic_id": "tuition-kijeon",
+      "language": "vi",
+      "publish_at": "2026-11-04T19:00:00+09:00",
+      "source_ko": "전주기전대학의 연간 평균등록금은 6,800,000원입니다(1년치). 전체 학과 가중평균 공시값이므로 학생 개인의 실제 납부액과 다를 수 있습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "Học phí trung bình một năm của 전주기전대학 là 6.800.000 won (cả năm). Đây là mức trung bình công bố của tất cả các ngành nên có thể khác với số tiền thực tế mỗi sinh viên phải đóng.\n\nTư vấn hoàn toàn miễn phí. Nếu bạn có thắc mắc, hãy nhắn tin cho trang này.",
+      "image_file": "03-tuition-kijeon-vi.png",
+      "image_prompt": "A student calculating yearly tuition with a calculator and notebook, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon"
+      ],
+      "university_names": [
+        "전주기전대학"
+      ]
+    },
+    {
+      "index": 4,
+      "topic_id": "tuition-kijeon",
+      "language": "my",
+      "publish_at": "2026-11-05T19:00:00+09:00",
+      "source_ko": "전주기전대학의 연간 평균등록금은 6,800,000원입니다(1년치). 전체 학과 가중평균 공시값이므로 학생 개인의 실제 납부액과 다를 수 있습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "전주기전대학 ၏ တစ်နှစ်လုံးအတွက် ပျမ်းမျှ ကျောင်းလခမှာ 6,800,000 ဝမ် ဖြစ်သည်။ ဤပမာဏမှာ ဘာသာရပ်အားလုံး၏ ပျမ်းမျှကြေညာတန်ဖိုးဖြစ်သောကြောင့် ကျောင်းသားတစ်ဦးချင်း အမှန်တကယ်ပေးရသည့်ငွေနှင့် ကွာနိုင်သည်။\n\nအကြံပေးဆွေးနွေးမှုမှာ အခမဲ့ဖြစ်ပါသည်။ သိလိုသည်များရှိပါက ဤစာမျက်နှာသို့ မက်ဆေ့ချ်ပို့ပေးပါ။",
+      "image_file": "04-tuition-kijeon-my.png",
+      "image_prompt": "A student calculating yearly tuition with a calculator and notebook, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon"
+      ],
+      "university_names": [
+        "전주기전대학"
+      ]
+    },
+    {
+      "index": 5,
+      "topic_id": "tuition-kijeon",
+      "language": "ne",
+      "publish_at": "2026-11-06T19:00:00+09:00",
+      "source_ko": "전주기전대학의 연간 평균등록금은 6,800,000원입니다(1년치). 전체 학과 가중평균 공시값이므로 학생 개인의 실제 납부액과 다를 수 있습니다.\n\n상담은 무료입니다. 궁금한 점이 있으면 이 페이지로 메시지를 보내 주세요.",
+      "body_local": "전주기전대학 को वार्षिक औसत ट्युसन शुल्क 6,800,000 वोन हो (एक वर्षको)। यो सबै विभागको औसत सार्वजनिक आँकडा भएकाले प्रत्येक विद्यार्थीले वास्तवमा तिर्ने रकमभन्दा फरक हुन सक्छ।\n\nपरामर्श निःशुल्क छ। कुनै जिज्ञासा भए यस पेजमा म्यासेज पठाउनुहोस्।",
+      "image_file": "05-tuition-kijeon-ne.png",
+      "image_prompt": "A student calculating yearly tuition with a calculator and notebook, soft flat illustration, warm colors. No text, no letters, no logos. Illustration only; no real people, no real campuses, no company facilities.",
+      "fact_keys": [
+        "tuition_kijeon"
+      ],
+      "university_names": [
+        "전주기전대학"
+      ]
+    }
+  ]
+}

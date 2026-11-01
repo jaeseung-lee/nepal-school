@@ -1,0 +1,13 @@
+[
+  { "id": "kyonggi", "name_ko": "경기대학교" },
+  { "id": "pyeongtaek-university", "name_ko": "평택대학교" },
+  { "id": "hyupsung", "name_ko": "협성대학교" },
+  { "id": "honam", "name_ko": "호남대학교" },
+  { "id": "cheongju", "name_ko": "청주대학교" },
+  { "id": "woosuk", "name_ko": "우석대학교" },
+  { "id": "kijeon", "name_ko": "전주기전대학" },
+  { "id": "jeonbuk", "name_ko": "전북대학교" },
+  { "id": "uiduk", "name_ko": "위덕대학교" },
+  { "id": "cheju-halla", "name_ko": "제주한라대학교" },
+  { "id": "jeju-tourism", "name_ko": "제주관광대학교" }
+]

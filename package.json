@@ -9,7 +9,15 @@
     "catalog:kts:ko": "uv run --script scripts/generate-kts-caregiver-catalog.py --locale ko",
     "catalog:kts:ja": "uv run --script scripts/generate-kts-caregiver-catalog.py --locale ja",
     "catalog:kts:verify": "uv run --script scripts/verify-kts-caregiver-catalog.py --locale all",
-    "catalog:kts:check": "npm run catalog:kts && npm run catalog:kts:verify && npm run test:lp-v1"
+    "catalog:kts:check": "npm run catalog:kts && npm run catalog:kts:verify && npm run test:lp-v1",
+    "fb:check-token": "uv run --script scripts/facebook-cli.py check-token",
+    "fb:images": "uv run --script scripts/facebook-cli.py images",
+    "fb:backtranslate-template": "uv run --script scripts/facebook-cli.py backtranslate-template",
+    "fb:validate": "uv run --script scripts/facebook-cli.py validate",
+    "fb:review": "uv run --script scripts/facebook-cli.py review",
+    "fb:schedule": "uv run --script scripts/facebook-cli.py schedule",
+    "fb:test-post": "uv run --script scripts/facebook-cli.py test-post",
+    "test:facebook": "uv run --python 3.11 --isolated --with pytest pytest scripts/facebook/tests/ -v"
   },
   "devDependencies": {
     "husky": "^9.1.7"
