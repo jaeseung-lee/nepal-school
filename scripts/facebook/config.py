@@ -14,7 +14,12 @@ from pathlib import Path
 # scripts/facebook/config.py -> 저장소 루트 (scripts/*.py 의 parents[1] 관례를 한 단계 깊이에 맞춘 것)
 ROOT = Path(__file__).resolve().parents[2]
 
-PAGE_ID = "61595913932801"
+# 정우인재개발원 페이지의 **Graph API id**. 브라우저 주소창의 번호(61595913932801)와 **다르다** —
+# 페이지 하나에 URL용 번호와 API용 번호가 따로 있고, API는 URL 쪽 번호를 모른다(`GET /61595913932801`은
+# code 100 subcode 33으로 거절당한다). 주소창을 보고 "고치면" 한 달치가 전부 실패한다.
+# 출처: 이 토큰으로 `GET /me/accounts`가 돌려준 값. 2026-11-01에 실제 호출로 확인했다
+# (about·website·팔로워 수가 페이지 화면과 일치).
+PAGE_ID = "1487730074413949"
 GRAPH_VERSION = "v26.0"
 # Graph API 요청에서 기다리는 최대 시간(초): (연결, 응답). 모든 호출이 이 값을 명시적으로 넘긴다.
 # 사진 한 장에서 멈춘 채 한 달치 예약 전체가 끝나지 않는 것보다, 소리 내어 실패하고 다음 건으로 넘어가는 편이 낫다.
