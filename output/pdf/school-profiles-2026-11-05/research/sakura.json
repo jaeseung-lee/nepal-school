@@ -1,0 +1,540 @@
+{
+  "school_id": "sakura",
+  "researched_at": "2026-11-05",
+  "visibility": "Internal partner research only. Email evidence and contractual notes must not be published.",
+  "intended_intakes": [
+    "2027-04",
+    "2027-10"
+  ],
+  "overall_caveat_ko": "2027년 4월 입학조건은 학교 이메일로 확인. 2027년 10월 조건은 예상이며 미확정. 학비·기숙사비는 2026년 모집요강 기준으로, 2027년 금액은 미확정.",
+  "overall_caveat_en": "April 2027 entry conditions were confirmed by school email. October 2027 conditions remain provisional. Fees and accommodation costs use the 2026 guide; 2027 rates are unconfirmed.",
+  "identity": {
+    "name_ja": "桜ことのは日本語学院",
+    "name_en": "Sakura Kotonoha Japanese Language School",
+    "name_ko": "사쿠라코토노하일본어학원",
+    "website": "https://sakura-japanese.jp/",
+    "address_ja": "〒532-0012 大阪府大阪市淀川区木川東2丁目8番11号 桜ことのはビル",
+    "address_en": "Sakura Kotonoha Building, 2-8-11 Kikawahigashi, Yodogawa-ku, Osaka-shi, Osaka 532-0012, Japan",
+    "address_ko": "오사카부 오사카시 요도가와구 기카와히가시 2-8-11 사쿠라코토노하 빌딩",
+    "stations": [
+      {
+        "name_ja": "西中島南方駅",
+        "name_en": "Nishinakajima-Minamigata",
+        "name_ko": "니시나카지마미나미가타",
+        "line": "Osaka Metro Midosuji Line",
+        "walk_minutes": 10
+      },
+      {
+        "name_ja": "南方駅",
+        "name_en": "Minamikata",
+        "name_ko": "미나미카타",
+        "line": "Hankyu Kyoto Line",
+        "walk_minutes": 12
+      },
+      {
+        "name_ja": "新大阪駅",
+        "name_en": "Shin-Osaka",
+        "name_ko": "신오사카",
+        "line": "JR / Osaka Metro Midosuji Line",
+        "walk_minutes": 19
+      }
+    ],
+    "sources": [
+      "W_FACILITY_JA",
+      "W_FACILITY_EN",
+      "PDF2026 p1"
+    ]
+  },
+  "features": [
+    {
+      "ko": "4월 2년·10월 1년 6개월의 진학 과정. 학교는 진학 희망 학생을 모집한다고 명시.",
+      "en": "Further-study pathways: two years from April or 18 months from October; the school recruits students intending to progress to higher education.",
+      "sources": [
+        "PDF2026 p2",
+        "EMAIL_APR"
+      ]
+    },
+    {
+      "ko": "행정서사의 유학비자 신청 지원과 학습·진학·생활 상담 제공.",
+      "en": "Administrative-scrivener support for student-visa applications, plus study, progression and daily-life guidance.",
+      "sources": [
+        "W_SUPPORT"
+      ]
+    },
+    {
+      "ko": "학교는 2026년 10월 27일 적정교(클래스Ⅰ) 선정을 공지.",
+      "en": "The school announced its 2026 selection as an appropriate school (Class I) on 27 October 2026.",
+      "sources": [
+        "W_CLASS1"
+      ],
+      "note": "School announcement; do not imply visa approval is guaranteed."
+    }
+  ],
+  "education": {
+    "minimum": "High-school graduation or equivalent AND 12 years of school education or equivalent.",
+    "ko": "고교 졸업 또는 동등 자격, 12년 이상 학교교육 이수 또는 동등 학력.",
+    "gpa_minimum": null,
+    "gpa_scale": null,
+    "gpa_ko": "고교 GPA 최소점수·만점 기준 미확인. 성적증명서 제출은 필요.",
+    "gpa_en": "Minimum high-school GPA and grading scale unconfirmed; academic transcripts are required.",
+    "sources": [
+      "PDF2026 p2-p3",
+      "W_ADMISSIONS",
+      "EMAIL_APR",
+      "EMAIL_OCT"
+    ]
+  },
+  "admissions": {
+    "april_2027": {
+      "course_ja": "進学２年コース",
+      "duration_months": 24,
+      "planned_period": "2027-04 to 2029-03",
+      "status": "School email confirmed the stated conditions on 2026-10-05; current remaining seats and 2027 application deadline not confirmed.",
+      "japanese_requirement_ko": "N5 수준 이상 시험 합격 + 일본어 학습 150시간 이상",
+      "japanese_requirement_en": "Pass at N5 level or above AND at least 150 hours of Japanese study",
+      "qualification_level": "N5 or above",
+      "study_hours_min": 150,
+      "tests_note": "Email says N5-level or above but does not enumerate equivalents. 2026 guide identifies JLPT and NAT-TEST as preferred; do not assert automatic acceptance of all test equivalents for 2027.",
+      "age_max": 30,
+      "graduation_gap_note_ja": "最終学歴の卒業から5年以上経過していない",
+      "graduation_gap_ko": "최종학력 졸업 후 5년 이상 경과하지 않은 자",
+      "graduation_gap_en": "Five or more years must not have elapsed since graduation from the final educational institution.",
+      "country_ko": "네팔·미얀마 학생 수용을 이메일로 확인.",
+      "country_en": "Acceptance of students from Nepal and Myanmar confirmed by email.",
+      "source": "EMAIL_APR"
+    },
+    "october_2027": {
+      "course_ja": "進学１年６か月コース",
+      "duration_months": 18,
+      "planned_period": "2027-10 to 2029-03",
+      "status": "PROVISIONAL; forecast only, not a confirmed admissions rule",
+      "japanese_requirement_ko": "예상: N5 이상 합격 + 일본어 학습 300시간 이상. 아직 미확정.",
+      "japanese_requirement_en": "Provisional forecast: N5 or above pass AND at least 300 study hours. Not yet confirmed.",
+      "qualification_level_provisional": "N5 or above",
+      "study_hours_min_provisional": 300,
+      "recruitment_start_provisional": "Around February 2027",
+      "exact_school_wording_ja": "2027年10月期につきましては、まだ未確定ですが2月頃より募集を開始することになるかと思います。応募条件はN5以上の合格と日本語学習時間300時間以上が基準になるかと思われます。",
+      "source": "EMAIL_OCT",
+      "conflict_source": "PDF2026 p2 and W_ADMISSIONS still specify N4 for the October 18-month course.",
+      "age_and_gap_for_october_2027": "Not separately confirmed; do not automatically transfer April email conditions."
+    },
+    "published_2026_reference": {
+      "april": "N5-level (NAT-TEST 5Q-level) Japanese. If a pass cannot be demonstrated: in principle approximately 400–500 study hours, exceeding 150 hours minimum.",
+      "october": "JLPT N4 / NAT-TEST 4Q pass or equivalent ability. If N4-level certification cannot be demonstrated at application: generally 800–1,000 study hours, exceeding 550 hours minimum, AND JLPT N5 pass.",
+      "school_interview": "School oral examination minimum score is required; numeric pass score not published.",
+      "study_certificate": "Japanese-language institution certificate required at application regardless of exam certificate. Must describe learning period, hours and attendance.",
+      "listed_document_tests": [
+        "JLPT",
+        "NAT-TEST",
+        "J-TEST",
+        "JLCT",
+        "TOP-J",
+        "JPT"
+      ],
+      "test_note": "Listed as acceptable proof documents in the 2026 guide; JLPT/NAT-TEST preferred. No universal equivalence scores supplied.",
+      "sources": [
+        "PDF2026 p2-p3",
+        "W_ADMISSIONS"
+      ]
+    }
+  },
+  "fees": {
+    "currency": "JPY",
+    "applicability": "2026 April / October entrants; reference estimate only for 2027",
+    "tax": "Published figures include 10% consumption tax.",
+    "primary_source": "PDF2026 p6-p7",
+    "corroboration_source": "W_FEES_JA",
+    "exclude_old_source": "W_FEES_EN is explicitly marked 2025 despite matching amounts; do not cite it as a 2027 schedule.",
+    "rows": [
+      {
+        "item_ja": "検定料",
+        "item_ko": "전형료",
+        "item_en": "Application screening fee",
+        "year1_both": 22000,
+        "april_year2_12mo": 0,
+        "october_year2_6mo": 0,
+        "april_total": 22000,
+        "october_total": 22000
+      },
+      {
+        "item_ja": "入学金",
+        "item_ko": "입학금",
+        "item_en": "Enrollment fee",
+        "year1_both": 50000,
+        "april_year2_12mo": 0,
+        "october_year2_6mo": 0,
+        "april_total": 50000,
+        "october_total": 50000
+      },
+      {
+        "item_ja": "授業料",
+        "item_ko": "수업료",
+        "item_en": "Tuition",
+        "year1_both": 633600,
+        "april_year2_12mo": 633600,
+        "october_year2_6mo": 316800,
+        "april_total": 1267200,
+        "october_total": 950400
+      },
+      {
+        "item_ja": "施設費",
+        "item_ko": "시설비",
+        "item_en": "Facilities",
+        "year1_both": 79200,
+        "april_year2_12mo": 79200,
+        "october_year2_6mo": 39600,
+        "april_total": 158400,
+        "october_total": 118800
+      },
+      {
+        "item_ja": "教材費",
+        "item_ko": "교재비",
+        "item_en": "Materials",
+        "year1_both": 22000,
+        "april_year2_12mo": 22000,
+        "october_year2_6mo": 11000,
+        "april_total": 44000,
+        "october_total": 33000
+      },
+      {
+        "item_ja": "活動費",
+        "item_ko": "활동비",
+        "item_en": "Activities",
+        "year1_both": 39600,
+        "april_year2_12mo": 39600,
+        "october_year2_6mo": 19800,
+        "april_total": 79200,
+        "october_total": 59400
+      },
+      {
+        "item_ja": "保険料",
+        "item_ko": "보험료",
+        "item_en": "Insurance",
+        "year1_both": 11000,
+        "april_year2_12mo": 11000,
+        "october_year2_6mo": 5800,
+        "april_total": 22000,
+        "october_total": 16800
+      },
+      {
+        "item_ja": "健康診断料",
+        "item_ko": "건강검진비",
+        "item_en": "Health checks",
+        "year1_both": 11000,
+        "april_year2_12mo": 11000,
+        "october_year2_6mo": 11000,
+        "april_total": 22000,
+        "october_total": 22000
+      }
+    ],
+    "totals": {
+      "year1_including_application_fee_both": 868400,
+      "enrollment_annual_payment_excluding_application_fee_both": 846400,
+      "april_year2_12mo": 796400,
+      "october_year2_remaining_6mo": 404000,
+      "april_24mo_course_total": 1664800,
+      "october_18mo_course_total": 1272400,
+      "arithmetic_april": "22,000 + 846,400 + 796,400 = 1,664,800",
+      "arithmetic_october": "22,000 + 846,400 + 404,000 = 1,272,400"
+    },
+    "periods": {
+      "april_year1": "12 months (illustrative 2027 intake: Apr 2027–Mar 2028)",
+      "april_year2": "12 months (illustrative 2027 intake: Apr 2028–Mar 2029)",
+      "october_year1": "12 months (illustrative 2027 intake: Oct 2027–Sep 2028)",
+      "october_year2": "Remaining 6 months only (illustrative 2027 intake: Oct 2028–Mar 2029); never label as a full 12-month second year."
+    },
+    "excluded": "Dormitory/living costs; remittance fees; external exams; possible translation, some events, additional textbook costs. Insurance and health-check amounts may change with external providers.",
+    "note": "2026 benefits/discounts must not be promised for 2027."
+  },
+  "payments": {
+    "source": "PDF2026 p5-p7, p10",
+    "method": "School-designated bank account. Application fee normally at application. After COE issuance, pay enrollment fees/tuition/other charges and dormitory; documents sent after receipt.",
+    "options": "Six-month or one-year installments available under the 2026 guide.",
+    "annual_april": [
+      {
+        "stage": "Application (around Aug–Sep per guide)",
+        "amount": 22000
+      },
+      {
+        "stage": "Enrollment (late Feb–early Mar)",
+        "amount": 846400
+      },
+      {
+        "stage": "By late January of following year",
+        "amount": 796400
+      }
+    ],
+    "annual_october": [
+      {
+        "stage": "Application (around Feb–Apr per guide)",
+        "amount": 22000
+      },
+      {
+        "stage": "Enrollment (early September)",
+        "amount": 846400
+      },
+      {
+        "stage": "Following Jun–late Jul, remaining 6 months",
+        "amount": 404000
+      }
+    ],
+    "six_month_april": [
+      {
+        "stage": "Application",
+        "amount": 22000
+      },
+      {
+        "stage": "Enrollment, first six months",
+        "amount": 459200
+      },
+      {
+        "stage": "Jun–late Jul, next six months",
+        "amount": 387200
+      },
+      {
+        "stage": "Following late January, next six months",
+        "amount": 409200
+      },
+      {
+        "stage": "Following Jun–late Jul, final six months",
+        "amount": 387200
+      }
+    ],
+    "six_month_october": [
+      {
+        "stage": "Application",
+        "amount": 22000
+      },
+      {
+        "stage": "Enrollment, first six months",
+        "amount": 459200
+      },
+      {
+        "stage": "Following late January, next six months",
+        "amount": 387200
+      },
+      {
+        "stage": "Following Jun–late Jul, final six months",
+        "amount": 404000
+      }
+    ],
+    "full_course_discount_2026": {
+      "april_discount": 50000,
+      "april_discounted_course_total": 1614800,
+      "october_discount": 35000,
+      "october_discounted_course_total": 1237400,
+      "note": "Application fee still due at application; remaining discounted balance after COE. 2027 continuation unconfirmed."
+    },
+    "schedules_note": "These are recurring-month examples in the 2026 guide, not confirmed 2027 deadlines. The guide's process page also provides specific 2026 due dates; do not transpose those dates to 2027.",
+    "draft_contract_note": "Unsigned recruitment agreement received 2026-10-28 corroborates six-month/year payment options. It proposes agent application-fee offset against commission; not applied to standard student fee table because the contract is a draft.",
+    "draft_contract_source": "EMAIL_CONTRACT"
+  },
+  "housing": {
+    "classification_ko": "학교 제휴 기숙사(맨션형). 소유·직영 여부 및 별도 운영사 법인명 미확인.",
+    "classification_en": "School-affiliated apartment-style dormitories. Ownership, direct operation and separate operator legal identity unconfirmed.",
+    "source": "PDF2026 p11-p14",
+    "operator_name": null,
+    "selection": "Choose single or shared occupancy; property, room type and roommate allocation by lottery / school. Exact property not guaranteed.",
+    "monthly_utility_internet_base_per_person": 8000,
+    "utility_note": "Water/utilities/internet base included in monthly totals below; excess usage charged separately. Internet initial installation paid by school.",
+    "one_time_entrance_fee": 30000,
+    "one_time_security_deposit": 20000,
+    "up_front_months": 6,
+    "subsequent_payment_months": 3,
+    "rooms": [
+      {
+        "name": "ビスタ西中島 / Vista Nishinakajima",
+        "type": "Single",
+        "occupants": 1,
+        "area_m2": 20,
+        "rent": 40000,
+        "utility_base": 8000,
+        "monthly_total": 48000,
+        "initial_6mo_with_entry_deposit": 338000
+      },
+      {
+        "name": "マキシム新淀川 / Maxim Shin-Yodogawa Type 2",
+        "type": "Single",
+        "occupants": 1,
+        "area_m2": 12,
+        "rent": 37500,
+        "utility_base": 8000,
+        "monthly_total": 45500,
+        "initial_6mo_with_entry_deposit": 323000,
+        "note": "PDF p13 prints 45,000, but p11 prints 45,500 and 37,500+8,000=45,500; treat p13 as arithmetic inconsistency and flag."
+      },
+      {
+        "name": "マキシム新淀川 / Maxim Shin-Yodogawa Type 3",
+        "type": "Single",
+        "occupants": 1,
+        "area_m2": "13–14",
+        "rent": 38400,
+        "utility_base": 8000,
+        "monthly_total": 46400,
+        "initial_6mo_with_entry_deposit": 328400
+      },
+      {
+        "name": "ビスタ西中島 / Vista Nishinakajima",
+        "type": "Twin/shared",
+        "occupants": 2,
+        "area_m2": 20,
+        "rent": 25000,
+        "utility_base": 8000,
+        "monthly_total_per_person": 33000,
+        "initial_6mo_with_entry_deposit": 248000
+      },
+      {
+        "name": "マキシム新淀川 / Maxim Shin-Yodogawa Type 3",
+        "type": "Twin/shared",
+        "occupants": 2,
+        "area_m2": "13–14",
+        "rent": 24000,
+        "utility_base": 8000,
+        "monthly_total_per_person": 32000,
+        "initial_6mo_with_entry_deposit": 242000
+      },
+      {
+        "name": "宏栄マンション / マキシム東三国",
+        "type": "Triple/shared (exceptional, vacancy dependent)",
+        "occupants": 3,
+        "area_m2": 30,
+        "rent": 23500,
+        "utility_base": 8000,
+        "monthly_total_per_person": 31500,
+        "initial_6mo_with_entry_deposit": 239000
+      }
+    ],
+    "summary_ko": "1인실 월 45,500–48,000엔 / 2인실 1인당 월 32,000–33,000엔. 예외적 3인실은 31,500엔. 입실료 30,000엔+보증금 20,000엔+6개월분 선납: 1인실 323,000–338,000엔 / 2인실 242,000–248,000엔(3인실 239,000엔). 공과금·인터넷 기본 8,000엔 포함, 초과분 별도.",
+    "summary_en": "Single ¥45,500–48,000/month; twin ¥32,000–33,000/person/month; exceptional triple ¥31,500. Initial payment = ¥30,000 entry + ¥20,000 deposit + six monthly payments: single ¥323,000–338,000; twin ¥242,000–248,000; triple ¥239,000. Includes ¥8,000 utilities/internet base; excess charged separately.",
+    "minimum_residence_ko": "원칙적으로 재학기간 전체 제휴 기숙사 거주. 6개월은 선납 기간이며 최소 거주기간 6개월로 단정하면 안 됨. 오사카부 내 친족 동거 시 예외 가능 여부는 모집요강의 예외 문구를 근거로 개별 확인.",
+    "minimum_residence_en": "Residence in an affiliated dormitory is required in principle throughout enrollment. Six months is the initial payment period, not a stated minimum stay. The guide notes an exception for living with relatives in Osaka; confirm individual eligibility.",
+    "refund": "Paid dormitory fees generally non-refundable.",
+    "meals": "No meals provided; self-catering.",
+    "furnishings": "Kitchen, shower, toilet, refrigerator, rice cooker, microwave, air conditioning, cookware, desk, chair, bed.",
+    "bedding": "2026 guide says school provides designated bedding; 2027 continuation unconfirmed.",
+    "arithmetic": "Initial total = 30,000 + 20,000 + 6 × (rent + 8,000). All initial totals are calculated from published components, not separately quoted package prices.",
+    "website_conflict": "W_DORM advertises ¥23,500 as two-person starting rent and 16-min campus walk; detailed 2026 PDF identifies that rent as exceptional triple and current campus nearby. Use PDF room types, no unqualified two-person ¥31,500 quote."
+  },
+  "key_uncertainties": [
+    "2027 October forecast N5+300h differs from the 2026 guide/current general JP admissions page N4 standard; forecast must stay provisional.",
+    "2027 tuition, dormitory rates, discounts and deadlines not confirmed.",
+    "Numeric high-school GPA minimum and scale not found; not equivalent to no GPA requirement.",
+    "2026 dormitory PDF Type2 total inconsistency: p11 ¥45,500 vs p13 ¥45,000; arithmetic supports ¥45,500.",
+    "English homepage/old footer retains former address/access text. Use current basic information on JP facility page.",
+    "Support page lists Korean-speaking staff, but direct 2026-10-05 email states none. Do not advertise Korean-language support.",
+    "Draft recruitment contract/appendix contains agency commission terms; not student tuition discounts and not proof that partnership is already signed."
+  ],
+  "source_register": [
+    {
+      "id": "PDF2026",
+      "title": "2026年度 学生募集要項",
+      "type": "school-issued PDF",
+      "applicability": "2026 Apr/Oct",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/sakura/01_admission-guidelines_2026_jp.pdf",
+      "pages": 14,
+      "page_numbering": "Physical PDF page, with cover counted as p1; printed internal pages are one less.",
+      "source_url": "https://drive.google.com/file/d/1FY_XHYz37ALqKwUOuOR7NWSS5PQn6HDV/view",
+      "source_url_evidence": "Existing package sources.json; local SHA-256 matches recorded source file.",
+      "sha256": "29f22bc468727625867264c73a03d35728d8a48394cd5eabb0249e6b514265c3"
+    },
+    {
+      "id": "EMAIL_APR",
+      "type": "school email",
+      "date": "2026-10-05 09:52:04 +0900",
+      "sender": "森山 / info@sakura-kotonoha.co.jp",
+      "message_id": "1a1098c2c825e8c7",
+      "thread_id": "1a10953b070b1e49",
+      "url": "https://mail.google.com/mail/u/0/#all/1a10953b070b1e49",
+      "applicability": "2027 April"
+    },
+    {
+      "id": "EMAIL_OCT",
+      "type": "school email",
+      "date": "2026-10-14 08:42:31 +0900",
+      "sender": "森山 / info@sakura-kotonoha.co.jp",
+      "message_id": "1a137a5bd8a3d490",
+      "thread_id": "1a10953b070b1e49",
+      "url": "https://mail.google.com/mail/u/0/#all/1a10953b070b1e49",
+      "applicability": "2027 October forecast; explicitly unconfirmed"
+    },
+    {
+      "id": "EMAIL_CONTRACT",
+      "type": "school email and attached draft recruitment agreement",
+      "date": "2026-10-28 17:11:31 +0900",
+      "message_id": "1a18190f4a2b4579",
+      "thread_id": "1a10953b070b1e49",
+      "attachment": "契約書雛形.pdf",
+      "pages": 5,
+      "used_pages": [
+        1,
+        2
+      ],
+      "note": "Read full extracted 5-page text; no new numeric academic criteria or tuition table. Corrected appendix from 19:01 email concerns commission, excluded from profile."
+    },
+    {
+      "id": "W_FACILITY_JA",
+      "url": "https://sakura-japanese.jp/facility/",
+      "title": "アクセス・施設紹介",
+      "checked": "2026-11-05"
+    },
+    {
+      "id": "W_FACILITY_EN",
+      "url": "https://sakura-japanese.jp/en/facility/",
+      "title": "Access/Facility",
+      "checked": "2026-11-05",
+      "note": "Use basic-info table only; old building description/footer remains stale."
+    },
+    {
+      "id": "W_ADMISSIONS",
+      "url": "https://sakura-japanese.jp/admin/",
+      "title": "募集要項",
+      "checked": "2026-11-05",
+      "note": "Still shows N4 standard for October; no 2027 label."
+    },
+    {
+      "id": "W_FEES_JA",
+      "url": "https://sakura-japanese.jp/fee/",
+      "title": "学費・奨学金",
+      "checked": "2026-11-05",
+      "applicability": "Explicitly 2026 April/October"
+    },
+    {
+      "id": "W_FEES_EN",
+      "url": "https://sakura-japanese.jp/en/fee/",
+      "title": "Tuition & Scholarship",
+      "checked": "2026-11-05",
+      "applicability": "Explicitly 2025 April/October; not latest-year source"
+    },
+    {
+      "id": "W_SUPPORT",
+      "url": "https://sakura-japanese.jp/support/",
+      "title": "サポート",
+      "checked": "2026-11-05",
+      "note": "Staff-language and certain other content stale; only broad support services used."
+    },
+    {
+      "id": "W_DORM",
+      "url": "https://sakura-japanese.jp/dormitory/",
+      "title": "学生寮",
+      "checked": "2026-11-05",
+      "note": "Contains older/general information; detailed 2026 PDF takes precedence."
+    },
+    {
+      "id": "W_CLASS1",
+      "url": "https://sakura-japanese.jp/blog/10192",
+      "title": "日本語教育機関「適正校（クラスⅠ）」選定のお知らせ",
+      "published": "2026-10-27",
+      "checked": "2026-11-05"
+    }
+  ],
+  "validation": {
+    "fee_rows_and_installments": "All component totals and course totals verified arithmetically.",
+    "housing": "All six-month upfront totals verified from components.",
+    "visual_pdf_pages": [
+      6,
+      7,
+      13
+    ],
+    "visual_note": "Confirmed fee table columns and dormitory Type2 printed total 45,000 discrepancy visually."
+  }
+}

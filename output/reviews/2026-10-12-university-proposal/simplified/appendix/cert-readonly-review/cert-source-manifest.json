@@ -1,0 +1,154 @@
+{
+  "review_date": "2026-10-12",
+  "source_pdf": "/Users/ijaeseung/Downloads/취업 연계형 외국인 유학생 도입방안.pdf",
+  "source_sha256": "c4ad298a6622beb043dc7f1cb2bec900bec3efcfcc450ef6c2d6b8a06f8c8ec5",
+  "total_pages": 5,
+  "rear_attachment_pages": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "scope_basis": "p1 contains 添付1 equivalent Korean 첨부 1 reference; no explicit appendix divider; p2–3 review memo and p4–5 samples follow",
+  "source_pdf_creation_date": "2026-10-11T17:47:27+09:00",
+  "source_pdf_modification_date": "2026-10-11T17:50:02+09:00",
+  "metadata_scope": "PDF metadata does not verify memo or certificate issuance date",
+  "recommended_heading": "부록 D. 원본 제안자료 및 교육·기량 기록 견본",
+  "recommended_intro": "다음은 원본 제안자료에 포함된 체류·취업 검토자료와 교육·기량 기록 견본입니다. 체류·취업 검토자료의 작성일과 적용 기준은 확인이 필요하며, 실제 체류자격 검토에는 부록 A·C의 공식 기준을 적용합니다. 실제 학생의 수료·시험·자격 자료는 부록 B의 발급·등록·유효성 및 인정 범위 확인 기준에 따라 검토합니다.",
+  "native_document_snapshot": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/figma-native/completed-document.json",
+  "recommended_references": [
+    {
+      "section": "4.5 평가와 교육 이수 자료의 대학 전달",
+      "snapshot_paragraph_start": 9601,
+      "placement": "after paragraph",
+      "text": "교육 이수와 기량시험 기록의 서식은 부록 D.2·D.3의 견본을 참고하며, 실제 학생별 증빙은 부록 B의 기준에 따라 확인합니다."
+    },
+    {
+      "section": "6.3 채용 및 체류 절차 지원",
+      "snapshot_paragraph_start": 13457,
+      "placement": "after paragraph",
+      "text": "원본 제안자료의 진로·체류 검토 내용은 부록 D.1에 수록하였으며, 실제 적용은 부록 A·C의 공식 기준에 따라 학생과 기업별로 확인합니다."
+    },
+    {
+      "section": "8.3 교육·시험·서류의 품질 확인",
+      "snapshot_paragraph_start": 17308,
+      "placement": "optional short replacement",
+      "old_text": "견본과 실제 학생의 확인된 증빙을 구분하고",
+      "new_text": "부록 D.2·D.3의 견본과 실제 학생의 확인된 증빙을 구분하고"
+    }
+  ],
+  "pages": [
+    {
+      "original_page": 1,
+      "title": "취업 연계형 외국인 유학생 도입 방안",
+      "content_type": "main proposal",
+      "rear_attachment_scope": false,
+      "page_size_pt": [
+        595.32,
+        841.92
+      ],
+      "render_path": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-source-1.png",
+      "render_dimensions_px": [
+        1241,
+        1754
+      ],
+      "mode": "RGB",
+      "dpi": 150,
+      "sha256": "bf841304135de7b5ef974a7a5c1f5a6937ac92995c1c4ff4cea2c623d0269328",
+      "visually_reviewed": true,
+      "crop": "none; complete source page",
+      "insert_rule": "keep original aspect ratio"
+    },
+    {
+      "original_page": 2,
+      "title": "국내 외국인 유학생 대상 AWS 용접 교육 연계 체류자격(비자) 변경 및 취업 방안",
+      "content_type": "private visa/employment review memo, sections 1–3",
+      "rear_attachment_scope": true,
+      "page_size_pt": [
+        595,
+        841
+      ],
+      "render_path": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-source-2.png",
+      "render_dimensions_px": [
+        1240,
+        1753
+      ],
+      "mode": "RGB",
+      "dpi": 150,
+      "sha256": "ea9df8168acbe3a8e586ad302f91feca195afdc3a1bea5a2bb4822323ec63aa8",
+      "visually_reviewed": true,
+      "crop": "none; complete source page",
+      "insert_rule": "keep original aspect ratio"
+    },
+    {
+      "original_page": 3,
+      "title": "국내 외국인 유학생 대상 AWS 용접 교육 연계 체류자격(비자) 변경 및 취업 방안 (계속)",
+      "content_type": "private visa/employment review memo, sections 4–6",
+      "rear_attachment_scope": true,
+      "page_size_pt": [
+        595,
+        841
+      ],
+      "render_path": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-source-3.png",
+      "render_dimensions_px": [
+        1240,
+        1753
+      ],
+      "mode": "RGB",
+      "dpi": 150,
+      "sha256": "f84c386bd2b746f79d5bd87307d5780211720f20e5b109659cf415eddf508931",
+      "visually_reviewed": true,
+      "crop": "none; complete source page",
+      "insert_rule": "keep original aspect ratio"
+    },
+    {
+      "original_page": 4,
+      "title": "CERTIFICATE OF TRAINING",
+      "content_type": "training certificate sample",
+      "rear_attachment_scope": true,
+      "page_size_pt": [
+        690.6,
+        960
+      ],
+      "render_path": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-source-4.png",
+      "render_dimensions_px": [
+        1439,
+        2000
+      ],
+      "mode": "RGB",
+      "dpi": 150,
+      "sha256": "c264005583b58f77b32a7250fddbc35ef1dad50544101246b7f7cdbe5dd2443d",
+      "visually_reviewed": true,
+      "crop": "none; complete source page",
+      "insert_rule": "keep original aspect ratio"
+    },
+    {
+      "original_page": 5,
+      "title": "WELDER PERFORMANCE QUALIFICATION (WPQ)",
+      "content_type": "welder performance qualification sample referring to ASME Section IX",
+      "rear_attachment_scope": true,
+      "page_size_pt": [
+        684.6,
+        960
+      ],
+      "render_path": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-source-5.png",
+      "render_dimensions_px": [
+        1427,
+        2000
+      ],
+      "mode": "RGB",
+      "dpi": 150,
+      "sha256": "1766e499f501cc1d7dc733236965c5a3f443b9e92a1dae9d391861be5a63b0a2",
+      "visually_reviewed": true,
+      "crop": "none; complete source page",
+      "insert_rule": "keep original aspect ratio"
+    }
+  ],
+  "review_file": "/Users/ijaeseung/nepal-school/output/reviews/2026-10-12-university-proposal/simplified/appendix/cert-readonly-review/cert-review.md",
+  "limitations": [
+    "Issuer-originals, issuance authority, registry, examination results, and current continuity were not independently verified.",
+    "Certificate sample subjects differ.",
+    "Some names and dates of birth remain visible on source sample pages."
+  ],
+  "mutations": "local review and rendered files only; source PDF, Docs, Figma and other agent files unchanged"
+}

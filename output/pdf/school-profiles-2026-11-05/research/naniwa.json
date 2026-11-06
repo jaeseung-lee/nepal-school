@@ -1,0 +1,83 @@
+{
+  "school_id": "naniwa",
+  "checked": "2026-11-05",
+  "name_ja": "大阪なにわ日本語学校",
+  "sources": {
+    "N1": {
+      "title": "募集要項",
+      "url": "https://www.onjls.com/static/upload/file/20250702/1751417721127163.pdf",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/onjls/오사카나니와일본어학교_모집요강.pdf",
+      "pages_used": [
+        2,
+        3,
+        4,
+        5,
+        7,
+        8
+      ],
+      "applicability": "No applicable year printed; live official link reconfirmed 2026-11-05",
+      "visual_check": "Fee table p5 rendered and inspected"
+    },
+    "N2": {
+      "title": "Official fee schedule",
+      "url": "https://www.onjls.com/?payment/",
+      "checked": "2026-11-05",
+      "applicability": "No effective intake stated; agrees with N1"
+    },
+    "N3": {
+      "title": "学校案内 / access",
+      "url": "https://www.onjls.com/static/upload/file/20250702/1751417664359868.pdf",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/onjls/오사카나니와일본어학교_입학안내.pdf",
+      "pages_used": [
+        4,
+        12,
+        13
+      ],
+      "access_url": "https://www.onjls.com/?access/"
+    }
+  },
+  "admissions": {
+    "april": "A1, N5-equivalent+ OR 150+ hours",
+    "october": "A2, N4-equivalent+ OR 300+ hours",
+    "gpa": "No numeric minimum or grading scale in reviewed official documents; confirmation needed",
+    "schooling": "12 years; all-year transcripts"
+  },
+  "fees": {
+    "rows_source": "N1 p5, N2",
+    "apr": [
+      813000,
+      740000
+    ],
+    "oct": [
+      810000,
+      363300
+    ],
+    "months_apr": [
+      12,
+      12
+    ],
+    "months_oct": [
+      12,
+      6
+    ],
+    "course_totals": [
+      1553000,
+      1173300
+    ],
+    "unlisted": "Separate screening fee and installment permission not found; unknown does not mean zero"
+  },
+  "housing": {
+    "provider": "School introduces external housing; personal lease",
+    "shared_monthly_reference": 35000,
+    "private_apartment_monthly_reference": 50000,
+    "upfront": "not stated",
+    "minimum_stay": "not stated"
+  },
+  "unknowns": [
+    "2027 seat availability and applicable prices",
+    "GPA minimum/scale",
+    "Housing upfront charges and minimum stay",
+    "Separate screening fee, installment option"
+  ],
+  "email_search": "Both connected mailboxes searched for onjls/Naniwa variants; no matching school correspondence located in searched results. Not proof of no contact."
+}

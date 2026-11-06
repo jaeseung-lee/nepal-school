@@ -1,0 +1,67 @@
+{
+  "targetDesignId": "DAHZu9BGsIk",
+  "workingDesignId": "DAHaBUO5OLk",
+  "transactionId": "7003618611576218385",
+  "status": "completed",
+  "pendingOperations": [],
+  "previewUrl": "https://export-download.canva.com/5dfa6677-8530-468b-94c4-90d4b843f860/0/0001-2858055156929356079.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH4R7NKVBA%2F20261104%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261104T114630Z&X-Amz-Expires=67241&X-Amz-Signature=837714f03bc3d644709738429b3578c3db7dd175f0dc5d7d23c01718876c57ee&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Thu%2C%2005%20Nov%202026%2006%3A27%3A11%20GMT",
+  "checks": {
+    "allTextsCorrect": true,
+    "japaneseTextRemaining": false,
+    "unchangedPhotoLogoQrAndIcons": true,
+    "textOverlaps": [],
+    "textWithinCanvas": true
+  },
+  "translation": [
+    {
+      "source": "日本に住む外国人学生の皆さんへ",
+      "vietnamese": "DÀNH CHO DU HỌC SINH\nTẠI NHẬT BẢN"
+    },
+    {
+      "source": "韓国留学",
+      "vietnamese": "DU HỌC\nHÀN QUỐC"
+    },
+    {
+      "source": "次の学びを、韓国で。",
+      "vietnamese": "Khởi đầu hành trình\nhọc tập tại Hàn Quốc."
+    },
+    {
+      "source": "学校選びから出願準備まで、\nまずはご相談ください。",
+      "vietnamese": "Từ chọn trường đến chuẩn bị hồ sơ,\nhãy liên hệ để được tư vấn."
+    },
+    {
+      "source": "学校・コース選び",
+      "vietnamese": "Chọn trường và khóa học"
+    },
+    {
+      "source": "学費・奨学金の情報",
+      "vietnamese": "Thông tin học phí và học bổng"
+    },
+    {
+      "source": "出願書類・日程の確認",
+      "vietnamese": "Hồ sơ và thời hạn nộp đơn"
+    },
+    {
+      "source": "入学までの流れ",
+      "vietnamese": "Lộ trình nhập học"
+    },
+    {
+      "source": "韓国留学のご相談はこちら",
+      "vietnamese": "TƯ VẤN DU HỌC HÀN QUỐC"
+    },
+    {
+      "source": "入学条件・費用・奨学金は、学校・コースにより異なります。",
+      "vietnamese": "Điều kiện nhập học, chi phí và học bổng thay đổi\ntùy theo trường và khóa học."
+    }
+  ],
+  "previewApproved": true,
+  "saved": true,
+  "insertedAtPage": 2,
+  "finalPageCount": 2,
+  "finalVerification": {
+    "page1Preserved": true,
+    "page2TextMatchesApproved": true,
+    "bothPagesA4": true
+  },
+  "resultUrl": "https://www.canva.com/design/DAHZu9BGsIk/Fi8IepwuSJr5qh--OxzM6w/edit"
+}

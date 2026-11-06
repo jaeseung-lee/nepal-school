@@ -1,0 +1,39 @@
+{
+  "method": "built-in image_gen",
+  "transparent_background": false,
+  "requested_dimensions": {
+    "width": 2000,
+    "height": 1000
+  },
+  "requested_aspect_ratio": "2:1",
+  "assets": [
+    {
+      "id": "02",
+      "prompt": "Use case: infographic-diagram.\nAsset type: a Korean explanatory infographic for a formal university partnership proposal.\nCreate one polished landscape 2000 x 1000 pixel image, approximately 2:1. This is a newly created conceptual diagram, not a transformation of earlier photos.\nVisual direction: newspaper-article-style explanatory clarity, clean white and very pale blue background, navy #0F2E54, blue #174EA6 and cyan #069EEA. Modest dimensional icons, subtle soft shadows, rigorously aligned cards, generous whitespace. Information must be clearer and more prominent than decorative icons. Crisp, large, legible Korean sans-serif text, perfect Korean spelling, clean typographic hierarchy. No newspaper page, masthead, article columns, newspaper logo, company logo, seals, photos, watermarks or texture behind letters.\nLayout:\nAt the top, a large navy title exactly: \"지원자 사전 확인\".\nBelow, four equally sized aligned cards in one horizontal row. Each card contains one small understated dimensional icon, a bold Korean label, and its supporting phrase in large readable Korean:\nCard 1: label \"학력·서류\"; supporting phrase \"원본·신원 대조\". A neutral document and identity-check icon.\nCard 2: label \"한국어\"; supporting phrase \"대학 기준 확인\". A neutral speech bubble icon containing no letters.\nCard 3: label \"재정 계획\"; supporting phrase \"증빙·부담액 확인\". A neutral wallet or simple ledger icon, no currency numbers.\nCard 4: label \"전공 적합성\"; supporting phrase \"학업계획 면담\". A neutral study-plan or conversation icon, no letters.\nThese four cards are parallel review criteria, not sequential admission decisions. Under them, thin arrows lead downward from all four cards to one centered horizontal output bar with the exact text: \"점검표·보완 이력 → 대학 심사\". Use the arrow symbol between the two text phrases visibly and clearly, with spacing.\nAt the bottom, place the large, prominent sentence exactly: \"최종 입학 결정은 대학이 담당합니다.\"\nAll quoted Korean text is mandatory and must be rendered verbatim, including the middle dots and punctuation. Do not add any other words, numbers, percentages, claims, decorative lettering or badges. No admission, visa, employment, official accreditation or outcome guarantee. The university is the final admission decision maker; the four cards describe only advance review and the handoff of records for university review.",
+      "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-ae43-71e1-98ad-47fd94e4f879/exec-66d8ccb7-d2bf-45bc-9236-cf1da76f5d75.png",
+      "saved_path": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/02-selection-check.png",
+      "dimensions": {
+        "width": 1774,
+        "height": 887,
+        "aspect_ratio": 2.0,
+        "mode": "RGB"
+      },
+      "visual_validation": "모든 지정 문구를 읽어 일치 확인. 네 검토 항목이 병렬로 대학 심사에 연결되고 대학의 최종 입학 결정 문구가 유지됨.",
+      "targeted_revision_count": 0
+    },
+    {
+      "id": "03",
+      "prompt": "Use case: infographic-diagram.\nAsset type: a Korean explanatory infographic for a formal university partnership proposal.\nCreate one polished landscape 2000 x 1000 pixel image, approximately 2:1. This is a newly created conceptual diagram, not a transformation of earlier photos.\nVisual direction: newspaper-article-style explanatory clarity, clean white and very pale blue background, navy #0F2E54, blue #174EA6 and cyan #069EEA. Modest dimensional icons, subtle soft shadows, rigorously aligned cards, generous whitespace. Information must be clearer and more prominent than decorative icons. Crisp, large, legible Korean sans-serif text, perfect Korean spelling, clean typographic hierarchy. No newspaper page, masthead, article columns, newspaper logo, company logo, seals, photos, watermarks or texture behind letters.\nLayout:\nAt the top, a large navy title exactly: \"준비교육 운영 과정\".\nBelow, five aligned cards in one horizontal row. Each card has one understated dimensional icon with no lettering and one large, bold Korean label. The exact card labels, left to right, are:\n\"진단\" → \"목표 협의\" → \"수업·실습\" → \"평가\" → \"보완\".\nUse clear blue forward arrows between the five cards. A neutral clipboard or magnifier icon for diagnosis, a discussion icon for goal agreement, a book and simple practice-tool icon for lessons/practice, a clipboard-check icon for assessment, and a neutral adjustment or repair icon for supplementary learning.\nFeedback must be represented clearly: from the last card \"보완\", two thin cyan return paths run below the row and lead back upward with visible arrowheads to the first card \"진단\" and the third card \"수업·실습\". These are backward feedback arrows, not new stages. Route the return arrows in the whitespace below the cards without crossing labels or confusing the forward arrows. Do not add labels to the return paths.\nAt the bottom, two large clean information panels, side by side, containing exactly these phrases:\nLeft panel: \"한국어 + 전공 기초\"\nRight panel: \"교육기간·시수는 대학과 협의\"\nMake both phrases fully legible and uncut; a deliberate two-line wrap inside the right panel is acceptable if needed, while preserving every word and punctuation.\nAll quoted Korean text is mandatory and must be rendered verbatim, including the middle dots and plus sign. Do not add any other words, step numbers, durations, quantities, percentages, decorative lettering or badges. In particular do not add a fixed three-to-six-month duration. No admission, visa, employment, official accreditation or outcome guarantee. The visual describes an iterative proposed preparation-education workflow; the period and instructional hours are agreed with the university.",
+      "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-ae43-71e1-98ad-47fd94e4f879/exec-c94b8183-3d6b-42ad-a398-1389b4dc9052.png",
+      "saved_path": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/03-preparation-cycle.png",
+      "dimensions": {
+        "width": 1774,
+        "height": 887,
+        "aspect_ratio": 2.0,
+        "mode": "RGB"
+      },
+      "visual_validation": "모든 지정 문구를 읽어 일치 확인. 진단→목표 협의→수업·실습→평가→보완의 순서와 보완에서 진단·수업·실습으로 돌아가는 피드백 화살표 확인.",
+      "targeted_revision_count": 0
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "figma_url": "https://www.figma.com/design/WjWhtE25116IaGXslTO3xv",
+  "google_doc": "https://docs.google.com/document/d/1Mmrct0UOPUhttx0aZrel5o_uA14CaxgzILpuAhU5ciY",
+  "images": [
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/01-service-flow.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "102c6ec46be1b140e80796d365b8b6be1a7289b450de669a2c1a2f40b4d1a21a"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/02-selection-check.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "8d533877ceabd32bf34ee43199e54a34927e49a011b5c683db143063aa2a221d"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/03-preparation-cycle.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "481defddbe103b2cd4405f40e4433366b0fbe9b25bbdf9103d4a3d83ec879cbc"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/04-student-support.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "401a58915b4389240cd8d843054402a453e8f87f77f7018b66a51dc1a4545b4f"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/05-role-map.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "d6fcc74ec01b91bbfe9ae42b0c422406773474b92c8dbdbce7f3b733703789db"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/06-cost-refund.png",
+      "size": [
+        2360,
+        992
+      ],
+      "sha256": "d70c170142587f24d5a5bd0172ab5f4f0bfa07c6e042df798004af5ecfe97038"
+    },
+    {
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/simplified/07-residence-review.png",
+      "size": [
+        2360,
+        688
+      ],
+      "sha256": "e898e424e4345fc37aacab2c0b4743c61947220940f35afd61501d728639cb3b"
+    }
+  ],
+  "css_source": "company/app/globals.css",
+  "font": "Noto Sans KR",
+  "icons": 0,
+  "five_item_layout": [
+    3,
+    2
+  ],
+  "original_appendix_pages": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "final_document_pages": 33
+}

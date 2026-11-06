@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-12",
+  "document_url": "https://docs.google.com/document/d/1Mmrct0UOPUhttx0aZrel5o_uA14CaxgzILpuAhU5ciY",
+  "revisionId": "AHj4eMREJ729-l9bCD1HbJsjFIlej28gt3XvPX2a8hvxnv_pT8T45FeuDbMKP7vZaZ6nIRQKY6q7YUtI6yXtr5HXRB5N3o2vTkQxkj1OjGc",
+  "bodyPreserved": true,
+  "headingCount": 71,
+  "headingIdsPreserved": true,
+  "linksPreserved": true,
+  "linkCount": 27,
+  "inlineImageCount": 9,
+  "captionCount": 8,
+  "tocPageBreak": true,
+  "summaryPageBreak": true,
+  "photoIllustrations": [
+    {
+      "key": "hero",
+      "path": "01-cover.png",
+      "index": 88,
+      "caption": "사진 기반 삽화 | 현지 면담과 교실 방문 장면을 재구성했습니다.",
+      "width": 480
+    },
+    {
+      "key": "local",
+      "path": "02-local-dialogue.png",
+      "index": 3884,
+      "caption": "그림 1. 현지 관계자와의 협의 장면을 재구성한 삽화",
+      "width": 480
+    },
+    {
+      "key": "interview",
+      "path": "03-candidate-interview.png",
+      "index": 7132,
+      "caption": "그림 2. 지원자의 학업계획과 준비도를 살피는 면담 설명용 삽화",
+      "width": 480
+    },
+    {
+      "key": "class",
+      "path": "04-classroom.png",
+      "index": 8441,
+      "caption": "그림 3. 현지 교실 방문 사진을 바탕으로 구성한 학습지원 삽화",
+      "width": 480
+    },
+    {
+      "key": "arrival",
+      "path": "05-arrival-support.png",
+      "index": 10672,
+      "caption": "그림 4. 현지 방문단의 이동 사진을 활용한 도착·이동 안내 삽화",
+      "width": 480
+    },
+    {
+      "key": "career",
+      "path": "06-career-consultation.png",
+      "index": 13256,
+      "caption": "그림 5. 실제 면담 사진을 활용한 진로상담 설명용 삽화",
+      "width": 480
+    },
+    {
+      "key": "coord",
+      "path": "07-coordination.png",
+      "index": 15097,
+      "caption": "그림 6. 현지 업무 협의 사진을 바탕으로 구성한 연락·보고 삽화",
+      "width": 480
+    },
+    {
+      "key": "cohort",
+      "path": "08-student-cohort.png",
+      "index": 18619,
+      "caption": "그림 7. 면담 참석자 사진을 활용한 기수별 학생 관리 설명용 삽화",
+      "width": 480
+    }
+  ]
+}

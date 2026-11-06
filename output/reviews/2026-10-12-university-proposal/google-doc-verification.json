@@ -1,0 +1,71 @@
+{
+  "document_url": "https://docs.google.com/document/d/1Mmrct0UOPUhttx0aZrel5o_uA14CaxgzILpuAhU5ciY",
+  "tabId": "t.0",
+  "contentMatches": true,
+  "expectedCharacters": 27842,
+  "actualCharacters": 27843,
+  "headingCount": 71,
+  "mainHeadings": [
+    {
+      "style": "HEADING_1",
+      "text": "제안 요약"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "문서 구성"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "1. 협력 목적과 사업 범위"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "2. 정우인재개발원 소개와 협력 기반"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "3. 학생 모집 및 선발"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "4. 입학 전 한국어 및 기술 준비교육"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "5. 입학 및 학업·생활 지원"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "6. 졸업 후 진로·기업 연계"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "7. 기관별 역할과 연락·보고·업무 인계"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "8. 비용·환불과 품질관리"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "9. 시범운영안과 대학 협의사항"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "부록 A. 체류자격별 적용 기준"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "부록 B. 단계별 제출·확인자료"
+    },
+    {
+      "style": "HEADING_1",
+      "text": "부록 C. 공식 근거와 기준일"
+    }
+  ],
+  "links": 15,
+  "nativeBulletParagraphs": 7,
+  "inlineImageCount": 0,
+  "headingStyleFailures": 0,
+  "sourceLinkFailures": 0
+}

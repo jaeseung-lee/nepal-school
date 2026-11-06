@@ -1,0 +1,62 @@
+{
+  "frames": [
+    {
+      "id": "2:16",
+      "name": "01-service-flow",
+      "width": 1180,
+      "height": 584,
+      "textCount": 21,
+      "overflow": []
+    },
+    {
+      "id": "2:83",
+      "name": "02-selection-check",
+      "width": 1180,
+      "height": 546,
+      "textCount": 12,
+      "overflow": []
+    },
+    {
+      "id": "2:125",
+      "name": "03-preparation-cycle",
+      "width": 1180,
+      "height": 586,
+      "textCount": 19,
+      "overflow": []
+    },
+    {
+      "id": "2:191",
+      "name": "04-student-support",
+      "width": 1180,
+      "height": 536,
+      "textCount": 19,
+      "overflow": []
+    },
+    {
+      "id": "2:252",
+      "name": "05-role-map",
+      "width": 1180,
+      "height": 802,
+      "textCount": 15,
+      "overflow": []
+    },
+    {
+      "id": "2:297",
+      "name": "06-cost-refund",
+      "width": 1180,
+      "height": 544,
+      "textCount": 13,
+      "overflow": []
+    },
+    {
+      "id": "2:343",
+      "name": "07-residence-review",
+      "width": 1180,
+      "height": 754,
+      "textCount": 12,
+      "overflow": []
+    }
+  ],
+  "nativeImageNodeCount": 0,
+  "variableCount": 13
+}

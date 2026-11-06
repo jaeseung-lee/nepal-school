@@ -1,0 +1,435 @@
+{
+  "markdown_characters": 29334,
+  "text_utf16_units": 27842,
+  "paragraph_count": 447,
+  "headings": [
+    {
+      "start": 1,
+      "end": 31,
+      "style": "TITLE",
+      "text": "외국인 유학생 사전교육·학업지원·취업연계 협력 제안서"
+    },
+    {
+      "start": 89,
+      "end": 95,
+      "style": "HEADING_1",
+      "text": "제안 요약"
+    },
+    {
+      "start": 786,
+      "end": 801,
+      "style": "HEADING_2",
+      "text": "대학에 제안하는 주요 지원"
+    },
+    {
+      "start": 1077,
+      "end": 1096,
+      "style": "HEADING_2",
+      "text": "협력 개시를 위해 먼저 정할 사항"
+    },
+    {
+      "start": 1266,
+      "end": 1272,
+      "style": "HEADING_1",
+      "text": "문서 구성"
+    },
+    {
+      "start": 1490,
+      "end": 1506,
+      "style": "HEADING_1",
+      "text": "1. 협력 목적과 사업 범위"
+    },
+    {
+      "start": 1507,
+      "end": 1517,
+      "style": "HEADING_2",
+      "text": "1.1 협력 목적"
+    },
+    {
+      "start": 1952,
+      "end": 1969,
+      "style": "HEADING_2",
+      "text": "1.2 대상 대학·학과와 학생"
+    },
+    {
+      "start": 2517,
+      "end": 2532,
+      "style": "HEADING_2",
+      "text": "1.3 단계별 서비스 범위"
+    },
+    {
+      "start": 2981,
+      "end": 3000,
+      "style": "HEADING_2",
+      "text": "1.4 대학이 확인할 운영 결과물"
+    },
+    {
+      "start": 3417,
+      "end": 3438,
+      "style": "HEADING_1",
+      "text": "2. 정우인재개발원 소개와 협력 기반"
+    },
+    {
+      "start": 3439,
+      "end": 3456,
+      "style": "HEADING_2",
+      "text": "2.1 회사 개요와 사업 방향"
+    },
+    {
+      "start": 3945,
+      "end": 3968,
+      "style": "HEADING_2",
+      "text": "2.2 확인 자료가 있는 현지 협력 관계"
+    },
+    {
+      "start": 4618,
+      "end": 4641,
+      "style": "HEADING_2",
+      "text": "2.3 대학에 제안하는 역할과 확인 범위"
+    },
+    {
+      "start": 5016,
+      "end": 5030,
+      "style": "HEADING_1",
+      "text": "3. 학생 모집 및 선발"
+    },
+    {
+      "start": 5291,
+      "end": 5315,
+      "style": "HEADING_2",
+      "text": "3.1 대학별 모집 기준과 대상 학과 협의"
+    },
+    {
+      "start": 5782,
+      "end": 5803,
+      "style": "HEADING_2",
+      "text": "3.2 네팔 현지 설명과 지원자 상담"
+    },
+    {
+      "start": 6289,
+      "end": 6308,
+      "style": "HEADING_2",
+      "text": "3.3 학력과 지원서류 사전 확인"
+    },
+    {
+      "start": 6790,
+      "end": 6810,
+      "style": "HEADING_2",
+      "text": "3.4 학업계획과 전공 적합성 면접"
+    },
+    {
+      "start": 7306,
+      "end": 7324,
+      "style": "HEADING_2",
+      "text": "3.5 후보자 명부와 대학 인계"
+    },
+    {
+      "start": 7696,
+      "end": 7718,
+      "style": "HEADING_1",
+      "text": "4. 입학 전 한국어 및 기술 준비교육"
+    },
+    {
+      "start": 7719,
+      "end": 7741,
+      "style": "HEADING_2",
+      "text": "4.1 교육과정 설계와 운영 조건 확정"
+    },
+    {
+      "start": 8160,
+      "end": 8182,
+      "style": "HEADING_2",
+      "text": "4.2 한국어 진단과 학업 한국어 교육"
+    },
+    {
+      "start": 8642,
+      "end": 8660,
+      "style": "HEADING_2",
+      "text": "4.3 전공 관련 기초기술 교육"
+    },
+    {
+      "start": 9109,
+      "end": 9127,
+      "style": "HEADING_2",
+      "text": "4.4 실습시설과 안전교육 확인"
+    },
+    {
+      "start": 9561,
+      "end": 9585,
+      "style": "HEADING_2",
+      "text": "4.5 평가와 교육 이수 자료의 대학 전달"
+    },
+    {
+      "start": 9990,
+      "end": 10007,
+      "style": "HEADING_1",
+      "text": "5. 입학 및 학업·생활 지원"
+    },
+    {
+      "start": 10008,
+      "end": 10028,
+      "style": "HEADING_2",
+      "text": "5.1 입학 절차와 입국 준비 지원"
+    },
+    {
+      "start": 10460,
+      "end": 10483,
+      "style": "HEADING_2",
+      "text": "5.2 입국 초기 생활 안내와 대학 인계"
+    },
+    {
+      "start": 10918,
+      "end": 10938,
+      "style": "HEADING_2",
+      "text": "5.3 학업 적응과 학습 보완 지원"
+    },
+    {
+      "start": 11385,
+      "end": 11402,
+      "style": "HEADING_2",
+      "text": "5.4 생활 상담과 고충 처리"
+    },
+    {
+      "start": 11814,
+      "end": 11835,
+      "style": "HEADING_2",
+      "text": "5.5 학업을 우선하는 현장활동 안내"
+    },
+    {
+      "start": 12304,
+      "end": 12321,
+      "style": "HEADING_2",
+      "text": "5.6 지원 기록과 대학 보고"
+    },
+    {
+      "start": 12677,
+      "end": 12694,
+      "style": "HEADING_1",
+      "text": "6. 졸업 후 진로·기업 연계"
+    },
+    {
+      "start": 12889,
+      "end": 12909,
+      "style": "HEADING_2",
+      "text": "6.1 기업 발굴과 채용 수요 확인"
+    },
+    {
+      "start": 13203,
+      "end": 13224,
+      "style": "HEADING_2",
+      "text": "6.2 직무 검증과 학생별 진로 상담"
+    },
+    {
+      "start": 13562,
+      "end": 13579,
+      "style": "HEADING_2",
+      "text": "6.3 채용 및 체류절차 지원"
+    },
+    {
+      "start": 14090,
+      "end": 14113,
+      "style": "HEADING_2",
+      "text": "6.4 취업이 성립하지 않는 경우의 지원"
+    },
+    {
+      "start": 14396,
+      "end": 14419,
+      "style": "HEADING_1",
+      "text": "7. 기관별 역할과 연락·보고·업무 인계"
+    },
+    {
+      "start": 14420,
+      "end": 14441,
+      "style": "HEADING_2",
+      "text": "7.1 결정 권한과 지원 업무의 구분"
+    },
+    {
+      "start": 14949,
+      "end": 14965,
+      "style": "HEADING_2",
+      "text": "7.2 연락창구와 보고 방식"
+    },
+    {
+      "start": 15407,
+      "end": 15432,
+      "style": "HEADING_2",
+      "text": "7.3 단계별 업무 인계와 학생의 정보 관리"
+    },
+    {
+      "start": 16047,
+      "end": 16062,
+      "style": "HEADING_1",
+      "text": "8. 비용·환불과 품질관리"
+    },
+    {
+      "start": 16063,
+      "end": 16086,
+      "style": "HEADING_2",
+      "text": "8.1 항목별 견적과 학생 부담액의 승인"
+    },
+    {
+      "start": 16598,
+      "end": 16621,
+      "style": "HEADING_2",
+      "text": "8.2 불허·탈락·오류·철회에 따른 처리"
+    },
+    {
+      "start": 17387,
+      "end": 17407,
+      "style": "HEADING_2",
+      "text": "8.3 교육·시험·서류의 품질 확인"
+    },
+    {
+      "start": 17940,
+      "end": 17958,
+      "style": "HEADING_1",
+      "text": "9. 시범운영안과 대학 협의사항"
+    },
+    {
+      "start": 17959,
+      "end": 17978,
+      "style": "HEADING_2",
+      "text": "9.1 한 기수의 운영 범위 설정"
+    },
+    {
+      "start": 18476,
+      "end": 18493,
+      "style": "HEADING_2",
+      "text": "9.2 평가 지표와 확대 판단"
+    },
+    {
+      "start": 18966,
+      "end": 18984,
+      "style": "HEADING_2",
+      "text": "9.3 대학과 우선 확정할 사항"
+    },
+    {
+      "start": 19409,
+      "end": 19427,
+      "style": "HEADING_1",
+      "text": "부록 A. 체류자격별 적용 기준"
+    },
+    {
+      "start": 19563,
+      "end": 19579,
+      "style": "HEADING_2",
+      "text": "A.1 재학 중 D-2 활동"
+    },
+    {
+      "start": 19860,
+      "end": 19884,
+      "style": "HEADING_2",
+      "text": "A.2 졸업 후 D-10-1 구직 및 인턴"
+    },
+    {
+      "start": 20394,
+      "end": 20418,
+      "style": "HEADING_2",
+      "text": "A.3 E-7 공통 확인과 국내 학위 특례"
+    },
+    {
+      "start": 20901,
+      "end": 20917,
+      "style": "HEADING_2",
+      "text": "A.4 E-7-3 조선용접공"
+    },
+    {
+      "start": 21397,
+      "end": 21424,
+      "style": "HEADING_2",
+      "text": "A.5 지정 뿌리산업 양성대학의 E-7-4 특례"
+    },
+    {
+      "start": 21780,
+      "end": 21801,
+      "style": "HEADING_2",
+      "text": "A.6 일반 K-Point E-7-4"
+    },
+    {
+      "start": 22076,
+      "end": 22094,
+      "style": "HEADING_2",
+      "text": "A.7 K-CORE와 E-7-M"
+    },
+    {
+      "start": 22412,
+      "end": 22439,
+      "style": "HEADING_2",
+      "text": "A.8 E-7-3 건설기계부품제조원 S85513"
+    },
+    {
+      "start": 22850,
+      "end": 22866,
+      "style": "HEADING_2",
+      "text": "A.9 지역특화형 F-2-R"
+    },
+    {
+      "start": 23292,
+      "end": 23312,
+      "style": "HEADING_2",
+      "text": "A.10 정부 추진계획의 반영 원칙"
+    },
+    {
+      "start": 23557,
+      "end": 23575,
+      "style": "HEADING_1",
+      "text": "부록 B. 단계별 제출·확인자료"
+    },
+    {
+      "start": 23736,
+      "end": 23754,
+      "style": "HEADING_2",
+      "text": "B.1 협력 개시 전 기관 자료"
+    },
+    {
+      "start": 24070,
+      "end": 24087,
+      "style": "HEADING_2",
+      "text": "B.2 지원자 모집·선발 자료"
+    },
+    {
+      "start": 24393,
+      "end": 24405,
+      "style": "HEADING_2",
+      "text": "B.3 준비교육 자료"
+    },
+    {
+      "start": 24706,
+      "end": 24726,
+      "style": "HEADING_2",
+      "text": "B.4 수료증·용접 기량·자격 자료"
+    },
+    {
+      "start": 25266,
+      "end": 25284,
+      "style": "HEADING_2",
+      "text": "B.5 입학·입국·재학 인계자료"
+    },
+    {
+      "start": 25582,
+      "end": 25598,
+      "style": "HEADING_2",
+      "text": "B.6 기업·취업 연계 자료"
+    },
+    {
+      "start": 25938,
+      "end": 25955,
+      "style": "HEADING_2",
+      "text": "B.7 배포 문서와 실적 확인"
+    },
+    {
+      "start": 26247,
+      "end": 26264,
+      "style": "HEADING_1",
+      "text": "부록 C. 공식 근거와 기준일"
+    },
+    {
+      "start": 27662,
+      "end": 27671,
+      "style": "HEADING_2",
+      "text": "부록 활용 방법"
+    }
+  ],
+  "request_count": 89,
+  "hyperlink_count": 15
+}

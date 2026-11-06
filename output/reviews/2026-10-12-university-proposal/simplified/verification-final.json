@@ -1,0 +1,135 @@
+{
+  "bodyMatchesPlanned": true,
+  "originalHeadingsPreserved": true,
+  "oldHeadingCount": 71,
+  "newHeadingCount": 75,
+  "originalLinksPreserved": true,
+  "oldLinkCount": 27,
+  "newLinkCount": 34,
+  "inlineImageCount": 20,
+  "logoPreserved": true,
+  "figmaIconCounts": [
+    {
+      "name": "01-service-flow",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "02-selection-check",
+      "vectors": 0,
+      "rows": [
+        2,
+        2
+      ],
+      "textCount": 4
+    },
+    {
+      "name": "03-preparation-cycle",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "04-student-support",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "05-role-map",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "06-cost-refund",
+      "vectors": 0,
+      "rows": [
+        3,
+        2,
+        2
+      ],
+      "textCount": 7
+    },
+    {
+      "name": "07-residence-review",
+      "vectors": 0,
+      "rows": [
+        2,
+        2
+      ],
+      "textCount": 4
+    }
+  ],
+  "originalAppendixPages": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "originalPhotosAndLogoPreserved": true,
+  "finalRevision": "AHj4eMTk8d_Cpgn24me3l-CisYLQGd1TP0sEjRMzgKYXEk__SNwEoeySkcHVztVsok8NCUhfBBF9ELPgwiolsg2M_UBS-HlyZF0eIc4HydE",
+  "finalPdf": "/Users/ijaeseung/nepal-school/tmp/pdfs/university-proposal-simplified/completed.pdf",
+  "finalPageCount": 33,
+  "visualReview": {
+    "root": [
+      1,
+      2,
+      3,
+      30,
+      31,
+      32,
+      33
+    ],
+    "cert_university_review": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "e7_verify": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "d10_f2r_verify": [
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ],
+    "result": "passed",
+    "finalModifiedPages": [
+      3,
+      30
+    ]
+  }
+}

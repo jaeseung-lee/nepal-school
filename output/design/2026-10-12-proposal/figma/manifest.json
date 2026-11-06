@@ -1,0 +1,86 @@
+{
+  "figma_url": "https://www.figma.com/design/WjWhtE25116IaGXslTO3xv",
+  "account": "templer151@gmail.com",
+  "team": "portfoilo",
+  "css_source": "/Users/ijaeseung/nepal-school/company/app/globals.css",
+  "card_source": "/Users/ijaeseung/nepal-school/company/components/visa/visa-process.tsx",
+  "source_font": "Pretendard Variable",
+  "figma_font": "Noto Sans KR",
+  "font_reason": "Pretendard unavailable in the connected Figma font list",
+  "native_editable_text": true,
+  "native_editable_vectors": true,
+  "native_flattened_image_layers": 0,
+  "css_variables": 13,
+  "exported_pngs": [
+    {
+      "id": "2:16",
+      "name": "01-service-flow",
+      "width": 1180,
+      "height": 584,
+      "textCount": 21,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/01-service-flow.png",
+      "sha256": "11cd7bfc62c14cbd5a3b26afb85fce2a629759bf90a6282f325ef214f881a8fa"
+    },
+    {
+      "id": "2:83",
+      "name": "02-selection-check",
+      "width": 1180,
+      "height": 546,
+      "textCount": 12,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/02-selection-check.png",
+      "sha256": "615d2226cfea3cb41d499695dbd471ec8f48d088dd4b9a446c62e46ac7b8afce"
+    },
+    {
+      "id": "2:125",
+      "name": "03-preparation-cycle",
+      "width": 1180,
+      "height": 586,
+      "textCount": 19,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/03-preparation-cycle.png",
+      "sha256": "f23cceb580ecb97e52e1d7275ee33fcfdd29fb0cb6dbb49ce84a2aa0fe1d0ea5"
+    },
+    {
+      "id": "2:191",
+      "name": "04-student-support",
+      "width": 1180,
+      "height": 536,
+      "textCount": 19,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/04-student-support.png",
+      "sha256": "f1cc23fab597b9042e75098b2399eddff4d0909085a6048c7de98cc138918108"
+    },
+    {
+      "id": "2:252",
+      "name": "05-role-map",
+      "width": 1180,
+      "height": 802,
+      "textCount": 15,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/05-role-map.png",
+      "sha256": "9264b98d17a95241e7592711b6a036b9666b1cc68d01e76ec790fec21a2370f5"
+    },
+    {
+      "id": "2:297",
+      "name": "06-cost-refund",
+      "width": 1180,
+      "height": 544,
+      "textCount": 13,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/06-cost-refund.png",
+      "sha256": "af8a164ab9ef27d5329e3f4a5b3d2071c0e43d3acadee1e7dfbf56e980670729"
+    },
+    {
+      "id": "2:343",
+      "name": "07-residence-review",
+      "width": 1180,
+      "height": 754,
+      "textCount": 12,
+      "overflow": [],
+      "path": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/figma/07-residence-review.png",
+      "sha256": "7de52e551d4c4357e002744a6be83df22f8b43e372f11b59296740551c68963c"
+    }
+  ]
+}

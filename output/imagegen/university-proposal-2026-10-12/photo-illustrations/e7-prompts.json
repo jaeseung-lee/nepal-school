@@ -1,0 +1,60 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-12",
+  "references_inspected_with": "view_image",
+  "style": "clean vector-like outlines + restrained gouache texture",
+  "requested_aspect_ratio": "approximately 2.5:1",
+  "source_change_note": "The initially assigned 07 source (15-04-00 005.jpeg) shows a signboard rather than a meeting. Parent authorized replacement with 15-03-47.jpeg, inspected directly and confirmed to show a five-person meeting.",
+  "images": [
+    {
+      "id": "04-classroom",
+      "source": "/Users/ijaeseung/nepal-school/images/etc/KakaoTalk_Photo_2026-07-18-14-45-28 004.jpeg",
+      "output": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/photo-illustrations/04-classroom.png",
+      "prompt": "Use case: style-transfer.\nAsset type: polished editorial illustration for a formal proposal to Korean universities.\nInput image 1 is the source photograph and the scene/identity reference. Transform this real classroom visit into an illustration; preserve the actual people, clothing, visible activity, classroom furniture and left-to-right relationships from the source.\nScene and subjects: a spacious bright classroom with white desks and wooden desktop surfaces, a large window with navy curtains on the right, books and ordinary study materials on the desks, a ceiling fan and understated linear lights. Preserve the visiting adults standing at the left, especially the bespectacled person with shoulder-length dark hair, white long-sleeved shirt and gray trousers, and the seated group of students in navy collared uniforms with pale trim. They are participating in a classroom visit, looking toward the visitors/camera; retain the ordinary, calm activity visible in the photograph.\nStyle: high-quality, calm editorial illustration with clean vector-like outlines and restrained gouache texture, thoughtful simplified shapes, natural simplified faces, believable anatomy and hands, sophisticated light and shadow, suitable for a university cooperation document.\nComposition: approximately 2.5:1 wide horizontal banner. Recompose the source into a wider editorial panorama, reducing excessive empty ceiling and floor while keeping all visible people's heads fully inside the frame and maintaining the classroom depth and natural proportions. Do not crop through heads or important hands. No stretched bodies.\nPalette: navy #0F2E54, brand blue #174EA6, cyan #069EEA and warm off-white #F5F2EB, with natural skin tones and restrained warm wood colors. Preserve recognisable actual clothing.\nConstraints: no letters, numbers, logos, readable writing, captions or watermarks anywhere. Simplify any book pages, uniform badges and visible signage into nonverbal shapes. Preserve the real classroom scene; no new people, graduation outfits, certificates, awards, admissions, recruitment, visa approval symbols, official accreditation or invented achievements. Opaque background; one finished image only.",
+      "status": "completed",
+      "original_generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-7b9b52b0-40c0-4986-ae15-aba9bbc450e1.png",
+      "width": 1983,
+      "height": 793,
+      "aspect_ratio": 2.5006,
+      "sha256": "fb6a67154af5e2bfe30cb35558afce7b3ed9305c85c37e327733ece9eb14f7ad",
+      "review": {
+        "style": "차분한 벡터형 윤곽과 고슈 질감, 지정 계열 팔레트",
+        "people_and_activity": "교실 방문·학습 장면 보존",
+        "text": "책·화면·표지·복장에 읽을 수 있는 글자·로고·워터마크 없음",
+        "anatomy": "전체 인물 머리가 화면 안에 들어오도록 여백 보정 완료, 주요 손·팔에 중대한 중복이나 변형 없음",
+        "approval_claims": "입학·취업·비자 승인 또는 공인 자격을 나타내는 요소 없음"
+      },
+      "initial_generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-f258323d-a872-4006-a456-09d385b98b2b.png",
+      "initial_sha256": "4430a0e9146675528b2e9ac04bf17c1558fbdec5e41f1f6264cde07aab42c20d",
+      "revision": {
+        "prompt": "Use case: precise-object-edit / composition refinement.\nInput image 1 is the classroom editorial illustration to refine. Make only one change: gently zoom out/reframe the existing scene so that the entire head of the rightmost bespectacled student, currently clipped by the right edge, is fully visible with a small clean margin. Give all existing people's heads a little breathing room inside the frame.\nKeep the same approximately 2.5:1 wide horizontal aspect ratio. Keep all the same people, their faces and identities, clothing, seated/standing poses, natural hands, relative positions, furniture, classroom visit activity, clean vector-like outlines, restrained gouache texture, and navy #0F2E54 / blue #174EA6 / cyan #069EEA / warm off-white #F5F2EB palette with natural skin tones. Preserve the current overall illustration faithfully. Do not add or remove people. Extend only the room background as needed or gently scale the composition down to achieve this margin without stretching anyone.\nNo letters, numbers, logos, readable writing, captions or watermarks. No certificates, official approvals, admissions, employment or visa symbols. One finished image only, opaque background.",
+        "referenced_image_paths": [
+          "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/photo-illustrations/04-classroom.png"
+        ],
+        "reference_original_generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-f258323d-a872-4006-a456-09d385b98b2b.png",
+        "reference_sha256": "4430a0e9146675528b2e9ac04bf17c1558fbdec5e41f1f6264cde07aab42c20d",
+        "transparent_background": false,
+        "reason": "오른쪽 가장자리 학생의 머리가 전부 보이도록 장면의 프레임과 여백만 보정"
+      }
+    },
+    {
+      "id": "07-coordination",
+      "source": "/Users/ijaeseung/nepal-school/images/etc/KakaoTalk_Photo_2026-07-18-15-03-47.jpeg",
+      "output": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/photo-illustrations/07-coordination.png",
+      "prompt": "Use case: style-transfer.\nAsset type: polished editorial illustration for a formal proposal to Korean universities.\nInput image 1 is the source photograph and the scene/identity reference. Transform the real local coordination meeting into an illustration; preserve all five actual participants, their clothing, seating, relative positions and the presenter's explanatory gesture.\nScene and subjects: a small meeting room with a rounded wooden conference table and dark office chairs. Four participants are seated: a dark-haired person in a white polo shirt in the left foreground; a bespectacled person with shoulder-length dark hair in a yellow shirt at the far-left side of the table; a short-haired person in a brown/tan shirt seated against the back wall with folded arms; and a person in a pale blue shirt and beige cap seen mostly from behind in the right foreground. A person in a dark navy polo stands at the right beside a wall-mounted monitor, explaining with one arm raised, exactly as in the photograph. Preserve the notebooks, papers, glasses, bottles and simple meeting objects already on the table. Keep the window at left, dark rear wall and subdued room fixtures.\nStyle: high-quality, calm editorial illustration with clean vector-like outlines and restrained gouache texture, thoughtfully simplified shapes, natural simplified faces, believable hands and body proportions, sophisticated light and shadow.\nComposition: approximately 2.5:1 wide horizontal panorama for a proposal section banner. Recompose gently to a wider scene while retaining the five people and actual meeting arrangement. Every head and the presenter's raised hand must fit fully within the canvas. Maintain clear, natural table interactions and hand anatomy; no duplicated arms, extra fingers or stretched bodies.\nPalette: navy #0F2E54, brand blue #174EA6, cyan #069EEA and warm off-white #F5F2EB, with natural skin tones, muted yellow and warm wood. Preserve actual clothing colors within this restrained treatment.\nConstraints: no letters, numbers, logos, captions, readable writing or watermarks anywhere. Replace the monitor's text and presentation with plain nonverbal blue blocks and abstract shapes; make notebook pages and wall signs text-free. Preserve a discussion/coordination activity only. No additional people, handshakes, certificates, signing ceremonies, admissions, recruitment, visa approvals, official accreditation or invented achievements. Opaque background; one finished image only.",
+      "status": "completed",
+      "original_generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-c34a6278-0a49-4a4e-a361-136d2fceb2fc.png",
+      "width": 1983,
+      "height": 793,
+      "aspect_ratio": 2.5006,
+      "sha256": "03e543abfc7e529176d3f5599932721b4ee75858817ba204c5a373c2de4241cd",
+      "review": {
+        "style": "차분한 벡터형 윤곽과 고슈 질감, 지정 계열 팔레트",
+        "people_and_activity": "회의 참석자 5명과 한 손을 들고 설명하는 동작 보존",
+        "text": "책·화면·표지·복장에 읽을 수 있는 글자·로고·워터마크 없음",
+        "anatomy": "주요 인물의 얼굴과 손·팔에 중대한 중복이나 변형 없음",
+        "approval_claims": "입학·취업·비자 승인 또는 공인 자격을 나타내는 요소 없음"
+      }
+    }
+  ]
+}

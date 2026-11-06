@@ -1,0 +1,111 @@
+{
+  "map_url": "https://www.google.com/maps/d/u/2/edit?mid=1qS1Oio8gRrKL8D8Tmw1HcqzHl1GziZs",
+  "date": "2026-10-26",
+  "print_quantity": 300,
+  "first_round": 205,
+  "reserve": 95,
+  "pin_count": 20,
+  "actual_distributed": 0,
+  "pins": [
+    {
+      "name": "01 SA190 クロス住之江公園1",
+      "map_label": "[15장 예정] 01 SA190 クロス住之江公園1",
+      "planned_quantity": 15
+    },
+    {
+      "name": "02 BeGood なんば恵美須",
+      "map_label": "[5장 예정] 02 BeGood なんば恵美須",
+      "planned_quantity": 5
+    },
+    {
+      "name": "03 コミューズ新大阪",
+      "map_label": "[25장 예정] 03 コミューズ新大阪",
+      "planned_quantity": 25
+    },
+    {
+      "name": "04 J&Fハウス大阪",
+      "map_label": "[25장 예정] 04 J&Fハウス大阪",
+      "planned_quantity": 25
+    },
+    {
+      "name": "05 J&Fハウス大阪Ⅱ",
+      "map_label": "[25장 예정] 05 J&Fハウス大阪Ⅱ",
+      "planned_quantity": 25
+    },
+    {
+      "name": "06 SPACEGREEN Osaka-e",
+      "map_label": "[25장 예정] 06 SPACEGREEN Osaka-e",
+      "planned_quantity": 25
+    },
+    {
+      "name": "07 SA232 クロス玉出1",
+      "map_label": "[5장 예정] 07 SA232 クロス玉出1",
+      "planned_quantity": 5
+    },
+    {
+      "name": "08 SA200 クロス西九条1",
+      "map_label": "[5장 예정] 08 SA200 クロス西九条1",
+      "planned_quantity": 5
+    },
+    {
+      "name": "09 CRIB",
+      "map_label": "[15장 예정] 09 CRIB",
+      "planned_quantity": 15
+    },
+    {
+      "name": "10 ONE WORLD 中川西Ⅱ",
+      "map_label": "[5장 예정] 10 ONE WORLD 中川西Ⅱ",
+      "planned_quantity": 5
+    },
+    {
+      "name": "11 ONE WORLD 中川西Ⅲ",
+      "map_label": "[5장 예정] 11 ONE WORLD 中川西Ⅲ",
+      "planned_quantity": 5
+    },
+    {
+      "name": "12 ONE WORLD 中川西Ⅳ",
+      "map_label": "[5장 예정] 12 ONE WORLD 中川西Ⅳ",
+      "planned_quantity": 5
+    },
+    {
+      "name": "13 C’s share 鶴橋",
+      "map_label": "[15장 예정] 13 C’s share 鶴橋",
+      "planned_quantity": 15
+    },
+    {
+      "name": "14 C’s share なんば2 大国町",
+      "map_label": "[5장 예정] 14 C’s share なんば2 大国町",
+      "planned_quantity": 5
+    },
+    {
+      "name": "15 住吉大社前シェアハウス",
+      "map_label": "[5장 예정] 15 住吉大社前シェアハウス",
+      "planned_quantity": 5
+    },
+    {
+      "name": "16 The Maison リバージュ桜ノ宮",
+      "map_label": "[5장 예정] 16 The Maison リバージュ桜ノ宮",
+      "planned_quantity": 5
+    },
+    {
+      "name": "17 MASH",
+      "map_label": "[5장 예정] 17 MASH",
+      "planned_quantity": 5
+    },
+    {
+      "name": "18 ARTdoor’s",
+      "map_label": "[5장 예정] 18 ARTdoor’s",
+      "planned_quantity": 5
+    },
+    {
+      "name": "19 International Sharehouse Alley",
+      "map_label": "[5장 예정] 19 International Sharehouse Alley",
+      "planned_quantity": 5
+    },
+    {
+      "name": "20 ECHO HOUSE",
+      "map_label": "[운영확인·보류] 20 ECHO HOUSE",
+      "planned_quantity": 0
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+[
+  {
+    "file": "00_대표님_전달안내.pdf",
+    "pages": 1,
+    "status": "작성 안내서",
+    "source": "",
+    "sha256": "070241f36c1a3f67b102ab139d492b1ef1e1724a3c24e9fe2de7e62f4c748155"
+  },
+  {
+    "file": "01_사쿠라코토노하_2026년도_모집요강.pdf",
+    "pages": 14,
+    "status": "2026년도",
+    "source": "https://drive.google.com/file/d/1FY_XHYz37ALqKwUOuOR7NWSS5PQn6HDV/view",
+    "sha256": "29f22bc468727625867264c73a03d35728d8a48394cd5eabb0249e6b514265c3"
+  },
+  {
+    "file": "02_오사카프런티어_2026년4월부터개정_모집요강.pdf",
+    "pages": 6,
+    "status": "2026년 4월부터 개정",
+    "source": "http://www.ofj-ls.jp/images/admission/guidance.pdf?20250703",
+    "sha256": "7b606d2489f7ac61e5dbf06579ccf116a19a2209da410dc8b6ee0fdd83f51ba4"
+  },
+  {
+    "file": "03_히마와리_2024파일_연도미표기_모집요강.pdf",
+    "pages": 4,
+    "status": "적용연도 미표기 / 2024 제작",
+    "source": "https://www.himawari-nihongo.com/jp/pdf/requirement2024.pdf",
+    "sha256": "0947aea282ebd6dc280a31fef7535b57498ddfd3c257ed0d36778a7e9e9fefaf"
+  },
+  {
+    "file": "04_퍼스트스터디_2022제작_모집요강_참고용.pdf",
+    "pages": 2,
+    "status": "적용연도 미표기 / 2022 제작",
+    "source": "https://firststudy.net/pdf/22-06-all%20Enrollment-JP.pdf",
+    "sha256": "ac075ead0961899916b3f44edfa970575a3518734bcb86840fbd8570cc21f2c6"
+  },
+  {
+    "file": "05_오사카국제교육학원_2021제작_모집요강_참고용.pdf",
+    "pages": 5,
+    "status": "적용연도 미표기 / 2021 제작",
+    "source": "https://inter-edu.co.jp/wp-content/uploads/2021/11/bosyu_20211118_jp.pdf",
+    "sha256": "d12884a935e5df46c0d6ad5b09f56dc9b92778d50550d5ce2c0a19e43219c291"
+  },
+  {
+    "file": "06_남캠퍼스_공식웹페이지보관본_학교발행PDF아님.pdf",
+    "pages": 2,
+    "status": "적용연도 미표기 / 2026-10-06 웹보관",
+    "source": "https://www.osaka-intlacademysouth.jp/guide",
+    "sha256": "913ba1df2388605952ba51da7b1944cab3b57a8c9bea780d107bb5d0212828f9"
+  },
+  {
+    "file": "추가서식_남캠퍼스/입학원서_모집요강아님.pdf",
+    "pages": 7,
+    "status": "원서 서식",
+    "source": "https://www.osaka-intlacademysouth.jp/wp-content/themes/intlacademysouth/images/schoolguide.pdf",
+    "sha256": "c87afe8ea5ff9d1ad46a64042341fcc45bd764a9c026c2132e621afe1485757b"
+  },
+  {
+    "file": "추가서식_남캠퍼스/경비지변서_모집요강아님.pdf",
+    "pages": 1,
+    "status": "경비지변서",
+    "source": "https://www.osaka-intlacademysouth.jp/wp-content/themes/intlacademysouth/images/pavinaexpenses.pdf",
+    "sha256": "bcc38ade9ec70bc5dea6df579a0042efa70dc24fb65f4c5dbce53b5df7cb4ec4"
+  },
+  {
+    "file": "07_오사카나니와_모집요강_적용연도미표기.pdf",
+    "pages": 8,
+    "status": "적용연도 미표기 / 2025-06-04 제작 / 현재 공식 홈페이지 연결본",
+    "source_page": "https://www.onjls.com/?process/",
+    "source": "https://www.onjls.com/static/upload/file/20250702/1751417721127163.pdf",
+    "sha256": "fdee8bc16d1cd6c2bf5c422ec5b14c4af5001e994143f75b43c4c39032ddf727"
+  },
+  {
+    "file": "07_오사카나니와_입학안내_적용연도미표기.pdf",
+    "pages": 15,
+    "status": "적용연도 미표기 / 2025-06-04 제작 / 현재 공식 홈페이지 연결본",
+    "source_page": "https://www.onjls.com/?process/",
+    "source": "https://www.onjls.com/static/upload/file/20250702/1751417664359868.pdf",
+    "sha256": "c04743801e057fa1c7c9d438b005d932f28b33b47a36b87557e827a0880a4baa"
+  }
+]

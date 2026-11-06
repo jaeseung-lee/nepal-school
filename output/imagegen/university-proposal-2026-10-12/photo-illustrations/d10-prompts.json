@@ -1,0 +1,41 @@
+[
+  {
+    "asset": "08-student-cohort",
+    "mode": "built-in image_gen",
+    "intent": "photo-based illustration",
+    "reference_images": [
+      "/Users/ijaeseung/nepal-school/images/20260902/IMG_5738.JPG"
+    ],
+    "output": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/photo-illustrations/08-student-cohort.png",
+    "aspect_ratio": "2.5:1",
+    "prompt": "Use case: style-transfer. Asset type: a wide editorial illustration for a Korean university cooperation proposal, showing a seated student cohort without claiming any admission, hiring, or government approval. Input image 1 is the sole reference for people, clothing, posture, room, and composition; use it to preserve the real observed activity. Create a clean professional editorial illustration with an exact 2.5:1 wide canvas, preferably 2560 x 1024 pixels. The reference shows eight attendees, predominantly in dark blazers over white collared shirts, seated in two short staggered rows in an indoor meeting hall. Preserve eight people, their natural range of skin tones, hairstyles, relaxed attentive seated postures, hands resting on laps, and the overall relationship of the people to the blue covered chairs and table foreground. Keep the people as the main focus, with enough horizontal breathing room. Simplify the room while retaining the rectangular wall panel, modest indoor setting, and covered chairs; render the wall panel blank. Do not invent an instructor, a podium, an audience beyond the eight people, extra people, or an active teaching performance. Style: clean vector-like outlines with restrained gouache texture, refined editorial illustration, naturally simplified faces and bodies, approachable yet formal, no caricature. Palette: navy #0F2E54, blue #174EA6, cyan #069EEA, warm off-white #F5F2EB, plus natural skin tones. Soft even light. No text, no readable paperwork, no logos, no watermarks, no seals, no certificates, no graduation caps, no success badges, no employer branding, no congratulatory gestures, no government symbols, no employment or college-admission narrative. The image must remain an observational group scene rather than a depiction of an approved or completed program. Fully opaque warm off-white background. One finished illustration only.",
+    "observed_activity": "실내에서 정장과 흰 셔츠를 입은 참석자 8명이 의자에 앉아 있는 집단 장면",
+    "caption_guidance": "사진을 참고한 집단 상담·운영 설명 삽화. 입학·취업 실적이나 정부 승인으로 설명하지 않음",
+    "iterations": [
+      {
+        "prompt": "Use case: style-transfer. Asset type: a wide editorial illustration for a Korean university cooperation proposal, showing a seated student cohort without claiming any admission, hiring, or government approval. Input image 1 is the sole reference for people, clothing, posture, room, and composition; use it to preserve the real observed activity. Create a clean professional editorial illustration with an exact 2.5:1 wide canvas, preferably 2560 x 1024 pixels. The reference shows eight attendees, predominantly in dark blazers over white collared shirts, seated in two short staggered rows in an indoor meeting hall. Preserve eight people, their natural range of skin tones, hairstyles, relaxed attentive seated postures, hands resting on laps, and the overall relationship of the people to the blue covered chairs and table foreground. Keep the people as the main focus, with enough horizontal breathing room. Simplify the room while retaining the rectangular wall panel, modest indoor setting, and covered chairs; render the wall panel blank. Do not invent an instructor, a podium, an audience beyond the eight people, extra people, or an active teaching performance. Style: clean vector-like outlines with restrained gouache texture, refined editorial illustration, naturally simplified faces and bodies, approachable yet formal, no caricature. Palette: navy #0F2E54, blue #174EA6, cyan #069EEA, warm off-white #F5F2EB, plus natural skin tones. Soft even light. No text, no readable paperwork, no logos, no watermarks, no seals, no certificates, no graduation caps, no success badges, no employer branding, no congratulatory gestures, no government symbols, no employment or college-admission narrative. The image must remain an observational group scene rather than a depiction of an approved or completed program. Fully opaque warm off-white background. One finished illustration only.",
+        "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-8040-7271-ba09-7a130db95230/exec-504012cd-b7a6-4e3a-b5ab-c2e7fae395cb.png",
+        "selected": false,
+        "reason": "작은 추가 얼굴과 요청 색상 외 배경색을 수정함"
+      },
+      {
+        "prompt": "Edit image 1 (the generated wide illustration); image 2 is the original photograph and serves only to verify the actual people. Preserve the 2.5:1 canvas, overall composition, eight actual attendees, covered chairs, seating, clothing, natural skin tones, gouache texture and clean editorial outlines. Make only these corrections: (1) remove the tiny extra partial face peeking out just to the LEFT of the central foreground woman's head (the foreground woman who is third from the left). It is an invented ninth face, not a person in the original. Fill that tiny area naturally with the background/back of seating and do not remove any of the eight real attendees. The two real rear-row faces to the right remain. Exactly eight people total. (2) recolor the blank red rectangular wall panel and red upholstery to restrained navy #0F2E54 or blue #174EA6, and simplify orange-brown room surfaces toward warm off-white #F5F2EB with subtle navy lines. Keep cyan #069EEA as a restrained accent. All text, logos, seals, badges and watermarks remain absent. Do not add an instructor, paperwork showing approval, extra people, admission or employment success symbols. One corrected illustration only.",
+        "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-8040-7271-ba09-7a130db95230/exec-c3eb7f83-dc0c-49e8-b95c-cc224131bca4.png",
+        "selected": true
+      }
+    ],
+    "validation": {
+      "people": 8,
+      "text": false,
+      "logos": false,
+      "watermarks": false,
+      "admission_or_employment_claims": false,
+      "source_changed": false,
+      "dimensions": [
+        1983,
+        793
+      ],
+      "actual_ratio": 2.5006305170239598
+    }
+  }
+]

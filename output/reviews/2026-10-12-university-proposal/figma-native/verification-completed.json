@@ -1,0 +1,75 @@
+{
+  "bodyMatchesPlannedText": true,
+  "headingIdsPreserved": true,
+  "headingCount": 71,
+  "linksPreserved": true,
+  "linkCount": 27,
+  "captionParagraphsRemoved": 15,
+  "remainingProductionNotes": [],
+  "originalLogoPreserved": true,
+  "inlineImageCount": 16,
+  "photoReplacements": 8,
+  "figmaDiagramReplacements": 7,
+  "finalPageCount": 31,
+  "layoutAdjustments": [
+    "Appendix B pageBreakBefore=false",
+    "Appendix C pageBreakBefore=false"
+  ],
+  "visualReviews": [
+    {
+      "reviewer": "root",
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "result": "passed"
+    },
+    {
+      "reviewer": "cert_university_review",
+      "pages": [
+        5,
+        6,
+        9,
+        10,
+        11,
+        12
+      ],
+      "result": "passed"
+    },
+    {
+      "reviewer": "e7_verify",
+      "pages": [
+        14,
+        15,
+        17,
+        19,
+        20,
+        22,
+        23
+      ],
+      "result": "passed"
+    },
+    {
+      "reviewer": "d10_f2r_verify",
+      "pages": [
+        25,
+        26,
+        27
+      ],
+      "result": "passed"
+    },
+    {
+      "reviewer": "d10_f2r_verify",
+      "pages": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "version": "completed.pdf",
+      "result": "passed after removing excess forced breaks"
+    }
+  ]
+}

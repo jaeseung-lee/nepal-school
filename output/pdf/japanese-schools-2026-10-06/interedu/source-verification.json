@@ -1,0 +1,39 @@
+{
+  "school": "大阪国際教育学院 / Osaka International Language Institute",
+  "checked_date": "2026-10-06",
+  "source_page": "https://inter-edu.co.jp/download/",
+  "selected_documents": [
+    {
+      "title": "大阪国際教育学院 募集要項",
+      "language": "Japanese",
+      "direct_url": "https://inter-edu.co.jp/wp-content/uploads/2021/11/bosyu_20211118_jp.pdf",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/interedu/interedu_recruitment_jp_20211118_current-official-link.pdf",
+      "pages": 5,
+      "bytes": 247023,
+      "sha256": "d12884a935e5df46c0d6ad5b09f56dc9b92778d50550d5ce2c0a19e43219c291",
+      "edition": "2021-11-18 inferred from filename and confirmed by PDF creation/modification metadata; body has no explicit intake year",
+      "status": "Currently linked on official download page; no 2027 or 2026-specific admissions PDF located",
+      "applicability": "General overseas admissions guidance; opening eligibility section names 2-year course; deadlines mention January, April, July, October intakes. Nepal-specific applicability unconfirmed.",
+      "april_deadline_in_pdf": "November 20 of previous year (p. 2). Applying the generic rule to April 2027 yields November 20, 2026, but this is inference and not a confirmed 2027 schedule.",
+      "fee_in_pdf": "First year JPY 790,000 (JPY 30,000 screening + JPY 80,000 enrollment + JPY 680,000 tuition); second year tuition JPY 680,000 (p. 4). No claim these remain 2027 prices.",
+      "limits": [
+        "Official Japanese HTML requirements page says April deadline mid-November and 2-year Japanese study 150 hours; PDF says November 20 and 180 hours. Sources conflict.",
+        "PDF includes a China-specific credential requirement labeled 中国学生の場合; Nepal documentary requirements not specifically described.",
+        "The Japanese PDF has a likely typographical error in the Japan-resident sponsor balance row: 3,000,000 万円 instead of the prior standard 3,000,000 円 (p. 3). Preserve original, do not correct silently.",
+        "English recruitment.pdf remains linked from official English download page but metadata dates to 2006-08-01 and conflicts with this Japanese PDF; excluded from delivery."
+      ],
+      "verification": "HTTP download succeeded, PDF parser reopened all 5 pages, all 5 rendered pages visually inspected; original bytes preserved"
+    }
+  ],
+  "additional_checked_urls": [
+    "https://inter-edu.co.jp/school/requirements/",
+    "https://inter-edu.co.jp/en/download/",
+    "https://inter-edu.co.jp/en/school/requirements/"
+  ],
+  "excluded_english_pdf": {
+    "url": "https://inter-edu.co.jp/en/wp-content/uploads/sites/2/2020/04/recruitment.pdf",
+    "metadata_creation_date": "2006-08-01",
+    "pages": 9,
+    "reason": "Substantially older, conflicting admissions/translation guidance"
+  }
+}

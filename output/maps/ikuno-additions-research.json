@@ -1,0 +1,225 @@
+{
+  "researched_at": "2026-10-27",
+  "area": "大阪府大阪市生野区",
+  "scope": "공개 영업용 장기 거주 셰어하우스. 외부 연락이나 전단지 배포는 하지 않음.",
+  "nationality_counts": {
+    "vietnamese": "미확인",
+    "nepali": "미확인",
+    "myanmar": "미확인"
+  },
+  "address_policy": "원문에 공개된 범위만 기재. 정확한 건물 주소와 좌표를 추측하지 않음. 공용공간 존재는 전단지 게시 허가를 뜻하지 않음.",
+  "properties": [
+    {
+      "name": "SA256 SA-クロス鶴橋2",
+      "operator": "株式会社クロスハウス",
+      "public_address": "大阪府大阪市生野区小路2-21",
+      "address_precision": "블록까지 공개, 마지막 지번 비공개",
+      "station": "大阪メトロ千日前線 小路駅 徒歩4分",
+      "rooms": null,
+      "capacity": 4,
+      "capacity_note": "공식 정원 4명. 개인실형 시설이며 방 수는 별도 미확인.",
+      "current_operation": "공식 운영목록·물건 상세·2026년 공실예정 표시 확인",
+      "resident_conditions": "18~39세. 외국 국적은 유효한 여권, 보유 시 재류카드 제출. 보증회사 가입 필수.",
+      "foreigner_evidence": "물건 상세 계약조건에 외국 국적자 제출서류를 명시. 지원언어에 베트남어·미얀마어·네팔어가 모두 있음.",
+      "common_spaces": "리빙·TV·주방·공용 우편함·샤워·세탁기",
+      "official_url": "https://x-house.co.jp/sharehouse/osaka/city/osaka/xross-2233/",
+      "evidence_urls": [
+        "https://x-house.co.jp/sharehouse/osaka/city/osaka/xross-2233/",
+        "https://x-house.co.jp/sharehouse/osaka/"
+      ],
+      "notes": [
+        "공식은 지도 위치가 정확한 지번을 표시하지 않으며 주변 참고용이라고 고지한다.",
+        "같은 회사 관광숙박 XROSS STAY Tsuruhashi1(中川1-5-15)과 다른 물건이다.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "FLORA 桃谷駅前",
+      "operator": "株式会社フローラ",
+      "public_address": "大阪府大阪市生野区桃谷1",
+      "address_precision": "정(丁目)까지 공개",
+      "station": "JR大阪環状線 桃谷駅 徒歩1分 (공식 주변시설 표는 2분)",
+      "rooms": 15,
+      "capacity": 15,
+      "capacity_note": "소개에 여성 15명이 공유, 개인실 15실 명시",
+      "current_operation": "공식 운영목록 및 2026년 블로그 확인. ひつじ 최종 갱신 2026-10-01.",
+      "resident_conditions": "여성, 20~39세. 외국인은 여권·비자·재류카드, 일상 일본어, 출신국 긴급연락처.",
+      "foreigner_evidence": "ひつじ 물건 상세에 여성 모집·外国人歓迎 및 외국인 서류조건 명시",
+      "common_spaces": "약34첩 LDK, 시스템주방2, 다이닝테이블2, 소파2, 중정",
+      "official_url": "https://ms-flora.com/properties/flora-momodani-ekimae/",
+      "evidence_urls": [
+        "https://ms-flora.com/properties/flora-momodani-ekimae/",
+        "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-momodani-ekimae"
+      ],
+      "notes": [
+        "Alley(桃谷1-11-3)와 명칭·운영사·규모가 다른 별도 물건. 건물 상세번지는 공개자료만으로 대조하지 못함.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "FLORA 鶴橋・桃谷2",
+      "operator": "株式会社フローラ",
+      "public_address": "大阪府大阪市生野区桃谷5",
+      "address_precision": "정(丁目)까지 공개",
+      "station": "JR大阪環状線 桃谷駅 徒歩14分 / 鶴橋駅 徒歩15分",
+      "rooms": 6,
+      "capacity": 6,
+      "capacity_note": "개인실6, 여성6명이 공유하는 6LDK",
+      "current_operation": "공식 운영목록과 2026년 거주 관련 블로그 확인. ひつじ 최종 갱신 2026-09-28.",
+      "resident_conditions": "여성, 20~39세. 외국인은 여권·비자·외국인등록증명서(원문 구식 명칭), 일상 일본어, 출신국 긴급연락처.",
+      "foreigner_evidence": "ひつじ 물건 상세에 여성 모집·外国人歓迎 및 외국인 조건 명시",
+      "common_spaces": "리빙·다이닝·주방, 공용TV",
+      "official_url": "https://ms-flora.com/properties/flora-tsuruhashi-momodani-2/",
+      "evidence_urls": [
+        "https://ms-flora.com/properties/flora-tsuruhashi-momodani-2/",
+        "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-tsuruhashi-momodani-2"
+      ],
+      "notes": [
+        "FLORA 鶴橋・桃谷1(8실)과 다른 물건이다.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "FLORA 天王寺・寺田町 (A棟・B棟)",
+      "operator": "株式会社フローラ",
+      "public_address": "大阪府大阪市生野区生野西4",
+      "address_precision": "정(丁目)까지 공개",
+      "station": "JR大阪環状線 寺田町駅 徒歩5分",
+      "rooms": 9,
+      "capacity": 9,
+      "capacity_note": "A/B 합계 개인실9. 소개는 각 동 4~5명이 공용부 사용.",
+      "current_operation": "A/B 공식 개별 페이지 및 B동 2026년 블로그 확인. ひつじ 최종 갱신 2026-10-14.",
+      "resident_conditions": "여성, 20~39세. 외국인은 여권·비자·외국인등록증명서(원문 구식 명칭), 일상 일본어, 출신국 긴급연락처.",
+      "foreigner_evidence": "ひつじ 통합 물건 상세에 여성 모집·外国人歓迎 및 외국인 조건 명시",
+      "common_spaces": "A/B 각각 독립된 리빙·주방·욕실. 합계 공용주방2·TV2.",
+      "official_url": "https://ms-flora.com/properties/flora-tennoji-teradacho-b/",
+      "official_urls": [
+        "https://ms-flora.com/properties/flora-tennoji-teradacho-a/",
+        "https://ms-flora.com/properties/flora-tennoji-teradacho-b/"
+      ],
+      "evidence_urls": [
+        "https://ms-flora.com/properties/flora-tennoji-teradacho-a/",
+        "https://ms-flora.com/properties/flora-tennoji-teradacho-b/",
+        "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-tennoji-teradacho"
+      ],
+      "notes": [
+        "인접한 A/B동을 1개 후보로 계산했다.",
+        "공식 머리말·ひつじ는 역5분, 공식 주변시설 카드에는7분으로 표기차이 있음.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "FLORA 北巽felice12",
+      "operator": "株式会社フローラ",
+      "public_address": "大阪府大阪市生野区巽中1",
+      "address_precision": "정(丁目)까지 공개",
+      "station": "大阪メトロ千日前線 北巽駅 徒歩3分",
+      "rooms": 12,
+      "capacity": 12,
+      "capacity_note": "개인실12, 여성12명 공유 명시",
+      "current_operation": "공식 운영목록과 2026년 공용부·입주 블로그 확인. ひつじ 최종 갱신 2026-08-30.",
+      "resident_conditions": "여성. 외국인은 여권·비자·외국인등록증명서(원문 구식 명칭), 일상 일본어, 출신국 긴급연락처.",
+      "foreigner_evidence": "ひつじ 상세에 여성 모집·外国人歓迎 및 외국인 서류조건 명시",
+      "common_spaces": "약44첩 LDK, 대형 시스템주방2, 다이닝테이블2, 소파2",
+      "official_url": "https://ms-flora.com/properties/flora-kita-tatsumi-felice-12/",
+      "evidence_urls": [
+        "https://ms-flora.com/properties/flora-kita-tatsumi-felice-12/",
+        "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-kita-tatsumi-felice-12"
+      ],
+      "notes": [
+        "北巽Grande와 별도 명칭·실수·개관연도의 물건이다. 마지막 지번은 미공개.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "FLORA 北巽Grande",
+      "operator": "株式会社フローラ",
+      "public_address": "大阪府大阪市生野区巽中1",
+      "address_precision": "정(丁目)까지 공개",
+      "station": "大阪メトロ千日前線 北巽駅 徒歩3分",
+      "rooms": 7,
+      "capacity": null,
+      "capacity_note": "개인실7. 정원 수는 별도 미확인.",
+      "current_operation": "2025년12월 New Open 명시. 공식 운영목록 및 2026년 블로그 확인. ひつじ 최종 갱신 2026-10-02.",
+      "resident_conditions": "여성. 외국인은 여권·재류카드, 일상 일본어.",
+      "foreigner_evidence": "ひつじ 상세에 여성 모집·外国人歓迎 및 외국인 서류조건 명시",
+      "common_spaces": "넓은 리빙·주방·파티오·옥상·프로젝터·공용TV",
+      "official_url": "https://ms-flora.com/properties/flora-kita-tatsumi-grande/",
+      "evidence_urls": [
+        "https://ms-flora.com/properties/flora-kita-tatsumi-grande/",
+        "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-kita-tatsumi-grande"
+      ],
+      "notes": [
+        "北巽felice12와 별도 명칭·실수·개관연도의 물건이다. 마지막 지번은 미공개.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "LaLa Vino (ララビーノ)",
+      "operator": "株式会社CoAGARI 공식 운영물건 페이지에 현행 소개. 포털에는 株式会社LivingPLUS 표기가 남아 있음.",
+      "public_address": "大阪府大阪市生野区新今里",
+      "address_precision": "정명까지만 공개",
+      "station": "近鉄奈良線・大阪線 今里駅 徒歩3分 / 新深江駅 徒歩8分",
+      "rooms": 11,
+      "capacity": null,
+      "capacity_note": "공식 소개11실·가격표11개 개인실 확인. 정원 별도 미확인.",
+      "current_operation": "공식 운영중 물건 페이지에2026년 표기·실별 공실예정표 확인. 포털2026년 공실게시도 존재.",
+      "resident_conditions": "남녀. 포털에 외국인OK, 여권 조건.",
+      "foreigner_evidence": "シェアシェア에 남녀·외국인OK 및 외국인 여권 제출조건 명시. シェアクリップ도 ○外国人.",
+      "common_spaces": "전원이 모일 수 있는 리빙·다이닝·주방·와인셀러",
+      "official_url": "https://co-agari.com/archives/sharehouse/lala-vino",
+      "evidence_urls": [
+        "https://co-agari.com/archives/sharehouse/lala-vino",
+        "https://share-share.jp/house/detail/4629/",
+        "https://share-clip.com/house/lalavino/snap/"
+      ],
+      "notes": [
+        "현행 공식 소개(CoAGARI)와 포털 운영사(LivingPLUS)가 달라 운영담당자는 게시 요청 전에 확인할 필요 있음.",
+        "공식 新深江橋駅 표기는 문맥상 新深江駅 오기로 보이므로 포털 역명으로 보완.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    },
+    {
+      "name": "シェアハウスきくや 鶴橋ハウス (鶴橋シェアハウス)",
+      "operator": "株式会社アドミリ (KIKUYA)",
+      "public_address": "大阪府大阪市生野区鶴橋1",
+      "address_precision": "포털 정(丁目)까지. 공식은 生野区鶴橋까지만 공개.",
+      "station": "JR大阪環状線・大阪メトロ千日前線・近鉄線 鶴橋駅 徒歩5分",
+      "rooms": 5,
+      "capacity": null,
+      "capacity_note": "공식 총호수5, 개인실5. 정원 별도 미확인.",
+      "current_operation": "공식 운영물건 상세 및 모집중 실별 표 확인",
+      "resident_conditions": "물건제목·소개·포털은 여성전용. 공식 상세 공통조건에는 남녀OK·외국국적OK·18~59세라고 병기돼 성별조건 불일치.",
+      "foreigner_evidence": "공식 상세에 외국국적OK. シェアシェア에 외국인OK·사진부착 신분증 조건 명시.",
+      "common_spaces": "리빙·다이닝·공동주방·공용TV",
+      "official_url": "https://guesthouse-kikuya.com/sharehouse/tsuruhashi/",
+      "evidence_urls": [
+        "https://guesthouse-kikuya.com/sharehouse/tsuruhashi/",
+        "https://guesthouse-kikuya.com/company/",
+        "https://share-share.jp/house/detail/2503/"
+      ],
+      "notes": [
+        "공식 제목은 여성전용이나 공식 상세 공통문구는 남녀OK라 안내상 불일치 존재.",
+        "아드미리 본사나 오사카지점 주소를 물건주소로 쓰면 안 됨.",
+        "국적별 실제 입주자 수 미확인."
+      ]
+    }
+  ],
+  "not_selected": [
+    {
+      "name": "Peach",
+      "reason": "桃谷2・5실・S.S.L 운영·외국인OK는 포털에서 확인. 코로나 자숙 등 옛 문구가 남아 있고 최신 공식 운영근거가 부족해 8곳 우선목록에서 제외.",
+      "url": "https://share-share.jp/house/detail/4017/"
+    },
+    {
+      "name": "OSHITERUYA",
+      "reason": "新今里4・7실·외국인歓迎·장기거주 조건은 있으나 ひつじ 최종 갱신2021-08-31. 관광숙박 자료도 함께 보여 현재 장기셰어하우스 운영 확인이 필요.",
+      "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/oshiteruya"
+    },
+    {
+      "name": "BORDERLESS HOUSE 大阪鶴橋1",
+      "reason": "공식은 현재 운영·8명정원 확인 가능하나 이번 조회에서 물건주소나 生野区 소속 확인 근거를 찾지 못해 이쿠노구 목록에서 보류.",
+      "url": "https://www.borderless-house.jp/jp/sharehouse/tsuruhashi1/"
+    }
+  ]
+}

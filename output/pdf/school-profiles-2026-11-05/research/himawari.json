@@ -1,0 +1,491 @@
+{
+  "school_id": "himawari",
+  "researched_at": "2026-11-05",
+  "scope": "Internal Korean/English partner profile research for April/October 2027. No school contact made. No signed MOU inferred.",
+  "names": {
+    "ja": "ひまわり大阪日本語学園",
+    "en": "Himawari Osaka Japanese Language School",
+    "ko": "히마와리 오사카 일본어학원",
+    "sources": [
+      "web_home",
+      "admissions_2027 p1"
+    ]
+  },
+  "location": {
+    "address_ja": "〒544-0014 大阪府大阪市生野区巽東3丁目14-6",
+    "address_en": "3-14-6 Tatsumi-higashi, Ikuno-ku, Osaka, Osaka 544-0014, Japan",
+    "nearest_stations": [
+      {
+        "ja": "大阪メトロ千日前線 北巽駅",
+        "en": "Kita-Tatsumi Station, Osaka Metro Sennichimae Line",
+        "walk_minutes": 7
+      },
+      {
+        "ja": "JRおおさか東線 JR長瀬駅",
+        "en": "JR Nagase Station, JR Osaka Higashi Line",
+        "walk_minutes": 10
+      }
+    ],
+    "sources": [
+      "web_home",
+      "admissions_2027 p4",
+      "brochure_en p1"
+    ],
+    "note": "Nisshinkyo directory postcode 544-0024 conflicts; primary school documents and current official site consistently 544-0014."
+  },
+  "features": [
+    {
+      "ko": "1일 5교시, 연간 900교시의 일본어 수업. 공개 시간표상 1교시는 45분.",
+      "en": "Five Japanese lessons a day and 900 lessons a year; each published timetable period is 45 minutes.",
+      "sources": [
+        "web_home",
+        "web_school_life"
+      ],
+      "caution": "School uses 時間 for lessons; do not imply 900 clock hours."
+    },
+    {
+      "ko": "3개월마다 담임과 1:1 학습·진학 면담. 초급 단계에는 통역 동석, 학내 진학 설명회와 EJU 일본어 대비 지원.",
+      "en": "Individual academic/career guidance every three months, with interpreters for beginners, on-campus progression briefings and EJU Japanese preparation.",
+      "sources": [
+        "web_support"
+      ]
+    },
+    {
+      "ko": "학교 지정 기숙사와 생활 지원. 가구·가전 무료 대여 및 무료 인터넷 제공.",
+      "en": "School-designated housing and daily-life support, with free furniture/appliance rental and internet.",
+      "sources": [
+        "admissions_2027 p2",
+        "web_school_life"
+      ]
+    }
+  ],
+  "admissions": {
+    "april_2027": {
+      "course_ja": "進学2年コース",
+      "course_en": "Two-year higher-education preparation course",
+      "duration_months": 24,
+      "expected_period": "2027-04 to 2029-03",
+      "period_status": "Calendar dates inferred from April intake and 24-month course.",
+      "capacity": 60,
+      "recruitment_status": "School explicitly recruiting April 2027 as of 2026-10-06.",
+      "japanese_level_minimum": null,
+      "japanese_level_status": "Not confirmed. No minimum JLPT passing level stated in 2027-named admissions PDF or current official application webpage.",
+      "study_certificate_hours_minimum": 150,
+      "required_japanese_documents": [
+        "Certificate of at least 150 hours of Japanese study",
+        "Original Japanese-language proficiency test result"
+      ],
+      "study_hour_relation": "Documents list both; no documented OR/exemption. Do not substitute candidate N4 attainment for school minimum.",
+      "curriculum_reference": "April first term is 初級1, CEFR A0, JLPT learning level N5. This is a curriculum level, not admission threshold.",
+      "standard_application_period": "August to around September 30 in preceding year (generic guide; April 2027 document screening continued in October email).",
+      "immigration_submission_deadline": "2026-11-18 (school email Oct9, Osaka Immigration deadline, not school application deadline).",
+      "sources": [
+        "admissions_2027 p1",
+        "web_process",
+        "web_school_life",
+        "email_20261006",
+        "email_20261009"
+      ]
+    },
+    "october_2027": {
+      "course_ja": "進学1年6か月コース",
+      "course_en": "18-month higher-education preparation course",
+      "duration_months": 18,
+      "expected_period": "2027-10 to 2029-03",
+      "period_status": "Calendar dates inferred from October intake and 18-month course.",
+      "capacity": 40,
+      "recruitment_status": "Generic October course exists. User proposed October 2027 recruitment and MOU; school agreed to discuss, but an explicit October 2027 intake commitment and fee confirmation were not found.",
+      "japanese_level_minimum": null,
+      "japanese_level_status": "Not confirmed; no intake-specific minimum JLPT grade stated.",
+      "study_certificate_hours_minimum": 150,
+      "required_japanese_documents": [
+        "Certificate of at least 150 hours of Japanese study",
+        "Original Japanese-language proficiency test result"
+      ],
+      "study_hour_relation": "Generic required document list contains both, not an OR.",
+      "curriculum_reference": "October first term is 初級2, CEFR A1, JLPT learning level N4. Do not label N4 as admission requirement.",
+      "standard_application_period": "February to around March 31 (generic guide; 2027 dates not separately confirmed).",
+      "sources": [
+        "admissions_2027 p1",
+        "web_process",
+        "web_school_life",
+        "email_20261013",
+        "email_20261016",
+        "email_20261104"
+      ]
+    },
+    "education": {
+      "minimum": "Completion or expected completion of 12 years of schooling outside Japan, recognized equivalent course or equivalency examination.",
+      "minimum_high_school_gpa": null,
+      "gpa_scale": null,
+      "gpa_status": "Unconfirmed: no GPA minimum or scale in reviewed school sources. Annual school transcripts required.",
+      "sources": [
+        "admissions_2027 p1",
+        "web_process"
+      ]
+    },
+    "selection": {
+      "steps": [
+        "Document screening",
+        "Interview and written exam",
+        "Financial sponsor interview"
+      ],
+      "sources": [
+        "admissions_2027 p2",
+        "web_process"
+      ]
+    }
+  },
+  "fees": {
+    "currency": "JPY",
+    "status": "Conflicting school-supplied versions. No single fully confirmed 2027 quotation. The 2027-April-named Japanese guide, invoice sample and live Japanese website align; the English brochure emailed simultaneously has additional/different fees. Do not silently blend.",
+    "recommended_primary": "Use Japanese 2027-April admissions guide and matching current Japanese website for base course fees; invoice sample for first-year and arrival cash requirement. State second-year amount is derived base cost only, payment schedule and extras unconfirmed. Show English brochure variance in the caveat.",
+    "primary_full_course": {
+      "april_24_months": {
+        "selection": 30000,
+        "enrollment": 50000,
+        "tuition": 1320000,
+        "materials": 60000,
+        "facility": 60000,
+        "tax": 152000,
+        "total": 1672000,
+        "arithmetic": "30,000 + 50,000 + 1,320,000 + 60,000 + 60,000 + 152,000 = 1,672,000",
+        "sources": [
+          "admissions_2027 p3",
+          "web_enrollment"
+        ]
+      },
+      "october_18_months": {
+        "selection": 30000,
+        "enrollment": 50000,
+        "tuition": 990000,
+        "materials": 45000,
+        "facility": 45000,
+        "tax": 116000,
+        "total": 1276000,
+        "arithmetic": "30,000 + 50,000 + 990,000 + 45,000 + 45,000 + 116,000 = 1,276,000",
+        "sources": [
+          "admissions_2027 p3",
+          "web_enrollment"
+        ],
+        "year_status": "Generic 18-month rate in April-2027-named guide, not independently confirmed for October 2027."
+      }
+    },
+    "invoice_first_year": {
+      "selection": 30000,
+      "enrollment": 50000,
+      "tuition": 660000,
+      "materials": 30000,
+      "facility": 30000,
+      "tax": 80000,
+      "school_fees_total": 880000,
+      "covered_months": 12,
+      "dorm_rent_6_months": 168000,
+      "dorm_entry": 28000,
+      "home_contents_insurance": 3000,
+      "dorm_total": 199000,
+      "sundry_expenses": 41000,
+      "sundry_included": "Life/accident insurance for one year, bedding, personal seal, health check, Japanese-language test fee, extracurricular activity/field trip fees, etc.; no separate per-item prices.",
+      "initial_invoice_total": 1120000,
+      "remittance_charge": "OUR (sender pays); amount not stated",
+      "payment_due": "Blank on sample invoice.",
+      "arithmetic": "880,000 + (28,000 × 6 + 28,000 + 3,000) + 41,000 = 1,120,000",
+      "date_status": "Undated blank sample Invoice1year.pdf sent by school on 2026-10-09 in April-2027 recruitment correspondence. Not an individual student invoice or separate October-2027 quote.",
+      "sources": [
+        "invoice_1year p1",
+        "email_20261009"
+      ]
+    },
+    "primary_derived_second_year": {
+      "april_remaining_12_months": {
+        "selection": 0,
+        "enrollment": 0,
+        "tuition": 660000,
+        "materials": 30000,
+        "facility": 30000,
+        "tax": 72000,
+        "base_total": 792000,
+        "period": "2028-04 to 2029-03",
+        "arithmetic": "1,672,000 full-course base fees minus 880,000 first-year school fees = 792,000",
+        "status": "Calculated balance from matching Japanese course schedule and invoice, not separately quoted second-year bill; additional expenses unknown."
+      },
+      "october_remaining_6_months": {
+        "selection": 0,
+        "enrollment": 0,
+        "tuition": 330000,
+        "materials": 15000,
+        "facility": 15000,
+        "tax": 36000,
+        "base_total": 396000,
+        "period": "2028-10 to 2029-03",
+        "arithmetic": "1,276,000 full-course base fees minus 880,000 assumed first 12-month school fees = 396,000",
+        "status": "Calculated only. First-year invoice is not intake-specific; October 2027 applicability is unconfirmed. This 'second year' is remaining six months after a first 12-month fee period, not the April-March academic-year definition."
+      },
+      "sources": [
+        "admissions_2027 p3",
+        "invoice_1year p1"
+      ]
+    },
+    "alternate_english_brochure": {
+      "version_status": "School-issued English brochure supplied 2026-10-09. No revision/effective intake date printed; 'April 2024 opening' is school opening date, not publication year.",
+      "april_first_12_months": {
+        "selection": 30000,
+        "enrollment": 50000,
+        "tuition": 660000,
+        "facility": 30000,
+        "materials": 30000,
+        "extracurricular": 20000,
+        "health_management": 5000,
+        "tax": 82500,
+        "total": 907500
+      },
+      "april_next_12_months": {
+        "selection": 0,
+        "enrollment": 0,
+        "tuition": 660000,
+        "facility": 30000,
+        "materials": 30000,
+        "extracurricular": 20000,
+        "health_management": 5000,
+        "tax": 74500,
+        "total": 819500
+      },
+      "april_course_total": 1727000,
+      "october_first_12_months": {
+        "selection": 30000,
+        "enrollment": 50000,
+        "tuition": 660000,
+        "facility": 30000,
+        "materials": 30000,
+        "extracurricular": 20000,
+        "health_management": 5000,
+        "tax": 82500,
+        "total": 907500
+      },
+      "october_remaining_6_months": {
+        "selection": 0,
+        "enrollment": 0,
+        "tuition": 330000,
+        "facility": 15000,
+        "materials": 20000,
+        "extracurricular": 15000,
+        "health_management": 5000,
+        "tax": 38500,
+        "total": 423500
+      },
+      "october_course_total": 1331000,
+      "arithmetic": "907,500 + 819,500 = 1,727,000; 907,500 + 423,500 = 1,331,000.",
+      "note": "Yearly row totals calculated from exact printed line items; brochure prints only course total. Durations inferred from one-year first row and total 24/18-month course length. Do not use 880,000 invoice Y1 plus brochure Y2.",
+      "sources": [
+        "brochure_en p1"
+      ]
+    },
+    "payment_timing": {
+      "pre_arrival": "COE issued → invoice → bank transfer by school-designated due date. Generic due date: mid-March for April, mid-September for October. COE/admission letter sent following transfer.",
+      "first_year_prepayment_evidence": "School supplied invoice explicitly covering one year of tuition/materials/facilities, plus six months of dormitory charges.",
+      "split_payment": "No explicit permission for semiannual/monthly tuition installments and no confirmed second-year due date. Annual invoice does not establish all installment terms.",
+      "sources": [
+        "admissions_2027 p2-p3",
+        "web_enrollment",
+        "invoice_1year p1"
+      ]
+    }
+  },
+  "housing": {
+    "type": "School-designated student dormitory near school; apartment/loft-style facilities pictured/described.",
+    "operator": "School arranges/manages designated housing and provides rental furnishings. Property owner or separate dormitory operating entity is not identified; do not claim school ownership.",
+    "room_occupancy": "Not stated; single/shared occupancy unconfirmed.",
+    "mandatory_months": 6,
+    "mandatory_evidence": "School email Oct9 explicitly says students must stay for first six months then may leave.",
+    "primary": {
+      "monthly_rent": 28000,
+      "upfront_rent_months": 6,
+      "upfront_rent": 168000,
+      "entry_fee": 28000,
+      "annual_home_contents_insurance": 3000,
+      "upfront_housing_total": 199000,
+      "utilities": "Gas/electricity/water paid separately by student",
+      "internet": "Free",
+      "furnishings": "Refrigerator, washer, air conditioning, rice cooker, stove, desk/chair free rental; bedding prepared by school, but invoice includes bedding in 41,000 sundries.",
+      "after_six_months": "Monthly advance rent; six-month renewal cycle.",
+      "sources": [
+        "admissions_2027 p2-p3",
+        "invoice_1year p1",
+        "web_school_life",
+        "email_20261009"
+      ]
+    },
+    "alternate_brochure": {
+      "monthly_rent": 28000,
+      "entry_fee": 30000,
+      "annual_home_contents_insurance": 5000,
+      "calculated_upfront_with_6_months_rent": 203000,
+      "status": "Conflicts with current Japanese web, 2027-named Japanese guide, and invoice; effective date unknown.",
+      "sources": [
+        "brochure_en p1"
+      ]
+    },
+    "year_status": "April-2027-named guide and October-2026 school invoice support primary amounts, but simultaneously sent brochure differs. October-2027 fees require confirmation."
+  },
+  "relationship": {
+    "status_ko": "2027년 10월 모집 MOU 초안 협의 단계. 체결 확인 없음.",
+    "status_en": "Draft MOU discussions for October 2027 recruitment; signed agreement not confirmed.",
+    "school_confirmed": "Oct6 recruiting April2027; Oct9 sent school materials and initial6mo dorm rule; Nov4 said it had reviewed draft and requested online discussion. Nov4 scheduled Nov5 13:00 JST meeting.",
+    "not_school_confirmation": [
+      "User Oct13 statement that Nepal/Myanmar candidates passed N4 is candidate status, not school admission rule.",
+      "User Oct16/Oct30 proposed October2027 recruitment and MOU; cannot label as accepted/signed.",
+      "User Oct30 asks whether referral fees remain same for October2027; school Nov4 acknowledgement does not accept all terms."
+    ],
+    "sources": [
+      "email_20261006",
+      "email_20261009",
+      "email_20261013",
+      "email_20261016",
+      "email_20261030",
+      "email_20261104"
+    ]
+  },
+  "conflicts_and_cautions": [
+    "Japanese guide and live Japanese web show course base total 1,672,000/1,276,000; simultaneously emailed English brochure shows 1,727,000/1,331,000 (55,000 more for either course). Brochure adds activity/health charges and alters some October materials charges.",
+    "Invoice first-year school fees are 880,000 plus separately bundled sundries 41,000. English brochure first-year school fees are 907,500. Sundries may overlap activity/health categories; do not add the 41,000 blindly to brochure costs.",
+    "Dormitory entry/home insurance: Japanese guide, current web and invoice 28,000/3,000 versus brochure 30,000/5,000.",
+    "2027-labelled guide generic application dates end September30 while Oct9 school email still discusses April2027 applications and Osaka Immigration deadline Nov18. Do not present generic application dates as final actual 2027 deadline.",
+    "150h proof and test results are required; no confirmed JLPT passing threshold for either intake. Curriculum N5/N4 is not eligibility. No GPA minimum or scale found.",
+    "Current web Japanese admission page asks three years funding history; 2027-April guide asks one year funding history. Prefer school-provided current-year guide and verify documentation list before application.",
+    "English brochure's '2024 April opening' is school opening date. No publication or fee-effective date established.",
+    "2025-10 Nisshinkyo directory fee amounts differ substantially; historical secondary data not used for 2027 prices."
+  ],
+  "sources": {
+    "web_home": {
+      "url": "https://www.himawari-nihongo.com/jp/",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-home-jp.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05",
+      "version": "undated current page"
+    },
+    "web_process": {
+      "url": "https://www.himawari-nihongo.com/jp/application/process.html",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-web-process.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05"
+    },
+    "web_enrollment": {
+      "url": "https://www.himawari-nihongo.com/jp/application/enrollment.html",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-web-enrollment.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05",
+      "version": "No stated intake/effective year"
+    },
+    "web_school_life": {
+      "url": "https://www.himawari-nihongo.com/jp/application/school-life.html",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-web-school-life.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05"
+    },
+    "web_support": {
+      "url": "https://www.himawari-nihongo.com/jp/application/support.html",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-web-support.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05"
+    },
+    "web_download": {
+      "url": "https://www.himawari-nihongo.com/jp/application/download.html",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-web-download.html",
+      "type": "official school website",
+      "retrieved": "2026-11-05",
+      "note": "Still links ../pdf/requirement2024.pdf"
+    },
+    "admissions_2027": {
+      "title": "募集要項2027年4月期生１.pdf",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-admissions-2027-april.pdf",
+      "type": "school-sent attachment",
+      "message_id": "1a11e3ddabea7222",
+      "sent_at": "2026-10-09T10:18:41+09:00",
+      "version": "April 2027 in original attachment filename; PDF body has generic course tables",
+      "pages": 4,
+      "visual_checked_pages": [
+        3
+      ]
+    },
+    "invoice_1year": {
+      "title": "Invoice1year.pdf",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-invoice1year.pdf",
+      "type": "school-sent blank sample invoice",
+      "message_id": "1a11e3ddabea7222",
+      "sent_at": "2026-10-09T10:18:41+09:00",
+      "version": "Undated sample; names/student ID/due date blank",
+      "pages": 1,
+      "visual_checked_pages": [
+        1
+      ]
+    },
+    "brochure_en": {
+      "title": "（英語）ひまわり大阪日本語学園_compressed.pdf",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-brochure-en.pdf",
+      "type": "school-sent English brochure",
+      "message_id": "1a11e3ddabea7222",
+      "sent_at": "2026-10-09T10:18:41+09:00",
+      "version": "Undated; opening 2024-04 is not issue date",
+      "pages": 2,
+      "visual_checked_pages": [
+        1
+      ]
+    },
+    "email_20261006": {
+      "message_id": "1a10fed104d8ca2d",
+      "date_jst": "2026-10-06 15:35:52",
+      "sender": "office@himawari-nihongo.com",
+      "direction": "school_to_user",
+      "thread_id": "1a1095344cb4b371"
+    },
+    "email_20261009": {
+      "message_id": "1a11e3ddabea7222",
+      "date_jst": "2026-10-09 10:18:41",
+      "sender": "office@himawari-nihongo.com",
+      "direction": "school_to_user",
+      "thread_id": "1a1095344cb4b371"
+    },
+    "email_20261013": {
+      "message_id": "1a1356efe85472f1",
+      "date_jst": "2026-10-13 22:23:48",
+      "sender": "lee_js@jeongwoohrd.com",
+      "direction": "user_to_school",
+      "thread_id": "1a1095344cb4b371"
+    },
+    "email_20261016": {
+      "message_id": "1a14384c7c6f3cab",
+      "date_jst": "2026-10-16 16:02:17",
+      "sender": "lee_js@jeongwoohrd.com",
+      "direction": "user_to_school",
+      "thread_id": "1a1095344cb4b371"
+    },
+    "email_20261030": {
+      "message_id": "1a18bc4a6d635607",
+      "date_jst": "2026-10-30 16:44:42",
+      "sender": "lee_js@jeongwoohrd.com",
+      "direction": "user_to_school",
+      "thread_id": "1a18ba5351f71967"
+    },
+    "email_20261104": {
+      "message_id": "1a1a4dd03c963346",
+      "date_jst": "2026-11-04 13:41:44",
+      "sender": "office@himawari-nihongo.com",
+      "direction": "school_to_user",
+      "thread_id": "1a18ba5351f71967",
+      "note": "Draft reviewed; request for online discussion only, not acceptance of every term."
+    },
+    "email_evidence_file": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/himawari-emails-evidence.json",
+    "old_public_pdf": {
+      "url": "https://www.himawari-nihongo.com/jp/pdf/requirement2024.pdf",
+      "local_file": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/himawari/himawari-admissions-requirement2024.pdf",
+      "note": "Read for comparison. Do not label as 2027."
+    },
+    "nisshinkyo": {
+      "url": "https://www.nisshinkyo.org/search/college.php?id=610&lng=1",
+      "date": "Updated 2025-10",
+      "note": "Historical secondary comparison only. Did not use its fees for 2027."
+    }
+  },
+  "suggested_profile_caveat_ko": "학비는 2027년 4월 모집요강·1년 청구서 기준. 영문 안내서와 금액이 달라 최종 견적 확인 필요. 10월 2027 적용, JLPT 최저급수·GPA, 2년차 추가비용·납부일은 미확인.",
+  "suggested_profile_caveat_en": "Costs follow the April-2027 admissions guide and one-year sample invoice. The English brochure differs; obtain a final quotation. October-2027 applicability, minimum JLPT/GPA, and second-year extras/due date remain unconfirmed."
+}

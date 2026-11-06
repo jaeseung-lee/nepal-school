@@ -1,0 +1,83 @@
+{
+  "created": "2026-11-05",
+  "purpose": "Private internal partner profiles; evidence register",
+  "display_source_codes": {
+    "N1": "research/naniwa.json:sources.N1",
+    "N2": "research/naniwa.json:sources.N2",
+    "N3": "research/naniwa.json:sources.N3",
+    "F1": "research/firststudy.json:sources S1 (2027 initial fees; email 2026-10-08)",
+    "F2": "research/firststudy.json:sources S7/S8 (2022 guide and undated FAQ)",
+    "F3": "research/firststudy.json:sources S3/S4/S5 (access/course/staff)",
+    "F4": "research/firststudy.json:sources E2 (email 2026-10-14)",
+    "H1": "research/himawari.json:sources.admissions_2027",
+    "H2": "research/himawari.json:sources.invoice_1year and email_20261009",
+    "H3": "research/himawari.json:sources web_home/web_support/web_school_life",
+    "H4": "research/himawari.json:sources.brochure_en",
+    "S1": "research/sakura.json:source_register PDF2026 / W_FEES_JA",
+    "S2": "research/sakura.json:source_register EMAIL_APR / EMAIL_OCT",
+    "S3": "research/sakura.json:source_register W_FACILITY_JA / W_SUPPORT"
+  },
+  "decisions": [
+    "2027 is planning target, not an assertion that all values are confirmed for 2027.",
+    "First Study: annual totals remain unknown; itemized 2027 initial charges are shown instead, with prepaid final two months and April 2028 increase noted.",
+    "Himawari: Japanese guide and matching invoice are the primary base-fee series. Year2 and October allocations are explicitly calculated; sundries are separate; English brochure conflict is visible.",
+    "Sakura: 2026 fee table used as reference. April 2027 email and provisional October forecast are distinct from 2026 N4 requirement.",
+    "Sakura housing: display ordinary twin option only; detailed source record preserves single/triple options and Type2 arithmetic typo.",
+    "No new school outreach, public publication or repository commit forms part of this work."
+  ],
+  "research_files": [
+    "research/naniwa.json",
+    "research/firststudy.json",
+    "research/himawari.json",
+    "research/sakura.json"
+  ],
+  "logo_assets": {
+    "register": "assets/logo-sources.json",
+    "selected": {
+      "naniwa": "naniwa-candidate1.jpg",
+      "firststudy": "firststudy-logo.png",
+      "himawari": "himawari-logo.png",
+      "sakura": "sakura-symbol.png"
+    },
+    "note": "Official website assets, fitted beside school titles with original aspect ratios and colors.",
+    "organization": "assets/jeongwoo-logo-color.png",
+    "organization_original": "/Users/ijaeseung/nepal-school/company/public/brand/logo-color.png"
+  },
+  "display_policy": "No source codes or source list in shared PDFs. Evidence is maintained separately in this register, claim-source-register.json, source-notes-ko.md and research/.",
+  "additional_sources": {
+    "U1": {
+      "type": "user_provided_instruction",
+      "date": "2026-11-05",
+      "scope": "All four schools: allow inquiries and discussion about separate share-house/dormitory operation.",
+      "status": "Service/inquiry wording requested by the user; does not waive current school housing terms."
+    },
+    "U2": {
+      "type": "user_provided_information",
+      "date": "2026-11-05",
+      "scope": "First Study: support for study in South Korea after graduating from Japanese language school.",
+      "status": "Provided by user in this chat; no independent school email confirming this offer located in targeted searches."
+    },
+    "U3": {
+      "type": "user_provided_information",
+      "date": "2026-11-05",
+      "scope": "Osaka Naniwa: early departure before course completion for SSW transition; related support available.",
+      "status": "School-specific offer provided by user; PDF expressly conditions transition on eligibility and immigration approval. Do not interpret as permission to stop attending before procedures are agreed."
+    },
+    "U4": {
+      "type": "user_provided_information",
+      "date": "2026-11-05",
+      "scope": "Osaka Naniwa: early graduation after one year upon obtaining JLPT N2.",
+      "status": "Provided by user; school-specific written rule not independently verified. Individual arrangements to be confirmed with school."
+    },
+    "L1": {
+      "type": "official_immigration_guidance",
+      "checked": "2026-11-05",
+      "title": "Immigration Services Agency: obtaining SSW status / changes from other statuses",
+      "url": "https://www.ssw.go.jp/about/sswv/",
+      "support": "General requirement to qualify through applicable tests, obtain employment and apply for the residence-status change. Does not independently verify a school-specific withdrawal or early-graduation policy.",
+      "additional_url": "https://www.moj.go.jp/isa/content/001440708.pdf",
+      "access_note": "MOJ operational-guidelines search extract says approval is not guaranteed by passing exams; direct PDF returned HTTP 403, so full PDF was not reviewed."
+    }
+  },
+  "user_revision_text": "셰어하우스/기숙사 운영 관련 별도 문의 가능 문구, 하단 회사 로고, 퍼스트스터디 졸업 후 한국 유학 지원, 나니와 중도 퇴교 시 특정기능 전환·지원 및 1년 N2 취득 조기졸업 추가. PDF 출처 숨김 및 별도 관리."
+}

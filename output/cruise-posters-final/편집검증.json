@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "file": "/Users/ijaeseung/Downloads/HRDI အစီအစဉ် ၁ – မလေးရှားအလုပ်သင်နှင့် ခရုဇ်အခွင့်အလမ်းಗಳು.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램1_미얀마어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": null,
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 2,
+    "file": "/Users/ijaeseung/Downloads/크루즈 선박 취업 프로그램 인포그래픽.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램2_라오어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": [
+      592,
+      1040,
+      228,
+      62
+    ],
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 3,
+    "file": "/Users/ijaeseung/Downloads/မြန်မာဘာသာ သင်္ဘောအလုပ်အစီအစဉ် Poster.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램2_미얀마어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": [
+      592,
+      1040,
+      228,
+      62
+    ],
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 4,
+    "file": "/Users/ijaeseung/Downloads/කෘෲස් නෞකා රැකියා වැඩසටහන.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램2_싱할라어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": [
+      592,
+      1040,
+      228,
+      62
+    ],
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 5,
+    "file": "/Users/ijaeseung/Downloads/क्रूज रोजगारी नियुक्ति कार्यक्रम २.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램2_네팔어_로고금액수정.png",
+    "width": 1103,
+    "height": 1426,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": [
+      699,
+      824,
+      204,
+      52
+    ],
+    "logo": [
+      362,
+      136,
+      380,
+      96
+    ]
+  },
+  {
+    "id": 6,
+    "file": "/Users/ijaeseung/Downloads/말레이시아 크루즈 취업 연수 포스터.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램1_라오어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": null,
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 7,
+    "file": "/Users/ijaeseung/Downloads/スリランカ式クルーズ就職プログラム.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램1_싱할라어_로고금액수정.png",
+    "width": 887,
+    "height": 1774,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": null,
+    "logo": [
+      219,
+      43,
+      450,
+      114
+    ]
+  },
+  {
+    "id": 8,
+    "file": "/Users/ijaeseung/Downloads/मलेसिया इन्टर्नशिप तथा क्रूज रोजगारी कार्यक्रम.png",
+    "dest": "/Users/ijaeseung/nepal-school/output/cruise-posters-final/프로그램1_네팔어_로고금액수정.png",
+    "width": 1103,
+    "height": 1426,
+    "changedPixelsOutsideEditAreas": 0,
+    "fee": [
+      694,
+      829,
+      225,
+      55
+    ],
+    "logo": [
+      362,
+      136,
+      380,
+      96
+    ]
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "file": "school-profiles-ko.pdf",
+      "pages": 4,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "school-profiles-en.pdf",
+      "pages": 4,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/01-naniwa-en.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/01-naniwa-ko.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/02-firststudy-en.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/02-firststudy-ko.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/03-himawari-en.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/03-himawari-ko.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/04-sakura-en.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    },
+    {
+      "file": "individual/04-sakura-ko.pdf",
+      "pages": 1,
+      "source_codes_absent": true,
+      "source_footer_absent": true,
+      "school_and_organization_logos_present": true,
+      "requested_new_content_present": true,
+      "old_review_footer_removed": true
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+[
+  {
+    "insertInlineImage": {
+      "location": {
+        "index": 2898,
+        "tabId": "t.0"
+      },
+      "uri": "/Users/ijaeseung/nepal-school/output/design/2026-10-12-proposal/admission-system/08-student-admission-system.png",
+      "objectSize": {
+        "width": {
+          "magnitude": 481.8755905511811,
+          "unit": "PT"
+        },
+        "height": {
+          "magnitude": 481.8755905511811,
+          "unit": "PT"
+        }
+      }
+    }
+  },
+  {
+    "updateParagraphStyle": {
+      "range": {
+        "startIndex": 2898,
+        "endIndex": 2900,
+        "tabId": "t.0"
+      },
+      "paragraphStyle": {
+        "namedStyleType": "NORMAL_TEXT",
+        "alignment": "CENTER",
+        "lineSpacing": 100,
+        "spaceAbove": {
+          "magnitude": 8,
+          "unit": "PT"
+        },
+        "spaceBelow": {
+          "magnitude": 12,
+          "unit": "PT"
+        },
+        "indentStart": {
+          "magnitude": 0,
+          "unit": "PT"
+        },
+        "indentEnd": {
+          "magnitude": 0,
+          "unit": "PT"
+        },
+        "indentFirstLine": {
+          "magnitude": 0,
+          "unit": "PT"
+        },
+        "keepLinesTogether": true,
+        "keepWithNext": false,
+        "pageBreakBefore": false
+      },
+      "fields": "namedStyleType,alignment,lineSpacing,spaceAbove,spaceBelow,indentStart,indentEnd,indentFirstLine,keepLinesTogether,keepWithNext,pageBreakBefore"
+    }
+  },
+  {
+    "updateTextStyle": {
+      "range": {
+        "startIndex": 2898,
+        "endIndex": 2900,
+        "tabId": "t.0"
+      },
+      "textStyle": {
+        "fontSize": {
+          "magnitude": 3,
+          "unit": "PT"
+        },
+        "bold": false
+      },
+      "fields": "fontSize,bold"
+    }
+  },
+  {
+    "insertText": {
+      "location": {
+        "index": 2448,
+        "tabId": "t.0"
+      },
+      "text": "추진 체계와 "
+    }
+  }
+]

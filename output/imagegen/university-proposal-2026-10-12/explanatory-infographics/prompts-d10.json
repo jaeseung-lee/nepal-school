@@ -1,0 +1,30 @@
+{
+  "tool": "built-in image_gen",
+  "use_case": "infographic-diagram",
+  "source": "none",
+  "prompt": "Use case: infographic-diagram\nAsset type: Korean university cooperation proposal, explanatory infographic for an appendix cross-reference.\nPrimary request: create a polished Korean editorial infographic with FOUR independent information cards. This is a selected set of review topics, not an exhaustive classification of all visas and not a sequence of mandatory stages.\nCanvas: approximately 2000 x 1000 pixels, wide 2:1 aspect ratio, opaque white and pale-blue background.\nStyle: newspaper-style explanatory information graphic with crisp editorial typography and a card layout; tasteful small dimensional icons with soft shadows; generous safe margins; large Korean letters, easy to read at half size.\nColor palette: navy #0F2E54, blue #174EA6, cyan #069EEA, white and pale blue. Use the palette consistently.\nComposition: large title at the top. Four equal independent cards in a 2-by-2 grid beneath the title, with balanced whitespace and clear alignment. Each card has a small icon on its left and large text on its right. The cards have NO arrows or connecting lines. A footer statement below all four cards and a small final separate cross-reference box at the bottom.\nText, verbatim, with exactly these strings and no additional wording:\nTitle: \"체류자격별 별도 확인\"\nTop-left card title: \"D-2 재학\"\nTop-left card body: \"학업 중심·활동 허가 확인\"\nTop-right card title: \"D-10 구직\"\nTop-right card body: \"구직·인턴 조건 확인\"\nBottom-left card title: \"E-7 취업\"\nBottom-left card body: \"직종·기업·계약 확인\"\nBottom-right card title: \"F-2-R 지역특화\"\nBottom-right card body: \"지역 추천·거주·소득 확인\"\nFooter: \"자동 전환이 아닙니다. 학생별 요건과 관할 심사를 확인합니다.\"\nFinal small box: \"세부 요건: 부록 A\"\nIcons: books for D-2; magnifying glass and a plain document for D-10; a briefcase and plain contract sheet for E-7; a map pin, house and simple coin for F-2-R. Icons have no readable text.\nAccuracy constraints: reproduce every Korean character, Latin letter, hyphen, middle dot, colon and period exactly. Do not insert eligibility requirements, legal conclusions, durations, wages, percentages, rankings, stage numbers or new labels. Do not imply automatic visa conversion, required sequence, admission, employment guarantee, government endorsement, success or approval. Do not indicate that the four cards exhaust every residence status.\nAvoid: logos, newspaper brands, government emblems, visa stamps, checkmark success badges, trophies, seals, watermarks, decorative arrows. Do not include photos or people. Keep all text fully visible and uncut.",
+  "repair_prompt": null,
+  "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-8040-7271-ba09-7a130db95230/exec-f28f24a9-0e1b-4ca9-a4fa-2ef0561844d6.png",
+  "saved_path": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/07-residence-review.png",
+  "requested_dimensions": {
+    "width": 2000,
+    "height": 1000,
+    "approximate": true
+  },
+  "dimensions": {
+    "width": 1774,
+    "height": 887,
+    "aspect_ratio": 2
+  },
+  "qa": {
+    "title_and_all_card_labels": "Visually confirmed against the supplied Korean strings.",
+    "footer_and_appendix_reference": "Visually confirmed against the supplied Korean strings.",
+    "independent_cards": true,
+    "automatic_conversion_arrows": false,
+    "added_legal_requirements_or_numbers": false,
+    "government_or_news_branding": false,
+    "success_or_approval_badges": false,
+    "clipping_or_overlap": false,
+    "targeted_repair_needed": false
+  }
+}

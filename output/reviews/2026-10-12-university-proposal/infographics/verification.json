@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-12",
+  "documentId": "1Mmrct0UOPUhttx0aZrel5o_uA14CaxgzILpuAhU5ciY",
+  "pdf": "/Users/ijaeseung/nepal-school/tmp/pdfs/university-proposal-infographics/verified.pdf",
+  "pageCount": 30,
+  "newInfographicCount": 7,
+  "totalInlineImageCount": 16,
+  "contentPreservation": "content-verification.json",
+  "layoutBounds": "pdf-layout-verified.json",
+  "visualReview": [
+    {"pages": [5, 8, 10], "reviewer": "cert_university_review", "result": "Korean text, flow, margins and captions are readable and correctly placed; no clipping or isolated heading."},
+    {"pages": [14], "reviewer": "root", "result": "Student-support graphic and caption are readable on the same page; surrounding prose, spacing and page number are normal."},
+    {"pages": [17, 20], "reviewer": "e7_verify", "result": "Role and cost graphics agree with surrounding prose; readable text and captions on the same page; no clipping, overlap or isolated heading."},
+    {"pages": [23, 24, 29, 30], "reviewer": "d10_f2r_verify", "result": "Residence cards do not imply automatic conversion; caption stays with the graphic, appendix continues correctly and source links are preserved; no clipping, overlap or isolated heading."}
+  ],
+  "materialIssues": []
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "file": "naniwa-candidate1.jpg",
+    "url": "https://www.onjls.com/static/upload/image/20240321/1711000979353309.jpg",
+    "sha256": "a168e0548a050358913527c2b0b011b1477b8375152fb3ee89ee8696579c541e",
+    "bytes": 26730,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "naniwa-candidate2.png",
+    "url": "https://www.onjls.com/static/upload/image/20250714/1752480985746788.png",
+    "sha256": "9c7c2032f0b38618c426c7fefa2d5274be8f48512cad2ac45e718d474fbef474",
+    "bytes": 198606,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "naniwa-candidate3.png",
+    "url": "https://www.onjls.com/static/upload/image/20240321/1711000876270309.png",
+    "sha256": "b278d6d5fbd047be625f470e59281d61ad473251fe7342cb75bd7e195ded5b35",
+    "bytes": 15121,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "firststudy-logo.png",
+    "url": "https://firststudy.net/img/common/logo.png",
+    "sha256": "815c3e2769b9c664d229cf7e91621ac08f5f5189f26526e32448c594ffd78cee",
+    "bytes": 52755,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "himawari-logo.png",
+    "url": "https://www.himawari-nihongo.com/jp/img/common/logo.png",
+    "sha256": "afe182afdd236ea58546ec8e814fd83cd1144422cf2a5e4144936fb37d86a67c",
+    "bytes": 9983,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "sakura-logo.png",
+    "url": "https://sakura-japanese.jp/wp-content/themes/genova_tpl/img/logo1.png",
+    "sha256": "444537e46e1b0b5d21ed564e03fd62f7f87b59ccffef5c70db6775a0b4cb08ca",
+    "bytes": 20320,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "sakura-symbol.png",
+    "url": "https://sakura-japanese.jp/wp-content/uploads/logo_sakurakotonohaschool.png",
+    "sha256": "7cb0db7faea1a1ea996154bdf51d00a99b42974c176180aabcfd4a7d52d189a3",
+    "bytes": 41109,
+    "retrieved": "2026-11-05"
+  },
+  {
+    "file": "jeongwoo-logo-color.png",
+    "source_file": "/Users/ijaeseung/nepal-school/company/public/brand/logo-color.png",
+    "sha256": "bce18f339e5349de4f6c3b12d71383a6cfb41fbce7f87d3307dcc4503d77bc95",
+    "bytes": 38887,
+    "retrieved": "2026-11-05",
+    "note": "Existing official organization logo. Original aspect ratio and colors retained."
+  }
+]

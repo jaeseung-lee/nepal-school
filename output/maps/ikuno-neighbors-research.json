@@ -1,0 +1,386 @@
+{
+  "researched_at": "2026-10-27",
+  "scope": "大阪市生野区に隣接する天王寺区・東成区の公開営業シェアハウス。ブラウザUI操作・外部問い合わせは実施していない。",
+  "notes": [
+    "正確な番地を公開していない住宅は丁目等の公開範囲だけを記載し、建物の特定を推測しない。",
+    "入居定員・部屋数は現在の実入居者数ではない。国籍別の実入居者数・ネパール人居住者数は全候補で未確認。",
+    "外国人入居可はチラシ設置許諾を意味しない。訪問前に運営会社への設置協議が必要。",
+    "ひつじ不動産などの掲載内容は運営事業者の自己申告を含む。物件営業・募集の公示の根拠であり現地確認ではない。"
+  ],
+  "candidates": [
+    {
+      "name": "真田山ハウス",
+      "aliases": [
+        "sanadayama house"
+      ],
+      "recommendation": "優先",
+      "address": "大阪府大阪市天王寺区舟橋町9-9",
+      "address_precision": "番地まで公式公開",
+      "area": "天王寺区／鶴橋",
+      "access": [
+        "JR・近鉄 鶴橋駅 徒歩2分",
+        "大阪メトロ千日前線 鶴橋駅 徒歩2〜3分"
+      ],
+      "capacity_people": null,
+      "private_rooms": 14,
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認（ネパール人を含む）",
+      "operator": "株式会社さなだやま不動産",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "公式物件詳細に男性・女性・外国人OK、外国人はパスポート・ビザ・在留カード、簡単な日常会話を理解できる日本語と記載。入居期間3カ月からの賃貸型。",
+        "url": "https://sanadayamahouse.com/free/details"
+      },
+      "common_spaces": [
+        "共用ラウンジ",
+        "共用キッチン",
+        "日本庭園・中庭",
+        "屋上・ベランダ"
+      ],
+      "student_welcome": "明示未確認。公式Q&Aにワーキングホリデーや日本で働く外国人の入居を説明。",
+      "operating_evidence": "公式アクセス・賃貸条件・空室一覧が公開中。ひつじ不動産最終更新2026-10-26、14個室掲載。",
+      "latest_listing_update": "2026-10-26",
+      "flyer_fit": "鶴橋駅・生野区境に近く、交流用共用部あり。玄関から無断立入りせず運営会社へ協議。",
+      "official_url": "https://sanadayamahouse.com/",
+      "sources": [
+        {
+          "url": "https://sanadayamahouse.com/about",
+          "supports": [
+            "公開住所",
+            "運営会社",
+            "駅徒歩",
+            "営業時間"
+          ]
+        },
+        {
+          "url": "https://sanadayamahouse.com/free/details",
+          "supports": [
+            "外国人入居条件",
+            "3カ月以上の居住用賃貸"
+          ]
+        },
+        {
+          "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/sanadayama-house",
+          "supports": [
+            "14個室",
+            "共用ラウンジ・キッチン・庭・屋上",
+            "更新日"
+          ]
+        },
+        {
+          "url": "https://sanadayamahouse.com/free/q-and-a",
+          "supports": [
+            "外国人居住の一般説明"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BORDERLESS HOUSE 大阪玉造",
+      "aliases": [
+        "ボーダレスハウス 大阪玉造"
+      ],
+      "recommendation": "優先",
+      "address": "大阪府大阪市東成区大今里西1丁目",
+      "address_precision": "町丁目まで公開、番地は未確認",
+      "area": "東成区／今里・玉造",
+      "access": [
+        "大阪メトロ千日前線 今里駅 徒歩7分（公式）",
+        "JR・地下鉄 玉造駅 徒歩15分（公式アクセス欄）"
+      ],
+      "capacity_people": 24,
+      "private_rooms": 18,
+      "dormitory_beds": 6,
+      "capacity_notes": "公式本文に24人規模。ひつじ不動産は18個室と6ドミトリー枠を掲載。部屋数と定員を混同しない。",
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認（ネパール人を含む）",
+      "operator": "ボーダレスハウス株式会社",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "公式に国際交流シェアハウスとして募集し、外国籍枠を公開。ひつじ不動産にも男性・女性・外国人歓迎と記載。",
+        "url": "https://www.borderless-house.jp/jp/sharehouse/tamatsukuri/"
+      },
+      "common_spaces": [
+        "26帖コミュニティスペース",
+        "ホームシアター",
+        "卓球台",
+        "ボードゲーム",
+        "共用キッチン",
+        "大型バルコニー"
+      ],
+      "student_welcome": "運営事業者説明に留学生・インターンシップ生が入居対象に含まれる。",
+      "operating_evidence": "公式ページに空室募集枠・入居者レビュー・問い合わせ導線公開中。ひつじ不動産最終更新2026-10-09。",
+      "latest_listing_update": "2026-10-09",
+      "flyer_fit": "国際交流と留学生向け導線が明瞭で共用部も大きい。個別国籍の人数は未確認。",
+      "official_url": "https://www.borderless-house.jp/jp/sharehouse/tamatsukuri/",
+      "official_map_link": "https://www.borderless-house.jp/jp/sharehouse/tamatsukuri/#access",
+      "sources": [
+        {
+          "url": "https://www.borderless-house.jp/jp/sharehouse/tamatsukuri/",
+          "supports": [
+            "外国籍募集",
+            "24人規模",
+            "26帖共用部",
+            "公式アクセス"
+          ]
+        },
+        {
+          "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/borderless-house-osaka-tamatsukuri",
+          "supports": [
+            "大今里西1の公開所在地",
+            "運営会社",
+            "18個室・6ドミトリー枠",
+            "留学生説明",
+            "更新日"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WILLHOUSE 今里",
+      "recommendation": "優先",
+      "address": "大阪府大阪市東成区大今里南3丁目",
+      "address_precision": "町丁目まで公開、番地は未確認",
+      "area": "東成区／新深江・近鉄今里",
+      "access": [
+        "大阪メトロ 新深江駅 徒歩4分",
+        "近鉄 今里駅 徒歩5分",
+        "大阪メトロ 今里駅 徒歩7分"
+      ],
+      "capacity_people": null,
+      "private_rooms": 7,
+      "gender": "女性専用",
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認（ネパール人を含む）",
+      "operator": "株式会社東林",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "物件掲載の入居条件に女性募集中・外国人歓迎。外国人はパスポート、ビザ、日常会話程度の日本語、外国人登録証明書、緊急連絡先と記載。",
+        "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/willhouse-imazato"
+      },
+      "common_spaces": [
+        "リビング（75インチTV）",
+        "共用キッチン",
+        "ベランダ"
+      ],
+      "student_welcome": "学生歓迎の明示は未確認",
+      "operating_evidence": "2022年3月開設。7室・満室の掲載と問い合わせ導線が公開中。最終更新2026-09-22（次回予定2026-10-06を経過しているため最新営業状況は運営者確認推奨）。",
+      "latest_listing_update": "2026-09-22",
+      "flyer_fit": "生野区新今里のすぐ北側にあたり巡回しやすい。女性専用、運営者は週1回程度巡回・食事会あり。",
+      "official_url": null,
+      "operator_profile_url": "https://kansai.hituji.jp/comret/owner/tourin",
+      "sources": [
+        {
+          "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/willhouse-imazato",
+          "supports": [
+            "公開所在地",
+            "運営会社",
+            "7室",
+            "外国人条件",
+            "共用部",
+            "駅徒歩",
+            "更新日"
+          ]
+        },
+        {
+          "url": "https://kansai.hituji.jp/comret/owner/tourin",
+          "supports": [
+            "法人運営",
+            "シェアハウス事業",
+            "応対時間10〜20時"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FLORA 緑橋・今里",
+      "recommendation": "優先",
+      "address": "大阪府大阪市東成区大今里2丁目",
+      "address_precision": "町丁目まで公式公開、番地は未確認",
+      "area": "東成区／今里・緑橋",
+      "access": [
+        "大阪メトロ 今里駅 徒歩9分",
+        "大阪メトロ 緑橋駅 徒歩10分"
+      ],
+      "capacity_people": 11,
+      "private_rooms": 11,
+      "gender": "女性専用",
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認（ネパール人を含む）",
+      "operator": "株式会社フローラ",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "物件掲載の入居条件に外国人歓迎。女性20〜39歳、パスポート・ビザ・外国人登録証明書、日常会話程度の日本語、出身国の緊急連絡先が必要と記載。",
+        "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-midoribashi-imazato"
+      },
+      "common_spaces": [
+        "11人が揃える広いリビング",
+        "共用キッチン",
+        "ベランダ",
+        "住人用メッセージボード"
+      ],
+      "student_welcome": "学生歓迎の明示は未確認",
+      "operating_evidence": "公式拠点ページが公開中。同拠点ブログに2026-10-02のメッセージボード記事、2026-08-13の住人食事会記事あり。ひつじ不動産最終更新2026-10-02。",
+      "latest_listing_update": "2026-10-02",
+      "flyer_fit": "住人用ボードと広い共用部の公示があり、運営者への掲示・配架協議候補。生野区北側に隣接する東成区内。",
+      "official_url": "https://ms-flora.com/properties/flora-midoribashi-imazato/",
+      "sources": [
+        {
+          "url": "https://ms-flora.com/properties/flora-midoribashi-imazato/",
+          "supports": [
+            "公開住所",
+            "運営継続",
+            "共用部",
+            "メッセージボード記事",
+            "アクセス"
+          ]
+        },
+        {
+          "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/flora-midoribashi-imazato",
+          "supports": [
+            "外国人条件",
+            "11個室・11人",
+            "運営会社",
+            "共用部",
+            "更新日"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C’s(Si:s)share 玉造1",
+      "aliases": [
+        "C’s share JR玉造",
+        "C's(Si:s)Share玉造"
+      ],
+      "recommendation": "次点（玉造方面）",
+      "address": "大阪府大阪市東成区中道3丁目",
+      "address_precision": "町丁目まで公式公開、番地は未確認",
+      "area": "東成区／玉造",
+      "access": [
+        "JR 玉造駅 徒歩4分",
+        "大阪メトロ 玉造駅 徒歩6分",
+        "森ノ宮駅 徒歩8分"
+      ],
+      "capacity_people": 5,
+      "private_rooms": 5,
+      "gender": "女性専用",
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認（ネパール人を含む）",
+      "operator": "株式会社フロンティア",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "公式にワーキングホリデー滞在の海外女性の利用実績を明記。物件掲載の入居条件に外国人歓迎、パスポート・ビザ等、緊急連絡先、書類審査・ハウスルール理解と記載。",
+        "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/cs-share-jr-tamatsukuri"
+      },
+      "common_spaces": [
+        "共用リビング・ラウンジ",
+        "共用キッチン"
+      ],
+      "student_welcome": "学生歓迎の明示は未確認。就職活動中・海外女性の利用実績は公示。",
+      "operating_evidence": "公式に物件ページ・定員・費用を公開。公式の地域別一覧にも満室で掲載され、5個室掲載が継続。",
+      "latest_listing_update": null,
+      "flyer_fit": "少人数の女性ハウス。生野区の中心より北になるため今里・鶴橋方面より巡回優先度を下げる。",
+      "official_url": "https://sharehouse.jpn.com/tamatsukuri1-2/",
+      "sources": [
+        {
+          "url": "https://sharehouse.jpn.com/tamatsukuri1-2/",
+          "supports": [
+            "公開住所",
+            "5人定員",
+            "海外女性利用実績",
+            "共用設備",
+            "駅徒歩"
+          ]
+        },
+        {
+          "url": "https://kansai.hituji.jp/comret/info/osaka/osaka/cs-share-jr-tamatsukuri",
+          "supports": [
+            "外国人条件",
+            "5個室",
+            "運営会社",
+            "共用部"
+          ]
+        },
+        {
+          "url": "https://sharehouse.jpn.com/by_area/",
+          "supports": [
+            "営業募集一覧に満室で掲載"
+          ]
+        }
+      ]
+    }
+  ],
+  "reserve_candidates": [
+    {
+      "name": "シェアドアパートメント今里1",
+      "aliases": [
+        "SA237 SA-クロス今里1"
+      ],
+      "address": "大阪府大阪市東成区東今里3-22",
+      "address_precision": "公開ブロック範囲まで。末尾番地は未確認",
+      "area": "東成区／今里・緑橋",
+      "operator": "株式会社クロスハウス",
+      "access": [
+        "大阪メトロ 今里駅 徒歩10分以内",
+        "緑橋駅 徒歩15分以内"
+      ],
+      "private_rooms": null,
+      "capacity_people": null,
+      "actual_occupancy": "未確認",
+      "nationality_breakdown": "未確認",
+      "foreigner_admission": {
+        "confirmed": true,
+        "evidence": "掲載の入居条件に外国人OK。18〜39歳、パスポート・緊急連絡先・保証会社、日英韓中いずれかで契約内容を理解できること。",
+        "url": "https://share-share.jp/house/detail/7557/blog/article/20981"
+      },
+      "common_spaces": "水回りを共有する形式。交流用ラウンジの有無は未確認。",
+      "operating_evidence": "物件掲載に空室1室と問い合わせ導線。掲載の部屋表は1枠であり建物全体が1室とは判断しない。",
+      "caution": "専用リビングと総定員を未確認。公式サービス説明では第三者立入り禁止のため、チラシ配架は本部への事前協議が必要。",
+      "sources": [
+        {
+          "url": "https://share-share.jp/house/detail/7557/blog/article/20981",
+          "supports": [
+            "公開住所",
+            "外国人条件",
+            "運営会社",
+            "募集"
+          ]
+        },
+        {
+          "url": "https://lp.x-house.co.jp/asp4/",
+          "supports": [
+            "共有は水回り",
+            "第三者立入り禁止"
+          ]
+        }
+      ]
+    }
+  ],
+  "excluded_from_neighbor_scope": [
+    {
+      "name": "momo picnic",
+      "address": "大阪府大阪市生野区勝山南1丁目",
+      "reason": "生野区内のためこの分担では除外。女性専用・外国人歓迎・6個室・ラウンジ・キッチンあり。2026-10-20更新。",
+      "source": "https://kansai.hituji.jp/comret/info/osaka/osaka/momo-picnic"
+    },
+    {
+      "name": "FLORA 天王寺・寺田町 A/B",
+      "address": "大阪市生野区生野西4丁目",
+      "reason": "名称は天王寺だが所在地は生野区内。",
+      "source": "https://ms-flora.com/properties/flora-tennoji-teradacho-a/"
+    },
+    {
+      "name": "FLORA 桃谷駅前",
+      "address": "大阪府大阪市生野区桃谷1丁目",
+      "reason": "生野区内のためこの分担では除外。",
+      "source": "https://ms-flora.com/properties/"
+    },
+    {
+      "name": "C’s(Si:s)share 玉造2",
+      "address": "大阪府大阪市中央区玉造1丁目",
+      "reason": "今回の天王寺区・東成区分担外。生野区から離れるため優先候補数を増やさず除外。",
+      "source": "https://kansai.hituji.jp/comret/info/osaka/osaka/cs-share-tamatsukuri-2"
+    }
+  ]
+}

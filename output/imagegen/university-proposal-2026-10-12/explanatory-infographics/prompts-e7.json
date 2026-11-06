@@ -1,0 +1,54 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-12",
+  "skill": "/Users/ijaeseung/.codex/skills/.system/imagegen/SKILL.md",
+  "requested_dimensions": [
+    2000,
+    1000
+  ],
+  "requested_aspect_ratio": "approximately 2:1",
+  "images": [
+    {
+      "id": "05-role-map",
+      "output": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/05-role-map.png",
+      "prompt": "Use case: infographic-diagram.\nAsset type: formal explanatory infographic for a Korean university cooperation proposal.\nCreate one polished horizontal image, approximately 2000 x 1000 pixels (2:1). White or very pale blue background. Navy #0F2E54, brand blue #174EA6, cyan #069EEA. A newspaper-style explanatory hierarchy with a clean contemporary editorial finish: dimensional icons, soft subtle shadows, aligned rounded cards, generous whitespace and very large, crisp, highly legible Korean typography. This is an infographic, not a newspaper page.\nLayout: large title at top, five equal and clearly separated role cards in one well-balanced aligned row, then a short explanatory line and footer. These are independent institutional roles, not a sequence or approval pipeline. Do not draw connecting process arrows between the five institutions.\nRender this Korean text EXACTLY, with the same middle dots and spacing:\nTitle: \"기관별 역할과 결정권\"\nCard 1 institution: \"대학\"\nCard 1 role: \"입학·학사 결정\"\nCard 1 small plain text tag: \"결정권\"\nCard 2 institution: \"정우\"\nCard 2 role: \"자료 취합·일정·보고\"\nCard 2 small plain text tag: \"지원·수행\"\nCard 3 institution: \"현지기관\"\nCard 3 role: \"상담·교육·평가 기록\"\nCard 3 small plain text tag: \"지원·수행\"\nCard 4 institution: \"기업\"\nCard 4 role: \"직무·근로조건·채용\"\nCard 4 small plain text tag: \"결정권\"\nCard 5 institution: \"출입국관서\"\nCard 5 role: \"체류자격 심사·허가\"\nCard 5 small plain text tag: \"결정권\"\nExplanatory line: \"정우는 입학·채용·체류허가를 대신 결정하지 않습니다.\"\nFooter: \"협약에서 수행자·확인자·결정자를 정합니다.\"\nIcons: university building with an open book; a neutral clipboard/calendar/report for Jungwoo; an education notebook and speech bubble for the local institution; a company/factory and briefcase; a plain office building and review folder/magnifier for the immigration office. No crests, seals, flags, passports stamped approved or certification emblems. Plain text tags only, not official badges.\nLogical constraints: make the decision authority of university, company and immigration office clear and equal. Jungwoo and the local institution provide support/execution and must not appear to replace the three decision-making institutions. Preserve all requested words; do not add other words, numbers, dates, quotations, logos, mastheads, watermarks, guarantees or fabricated achievements. No government seal or approval symbol. Clear typography matters more than decorative detail. Opaque background; one finished image.",
+      "referenced_image_paths": [],
+      "transparent_background": false,
+      "status": "completed",
+      "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-d7e8453d-c84d-4678-8a10-23aa1596597e.png",
+      "saved_path": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/05-role-map.png",
+      "width": 1774,
+      "height": 887,
+      "aspect_ratio": 2.0,
+      "sha256": "344c4af164e22a72c5bb111de6f0036b45abd93edb07c7dee824fea36d9452ac",
+      "review": {
+        "korean_text": "제목, 기관 5개, 역할 5개, 결정권/지원·수행 표기, 정우의 결정권 제한 문장, 협약 문구 확인",
+        "logic": "대학·기업·출입국관서의 결정권과 정우·현지기관의 지원·수행 역할을 구분하고 기관을 순차 승인 흐름으로 연결하지 않음",
+        "icons": "대학·자료/일정·교육기록·기업·관서/심사 아이콘, 공식 인장·정부 승인 표시 없음",
+        "minor_typography": "가운데점 주위와 일부 단어의 띄어쓰기 간격은 조판상 좁게 보이며 의미는 유지됨",
+        "repair_calls": 0
+      }
+    },
+    {
+      "id": "06-cost-refund",
+      "output": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/06-cost-refund.png",
+      "prompt": "Use case: infographic-diagram.\nAsset type: formal explanatory infographic for a Korean university cooperation proposal.\nCreate one polished horizontal image, approximately 2000 x 1000 pixels (2:1). White or very pale blue background. Navy #0F2E54, brand blue #174EA6, cyan #069EEA. A newspaper-style explanatory hierarchy with a clean contemporary editorial finish: dimensional icons, soft subtle shadows, aligned cards, generous whitespace and very large, crisp, highly legible Korean typography. This is an infographic, not a newspaper page.\nLayout: large title at top; three separate aligned cost-check cards in the upper section. These three cards are independent points to check, NOT mutually exclusive slices of a complete budget. In the lower section, a four-stage process flows left to right with simple cyan arrows. Put the footer clearly at the bottom.\nRender this Korean text EXACTLY, with the same middle dots and spacing:\nTitle: \"비용 확인과 환불 검토\"\nUpper card 1: \"필수비용\"\nUpper card 2: \"선택비용\"\nUpper card 3: \"제3자 비용\"\nLower stage 1: \"사유 확인\"\nLower stage 2: \"제공 내역 확인\"\nLower stage 3: \"규정·계약 검토\"\nLower stage 4: \"정산·처리안 안내\"\nFooter: \"금액·환불률·기한은 견적과 계약으로 확정합니다.\"\nIcons: the first cost card has a neutral quotation/estimate document icon; the second has a receipt icon; the third has a recipient/person icon. The four stages can have simple small magnifier, itemized document, contract folder and report/dialogue icons. Document icons use unlettered simple lines only, with no invented amounts or other tiny text.\nLogical constraints: show required costs, optional costs and third-party costs as separate checks; do not use a pie chart, divided monetary chart, percentages, totals, currency amounts or a three-way exhaustive classification. The bottom must show exactly the requested review sequence: reason -> provided items -> rules/contract -> settlement/handling proposal. This is a review process, not an unconditional full refund guarantee.\nNo additional words, numbers, rates, deadlines, quotations, logos, newspaper mastheads, watermarks, government seals, certification marks, guaranteed outcomes or fabricated achievements. Do not put \"전액환불\", \"100%\" or approval stamps into the image. Clear typography matters more than decorative detail. Opaque background; one finished image.",
+      "referenced_image_paths": [],
+      "transparent_background": false,
+      "status": "completed",
+      "generated_path": "/Users/ijaeseung/.codex/generated_images/01a12e50-58d8-7170-8af6-a9658dce374a/exec-099b02b7-db09-4d63-bbc8-f29fd6bafd64.png",
+      "saved_path": "/Users/ijaeseung/nepal-school/output/imagegen/university-proposal-2026-10-12/explanatory-infographics/06-cost-refund.png",
+      "width": 1774,
+      "height": 887,
+      "aspect_ratio": 2.0,
+      "sha256": "a3877c4ee7974e8449a91ad4e9ab5f72bfb127bc2fe70951105d58ac31a93a9c",
+      "review": {
+        "korean_text": "제목, 필수비용·선택비용·제3자 비용, 4단계, 금액·환불률·기한의 계약 확정 문구 확인",
+        "logic": "3개 비용 항목을 별도 확인 카드로 배치, 파이차트·상호배타적 금액 분할 없음, 사유→제공내역→규정/계약→정산/처리안 순서 유지",
+        "icons": "견적 문서·영수증·수취자와 검토 단계 아이콘, 가짜 금액/환불률/기한 및 전액환불 보장 없음",
+        "minor_typography": "가운데점 주위 간격 차이만 있으며 의미는 유지됨",
+        "repair_calls": 0
+      }
+    }
+  ]
+}

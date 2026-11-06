@@ -1,0 +1,52 @@
+[
+  {
+    "file": "school-profiles-ko.pdf",
+    "sha256": "1a7d92e5773563afc999c5ce5356102760f1bbcd3be6e243495bbe5524934a19",
+    "bytes": 323445
+  },
+  {
+    "file": "school-profiles-en.pdf",
+    "sha256": "310b980ad586a9bfae5131fcb1e47d22b34645fc268e1d0385b61dcb2f15d1ef",
+    "bytes": 293061
+  },
+  {
+    "file": "individual/01-naniwa-en.pdf",
+    "sha256": "5467b2c4bc56b2d44bbef2f78832bc896dcedbaffcaf079649b200a700ae412f",
+    "bytes": 159732
+  },
+  {
+    "file": "individual/01-naniwa-ko.pdf",
+    "sha256": "5fb8dafc701864e2ac48ad748c69e736a292223b787d493a4777346fc29e1c65",
+    "bytes": 190140
+  },
+  {
+    "file": "individual/02-firststudy-en.pdf",
+    "sha256": "3875f3d00f53d3a1ef0a94a9deeedc5ba8926c14f29b9229c4be995d5710f6c9",
+    "bytes": 198952
+  },
+  {
+    "file": "individual/02-firststudy-ko.pdf",
+    "sha256": "200213fc02d03eb9b0b3e8865bae757c91208c1031b8d6a2518f6215f9934b0c",
+    "bytes": 229516
+  },
+  {
+    "file": "individual/03-himawari-en.pdf",
+    "sha256": "7366ee561b2bba3b9cc508578b0d470e2856bf5157709d309d78ecda7f022fab",
+    "bytes": 135247
+  },
+  {
+    "file": "individual/03-himawari-ko.pdf",
+    "sha256": "03f2bce1a45f19d8b0d90ba0fe563bd9fff6ed0a300baacfa9000bb6ce91700b",
+    "bytes": 165895
+  },
+  {
+    "file": "individual/04-sakura-en.pdf",
+    "sha256": "55851886b607cd6f34101b1d259caa684b6b3114fd1370e4604a0872a9037c6a",
+    "bytes": 167624
+  },
+  {
+    "file": "individual/04-sakura-ko.pdf",
+    "sha256": "99f3c90c583c0065a027e58f418735e05c62c9f0ccabf703878c32705a7decfe",
+    "bytes": 198163
+  }
+]

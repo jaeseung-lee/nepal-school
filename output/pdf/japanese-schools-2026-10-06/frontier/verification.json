@@ -1,0 +1,27 @@
+{
+  "school": "大阪フロンティア日本語学校",
+  "checked_date": "2026-10-06",
+  "source_page_url": "http://www.ofj-ls.jp/html/admission.html",
+  "original_requested_homepage": "https://www.ofj-ls.jp/",
+  "direct_pdf_url": "http://www.ofj-ls.jp/images/admission/guidance.pdf?20250703",
+  "official_link_label": "学生募集要項 Download（PDF）",
+  "document_title": "Requirements for Admission / 募集要項",
+  "language": "Japanese",
+  "pages": 6,
+  "cover_applicability": "2026年4月期生～改訂",
+  "pdf_creation_date": "2025-07-03 09:40:40 +09:00",
+  "http_last_modified": "Thu, 03 Jul 2025 05:56:41 GMT",
+  "file": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/frontier/osaka-frontier-recruitment-guidelines-ja-2026-april-onward.pdf",
+  "file_bytes": 328199,
+  "sha256": "7b606d2489f7ac61e5dbf06579ccf116a19a2209da410dc8b6ee0fdd83f51ba4",
+  "verification": [
+    "Downloaded direct link found in official Japanese admissions page; HTTP 200 application/pdf and %PDF header",
+    "Text extracted from all 6 pages",
+    "Cover rendered and visually inspected; year/application wording confirmed"
+  ],
+  "limitations": [
+    "2027 April-specific website brochure was not found; this is the currently linked revision effective from 2026 April intake onward.",
+    "HTTPS fetch had a certificate chain error; retrieved from the school HTTP URL also published by Nisshinkyo.",
+    "Vietnamese and Chinese official links point to documents with 2016 PDF metadata / 2016-2017 Last-Modified; not selected as latest."
+  ]
+}

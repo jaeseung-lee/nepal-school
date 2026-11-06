@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-05",
+  "page_bottoms": {
+    "naniwa-ko": 80.04,
+    "firststudy-ko": 78.04,
+    "himawari-ko": 107.04,
+    "sakura-ko": 97.04,
+    "naniwa-en": 54.04,
+    "firststudy-en": 52.04,
+    "himawari-en": 107.04,
+    "sakura-en": 58.04
+  },
+  "files": [
+    "individual/01-naniwa-ko.pdf",
+    "individual/02-firststudy-ko.pdf",
+    "individual/03-himawari-ko.pdf",
+    "individual/04-sakura-ko.pdf",
+    "school-profiles-ko.pdf",
+    "individual/01-naniwa-en.pdf",
+    "individual/02-firststudy-en.pdf",
+    "individual/03-himawari-en.pdf",
+    "individual/04-sakura-en.pdf",
+    "school-profiles-en.pdf"
+  ],
+  "fee_checks": [
+    {
+      "school": "naniwa",
+      "calculated": [
+        813000,
+        740000,
+        810000,
+        363300
+      ],
+      "shown": [
+        813000,
+        740000,
+        810000,
+        363300
+      ]
+    },
+    {
+      "school": "firststudy",
+      "calculated": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "shown": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "initial_totals": [
+        799500,
+        745300
+      ]
+    },
+    {
+      "school": "himawari",
+      "calculated": [
+        880000,
+        792000,
+        880000,
+        396000
+      ],
+      "shown": [
+        880000,
+        792000,
+        880000,
+        396000
+      ]
+    },
+    {
+      "school": "sakura",
+      "calculated": [
+        868400,
+        796400,
+        868400,
+        404000
+      ],
+      "shown": [
+        868400,
+        796400,
+        868400,
+        404000
+      ]
+    }
+  ]
+}

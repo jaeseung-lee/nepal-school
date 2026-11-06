@@ -1,0 +1,21 @@
+{
+  "title": "외국인 유학생 도입·취업 연계 체계",
+  "figmaFileKey": "WjWhtE25116IaGXslTO3xv",
+  "pageId": "0:1",
+  "frameId": "9:2",
+  "figmaUrl": "https://www.figma.com/design/WjWhtE25116IaGXslTO3xv?node-id=9-2",
+  "frameSize": {"width": 1180, "height": 1180},
+  "nativeTextNodes": 30,
+  "nativeArrowVectors": 8,
+  "foreignStageRows": [3, 2],
+  "domesticStages": 4,
+  "textOverflow": [],
+  "icons": 0,
+  "preview": "08-student-admission-system.png",
+  "previewSize": {"width": 2360, "height": 2360},
+  "verification": [
+    "Figma desktop plugin returned the complete native node hierarchy with no text overflow.",
+    "Final PNG exported from native Figma frame and visually checked by two agents.",
+    "Independent browser opened the exact frame link and displayed the final diagram, confirming cloud synchronization."
+  ]
+}

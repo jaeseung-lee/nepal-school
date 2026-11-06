@@ -1,0 +1,440 @@
+{
+  "schema_version": 1,
+  "school_id": "firststudy",
+  "researched_at": "2026-11-05",
+  "use": "Private internal partner profile; no outreach performed",
+  "priority_summary": {
+    "ko": "오사카 다마쓰쿠리 본교. 2027년 초기비용표는 학교가 보낸 첨부로 확인됨. 초기비용은 연간 총학비가 아니며, 2028년 4월 수업료 인상 예정으로 2년차 금액은 미확정.",
+    "en": "Osaka Tamatsukuri main campus. A school-supplied 2027 initial-fee sheet is verified. Initial fees are not annual tuition totals; Year 2 remains unconfirmed because a tuition increase is planned from April 2028."
+  },
+  "identity": {
+    "japanese_official_name": "ファースト・スタディ日本語学校大阪本校",
+    "japanese_common_name": "ファースト・スタディ日本語学校",
+    "english_official_brand": "First Study Japanese Language School",
+    "english_campus_label": "First Study OSAKA TAMATSUKURI",
+    "korean_display_name": "퍼스트스터디 일본어학교 오사카 다마쓰쿠리 본교",
+    "operator": "株式会社インフィニット・グロース / Infinite Growth Co., Ltd.",
+    "campus": {
+      "address_ja": "〒540-0004 大阪府大阪市中央区玉造1-21-8",
+      "address_en": "1-21-8 Tamatsukuri, Chuo-ku, Osaka-shi, Osaka, Japan",
+      "official_access_page_floor": "インフィニット・グロースビル 3F",
+      "visit_instruction": "1階受付",
+      "sources": [
+        "S1 p1",
+        "S3",
+        "E3"
+      ]
+    },
+    "stations": [
+      {
+        "name": "森ノ宮 / Morinomiya",
+        "lines": "JR Osaka Loop / Osaka Metro Chuo / Nagahori Tsurumi-ryokuchi",
+        "walk_minutes": 5,
+        "source": "S3"
+      },
+      {
+        "name": "玉造 / Tamatsukuri",
+        "lines": "JR Osaka Loop",
+        "walk_minutes": 5,
+        "source": "S3"
+      },
+      {
+        "name": "玉造 / Tamatsukuri",
+        "lines": "Osaka Metro Nagahori Tsurumi-ryokuchi",
+        "walk_minutes": 4,
+        "source": "S3"
+      }
+    ],
+    "campus_resolution": "Use Osaka Tamatsukuri, not Izumiotsu. 2026-10-28 school visit email explicitly gives Tamatsukuri 1-21-8. The 1-23-3 address in email signatures is the head office and should not replace campus address.",
+    "status": "verified_current_identity",
+    "sources": [
+      "S1 p1 footer",
+      "S2 p1 arts 2-3",
+      "S3",
+      "E3"
+    ]
+  },
+  "features": [
+    {
+      "ko": "대학·단기대학·대학원 진학 지원과 제휴 직업소개회사를 통한 취업 지원",
+      "en": "Progression support for universities, junior colleges and graduate schools, with employment support through partner recruitment companies.",
+      "status": "official_web_claim_as_of_research_date; outcomes not independently audited",
+      "source": "S4"
+    },
+    {
+      "ko": "통역 직원과 생활관리부 운영",
+      "en": "Interpreter staff and a student life management team.",
+      "status": "official_web_staff_roster_as_of_research_date",
+      "source": "S5"
+    },
+    {
+      "ko": "2027년 4월 입학 준비용 온라인 일본어수업: 2026년 12월~2027년 3월, N4 입학 준비·졸업 시 N2 이상 목표",
+      "en": "Pre-arrival online Japanese classes for April 2027: December 2026 to March 2027, aiming toward N4 readiness and N2 or above by graduation.",
+      "status": "school_attachment; goals not guaranteed outcomes; detailed timetable TBD",
+      "source": "S6 p1"
+    }
+  ],
+  "intakes": {
+    "april_2027": {
+      "main_course_months": 24,
+      "alternate_course_months": 12,
+      "availability": "School sought referrals for April 2027 on 2026-10-05; do not treat this as current seat confirmation.",
+      "sources": [
+        "S1 pp1-2",
+        "E1"
+      ],
+      "japanese_requirement": {
+        "two_year": {
+          "confirmed_2027_test_minimum": null,
+          "confirmed_2027_study_hours": null,
+          "ko": "2027년 2년 과정의 시험·학습시간 기준 미확인. 2022년 모집요항에 N5 상당 및 150시간 이상 학습증명 기재.",
+          "en": "2027 test/study-hour minimum for the two-year course is unconfirmed. The 2022 reference lists N5-equivalent proficiency and a 150+ hour study certificate.",
+          "historical_source": "S7 pp1-2",
+          "current_undated_web": "S8 lists N5-equivalent minimum but does not establish 2027-specific requirements."
+        },
+        "one_year": {
+          "test_level": "N3 or higher at interview; subject to school approval",
+          "study_hours": null,
+          "status": "confirmed_for_2027",
+          "source": "S1 pp1-2 footnote 1"
+        }
+      }
+    },
+    "october_2027": {
+      "course_months": 18,
+      "availability": "School email 2026-10-14: welcomes Nepal/Myanmar students if seats remain; recruitment timing and conditions to follow once decided.",
+      "sources": [
+        "S1 pp1-2",
+        "E2"
+      ],
+      "japanese_requirement": {
+        "confirmed_2027_test_minimum": null,
+        "confirmed_2027_study_hours": null,
+        "ko": "2027년 10월 시험·학습시간 기준 미확인. 2022년 참고 기준 N5 상당·150시간 이상 학습증명; 최신 회신은 조건 추후 안내.",
+        "en": "October 2027 test/study-hour requirements are unconfirmed. Historical reference: N5-equivalent proficiency and a 150+ hour study certificate; latest relevant reply says conditions will follow.",
+        "sources": [
+          "S7 pp1-2",
+          "E2"
+        ]
+      }
+    },
+    "admissions_general": {
+      "schooling": "12 years of schooling or equivalent",
+      "schooling_status": "2023 regulations, still publicly posted; not a newly issued 2027 admission guideline",
+      "source": "S2 p3 art 11",
+      "gpa_scale": null,
+      "gpa_minimum": null,
+      "gpa_status": "unconfirmed; no scale or cutoff found in 2027 fee attachment, school emails, 2023 regulations or 2022 guidelines",
+      "historical_age_rule": "2022 reference: age 30 or younger; over 30 requires reason/history. Not verified for 2027.",
+      "historical_japanese_wording": "2022 p1: N5-equivalent qualification or proficiency. p2 lists N5-equivalent public test proof, with 150+ study-hour certificate in parentheses; do not infer that hours alone waive a test.",
+      "gpa_copy_ko": "고교 GPA 척도·최저점수: 미확인",
+      "gpa_copy_en": "High-school GPA scale/minimum: unconfirmed"
+    }
+  },
+  "fees": {
+    "currency": "JPY",
+    "primary_source": "S1 pp1-2",
+    "applicable_year": "2027 intakes (explicit heading)",
+    "classification": "Verified initial-fee schedule, not annual or full-course price list",
+    "line_item_period_note": "The sheet groups amounts by full course length but labels this table initial fees. Only tuition explicitly states six months. Do not present all entries as annual charges.",
+    "april_two_year": {
+      "items": {
+        "textbook_materials": 75000,
+        "international_student_insurance": 20000,
+        "medical_health_check": 15000,
+        "screening_fee": 51000,
+        "enrollment_fee": 86000,
+        "facilities_fee": 120000,
+        "tuition_six_months": 360000,
+        "jlpt_exam_fee": 22500
+      },
+      "initial_school_charges_excluding_housing": 749500,
+      "housing_initial_shared_tamatsukuri": 330000,
+      "printed_initial_total_with_shared_housing": 1079500,
+      "prearrival_online_class_separate": 50000,
+      "computed_initial_school_plus_online_excluding_housing": 799500,
+      "computed_initial_total_with_shared_housing_plus_online": 1129500,
+      "source": "S1 pp1-2 April 2 years row and footnotes",
+      "year1": {
+        "period": "April 2027–March 2028",
+        "official_annual_total": null,
+        "status": "not provided as a year-specific total. Initial table includes six tuition months, two allocated to final two months before graduation.",
+        "notes": "¥360,000/6 = ¥60,000 per month is arithmetic, not an official annual invoice. Annual cost and timing need a payment schedule."
+      },
+      "year2": {
+        "period": "April 2028–March 2029",
+        "official_annual_total": null,
+        "status": "unconfirmed",
+        "reason": "Tuition increase planned from April 2028; new rate and treatment of prepaid final two months not stated."
+      }
+    },
+    "october_eighteen_month": {
+      "items": {
+        "textbook_materials": 62500,
+        "international_student_insurance": 15800,
+        "medical_health_check": 15000,
+        "screening_fee": 51000,
+        "enrollment_fee": 86000,
+        "facilities_fee": 90000,
+        "tuition_six_months": 360000,
+        "jlpt_exam_fee": 15000
+      },
+      "initial_school_charges_excluding_housing": 695300,
+      "housing_initial_shared_tamatsukuri": 330000,
+      "printed_initial_total_with_shared_housing": 1025300,
+      "prearrival_online_class_separate": 50000,
+      "computed_initial_school_plus_online_excluding_housing": 745300,
+      "computed_initial_total_with_shared_housing_plus_online": 1075300,
+      "source": "S1 pp1-2 October 1 year 6 months row and footnotes",
+      "year1": {
+        "period": "October 2027–September 2028 (12 months)",
+        "official_annual_total": null,
+        "status": "unconfirmed; spans planned April 2028 tuition increase"
+      },
+      "year2": {
+        "period": "October 2028–March 2029 (remaining 6 months, not 12 months)",
+        "official_total": null,
+        "status": "unconfirmed; planned April 2028 tuition increase applies before this period"
+      }
+    },
+    "april_one_year_optional": {
+      "items": {
+        "textbook_materials": 50500,
+        "international_student_insurance": 10000,
+        "medical_health_check": 7500,
+        "screening_fee": 51000,
+        "enrollment_fee": 86000,
+        "facilities_fee": 60000,
+        "tuition_six_months": 360000,
+        "jlpt_exam_fee": 15000
+      },
+      "initial_school_charges_excluding_housing": 640000,
+      "printed_initial_total_with_shared_housing": 970000,
+      "prearrival_online_class_separate": 50000,
+      "computed_initial_total_with_shared_housing_plus_online": 1020000,
+      "admission_condition": "N3+ at interview and school approval",
+      "source": "S1 pp1-2"
+    },
+    "arithmetic_checks": {
+      "april": "75,000 + 20,000 + 15,000 + 51,000 + 86,000 + 120,000 + 360,000 + 22,500 = 749,500; +330,000 = 1,079,500; +50,000 = 1,129,500",
+      "october": "62,500 + 15,800 + 15,000 + 51,000 + 86,000 + 90,000 + 360,000 + 15,000 = 695,300; +330,000 = 1,025,300; +50,000 = 1,075,300",
+      "housing_shared": "150,000 management fee + 6 × 30,000 rent = 330,000",
+      "housing_single": "150,000 management fee + 6 × 60,000 rent = 510,000 (derived, not printed as a total)"
+    },
+    "payment": {
+      "initial_due": "After COE issuance, by the school-designated deadline",
+      "initial_tuition_period": "Six tuition months prepaid; two months apply to final two months before graduation",
+      "bank_fees": "Payer pays bank transfer charges",
+      "monthly_payment": "Undated official Q&A and Nepal MOU refer to monthly tuition payments; detailed 2027 post-arrival installment calendar not supplied.",
+      "separate_fee": "¥50,000 pre-arrival online class; due date not specified in attachment",
+      "national_health_insurance": "Excluded; student must enroll and pay separately after arrival",
+      "jlpt": "Must take all available JLPT exams during enrollment",
+      "sources": [
+        "S1 pp1-2 footnotes",
+        "S8",
+        "S9 p2"
+      ]
+    },
+    "increase_notice": {
+      "effective": "April 2028 (planned)",
+      "new_amount": null,
+      "source": "S1 pp1-2 footnote 5"
+    },
+    "historical_do_not_use_for_2027": {
+      "web_q_and_a_annual_tuition": 684000,
+      "source": "S8",
+      "regulations_effective": "2023-10-01",
+      "regulations_tuition_two_year": 1368000,
+      "regulations_tuition_eighteen_month": 1026000,
+      "regulations_source": "S2 p4",
+      "note": "These older published figures differ from the school-supplied 2027 sheet and should not be used as 2027 quotations."
+    }
+  },
+  "housing": {
+    "campus": "Osaka Tamatsukuri",
+    "provider": "School-arranged dormitory; operator/legal lessor and actual property address not specified in 2027 fee sheet",
+    "source": "S1 p1 footnote 3",
+    "applicable_year": 2027,
+    "types": [
+      {
+        "type": "Shared room, 2 or 4 occupants",
+        "rent_per_person_month": 30000,
+        "initial_management_fee": 150000,
+        "advance_rent_months": 6,
+        "initial_payment": 330000,
+        "status": "directly stated rent/fee; total printed"
+      },
+      {
+        "type": "Single room",
+        "rent_month": 60000,
+        "initial_management_fee": 150000,
+        "advance_rent_months": 6,
+        "initial_payment": 510000,
+        "status": "rent/management directly stated; upfront total calculated"
+      }
+    ],
+    "contractual_period_months": 12,
+    "minimum_residence": "One-year contract; early departure, cancellation and minimum physical stay rules not stated separately.",
+    "payment_timing": "Management fee and six months rent required after COE issuance; subsequent rent due dates not specified.",
+    "utilities": "Electricity, water and other utilities paid separately at actual cost; Wi-Fi handling not specified in 2027 sheet.",
+    "housing_optional": "Second page excludes dorm charges, but eligibility to opt out of dormitory / independently rent is not explicitly explained for 2027.",
+    "historical_conflict": "Undated web dorm page still shows ¥20,000 shared/¥40,000 single and six months; do not use those figures for 2027. Izumiotsu's ¥25,000 shared/¥50,000 single is a different campus."
+  },
+  "unresolved_points": [
+    "2027 April two-year and October 18-month accepted Japanese tests, minimum grades and study-hour certificate requirements; whether test and hours are cumulative or alternatives.",
+    "High-school GPA scale and minimum, accepted academic systems, age/gap criteria for 2027.",
+    "Confirmed seats and application deadlines for April/October 2027.",
+    "Exact Year 1 and Year 2 payment schedule; allocation of prepaid final two months and charges by year.",
+    "April 2028 tuition increase amount and whether prepaid final months are protected or require an adjustment.",
+    "Detailed post-arrival monthly payment dates and permissible installment alternatives.",
+    "Dormitory availability, actual provider/property, room assignment, cancellation/early exit rules, Wi-Fi and whether off-campus housing is permitted.",
+    "Pre-arrival online-class detailed timetable/hours and October intake class dates."
+  ],
+  "short_bilingual_copy": {
+    "identity_ko": "오사카 다마쓰쿠리 본교 | 玉造1-21-8 | 다마쓰쿠리·모리노미야역 도보 4~5분",
+    "identity_en": "Osaka Tamatsukuri main campus | 1-21-8 Tamatsukuri | 4–5 min walk from Tamatsukuri/Morinomiya",
+    "fee_ko": "2027 초기비용(공유기숙사 포함): 4월 2년 과정 ¥1,079,500 / 10월 1년6개월 과정 ¥1,025,300. 입국 전 온라인수업 ¥50,000 별도. 연간 총학비가 아니며, 2028년 4월 수업료 인상 예정으로 연차별 총액 확인 필요.",
+    "fee_en": "2027 initial fees including shared dorm: April 2-year ¥1,079,500 / October 18-month ¥1,025,300. Pre-arrival online classes: ¥50,000 extra. These are not annual totals; year-by-year costs require confirmation because tuition is scheduled to rise in April 2028.",
+    "housing_ko": "학교 안내 기숙사: 2·4인실 ¥30,000/월, 1인실 ¥60,000/월. 1년 계약, 관리비 ¥150,000 + 6개월 임대료 선납; 공과금 실비.",
+    "housing_en": "School-arranged dorm: shared 2/4-person ¥30,000/month; single ¥60,000/month. One-year contract; ¥150,000 management fee plus six months rent upfront; utilities at cost."
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "2027年4月～初期費用.pdf / Initial Fee for First Study Japanese Language School [For 2027 Intakes]",
+      "type": "school_email_attachment",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/firststudy_2027_initial_fees.pdf",
+      "pages": 2,
+      "inspected": "Both pages rendered and visually checked; fee row alignment and all footnotes verified.",
+      "message_id": "1a11aa8bacf5acbd",
+      "thread_id": "1a11aa8bacf5acbd",
+      "email_date_jst": "2026-10-08 17:37:01",
+      "sender": "PHURPA YANGZOM <phurpa.yangzom@igj.co.jp>",
+      "applicable_year": 2027,
+      "url": "https://mail.google.com/mail/u/?authuser=lee_js%40jeongwoohrd.com#all/1a11aa8bacf5acbd"
+    },
+    {
+      "id": "S2",
+      "title": "ファースト・スタディ日本語学校 大阪本校学則",
+      "url": "https://firststudy.net/pdf/③学則_大阪本校.pdf",
+      "effective_date": "2023-10-01",
+      "checked": "2026-11-05",
+      "pages": 5,
+      "status": "older regulations still publicly posted; fees superseded for 2027 by S1"
+    },
+    {
+      "id": "S3",
+      "title": "アクセス",
+      "url": "https://firststudy.net/access.html",
+      "checked": "2026-11-05"
+    },
+    {
+      "id": "S4",
+      "title": "大学・短期大学コース案内",
+      "url": "https://firststudy.net/course.html",
+      "checked": "2026-11-05"
+    },
+    {
+      "id": "S5",
+      "title": "教師・スタッフ紹介",
+      "url": "https://firststudy.net/teacher.html",
+      "checked": "2026-11-05"
+    },
+    {
+      "id": "S6",
+      "title": "入国前講習英語版.pdf / PRE-ARRIVAL ONLINE JAPANESE CLASS",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/firststudy_prearrival_online.pdf",
+      "pages": 2,
+      "message_id": "1a11aa8bacf5acbd",
+      "email_date_jst": "2026-10-08 17:37:01",
+      "applicability": "December 2026–March 2027 class"
+    },
+    {
+      "id": "S7",
+      "title": "2022 reference admission guidelines",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/firststudy/01_admission-guidelines_22-06_jp_REFERENCE.pdf",
+      "url": "https://firststudy.net/pdf/22-06-all%20Enrollment-JP.pdf",
+      "pages": 2,
+      "year": 2022,
+      "status": "historical reference only; not 2027 eligibility proof"
+    },
+    {
+      "id": "S8",
+      "title": "よくある質問",
+      "url": "https://firststudy.net/qa.html",
+      "checked": "2026-11-05",
+      "date": "undated",
+      "status": "N5 and monthly payment references; tuition outdated relative to S1"
+    },
+    {
+      "id": "S9",
+      "title": "契約書.pdf (Nepal MOU)",
+      "local_path": "/Users/ijaeseung/nepal-school/output/pdf/school-profiles-2026-11-05/research/firststudy_mou_nepal.pdf",
+      "message_id": "1a11aa8bacf5acbd",
+      "email_date_jst": "2026-10-08 17:37:01",
+      "pages": 2,
+      "status": "Nepal-specific draft MOU; no evidence of signature. Commission terms not needed in public/student profile."
+    },
+    {
+      "id": "S10",
+      "title": "学生寮",
+      "url": "https://firststudy.net/dormitory.html",
+      "checked": "2026-11-05",
+      "date": "undated",
+      "status": "Older rates and six-month period conflict with S1; not applicable pricing for 2027"
+    },
+    {
+      "id": "E1",
+      "type": "school_email",
+      "message_id": "1a10a7e9401b1658",
+      "thread_id": "1a10a7e9401b1658",
+      "email_date_jst": "2026-10-05 14:16:59",
+      "sender": "Takutaro Kimura",
+      "evidence": "Seeks Nepal student referrals for next April; group 1,000 students, including 200 Nepal students. Group-wide numbers, not campus enrollment; optional and not used as audited feature.",
+      "url": "https://mail.google.com/mail/u/?authuser=lee_js%40jeongwoohrd.com#all/1a10a7e9401b1658"
+    },
+    {
+      "id": "E2",
+      "type": "school_email",
+      "message_id": "1a1396aa5cf12612",
+      "thread_id": "1a10a7e9401b1658",
+      "email_date_jst": "2026-10-14 16:57:19",
+      "sender": "Takutaro Kimura",
+      "evidence": "October 2027 Nepal/Myanmar applicants welcome if seats available; recruitment timing and conditions will be advised when decided.",
+      "url": "https://mail.google.com/mail/u/?authuser=lee_js%40jeongwoohrd.com#all/1a1396aa5cf12612"
+    },
+    {
+      "id": "E3",
+      "type": "school_email",
+      "message_id": "1a1807cbf5fbf014",
+      "thread_id": "1a1732cff5a16714",
+      "email_date_jst": "2026-10-28 12:10:09",
+      "sender": "Takutaro Kimura",
+      "evidence": "Visit location explicitly Tamatsukuri campus, 1-21-8 Tamatsukuri; first-floor reception.",
+      "url": "https://mail.google.com/mail/u/?authuser=lee_js%40jeongwoohrd.com#all/1a1807cbf5fbf014"
+    }
+  ],
+  "research_coverage": {
+    "gmail_accounts": [
+      "lee_js@jeongwoohrd.com"
+    ],
+    "threads_read": [
+      {
+        "id": "1a10a7e9401b1658",
+        "messages": 6
+      },
+      {
+        "id": "1a1732cff5a16714",
+        "messages": 5
+      },
+      {
+        "id": "1a11aa8bacf5acbd",
+        "messages": 2
+      }
+    ],
+    "search": "(from:fs.infinitegrowth@gmail.com OR from:firststudy-osaka@igj.co.jp OR ファーストスタディ OR ファースト・スタディ) -in:trash",
+    "search_results": 14,
+    "read_max_messages": 100,
+    "outreach_performed": false
+  }
+}

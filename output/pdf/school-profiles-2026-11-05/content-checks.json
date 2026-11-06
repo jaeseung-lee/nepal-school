@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "generated_pdf_count": 10,
+  "checks": [
+    {
+      "page": 1,
+      "amounts_identical": true,
+      "left_april_x": 41.0,
+      "right_october_x": 304.6378,
+      "individual_matches_combined": true
+    },
+    {
+      "page": 2,
+      "amounts_identical": true,
+      "left_april_x": 41.0,
+      "right_october_x": 304.6378,
+      "individual_matches_combined": true
+    },
+    {
+      "page": 3,
+      "amounts_identical": true,
+      "left_april_x": 41.0,
+      "right_october_x": 304.6378,
+      "individual_matches_combined": true
+    },
+    {
+      "page": 4,
+      "amounts_identical": true,
+      "left_april_x": 41.0,
+      "right_october_x": 304.6378,
+      "individual_matches_combined": true
+    }
+  ]
+}

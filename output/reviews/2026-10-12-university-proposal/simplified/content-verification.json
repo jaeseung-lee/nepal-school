@@ -1,0 +1,83 @@
+{
+  "bodyMatchesPlanned": true,
+  "originalHeadingsPreserved": true,
+  "oldHeadingCount": 71,
+  "newHeadingCount": 75,
+  "originalLinksPreserved": true,
+  "oldLinkCount": 27,
+  "newLinkCount": 34,
+  "inlineImageCount": 20,
+  "logoPreserved": true,
+  "figmaIconCounts": [
+    {
+      "name": "01-service-flow",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "02-selection-check",
+      "vectors": 0,
+      "rows": [
+        2,
+        2
+      ],
+      "textCount": 4
+    },
+    {
+      "name": "03-preparation-cycle",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "04-student-support",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "05-role-map",
+      "vectors": 0,
+      "rows": [
+        3,
+        2
+      ],
+      "textCount": 5
+    },
+    {
+      "name": "06-cost-refund",
+      "vectors": 0,
+      "rows": [
+        3,
+        2,
+        2
+      ],
+      "textCount": 7
+    },
+    {
+      "name": "07-residence-review",
+      "vectors": 0,
+      "rows": [
+        2,
+        2
+      ],
+      "textCount": 4
+    }
+  ],
+  "originalAppendixPages": [
+    2,
+    3,
+    4,
+    5
+  ]
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1176" viewBox="0 0 1180 1176" role="img" aria-labelledby="svg-title svg-desc">
+<title id="svg-title">외국인 유학생 도입·취업 연계 체계</title>
+<desc id="svg-desc">build.js의 동일 문구와 회사 팔레트. 해외 현지 다섯 단계는 3+2 배치, 국내 대학 네 단계는 가로 배치. 아이콘 없이 벡터 화살표를 사용하며 모든 본문은 편집 가능한 텍스트입니다.</desc>
+<rect id="canvas" x="0" y="0" width="1180" height="1176" rx="0" fill="#F7F4EE"/>
+<text id="diagram-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="40" font-weight="700" fill="#0C2E68" text-anchor="start"><tspan x="32" y="75.2">외국인 유학생 도입·취업 연계 체계</tspan></text>
+<g id="overseas">
+<rect id="overseas-panel" x="32" y="110" width="1116" height="582" rx="24" fill="#FCFAF5" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="56" y="164.24">해외 현지 · 모집 및 준비교육</tspan></text>
+<text id="overseas-scope" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="400" fill="#686B73" text-anchor="end"><tspan x="1124" y="164.6">모집 국가·기관은 대학과 협의</tspan></text>
+<g id="overseas-01">
+<rect id="overseas-01-card" x="56" y="196" width="332" height="224" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-01-sequence" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="76" y="237.6">01</tspan></text>
+<text id="overseas-01-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="76" y="281.24">모집·신청 접수</tspan></text>
+<text id="overseas-01-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="76" y="322.72">지원서·학력 자료</tspan><tspan x="76" y="355.12">대학 기준 확인</tspan></text>
+</g>
+<g id="overseas-02">
+<rect id="overseas-02-card" x="424" y="196" width="332" height="224" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-02-sequence" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="444" y="237.6">02</tspan></text>
+<text id="overseas-02-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="444" y="281.24">면접·선발</tspan></text>
+<text id="overseas-02-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="444" y="322.72">학업 목적·한국어</tspan><tspan x="444" y="355.12">재정 계획 확인</tspan></text>
+</g>
+<g id="overseas-03">
+<rect id="overseas-03-card" x="792" y="196" width="332" height="224" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-03-sequence" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="812" y="237.6">03</tspan></text>
+<text id="overseas-03-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="812" y="281.24">준비교육</tspan></text>
+</g>
+<rect id="korean-track-card" x="812" y="296.8" width="140" height="84" rx="24" fill="#FCFAF5"/>
+<rect id="technical-track-card" x="964" y="296.8" width="140" height="84" rx="24" fill="#FCFAF5"/>
+<text id="korean-track-label" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="22" font-weight="500" fill="#181A1F" text-anchor="middle"><tspan x="882" y="332.86">한국어</tspan><tspan x="882" y="362.56">교육</tspan></text>
+<text id="technical-track-label" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="22" font-weight="500" fill="#181A1F" text-anchor="middle"><tspan x="1034" y="332.86">용접·취부</tspan><tspan x="1034" y="362.56">교육</tspan></text>
+<g id="overseas-04">
+<rect id="overseas-04-card" x="240" y="476" width="332" height="192" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-04-sequence" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="260" y="517.6">04</tspan></text>
+<text id="overseas-04-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="260" y="561.24">이수·기량 확인</tspan></text>
+<text id="overseas-04-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="260" y="602.72">한국어 평가·수료 기록</tspan><tspan x="260" y="635.12">용접 기량·자격 확인</tspan></text>
+</g>
+<g id="overseas-05">
+<rect id="overseas-05-card" x="608" y="476" width="332" height="192" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="overseas-05-sequence" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="628" y="517.6">05</tspan></text>
+<text id="overseas-05-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#A85B38" text-anchor="start"><tspan x="628" y="561.24">대학 추천</tspan></text>
+<text id="overseas-05-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="628" y="602.72">학생별 준비 자료</tspan><tspan x="628" y="635.12">대학 심사에 인계</tspan></text>
+</g>
+<path id="overseas-01-to-02" d="M 396 308 L 416 308 M 407 313 L 416 308 L 407 303" fill="none" stroke="#A85B38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="overseas-02-to-03" d="M 764 308 L 784 308 M 775 313 L 784 308 L 775 303" fill="none" stroke="#A85B38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="overseas-03-to-04" d="M 958 428 L 958 448 L 406 448 L 406 468 M 401 459 L 406 468 L 411 459" fill="none" stroke="#A85B38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="overseas-04-to-05" d="M 580 572 L 600 572 M 591 577 L 600 572 L 591 567" fill="none" stroke="#A85B38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path id="overseas-to-domestic" d="M 590 718 L 590 754 M 585 745 L 590 754 L 595 745" fill="none" stroke="#174EA6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="domestic">
+<rect id="domestic-panel" x="32" y="780" width="1116" height="310" rx="24" fill="#E8EFFB" stroke="#DED8CC" stroke-width="1"/>
+<text id="domestic-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#174EA6" text-anchor="start"><tspan x="56" y="834.24">국내 대학 · 학업과 취업 연계</tspan></text>
+<text id="domestic-disciplines" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="20" font-weight="400" fill="#686B73" text-anchor="end"><tspan x="1124" y="834.6">조선·기계·뿌리산업 관련 학과</tspan></text>
+<g id="domestic-01">
+<rect id="domestic-01-card" x="56" y="866" width="240" height="200" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="domestic-01-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#0C2E68" text-anchor="start"><tspan x="76" y="916.24">대학 입학</tspan></text>
+<text id="domestic-01-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="76" y="957.72">대학 심사·허가</tspan><tspan x="76" y="990.12">입학·등록</tspan></text>
+</g>
+<g id="domestic-02">
+<rect id="domestic-02-card" x="332" y="866" width="240" height="200" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="domestic-02-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#0C2E68" text-anchor="start"><tspan x="352" y="916.24">학업·현장활동</tspan></text>
+<text id="domestic-02-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="352" y="957.72">전공·학업 우선</tspan><tspan x="352" y="990.12">허용 활동·절차 확인</tspan></text>
+</g>
+<g id="domestic-03">
+<rect id="domestic-03-card" x="608" y="866" width="240" height="200" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="domestic-03-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#0C2E68" text-anchor="start"><tspan x="628" y="916.24">졸업·채용 검토</tspan></text>
+<text id="domestic-03-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="628" y="957.72">학위·직무 확인</tspan><tspan x="628" y="990.12">기업 면접·계약</tspan></text>
+</g>
+<g id="domestic-04">
+<rect id="domestic-04-card" x="884" y="866" width="240" height="200" rx="24" fill="#FFFFFF" stroke="#DED8CC" stroke-width="1"/>
+<text id="domestic-04-title" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="28" font-weight="700" fill="#0C2E68" text-anchor="start"><tspan x="904" y="916.24">체류 심사·취업</tspan></text>
+<text id="domestic-04-detail" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="24" font-weight="400" fill="#181A1F" text-anchor="start"><tspan x="904" y="957.72">E-7 등 요건 검토</tspan><tspan x="904" y="990.12">허가 후 근무 개시</tspan></text>
+</g>
+<path id="domestic-01-to-02" d="M 304 966 L 324 966 M 315 971 L 324 966 L 315 961" fill="none" stroke="#174EA6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="domestic-02-to-03" d="M 580 966 L 600 966 M 591 971 L 600 966 L 591 961" fill="none" stroke="#174EA6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="domestic-03-to-04" d="M 856 966 L 876 966 M 867 971 L 876 966 L 867 961" fill="none" stroke="#174EA6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text id="decision-authorities" font-family="Noto Sans KR, Pretendard, Apple SD Gothic Neo, sans-serif" font-size="22" font-weight="500" fill="#686B73" text-anchor="start"><tspan x="32" y="1137.76">입학은 대학, 채용은 기업, 체류허가는 출입국관서가 결정합니다.</tspan></text>
+</svg>

@@ -1,0 +1,14 @@
+{
+  "school": "ひまわり大阪日本語学園",
+  "checked_date": "2026-10-06",
+  "source_page": "https://www.himawari-nihongo.com/jp/application/download.html",
+  "pdf_url": "https://www.himawari-nihongo.com/jp/pdf/requirement2024.pdf",
+  "local_file": "/Users/ijaeseung/nepal-school/output/pdf/japanese-schools-2026-10-06/himawari/himawari-admissions-requirement2024.pdf",
+  "bytes": 296440,
+  "sha256": "0947aea282ebd6dc280a31fef7535b57498ddfd3c257ed0d36778a7e9e9fefaf",
+  "pages": 4,
+  "status": "currently linked official admissions guidelines, undated in PDF body",
+  "year_note": "Filename says 2024; PDF CreationDate/ModDate 2024-09-03. Body has no explicit 2026 or 2027 applicability. Annual April application window Aug-Sep 30 and October Feb-Mar 31. No 2027 April/2026-specific PDF found in official public download page.",
+  "validation": "Downloaded successfully using curl with TLS verification. Full 4-page text extracted and all 4 pages visually reviewed.",
+  "limitations": "Official web news page newest dated admission announcement observed is 2024-08-01 for 2025 April. Cannot represent this as confirmed 2027 or 2026 guidelines."
+}
