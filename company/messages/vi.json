@@ -34,6 +34,8 @@
     "phone": "Điện thoại",
     "mobile": "Di động",
     "email": "Email",
+    "socialChannels": "Kênh chính thức",
+    "opensInNewTab": "mở trong thẻ mới",
     "language": "Ngôn ngữ",
     "comingSoon": "Sắp ra mắt",
     "allRightsReserved": "Bảo lưu mọi quyền.",
@@ -503,7 +505,7 @@
       },
       "form": {
         "title": "Hướng dẫn liên hệ",
-        "description": "Đối với các yêu cầu về tuyển dụng hoặc hợp tác, vui lòng liên hệ qua số điện thoại hoặc email bên dưới.",
+        "description": "Đối với các yêu cầu về tuyển dụng hoặc hợp tác, vui lòng liên hệ qua số điện thoại, email hoặc LINE bên dưới.",
         "preparationTitle": "Thông tin nên chuẩn bị trước khi tư vấn",
         "preparationItems": {
           "roleAndCount": "Vị trí công việc và số lượng nhân sự mong muốn",

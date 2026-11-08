@@ -8,6 +8,7 @@ import { getBlogIndexPath, isBlogLocale } from "@/lib/blog-routing";
 import { SITE } from "@/lib/site";
 import { getLocaleFromPathname, getMessages, localizedHref } from "@/lib/i18n";
 import { PRIVACY_COPY } from "@/lib/privacy-copy";
+import SocialChannels from "@/components/social-channels";
 
 export default function SiteFooter() {
   const pathname = usePathname() || "/";
@@ -35,6 +36,9 @@ export default function SiteFooter() {
             screenReaderLabel={`${messages.site.name} — ${messages.site.alternateName}`}
           />
           <p className="mt-6 max-w-sm text-[13px] leading-relaxed text-night-muted">{messages.footer.description}</p>
+          <div className="mt-6">
+            <SocialChannels locale={locale} tone="dark" />
+          </div>
         </div>
 
         <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">

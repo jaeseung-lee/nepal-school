@@ -1,5 +1,11 @@
 export const SITE_URL = "https://www.jeongwoohrd.com";
 
+const SOCIAL_CHANNELS = [
+  { id: "line", label: "LINE", href: "https://line.me/R/ti/p/@669aznzy" },
+  { id: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61595913932801" },
+  { id: "tiktok", label: "TikTok", href: "https://www.tiktok.com/@jeongwoohrd" },
+] as const;
+
 export const SITE = {
   url: SITE_URL,
   legalName: {
@@ -57,7 +63,8 @@ export const SITE = {
     },
   ],
   email: "lee_js@jeongwoohrd.com",
-  sameAs: [] as string[],
+  socialChannels: SOCIAL_CHANNELS,
+  sameAs: SOCIAL_CHANNELS.map((channel) => channel.href),
 } as const;
 
 // Compatibility aliases for existing presentational code. Public company-name

@@ -34,6 +34,8 @@
     "phone": "Phone",
     "mobile": "Mobile",
     "email": "Email",
+    "socialChannels": "Official channels",
+    "opensInNewTab": "opens in a new tab",
     "language": "Language",
     "comingSoon": "Coming soon",
     "allRightsReserved": "All rights reserved.",
@@ -503,7 +505,7 @@
       },
       "form": {
         "title": "How to contact us",
-        "description": "For recruitment or partnership inquiries, please contact us using one of the phone numbers or the email address below.",
+        "description": "For recruitment or partnership inquiries, contact us by phone, email, or LINE below.",
         "preparationTitle": "Useful information to organize before consultation",
         "preparationItems": {
           "roleAndCount": "Desired roles and headcount",

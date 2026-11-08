@@ -34,6 +34,8 @@
     "phone": "電話",
     "mobile": "携帯電話",
     "email": "メール",
+    "socialChannels": "公式チャンネル",
+    "opensInNewTab": "新しいタブで開きます",
     "language": "言語",
     "comingSoon": "準備中",
     "allRightsReserved": "All rights reserved.",
@@ -503,7 +505,7 @@
       },
       "form": {
         "title": "お問い合わせのご案内",
-        "description": "採用・提携に関するお問い合わせは、下記の電話番号またはメールアドレスまでご連絡ください。",
+        "description": "採用・提携に関するお問い合わせは、下記の電話番号、メールアドレス、またはLINEまでご連絡ください。",
         "preparationTitle": "相談前に整理するとよい情報",
         "preparationItems": {
           "roleAndCount": "希望する職種と採用人数",

@@ -1,6 +1,7 @@
 import { ArrowUpRight, EnvelopeSimple, Phone } from "@phosphor-icons/react/dist/ssr";
 import { getMessages, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
+import SocialChannels from "@/components/social-channels";
 
 const REQUEST_ITEM_KEYS = ["roleAndCount", "arrivalDate", "visa", "locationAndHousing"] as const;
 
@@ -58,6 +59,11 @@ export default function ContactForm({ locale }: { locale?: Locale }) {
       <a href={emailHref} className="mt-4 block text-sm font-semibold text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">
         {SITE.email}
       </a>
+
+      <div className="mt-8 border-t border-line pt-6">
+        <h4 className="mb-4 text-sm font-bold text-ink">{messages.common.socialChannels}</h4>
+        <SocialChannels locale={locale} />
+      </div>
     </div>
   );
 }

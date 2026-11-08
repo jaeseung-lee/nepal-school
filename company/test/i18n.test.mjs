@@ -151,7 +151,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "네팔 6곳, 베트남 3곳, 라오스 2곳",
       intro: "체계적인 교육과 객관적인 검증을 통해 현장에 적합한 인재를 선발합니다.",
       partnership: "축적된 해외 인력 운영 경험과 외국 현지 기관과의 전략적 협력 체계를 바탕으로 근로자 선발, 역량 검증, 사전 교육, 출입국 행정까지 통합 관리 시스템을 운영합니다.",
-      contact: ["정확한 상담을 위해 문의 시 필요한 정보와 절차를 안내드립니다.", "문의 안내", "채용·제휴 문의는 아래 번호 또는 이메일로 연락 부탁드립니다.", "문의 내용이 명확하지 않더라도 부담 없이 연락해 주세요. 전문 상담을 통해 고객님의 상황에 맞는 최적의 방안을 안내해 드리겠습니다."],
+      contact: ["정확한 상담을 위해 문의 시 필요한 정보와 절차를 안내드립니다.", "문의 안내", "채용·제휴 문의는 아래 전화번호, 이메일 또는 LINE으로 연락해 주세요.", "문의 내용이 명확하지 않더라도 부담 없이 연락해 주세요. 전문 상담을 통해 고객님의 상황에 맞는 최적의 방안을 안내해 드리겠습니다."],
     },
     en: {
       hero: ["From local training and recruitment abroad", "to employment in Korea and Japan"],
@@ -159,7 +159,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "6 in Nepal, 3 in Vietnam, and 2 in Laos",
       intro: "Through structured training and objective assessment, we select talent suited to real workplace needs.",
       partnership: "Building on our experience in international workforce management and strategic partnerships with local institutions abroad, we operate an integrated management system covering worker selection, competency assessment, pre-departure training, and guidance and coordination for immigration-related administrative procedures.",
-      contact: ["To ensure an accurate consultation, we explain the information required and the steps to follow when you contact us.", "How to contact us", "For recruitment or partnership inquiries, please contact us using one of the phone numbers or the email address below.", "Even if you are not yet sure how to frame your inquiry, please feel free to contact us. Through a professional consultation, we will guide you toward the approach best suited to your circumstances."],
+      contact: ["To ensure an accurate consultation, we explain the information required and the steps to follow when you contact us.", "How to contact us", "For recruitment or partnership inquiries, contact us by phone, email, or LINE below.", "Even if you are not yet sure how to frame your inquiry, please feel free to contact us. Through a professional consultation, we will guide you toward the approach best suited to your circumstances."],
     },
     ja: {
       hero: ["海外現地での教育・募集から", "韓国・日本での就業まで"],
@@ -167,7 +167,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "ネパール6機関、ベトナム3機関、ラオス2機関",
       intro: "体系的な教育と客観的な評価を通じて、現場に適した人材を選抜します。",
       partnership: "海外人材事業で培った運営経験と、海外現地機関との戦略的な協力体制を基盤に、労働者の選抜、能力評価、事前教育、出入国関連の行政手続に関する案内・連携までを一元管理するシステムを運用しています。",
-      contact: ["的確なご相談対応のため、お問い合わせ時に必要な情報と手順をご案内します。", "お問い合わせのご案内", "採用・提携に関するお問い合わせは、下記の電話番号またはメールアドレスまでご連絡ください。", "お問い合わせ内容がまだ明確でなくても、どうぞお気軽にご連絡ください。専門の担当者がお話を伺い、お客様の状況に最適な方法をご案内いたします。"],
+      contact: ["的確なご相談対応のため、お問い合わせ時に必要な情報と手順をご案内します。", "お問い合わせのご案内", "採用・提携に関するお問い合わせは、下記の電話番号、メールアドレス、またはLINEまでご連絡ください。", "お問い合わせ内容がまだ明確でなくても、どうぞお気軽にご連絡ください。専門の担当者がお話を伺い、お客様の状況に最適な方法をご案内いたします。"],
     },
     ne: {
       hero: ["विदेशमै स्थानीय तालिम र भर्नादेखि", "कोरिया र जापानमा रोजगारीसम्म"],
@@ -175,7 +175,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "नेपालमा 6, भियतनाममा 3 र लाओसमा 2 संस्था",
       intro: "व्यवस्थित तालिम र वस्तुनिष्ठ मूल्याङ्कनमार्फत कार्यस्थलका लागि उपयुक्त जनशक्ति छनोट गर्छौँ।",
       partnership: "विदेशी जनशक्ति व्यवस्थापनमा सञ्चित अनुभव र विदेशका स्थानीय संस्थाहरूसँगको रणनीतिक सहकार्य संरचनाका आधारमा हामी कामदार छनोट, क्षमता प्रमाणीकरण, प्रस्थानपूर्व तालिम तथा अध्यागमनसम्बन्धी प्रशासनिक प्रक्रियामा मार्गदर्शन र समन्वय समेट्ने एकीकृत व्यवस्थापन प्रणाली सञ्चालन गर्छौँ।",
-      contact: ["सही परामर्शका लागि सोधपुछ गर्दा आवश्यक जानकारी र प्रक्रियाबारे हामी मार्गदर्शन गर्छौँ।", "सोधपुछसम्बन्धी जानकारी", "भर्ती वा साझेदारीसम्बन्धी सोधपुछका लागि कृपया तलको फोन नम्बर वा इमेलमा सम्पर्क गर्नुहोस्।", "सोधपुछको विषय अझै स्पष्ट नभए पनि निःसंकोच सम्पर्क गर्नुहोस्। विशेषज्ञ परामर्शमार्फत तपाईंको परिस्थितिअनुसार सबैभन्दा उपयुक्त उपायबारे मार्गदर्शन गर्नेछौँ।"],
+      contact: ["सही परामर्शका लागि सोधपुछ गर्दा आवश्यक जानकारी र प्रक्रियाबारे हामी मार्गदर्शन गर्छौँ।", "सोधपुछसम्बन्धी जानकारी", "भर्ती वा साझेदारीसम्बन्धी सोधपुछका लागि कृपया तलको फोन नम्बर, इमेल वा LINE मार्फत सम्पर्क गर्नुहोस्।", "सोधपुछको विषय अझै स्पष्ट नभए पनि निःसंकोच सम्पर्क गर्नुहोस्। विशेषज्ञ परामर्शमार्फत तपाईंको परिस्थितिअनुसार सबैभन्दा उपयुक्त उपायबारे मार्गदर्शन गर्नेछौँ।"],
     },
     vi: {
       hero: ["Từ đào tạo và tuyển mộ tại nước ngoài", "đến việc làm tại Hàn Quốc và Nhật Bản"],
@@ -183,7 +183,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "6 tại Nepal, 3 tại Việt Nam và 2 tại Lào",
       intro: "Thông qua đào tạo bài bản và đánh giá khách quan, chúng tôi tuyển chọn nhân lực phù hợp với yêu cầu thực tế tại nơi làm việc.",
       partnership: "Dựa trên kinh nghiệm tích lũy trong quản lý nhân lực quốc tế và hệ thống hợp tác chiến lược với các tổ chức địa phương ở nước ngoài, chúng tôi vận hành một hệ thống quản lý tích hợp, bao quát việc tuyển chọn lao động, xác minh năng lực, đào tạo trước khi xuất cảnh, cùng hướng dẫn và phối hợp các thủ tục hành chính liên quan đến xuất nhập cảnh.",
-      contact: ["Để tư vấn chính xác, chúng tôi hướng dẫn những thông tin cần cung cấp và quy trình khi liên hệ.", "Hướng dẫn liên hệ", "Đối với các yêu cầu về tuyển dụng hoặc hợp tác, vui lòng liên hệ qua số điện thoại hoặc email bên dưới.", "Ngay cả khi nội dung cần trao đổi chưa thật rõ ràng, quý khách cũng đừng ngần ngại liên hệ. Qua tư vấn chuyên môn, chúng tôi sẽ đề xuất phương án phù hợp nhất với tình hình của quý khách."],
+      contact: ["Để tư vấn chính xác, chúng tôi hướng dẫn những thông tin cần cung cấp và quy trình khi liên hệ.", "Hướng dẫn liên hệ", "Đối với các yêu cầu về tuyển dụng hoặc hợp tác, vui lòng liên hệ qua số điện thoại, email hoặc LINE bên dưới.", "Ngay cả khi nội dung cần trao đổi chưa thật rõ ràng, quý khách cũng đừng ngần ngại liên hệ. Qua tư vấn chuyên môn, chúng tôi sẽ đề xuất phương án phù hợp nhất với tình hình của quý khách."],
     },
     lo: {
       hero: ["ຈາກການຝຶກອົບຮົມ ແລະ ການຮັບສະໝັກໃນທ້ອງຖິ່ນຕ່າງປະເທດ", "ສູ່ການເຮັດວຽກຢູ່ເກົາຫຼີ ແລະ ຍີ່ປຸ່ນ"],
@@ -191,7 +191,7 @@ test("company refresh copy is complete in every supported locale", () => {
       partners: "6 ອົງການໃນເນປານ, 3 ອົງການໃນຫວຽດນາມ ແລະ 2 ອົງການໃນລາວ",
       intro: "ພວກເຮົາຄັດເລືອກບຸກຄະລາກອນທີ່ເໝາະສົມກັບສະຖານທີ່ເຮັດວຽກ ຜ່ານການຝຶກອົບຮົມທີ່ເປັນລະບົບ ແລະ ການປະເມີນທີ່ເປັນກາງ.",
       partnership: "ໂດຍອາໄສປະສົບການທີ່ສະສົມມາໃນການບໍລິຫານບຸກຄະລາກອນສາກົນ ແລະ ລະບົບຄວາມຮ່ວມມືຍຸດທະສາດກັບອົງການທ້ອງຖິ່ນໃນຕ່າງປະເທດ, ພວກເຮົາດຳເນີນລະບົບບໍລິຫານແບບຄົບວົງຈອນ ທີ່ຄອບຄຸມການຄັດເລືອກແຮງງານ, ການກວດສອບຄວາມສາມາດ, ການຝຶກອົບຮົມກ່ອນເດີນທາງ, ແລະ ການໃຫ້ຄຳແນະນຳພ້ອມປະສານງານກ່ຽວກັບຂັ້ນຕອນບໍລິຫານດ້ານການເຂົ້າ-ອອກປະເທດ.",
-      contact: ["ເພື່ອໃຫ້ການປຶກສາຖືກຕ້ອງ, ພວກເຮົາຈະແນະນຳຂໍ້ມູນ ແລະ ຂັ້ນຕອນທີ່ຈຳເປັນໃນເວລາສອບຖາມ.", "ຄຳແນະນຳການສອບຖາມ", "ສຳລັບການສອບຖາມເລື່ອງການຈ້າງງານ ຫຼື ການຮ່ວມມື, ກະລຸນາຕິດຕໍ່ຜ່ານເບີໂທລະສັບ ຫຼື ອີເມວດ້ານລຸ່ມ.", "ເຖິງແມ່ນວ່າເນື້ອໃນທີ່ຕ້ອງການສອບຖາມຍັງບໍ່ຊັດເຈນ, ກໍສາມາດຕິດຕໍ່ພວກເຮົາໄດ້ໂດຍບໍ່ຕ້ອງກັງວົນ. ຜ່ານການປຶກສາຢ່າງມືອາຊີບ, ພວກເຮົາຈະແນະນຳທາງເລືອກທີ່ເໝາະສົມທີ່ສຸດກັບສະຖານະການຂອງທ່ານ."],
+      contact: ["ເພື່ອໃຫ້ການປຶກສາຖືກຕ້ອງ, ພວກເຮົາຈະແນະນຳຂໍ້ມູນ ແລະ ຂັ້ນຕອນທີ່ຈຳເປັນໃນເວລາສອບຖາມ.", "ຄຳແນະນຳການສອບຖາມ", "ສຳລັບການສອບຖາມກ່ຽວກັບການຮັບສະໝັກ ຫຼື ການຮ່ວມມື, ກະລຸນາຕິດຕໍ່ຜ່ານເບີໂທລະສັບ, ອີເມວ ຫຼື LINE ດ້ານລຸ່ມ.", "ເຖິງແມ່ນວ່າເນື້ອໃນທີ່ຕ້ອງການສອບຖາມຍັງບໍ່ຊັດເຈນ, ກໍສາມາດຕິດຕໍ່ພວກເຮົາໄດ້ໂດຍບໍ່ຕ້ອງກັງວົນ. ຜ່ານການປຶກສາຢ່າງມືອາຊີບ, ພວກເຮົາຈະແນະນຳທາງເລືອກທີ່ເໝາະສົມທີ່ສຸດກັບສະຖານະການຂອງທ່ານ."],
     },
   };
 
