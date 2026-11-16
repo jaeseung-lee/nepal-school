@@ -2,21 +2,25 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { NETWORK_INSTITUTIONS, NETWORK_REGIONS, institutionsByKind, logoPath } from "../lib/partnership-network";
+import { NETWORK_INSTITUTIONS, NETWORK_REGIONS, getLogoDimensions, institutionsByKind, logoPath } from "../lib/partnership-network";
 
 test("presentation activities, confirmed updates, and partner logos are complete", () => {
-  assert.equal(NETWORK_INSTITUTIONS.length, 30);
-  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 30);
+  assert.equal(NETWORK_INSTITUTIONS.length, 31);
+  assert.equal(new Set(NETWORK_INSTITUTIONS.map(item => item.id)).size, 31);
   assert.equal(institutionsByKind("municipality").length, 9);
   assert.equal(institutionsByKind("university").length, 13);
   assert.equal(institutionsByKind("partner").length, 6);
-  assert.deepEqual(institutionsByKind("japan").map(item => item.id), ["engate", "osaka-naniwa"]);
+  assert.deepEqual(institutionsByKind("japan").map(item => item.id), ["engate", "osaka-naniwa", "first-study"]);
   for (const [status, count] of [["completed", 5], ["ongoing", 4], ["supported", 11], ["planned", 2]] as const) {
     assert.equal(NETWORK_INSTITUTIONS.filter(item => "status" in item && item.status === status).length, count);
   }
   assert.equal(institutionsByKind("university").find(item => item.id === "kimpo")?.plannedStart, "2027-03");
   assert.equal(institutionsByKind("university").find(item => item.id === "hanyeong")?.plannedStart, "2027-09");
-  for (const item of NETWORK_INSTITUTIONS) assert.ok(existsSync(path.join(process.cwd(), "public", logoPath(item.id))));
+  for (const item of NETWORK_INSTITUTIONS) {
+    if (item.id === "first-study") continue;
+    assert.ok(getLogoDimensions(item.id));
+    assert.ok(existsSync(path.join(process.cwd(), "public", logoPath(item.id))));
+  }
 });
 
 test("all six languages describe every institution and region", () => {

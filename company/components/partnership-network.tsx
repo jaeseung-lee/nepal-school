@@ -29,8 +29,9 @@ function Status({ item, locale, showDate = true }: { item: NetworkInstitution; l
 }
 
 /** 기관명이 바로 옆에 텍스트로 있으므로 로고는 장식(alt="")으로 둔다. 평소엔 흑백, 마우스를 올리면 원색. */
-function InstitutionLogo({ id, align = "center" }: { id: string; align?: "center" | "start" }) {
+function InstitutionLogo({ id, align = "center" }: { id: NetworkInstitutionId; align?: "center" | "start" }) {
   const dimensions = getLogoDimensions(id);
+  if (!dimensions) return null;
   return (
     <div className={`relative h-10 w-full sm:h-14 ${align === "center" ? "mx-auto" : ""}`} style={{ maxWidth: dimensions.width }}>
       <Image
@@ -78,11 +79,13 @@ export function NetworkLogoWall({ locale }: { locale: Locale }) {
           </h4>
           <ul className="grid grid-cols-3 border-l border-line xl:grid-cols-4">
             {institutionsByKind(kind).map((item) => {
-              const institution = copy.institutions[item.id as NetworkInstitutionId];
+              const id = item.id as NetworkInstitutionId;
+              const institution = copy.institutions[id];
+              const hasLogo = Boolean(getLogoDimensions(id));
               return (
-                <li key={item.id} data-network-logo={item.id} className="group min-w-0 border-b border-r border-line bg-surface px-2 py-4 sm:px-3 sm:py-5">
-                  <InstitutionLogo id={item.id} />
-                  <p className="mt-3 text-center text-[11px] leading-relaxed text-muted">{institution.name}</p>
+                <li key={id} data-network-logo={hasLogo ? id : undefined} className="group flex min-w-0 flex-col justify-center border-b border-r border-line bg-surface px-2 py-4 sm:px-3 sm:py-5">
+                  <InstitutionLogo id={id} />
+                  <p className={hasLogo ? "mt-3 text-center text-[11px] leading-relaxed text-muted" : "text-center text-xs font-semibold leading-relaxed text-ink"}>{institution.name}</p>
                 </li>
               );
             })}
@@ -107,11 +110,13 @@ export function NetworkDirectory({ locale, kind, prefix }: { locale: Locale; kin
           {regional && <h3 className="border-b border-ink pb-3 text-sm font-bold text-ink">{copy.regions[group.id as NetworkRegion]}</h3>}
           <ul className={`grid border-l border-line ${regional ? "" : "border-t"} ${kind === "municipality" ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
             {group.items.map((item) => {
-              const institution = copy.institutions[item.id as NetworkInstitutionId];
+              const id = item.id as NetworkInstitutionId;
+              const institution = copy.institutions[id];
+              const hasLogo = Boolean(getLogoDimensions(id));
               return (
-                <li key={item.id} data-network-logo={item.id} data-network-activity={item.status ? item.id : undefined} className="group min-w-0 border-b border-r border-line bg-surface p-6">
-                  <div className="max-w-[180px]"><InstitutionLogo id={item.id} align="start" /></div>
-                  <NameHeading className="mt-6 text-lg font-bold leading-snug tracking-[-0.02em] text-ink">{institution.name}</NameHeading>
+                <li key={id} data-network-logo={hasLogo ? id : undefined} data-network-activity={item.status ? id : undefined} className="group min-w-0 border-b border-r border-line bg-surface p-6">
+                  {hasLogo && <div className="mb-6 max-w-[180px]"><InstitutionLogo id={id} align="start" /></div>}
+                  <NameHeading className="text-lg font-bold leading-snug tracking-[-0.02em] text-ink">{institution.name}</NameHeading>
                   <p className="mb-5 mt-2 text-sm leading-relaxed text-muted">{institution.description}</p>
                   <Status item={item} locale={locale} showDate={false} />
                   {item.plannedStart && <p className="mt-3 text-meta text-muted">{copy.plannedLabel}: <time dateTime={item.plannedStart} className="tabular-nums">{item.plannedStart.replace("-", ".")}</time></p>}

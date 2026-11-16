@@ -52,6 +52,7 @@ export const NETWORK_INSTITUTIONS = [
   { id: "korea-housing", kind: "partner" },
   { id: "engate", kind: "japan" },
   { id: "osaka-naniwa", kind: "japan" },
+  { id: "first-study", kind: "japan" },
 ] as const satisfies readonly NetworkInstitution[];
 
 export type NetworkInstitutionId = (typeof NETWORK_INSTITUTIONS)[number]["id"];
@@ -71,8 +72,10 @@ export function logoPath(id: string) {
   return `/partners/logos/${id}.png`;
 }
 
-export function getLogoDimensions(id: string) {
-  return logoDimensions[id as NetworkInstitutionId];
+const institutionLogoDimensions: Partial<Record<NetworkInstitutionId, { width: number; height: number }>> = logoDimensions;
+
+export function getLogoDimensions(id: NetworkInstitutionId) {
+  return institutionLogoDimensions[id];
 }
 
 /** /partners 페이지의 지역 앵커. 지자체가 있는 지역은 지자체 목록, 없으면 대학 목록으로 보낸다. */
