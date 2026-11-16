@@ -17,7 +17,6 @@ test("presentation activities, confirmed updates, and partner logos are complete
   assert.equal(institutionsByKind("university").find(item => item.id === "kimpo")?.plannedStart, "2027-03");
   assert.equal(institutionsByKind("university").find(item => item.id === "hanyeong")?.plannedStart, "2027-09");
   for (const item of NETWORK_INSTITUTIONS) {
-    if (item.id === "first-study") continue;
     assert.ok(getLogoDimensions(item.id));
     assert.ok(existsSync(path.join(process.cwd(), "public", logoPath(item.id))));
   }

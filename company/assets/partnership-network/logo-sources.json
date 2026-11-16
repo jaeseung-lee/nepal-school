@@ -156,6 +156,14 @@
       "file": "/partners/logos/osaka-naniwa.png",
       "addedOn": "2026-10-20",
       "note": "사용자가 일본 협력기관으로 확인함. 공식 사이트 헤더 로고(337×83px)의 크기와 비율을 유지해 PNG로 변환함."
+    },
+    {
+      "id": "first-study",
+      "sourcePage": "https://firststudy.net/",
+      "sourceImage": "https://firststudy.net/img/common/logo.png",
+      "file": "/partners/logos/first-study.png",
+      "addedOn": "2026-11-17",
+      "note": "퍼스트스터디 공식 사이트 헤더의 436×136px PNG 원본을 사용함."
     }
   ]
 }
